@@ -223,7 +223,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-*.gitkeep
+!*.gitkeep
 
 .idea/
 
