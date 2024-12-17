@@ -4,4 +4,6 @@ import com.shinhan.daengdong.member.dto.MemberDTO;
 
 public interface MemberServiceInterface {
     MemberDTO login(MemberDTO memberDTO);
+
+    MemberDTO isMember(MemberDTO kakaoEmail);
 }

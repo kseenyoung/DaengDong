@@ -2,6 +2,7 @@ package com.shinhan.daengdong.member.model.service;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.shinhan.daengdong.member.dto.MemberDTO;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -64,8 +65,8 @@ public class KakaoOauthService {
             access_Token = element.getAsJsonObject().get("access_token").getAsString();
             refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
 
-            System.out.println("access_Token : " + access_Token);
-            System.out.println("refresh_Token : " + refresh_Token);
+//            System.out.println("access_Token : " + access_Token);
+//            System.out.println("refresh_Token : " + refresh_Token);
 
             br.close();
             bw.close();
@@ -74,5 +75,63 @@ public class KakaoOauthService {
         }
 
         return access_Token;
+    }
+
+    public MemberDTO getUser(String token) {
+
+        String reqURL = "https://kapi.kakao.com/v2/user/me";
+
+        //access_token을 이용하여 사용자 정보 조회
+        try {
+            URL url = new URL(reqURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Authorization", "Bearer " + token); //전송할 header 작성, access_token전송
+
+            //결과 코드가 200이라면 성공
+            int responseCode = conn.getResponseCode();
+
+            //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line = "";
+            String result = "";
+
+            while ((line = br.readLine()) != null) {
+                result += line;
+            }
+
+            //Gson 라이브러리로 JSON파싱
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(result);
+            System.out.println("kakao result :" + result);
+
+            // id, email
+            int id = element.getAsJsonObject().get("id").getAsInt();
+            boolean hasEmail = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_email").getAsBoolean();
+            String email = "";
+            if(hasEmail){
+                email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
+            }
+
+            // nickname, profile image
+//            String nickname = "";
+//            String imageURL = "";
+            String nickname = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("profile").getAsJsonObject().get("nickname").getAsString();
+            String imageURL = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("profile").getAsJsonObject().get("profile_image_url").getAsString();
+
+            br.close();
+
+            return MemberDTO.builder()
+                    .memberEmail(email)
+                    .memberName(nickname)
+                    .memberProfilePhoto(imageURL)
+                    .build();
+
+        } catch (IOException e) {
+
+            return null;
+        }
     }
 }

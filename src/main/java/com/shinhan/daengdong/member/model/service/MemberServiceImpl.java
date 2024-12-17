@@ -16,4 +16,10 @@ public class MemberServiceImpl implements MemberServiceInterface{
         return memberRepository.login(memberDTO);
     }
 
+    @Override
+    public MemberDTO isMember(MemberDTO kakaoEmail) {
+        // TODO : email을 이용해서 회원가입 이력이 있는 사람인지 판단
+        return null;
+    }
+
 }
