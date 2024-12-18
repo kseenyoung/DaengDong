@@ -23,12 +23,12 @@
             <a href="https://github.com/dmlcksghd">홍의찬</a>
         </td>
          <td align="center" width="16%">
-            <a href="https://github.com/minyoung0302"><img width="75%" src="readme/샐리.png"/></a>
+            <a href="https://github.com/minyoung0302"><img width="75%" src="readme/my.png"/></a>
             <br />
             <a href="https://github.com/minyoung0302">정민영</a>
         </td>
          <td align="center" width="16%">
-            <a href="https://github.com/yuseonghun"><img width="75%" src="readme/샐리.png"/></a>
+            <a href="https://github.com/yuseonghun"><img width="75%" src="readme/sh.png"/></a>
             <br />
             <a href="https://github.com/yuseonghun">유성훈</a>
         </td>
