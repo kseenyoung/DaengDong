@@ -17,8 +17,8 @@ public class MemberServiceImpl implements MemberServiceInterface{
     }
 
     @Override
-    public MemberDTO signUp(MemberDTO kakaoMember) {
-        return null;
+    public MemberDTO signUp(MemberDTO memberDTO) {
+        return memberRepository.signUp(memberDTO);
     }
 
 }
