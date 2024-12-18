@@ -5,4 +5,6 @@ import com.shinhan.daengdong.member.dto.MemberDTO;
 public interface MemberRepositoryInterface {
 
     MemberDTO login(String email);
+
+    MemberDTO signUp(MemberDTO kakaoMember);
 }

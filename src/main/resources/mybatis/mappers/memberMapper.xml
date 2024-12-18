@@ -10,4 +10,9 @@
         where member_email= #{memberEmail}
     </select>
 
+    <insert id="signUp" parameterType="memberDTO">
+        insert into members(member_email, member_name, member_nickname, member_profile_photo)
+        values(#{memberEmail}, #{memberName}, #{memberNickname}, #{memberProfilePhoto})
+    </insert>
+
 </mapper>
