@@ -10,9 +10,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class KakaoOauthService {
 
@@ -65,9 +67,6 @@ public class KakaoOauthService {
             access_Token = element.getAsJsonObject().get("access_token").getAsString();
             refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
 
-//            System.out.println("access_Token : " + access_Token);
-//            System.out.println("refresh_Token : " + refresh_Token);
-
             br.close();
             bw.close();
         }catch (IOException e) {
@@ -105,7 +104,7 @@ public class KakaoOauthService {
             //Gson 라이브러리로 JSON파싱
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
-            System.out.println("kakao result :" + result);
+            log.info("kakao result :" + result);
 
             // id, email
             int id = element.getAsJsonObject().get("id").getAsInt();
@@ -116,8 +115,6 @@ public class KakaoOauthService {
             }
 
             // nickname, profile image
-//            String nickname = "";
-//            String imageURL = "";
             String nickname = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("profile").getAsJsonObject().get("nickname").getAsString();
             String imageURL = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("profile").getAsJsonObject().get("profile_image_url").getAsString();
 

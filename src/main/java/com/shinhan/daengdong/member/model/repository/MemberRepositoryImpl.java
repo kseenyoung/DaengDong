@@ -15,8 +15,8 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     String namespace = "com.shinhan.member.";
 
     @Override
-    public MemberDTO login(MemberDTO memberDTO){
-        MemberDTO result = sqlSession.selectOne(namespace+"login", memberDTO);
+    public MemberDTO login(String email){
+        MemberDTO result = sqlSession.selectOne(namespace+"login", email);
         log.info("login : " + result);
         return result;
     }

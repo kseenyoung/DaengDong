@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shinhan.member">
 
-    <select id="login" parameterType="memberDTO" resultType="memberDTO">
+    <select id="login" parameterType="String" resultType="memberDTO">
         select *
         from members
         where member_email= #{memberEmail}
