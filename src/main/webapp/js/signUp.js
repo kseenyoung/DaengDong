@@ -39,17 +39,30 @@ function f_add_pet() {
                         Female
                       </label>
                     </div>
-                    <!-- Date Picker Input -->
+                    <div class="mb-4">
+                      <label for="root">혈액형</label>
+                      <select class="custom-select d-block w-100" id="root">
+                        <option value="선택"></option>
+                        <option value="DEA-1">DEA-1</option>
+                        <option value="DEA1.1">DEA1.1</option>
+                        <option value="DEA1.2">DEA1.2</option>
+                        <option value="DEA3">DEA3</option>
+                        <option value="DEA4">DEA4</option>
+                        <option value="DEA5">DEA5</option>
+                        <option value="DEA6">DEA6</option>
+                      </select>
+                    </div>
+                     <!-- Date Picker Input -->
                     <label class="birthday d-block me-3">생일</label>
                     <div class="form-group mb-4">
                         <div class="datepicker date input-group p-0 shadow-sm">
                           <input
                             type="text"
                             placeholder="생일 입력"
-                            class="form-control py-4 px-4 datepicker"
+                            class="form-control py-3 px-4 datepicker"
                           />
                           <div class="input-group-append">
-                            <span class="input-group-text px-4">
+                            <span class="input-group-text px-3">
                               <i class="fa fa-clock-o"></i>
                             </span>
                           </div>
