@@ -39,14 +39,14 @@ public class OauthController {
 
         MemberDTO member = memberService.login(kakaoMember.getMemberEmail());
 
+        // session 등록
+        session = request.getSession();
+        session.setAttribute("member", kakaoMember);
+
         if (member == null) {
             // TODO : DB에 존재하지 않는 이메일
             return "redirect:/auth/signUp.do";
         }
-
-        // 로그인 완료
-        session = request.getSession();
-        session.setAttribute("member", member);
 
         return "redirect:/home";
     }

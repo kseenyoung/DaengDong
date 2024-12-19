@@ -15,4 +15,9 @@
         values(#{memberEmail}, #{memberName}, #{memberNickname}, #{memberProfilePhoto})
     </insert>
 
+    <insert id="insertPet" parameterType="petDTO">
+        insert into pets(member_email, pet_name, pet_gender, pet_birthday, pet_blood_type, pet_profile_photo, pet_species)
+        values (#{memberEmail},#{petName},#{petGender},#{petBirthday},#{petBloodType},#{petProfilePhoto},#{petSpecies})
+    </insert>
+
 </mapper>

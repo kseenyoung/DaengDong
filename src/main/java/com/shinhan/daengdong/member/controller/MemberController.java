@@ -1,7 +1,10 @@
 package com.shinhan.daengdong.member.controller;
 
 import com.shinhan.daengdong.member.dto.MemberDTO;
+import com.shinhan.daengdong.member.dto.SignUpDTO;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
+import com.shinhan.daengdong.pet.dto.PetDTO;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import lombok.Getter;
@@ -48,15 +51,29 @@ public class MemberController {
 
     @PostMapping("signUp.do")
     @ResponseBody
-    public MemberDTO signUp(@RequestBody MemberDTO memberDTO, HttpServletRequest request){
+    public SignUpDTO signUp(@RequestBody SignUpDTO signUpDTO, HttpServletRequest request){
+        log.info("signUpDTO : " + signUpDTO);
         HttpSession session = request.getSession();
         if (session == null){
+            // session 없음 = 로그인 시도한 적 없음
+            log.info("sission is null");
             return null;
         }
+
+        // TODO oauth 로그인 할 때 session 안에 MemberDTO 타입의 'member' 등록 되어 있어야 함
         MemberDTO member = (MemberDTO) session.getAttribute("member");
 
-        MemberDTO signUpMember = memberService.signUp(memberDTO);
-        return signUpMember;
+        // signUpDTO에 session에 저장된 MemberDTO 정보 삽입
+        signUpDTO.setMemberEmail(member.getMemberEmail());
+        signUpDTO.setMemberProfilePhoto(member.getMemberProfilePhoto());
+        if(signUpDTO.getMemberNickname()==null){
+            signUpDTO.setMemberNickname(member.getMemberNickname());
+        }
+        log.info("member in session !! : " + member);
+
+        MemberDTO signUpMember = memberService.signUp(signUpDTO);
+        session.setAttribute("member", signUpMember);
+        return signUpDTO;
     }
 
 }

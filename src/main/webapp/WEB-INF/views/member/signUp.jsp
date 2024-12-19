@@ -25,18 +25,18 @@
     <div class="input-form-backgroud row">
         <div class="input-form col-md-11 mx-auto">
             <h4 class="mb-3">회원가입</h4>
-            <form class="validation-form" novalidate>
+            <div class="validation-form" novalidate>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="name">이름</label>
-                        <input type="text" class="form-control" id="name" placeholder="" value="" required>
+                        <label for="member_name">이름</label>
+                        <input type="text" class="form-control" id="member_name" placeholder="" value="" required>
                         <div class="invalid-feedback">
                             이름을 입력해주세요.
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="nickname">별명</label>
-                        <input type="text" class="form-control" id="nickname" placeholder="" value="">
+                        <label for="member_nickname">별명</label>
+                        <input type="text" class="form-control" id="member_nickname" placeholder="" value="">
                         <div class="invalid-feedback">
                             별명을 입력해주세요.
                         </div>
@@ -54,8 +54,8 @@
                     <label class="custom-control-label" for="aggrement">개인정보 수집 및 이용에 동의합니다.</label>
                 </div>
                 <div class="mb-4"></div>
-                <button class="btn btn-primary btn-lg btn-block" type="submit">회원가입</button>
-            </form>
+                <button class="btn btn-primary btn-lg btn-block" id="btn-signup">회원가입</button>
+            </div>
         </div>
     </div>
     <footer class="my-3 text-center text-small">

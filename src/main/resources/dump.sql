@@ -2,7 +2,7 @@ INSERT INTO `members` (`member_email`, `member_name`, `member_nickname`, `member
 VALUES
 ('john.doe@example.com', 'John Doe', 'Johnny', 'photo1.jpg'),
 ('jane.smith@example.com', 'Jane Smith', 'Janey', 'photo2.jpg'),
-('michael.brown@example.com', 'Michael Brown', 'MikeB', 'photo3.jpg'),
+('michael.brown@exampmembersmembersle.com', 'Michael Brown', 'MikeB', 'photo3.jpg'),
 ('susan.white@example.com', 'Susan White', 'SueW', 'photo4.jpg'),
 ('emma.jones@example.com', 'Emma Jones', 'EmJay', 'photo5.jpg'),
 ('will.taylor@example.com', 'Will Taylor', 'WillT', 'photo6.jpg'),

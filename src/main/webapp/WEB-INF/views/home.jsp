@@ -11,8 +11,8 @@
     <title>Title</title>
 </head>
 <body>
-<p>로그인 완료!</p>
-<p>환영합니다 ${member.memberName}님</p>
+<h1>로그인 완료!</h1>
+<p>환영합니다</p>
 
 </body>
 </html>
