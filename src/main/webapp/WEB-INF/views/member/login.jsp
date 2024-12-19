@@ -12,7 +12,17 @@
 
 <html>
 <header>
-
+    <script>
+        <%--function f_kakao_login(){--%>
+        <%--    $.ajax({--%>
+        <%--        url : "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${rest_api_key}&redirect_uri=${redirect_uri}",--%>
+        <%--        success : function (result){--%>
+        <%--            alert(result)--%>
+        <%--        },--%>
+        <%--        error : function (){}--%>
+        <%--    })--%>
+        <%--}--%>
+    </script>
 </header>
 <body>
 login page

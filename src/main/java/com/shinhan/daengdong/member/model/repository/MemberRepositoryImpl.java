@@ -24,7 +24,7 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     @Override
     public MemberDTO signUp(MemberDTO memberDTO) {
         int signUpMember = sqlSession.insert(namespace+"signUp", memberDTO);
-        return null;
+        return signUpMember == 1 ? memberDTO : null;
     }
 
 }
