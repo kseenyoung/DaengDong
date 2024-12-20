@@ -9,8 +9,12 @@
 	</settings>
 	<typeAliases>
 		<!-- type : java의 type -->
+		<!-- Member 부분 -->
 		<typeAlias type="com.shinhan.daengdong.member.dto.MemberDTO" alias="memberDTO" />
 		<typeAlias type="com.shinhan.daengdong.pet.dto.PetDTO" alias="petDTO" />
+
+		<!-- Plan 부분 -->
+		<typeAlias type="com.shinhan.daengdong.plan.dto.PlanDTO" alias="PlanDTO" />
 		<!-- 위 코드처럼 채워 나가면 됨.. -->
 	</typeAliases>
 </configuration>
