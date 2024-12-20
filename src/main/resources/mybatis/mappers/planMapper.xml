@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shinhan.plan">
+
+    <insert id="addInfo" parameterType="planDTO">
+        insert into plans(plan_name, member_email, start_date, end_date, plan_state)
+        values (#{planName}, #{memberEmail}, #{startDate}, #{endDate}, #{planState})
+    </insert>
+
+    <select id="addRegion" parameterType="placeDTO">
+        select *
+        from regions
+        where region_id = #{regionId}
+    </select>
+
+</mapper>
