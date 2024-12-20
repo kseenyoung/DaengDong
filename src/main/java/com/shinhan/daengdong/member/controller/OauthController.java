@@ -30,8 +30,7 @@ public class OauthController {
     MemberServiceInterface memberService;
 
     @GetMapping("kakao/code")
-    @ResponseBody
-    public Boolean getKakaoCode(@RequestParam String code, HttpServletRequest request){
+    public String getKakaoCode(@RequestParam String code, HttpServletRequest request){
         HttpSession session;
 
         String access_Token = kakaoOauthService.getToken(code);
@@ -40,15 +39,15 @@ public class OauthController {
 
         MemberDTO member = memberService.login(kakaoMember.getMemberEmail());
 
-        if (member != null) {
+        // session 등록
+        session = request.getSession();
+        session.setAttribute("member", kakaoMember);
+
+        if (member == null) {
             // TODO : DB에 존재하지 않는 이메일
-            return false;
+            return "redirect:/auth/signUp.do";
         }
 
-        // 로그인 처리
-        session = request.getSession();
-        session.setAttribute("member", member);
-
-        return true;
+        return "redirect:/home";
     }
 }

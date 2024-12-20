@@ -12,10 +12,8 @@
 
 <html>
 <header>
-
 </header>
 <body>
-login page
 <img src="${path}/img/kakao_login.png" onclick="location.href='https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${rest_api_key}&redirect_uri=${redirect_uri}'">
 </body>
 </html>
