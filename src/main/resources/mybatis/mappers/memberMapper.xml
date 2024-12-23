@@ -23,7 +23,7 @@
         values (#{memberEmail},#{petName},#{petGender},#{petBirthday},#{petBloodType},#{petProfilePhoto},#{petSpecies})
     </insert>
 
-    <!--member18 반려동물 프로필 변경-->
+    <!--member18 반려동물 프로필 변경!!-->
     <update id="updatepetProfile" parameterType="String">
         update pets
         set pet_profile_photo = #{pet_profile_photo}
