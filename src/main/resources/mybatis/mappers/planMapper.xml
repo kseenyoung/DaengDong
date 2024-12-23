@@ -9,16 +9,4 @@
         values (#{planName}, #{memberEmail}, #{startDate}, #{endDate}, #{planState})
     </insert>
 
-    <select id="addRegion" parameterType="regionDTO">
-        select region_name
-        from regions
-        where region_id = #{regionId}
-    </select>
-
-    <insert id="addPlace" parameterType="placeDTO">
-        insert into places (region_id, kakao_palace_name,kakao_road_address_name,kakao_phone,kakao_x,kakao_y,kakao_place_url)
-        values (#{regionId}, #{kakaoPlaceName}, #{kakaoRoadAddressName}, #{kakaoPhone}, #{kakaoX}, #{kakaoY}, #{kakaoPlaceUrl})
-
-    </insert>
-
 </mapper>
