@@ -37,7 +37,7 @@
         where pet_id = #{pet_id}
     </delete>
 
-    <!--모든 알림 조회!!!!-->
+    <!--모든 알림 조회!!!!@@@@@-->
     <select id="selectnotification" parameterType="String" resultType="notificationDTO">
         select *
         from notification
