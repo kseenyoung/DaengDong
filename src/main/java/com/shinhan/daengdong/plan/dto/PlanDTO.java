@@ -25,7 +25,7 @@ public class PlanDTO {
 
     // Parameterized Constructor
     public PlanDTO(String planName, String memberEmail, LocalDateTime startDate, LocalDateTime endDate, int planState,
-                     LocalDateTime createAt, LocalDateTime updateAt) {
+                   LocalDateTime createAt, LocalDateTime updateAt) {
         this.planName = planName;
         this.memberEmail = memberEmail;
         this.startDate = startDate;
