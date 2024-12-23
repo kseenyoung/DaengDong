@@ -4,10 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shinhan.member">
 
-    <select id="login" parameterType="memberDTO" resultType="memberDTO">
+    <select id="login" parameterType="String" resultType="memberDTO">
         select *
         from members
         where member_email= #{memberEmail}
     </select>
+
+    <insert id="signUp" parameterType="memberDTO">
+        insert into members(member_email, member_name, member_nickname, member_profile_photo)
+        values(#{memberEmail}, #{memberName}, #{memberNickname}, #{memberProfilePhoto})
+    </insert>
+
+    <insert id="insertPet" parameterType="petDTO">
+        insert into pets(member_email, pet_name, pet_gender, pet_birthday, pet_blood_type, pet_profile_photo, pet_species)
+        values (#{memberEmail},#{petName},#{petGender},#{petBirthday},#{petBloodType},#{petProfilePhoto},#{petSpecies})
+    </insert>
 
 </mapper>

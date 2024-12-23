@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.example</groupId>
   <artifactId>daengdong</artifactId>
@@ -40,12 +40,12 @@
       <version>${org.springframework-version}</version>
     </dependency>
 
-<!--    &lt;!&ndash; oracle 데이터베이스 라이브러리 정보 &ndash;&gt;-->
-<!--    <dependency>-->
-<!--      <groupId>com.oracle.database.jdbc</groupId>-->
-<!--      <artifactId>ojdbc8</artifactId>-->
-<!--      <version>12.2.0.1</version>-->
-<!--    </dependency>-->
+    <!--    &lt;!&ndash; oracle 데이터베이스 라이브러리 정보 &ndash;&gt;-->
+    <!--    <dependency>-->
+    <!--      <groupId>com.oracle.database.jdbc</groupId>-->
+    <!--      <artifactId>ojdbc8</artifactId>-->
+    <!--      <version>12.2.0.1</version>-->
+    <!--    </dependency>-->
 
 
 
@@ -239,6 +239,13 @@
       <groupId>com.googlecode.json-simple</groupId>
       <artifactId>json-simple</artifactId>
       <version>1.1.1</version>
+    </dependency>
+
+    <!-- gson -->
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.5</version>
     </dependency>
 
 

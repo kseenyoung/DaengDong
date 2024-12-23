@@ -1,6 +1,7 @@
-﻿DROP TABLE IF EXISTS `Member`;
+-- create database daengdong;
+use daengdong;
 
-CREATE TABLE `Member` (
+CREATE TABLE `members` (
 	`member_email`	varchar(255)	NOT NULL,
 	`member_name`	varchar(255)	NOT NULL,
 	`member_nickname`	varchar(255)	NOT NULL,
@@ -9,9 +10,7 @@ CREATE TABLE `Member` (
 	`update_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS `PhotoCard`;
-
-CREATE TABLE `PhotoCard` (
+CREATE TABLE `photocards` (
 	`photo_card_id`	bigint	NOT NULL,
 	`user_email`	varchar(255)	NOT NULL,
 	`kakao_place_id`	bigint	NOT NULL,
@@ -22,46 +21,38 @@ CREATE TABLE `PhotoCard` (
 	`금액`	int	NOT NULL
 );
 
-DROP TABLE IF EXISTS `plan`;
-
-CREATE TABLE `plan` (
+CREATE TABLE `plans` (
 	`plan_id`	bigint	NOT NULL,
 	`member_email`	varchar(255)	NOT NULL,
 	`start_date`	datetime	NULL,
 	`end_date`	datetime	NULL,
-	`plan_state`	tinyint	NOT NULL	DEFAULT 0: 비공개, 1: 공개	COMMENT 'public/ private',
+	`plan_state`	tinyint	NOT NULL	DEFAULT 0	COMMENT '0: 비공개, 1: 공개',
 	`create_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP,
 	`update_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS `Post`;
-
-CREATE TABLE `Post` (
+CREATE TABLE `posts` (
 	`post_id`	bigint	NOT NULL,
 	`user_email`	varchar(255)	NOT NULL,
 	`plan_id`	bigint	NOT NULL,
 	`category_id`	bigint	NOT NULL,
-	`post_title`	varchar2(255)	NOT NULL,
+	`post_title`	varchar(255)	NOT NULL,
 	`post_content`	text	NOT NULL,
 	`create_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP,
 	`update_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS `Review`;
-
-CREATE TABLE `Review` (
+CREATE TABLE `reviews` (
 	`review_id`	bigint	NULL,
 	`kakao_place_id`	bigint	NOT NULL,
 	`user_email`	varchar(255)	NOT NULL,
 	`review_rating`	bigint	NULL,
-	`review_content`	bigint	NULL,
+	`review_content`	text	NULL,
 	`create_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP,
 	`update_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS `Pet`;
-
-CREATE TABLE `Pet` (
+CREATE TABLE `pets` (
 	`pet_id`	bigint	NOT NULL,
 	`user_id`	bigint	NOT NULL,
 	`pet_name`	varchar(255)	NOT NULL,
@@ -74,9 +65,7 @@ CREATE TABLE `Pet` (
 	`update_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS `Place`;
-
-CREATE TABLE `Place` (
+CREATE TABLE `places` (
 	`kakao_place_id`	bigint	NOT NULL,
 	`region_id`	tinyint	NOT NULL,
 	`kakao_place_name`	varchar(255)	NOT NULL,
@@ -89,9 +78,7 @@ CREATE TABLE `Place` (
 	`update_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS `Comment`;
-
-CREATE TABLE `Comment` (
+CREATE TABLE `comments` (
 	`comment_id`	bigint	NOT NULL,
 	`post_id`	bigint	NOT NULL,
 	`member_email`	varchar(255)	NOT NULL,
@@ -100,27 +87,22 @@ CREATE TABLE `Comment` (
 	`update_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS `region`;
-
-CREATE TABLE `region` (
-	`region_id`	tinyint	NOT NULL,
-	`region_name`	enum('경기도', '강원도', '충청남도', '충청북도', '제주도', '전라북도', '전라남도', '경상북도', '경상남도')	NOT NULL,
-	`create_at`	timpstamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP,
-	`update_at`	timpstamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+CREATE TABLE `regions` (
+    `region_id` TINYINT NOT NULL AUTO_INCREMENT,
+    `region_name` ENUM('경기도', '강원도', '충청남도', '충청북도', '제주도', '전라북도', '전라남도', '경상북도', '경상남도') NOT NULL,
+    `create_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `update_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`region_id`)
 );
 
-DROP TABLE IF EXISTS `relationship`;
-
-CREATE TABLE `relationship` (
-	`from_email`	varchar2(255)	NOT NULL	COMMENT 'user_email',
-	`to_email`	varchar2(255)	NOT NULL	COMMENT 'user_email',
+CREATE TABLE `relationships` (
+	`from_email`	varchar(255)	NOT NULL	COMMENT 'user_email',
+	`to_email`	varchar(255)	NOT NULL	COMMENT 'user_email',
 	`create_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP,
 	`update_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS `PlanPlace`;
-
-CREATE TABLE `PlanPlace` (
+CREATE TABLE `planPlaces` (
 	`planner_place_id`	bigint	NOT NULL,
 	`plan_id`	bigint	NOT NULL,
 	`kakao_place_id`	bigint	NOT NULL,
@@ -128,57 +110,46 @@ CREATE TABLE `PlanPlace` (
 	`update_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS `Star`;
-
-CREATE TABLE `Star` (
+CREATE TABLE `stars` (
 	`star_id`	bigint	NOT NULL,
-	`user_email`	varchar2(255)	NOT NULL,
+	`user_email`	varchar(255)	NOT NULL,
 	`kakao_place_id`	bigint	NOT NULL,
 	`create_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP,
 	`update_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS `Like`;
-
-CREATE TABLE `Like` (
-	`member_email`	varchar2(255)	NOT NULL,
+CREATE TABLE `likes` (
+	`member_email`	varchar(255)	NOT NULL,
 	`post_id`	bigint	NOT NULL,
 	`create_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP,
 	`update_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS `Keyword`;
-
-CREATE TABLE `Keyword` (
+CREATE TABLE `keywords` (
 	`keyword_id`	bigint	NOT NULL,
 	`plan_id`	bigint	NOT NULL,
 	`create_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP,
 	`update_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS `MemberPlan`;
 
-CREATE TABLE `MemberPlan` (
+CREATE TABLE `memberPlans` (
 	`member_plan_id`	bigint	NOT NULL,
-	`member_email`	varchar2(255)	NOT NULL,
+	`member_email`	varchar(255)	NOT NULL,
 	`plan_id`	bigint	NOT NULL,
 	`create_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP,
 	`update_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS `MemberRegion`;
-
-CREATE TABLE `MemberRegion` (
+CREATE TABLE `memberRegions` (
 	`member_region_id`	bigint	NOT NULL	COMMENT '반정규화',
 	`region_id`	tinyint	NOT NULL,
-	`user_email`	varchar2(255)	NOT NULL,
+	`user_email`	varchar(255)	NOT NULL,
 	`create_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP,
 	`update_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS `Photo`;
-
-CREATE TABLE `Photo` (
+CREATE TABLE `photos` (
 	`photo_id`	bigint	NOT NULL,
 	`post_id`	bigint	NOT NULL,
 	`image_url`	bigint	NOT NULL,
@@ -186,97 +157,93 @@ CREATE TABLE `Photo` (
 	`update_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS `category`;
-
-CREATE TABLE `category` (
+CREATE TABLE `categories` (
 	`category_id`	bigint	NOT NULL,
-	`category_name`	varchar2(255)	NOT NULL	COMMENT '여행공유,  여행도움, 꿀팁, 사진자랑',
+	`category_name`	varchar(255)	NOT NULL	COMMENT '여행공유,  여행도움, 꿀팁, 사진자랑',
 	`create_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP,
 	`update_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS `notification`;
-
-CREATE TABLE `notification` (
+CREATE TABLE `notifications` (
 	`notification_id`	bigint	NOT NULL,
-	`sender_email`	varchar2(255)	NOT NULL	COMMENT 'user_email',
-	`receiver_email`	varchar2(255)	NOT NULL	COMMENT 'user_email',
+	`sender_email`	varchar(255)	NOT NULL	COMMENT 'user_email',
+	`receiver_email`	varchar(255)	NOT NULL	COMMENT 'user_email',
 	`notification_type`	tinyint	NOT NULL	COMMENT '1: 팔로우, 2: 좋아요, 3: 댓글 4: 동행요청, 5: 여행초대',
 	`is_checked`	tinyint	NOT NULL	COMMENT '0: 미확인, 1: 확인',
 	`create_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP,
 	`update_at`	timestamp	NOT NULL	DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-ALTER TABLE `Member` ADD CONSTRAINT `PK_MEMBER` PRIMARY KEY (
+ALTER TABLE `members` ADD CONSTRAINT `PK_MEMBER` PRIMARY KEY (
 	`member_email`
 );
 
-ALTER TABLE `PhotoCard` ADD CONSTRAINT `PK_PHOTOCARD` PRIMARY KEY (
+ALTER TABLE `photocards` ADD CONSTRAINT `PK_PHOTOCARD` PRIMARY KEY (
 	`photo_card_id`
 );
 
-ALTER TABLE `plan` ADD CONSTRAINT `PK_PLAN` PRIMARY KEY (
+ALTER TABLE `plans` ADD CONSTRAINT `PK_PLAN` PRIMARY KEY (
 	`plan_id`
 );
 
-ALTER TABLE `Post` ADD CONSTRAINT `PK_POST` PRIMARY KEY (
+ALTER TABLE `posts` ADD CONSTRAINT `PK_POST` PRIMARY KEY (
 	`post_id`
 );
 
-ALTER TABLE `Review` ADD CONSTRAINT `PK_REVIEW` PRIMARY KEY (
+ALTER TABLE `reviews` ADD CONSTRAINT `PK_REVIEW` PRIMARY KEY (
 	`review_id`
 );
 
-ALTER TABLE `Pet` ADD CONSTRAINT `PK_PET` PRIMARY KEY (
+ALTER TABLE `pets` ADD CONSTRAINT `PK_PET` PRIMARY KEY (
 	`pet_id`
 );
 
-ALTER TABLE `Place` ADD CONSTRAINT `PK_PLACE` PRIMARY KEY (
+ALTER TABLE `places` ADD CONSTRAINT `PK_PLACE` PRIMARY KEY (
 	`kakao_place_id`
 );
 
-ALTER TABLE `Comment` ADD CONSTRAINT `PK_COMMENT` PRIMARY KEY (
+ALTER TABLE `comments` ADD CONSTRAINT `PK_COMMENT` PRIMARY KEY (
 	`comment_id`
 );
 
-ALTER TABLE `region` ADD CONSTRAINT `PK_REGION` PRIMARY KEY (
+ALTER TABLE `regions` ADD CONSTRAINT `PK_REGION` PRIMARY KEY (
 	`region_id`
 );
 
-ALTER TABLE `PlanPlace` ADD CONSTRAINT `PK_PLANPLACE` PRIMARY KEY (
+ALTER TABLE `planPlaces` ADD CONSTRAINT `PK_PLANPLACE` PRIMARY KEY (
 	`planner_place_id`
 );
 
-ALTER TABLE `Star` ADD CONSTRAINT `PK_STAR` PRIMARY KEY (
+ALTER TABLE `stars` ADD CONSTRAINT `PK_STAR` PRIMARY KEY (
 	`star_id`
 );
 
-ALTER TABLE `Like` ADD CONSTRAINT `PK_LIKE` PRIMARY KEY (
+ALTER TABLE `likes` ADD CONSTRAINT `PK_LIKE` PRIMARY KEY (
 	`member_email`,
 	`post_id`
 );
 
-ALTER TABLE `Keyword` ADD CONSTRAINT `PK_KEYWORD` PRIMARY KEY (
+ALTER TABLE `keywords` ADD CONSTRAINT `PK_KEYWORD` PRIMARY KEY (
 	`keyword_id`
 );
 
-ALTER TABLE `MemberPlan` ADD CONSTRAINT `PK_MEMBERPLAN` PRIMARY KEY (
+ALTER TABLE `memberPlans` ADD CONSTRAINT `PK_MEMBERPLAN` PRIMARY KEY (
 	`member_plan_id`
 );
 
-ALTER TABLE `MemberRegion` ADD CONSTRAINT `PK_MEMBERREGION` PRIMARY KEY (
+ALTER TABLE `memberRegions` ADD CONSTRAINT `PK_MEMBERREGION` PRIMARY KEY (
 	`member_region_id`
 );
 
-ALTER TABLE `Photo` ADD CONSTRAINT `PK_PHOTO` PRIMARY KEY (
+ALTER TABLE `photos` ADD CONSTRAINT `PK_PHOTO` PRIMARY KEY (
 	`photo_id`
 );
 
-ALTER TABLE `category` ADD CONSTRAINT `PK_CATEGORY` PRIMARY KEY (
+ALTER TABLE `categories` ADD CONSTRAINT `PK_CATEGORY` PRIMARY KEY (
 	`category_id`
 );
 
-ALTER TABLE `notification` ADD CONSTRAINT `PK_NOTIFICATION` PRIMARY KEY (
+ALTER TABLE `notifications` ADD CONSTRAINT `PK_NOTIFICATION` PRIMARY KEY (
 	`notification_id`
 );
 
