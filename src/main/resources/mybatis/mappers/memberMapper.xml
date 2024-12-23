@@ -37,7 +37,7 @@
         where pet_id = #{pet_id}
     </delete>
 
-    <!--모든 알림 조회!!!!-->
+    <!--모든 알림 조회!!!!@@@@@-->
     <select id="selectnotification" parameterType="String" resultType="notificationDTO">
         select *
         from notification
@@ -157,7 +157,7 @@
         update reviews
         set review_rating = #{review_rating},
             review_content = #{review_content}
-        where member_email = #{member_email}
+        where review_id = #{review_id}
     </update>
 
     <!--좋아요 모두 조회-->
@@ -169,7 +169,7 @@
     </select>
 
     <!--좋아요 삭제-->
-    <delete id="deleteLike" parameterType="map">
+    <delete id="deleteLike" parameterType="likesDTO">
         delete
         from likes
         where post_id = #{post_id}
@@ -190,15 +190,16 @@
     </insert>
 
     <!--팔로우취소-->
-    <delete id="deleterelationships" parameterType="map">
+    <delete id="deleteRelationships" parameterType="relationshipsDTO">
         delete
         from relationships
         where from_email = #{from_email}
         And to_email = #{to_email}
     </delete>
 
+    <!--todo: 여기서 부터 다시 보기-->
     <!--팔로잉 보기-->
-    <select id="selectfollowing" parameterType="relationshipsDTO">
+    <select id="selectFollowing" parameterType="relationshipsDTO">
         select m.member_email, m.member_name, m.member_nickname, m.member_profile_photo
         from relationships r
         join members m on r.to_email = m.member_email
@@ -211,6 +212,33 @@
         from relationships r
         join members m on r.from_email = m.member_email
         where r.to_email = #{to_email};
+    </select>
+
+    <!--즐겨찾기-->
+    <!--즐겨찾기한 장소 모두 조회-->
+    <select id="favoritePlaceList" parameterType="String" resultType="favoritePlaceVO">
+        SELECT *
+        FROM favorite
+        where member_email = #{memberEmail}
+    </select>
+
+    <!--즐겨찾기 등록-->
+    <insert id="insertFavoritePlaceList" parameterType="favoriteDTO">
+        insert favorites set
+        member_email = #{memebr_id},
+        kakao_place_id = #{kakao_place_id}
+    </insert>
+    <!--즐겨찾기 삭제-->
+    <delete id="deleteFavorite" parameterType="int">
+        delete from favorite
+        where favorite_id = #{favorite_id}
+    </delete>
+
+    <!--유저 게시글 조회-->
+    <select id="selectPosts" parameterType="String" resultType="postsVO">
+        select *
+        from posts
+        where member_email = 'user1@example.com';
     </select>
 
 </mapper>
