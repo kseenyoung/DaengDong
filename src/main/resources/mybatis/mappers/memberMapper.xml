@@ -30,7 +30,7 @@
         where member_id = #{member_id}
     </update>
 
-    <!--member18-1 반려동물 삭제-->
+    <!--member18-1 반려동물 삭제!!!!-->
     <delete id="deletepetProfile" parameterType="int">
         delete
         from pets
