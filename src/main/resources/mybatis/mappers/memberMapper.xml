@@ -4,20 +4,213 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shinhan.member">
 
+    <!--간편로그인-->
     <select id="login" parameterType="String" resultType="memberDTO">
         select *
         from members
         where member_email= #{memberEmail}
     </select>
 
+    <!--회원가입-->
     <insert id="signUp" parameterType="memberDTO">
         insert into members(member_email, member_name, member_nickname, member_profile_photo)
         values(#{memberEmail}, #{memberName}, #{memberNickname}, #{memberProfilePhoto})
     </insert>
 
+    <!--반려동물 회원가입-->
     <insert id="insertPet" parameterType="petDTO">
         insert into pets(member_email, pet_name, pet_gender, pet_birthday, pet_blood_type, pet_profile_photo, pet_species)
         values (#{memberEmail},#{petName},#{petGender},#{petBirthday},#{petBloodType},#{petProfilePhoto},#{petSpecies})
     </insert>
+
+    <!--member18 반려동물 프로필 변경-->
+    <update id="updatepetProfile" parameterType="String">
+        update pets
+        set pet_profile_photo = #{pet_profile_photo}
+        where member_id = #{member_id}
+    </update>
+
+    <!--member18-1 반려동물 삭제-->
+    <delete id="deletepetProfile" parameterType="int">
+        delete
+        from pets
+        where pet_id = #{pet_id}
+    </delete>
+
+    <!--모든 알림 조회-->
+    <select id="selectnotification" parameterType="String" resultType="notificationDTO">
+        select *
+        from notification
+        where receiver_email = #{receiver_email}
+    </select>
+
+    <!--모든 알림 삭제-->
+    <delete id="deletenotification" parameterType="String">
+        delete
+        from notification
+        where sender_email = #{sender_email}
+    </delete>
+
+    <!--member8 닉네임 변경하기 -->
+    <update id="modifyNickname" parameterType="memberDTO">
+        update members
+        set member_nickname = #{memberNickname}
+        where member_email = #{memberEmail}
+    </update>
+
+    <!--member11 여행 기록 보기-->
+    <select id="viewTravelList" parameterType="String" resultType="travelListVO">
+        select plans.plan_id, plans.plan_name,plans.start_date ,plans.end_date, plans.plan_state, planPlaces.kakao_place_id
+        from plans join planPlaces using(plan_id)
+        where plans.member_email = #{memberEmail}
+    </select>
+
+    <!--여행 기록 별 같이 간 여행자 보기-->
+    <select id="personWithTravelList" parameterType="int" resultType="personWithTravelVO">
+        select member_email, plan_id
+        from memberPlans
+        where plan_id = #{planId};
+    </select>
+
+    <!--여행만들기-->
+    <insert id="insertTravelList" parameterType="plansDTO">
+        insert into plans INSERT INTO plans (member_email, start_date, end_date, plan_state)
+        values(#{member_email},#{start_date},#{end_date},#{plan_state})
+    </insert>
+
+    <!--여행 기록 수정-->
+    <update id="modifyTravelList" parameterType="plansDTO">
+        update plans p
+        join memberPlans mp on p.plan_id = mp.plan_id
+        set
+        p.start_date = #{start_date}
+        p.end_date = #{end_date}
+        p.plan_state = #{plan_state}
+        where p.plan_id = #{plan_id}
+        And mp.member_email = #{member_email}
+    </update>
+    
+    <!--여행 기록 삭제-->
+    <delete id="deleteTravelList" parameterType="String">
+        delete
+        from membersPlans
+        where member_plan_id = #{member_plan_id}
+    </delete>
+
+    <!--member13 내가 가진 포토카드 모두 보기-->
+    <select id="viewPhotoCardList" parameterType="String" resultType="PhotoCardVO">
+    SELECT * FROM photocards
+    where member_email = #{memberEmail};
+    </select>
+
+    <!--member13-1 포토카드 만들기-->
+    <insert id="addPhotoCart" parameterType="photocardsDTO">
+        insert into photocards(member_email,photo_card_image_url , photo_card_perior)
+        value (#{member_email} ,#{photo_card_image_url},#{photo_card_perior})
+    </insert>
+
+    <!--member13-2 포토카드 삭제-->
+    <delete id="deletePhotoCard" parameterType="int">
+        delete
+        from photocards
+        where photo_card_id = #{photo_card_id}
+    </delete>
+
+    <!--프로필 사진 변경하기-->
+    <update id="updateprofilePhoto" parameterType="memberDTO">
+        update members
+        set member_profile_photo = #{memberprofilephoto}
+        where member_email = #{memberEmail}
+    </update>
+
+    <!--프로필 사진 등록하기 -> 기존사용자가 사진만 없을때-->
+    <update id="updateprofilePhoto" parameterType="memberDTO">
+        UPDATE members
+        SET member_profile_photo = #{memberprofilephoto}
+        WHERE member_email = #{memberEmail}
+        AND member_profile_photo IS NULL;
+    </update>
+
+    <!--프로필 사진 삭제하기-->
+    <update id="clearProfilePhoto" parameterType="String">
+        update members
+        set member_profile_photo = NULL
+        where member_profile_photo = #{memberprofilephoto}
+    </update>
+
+    <!--내 리뷰 모두 보기-->
+    <select id="viewReviewList" parameterType="String" resultType="ReviewVO">
+        SELECT *
+        FROM reviews
+        where member_email = #{memberEmail};
+    </select>
+
+    <!--member19 내가 쓴 리뷰 삭제-->
+    <delete id="deleteReview" parameterType="int">
+        delete
+        from reviews
+        where review_id = #{review_id}
+    </delete>
+
+    <!--내가 쓴 리뷰 수정-->
+    <update id="modifyReview" parameterType="ReviewDTO" >
+        update reviews
+        set review_rating = #{review_rating},
+            review_content = #{review_content}
+        where member_email = #{member_email}
+    </update>
+
+    <!--좋아요 모두 조회-->
+    <select id="viewLikeList" parameterType="String" resultType="LikePostsVO">
+        SELECT posts.post_title, photos.image_url
+        FROM likes join posts using (post_id)
+        join photos using (post_id)
+        where likes.member_email = #{memberEmail};
+    </select>
+
+    <!--좋아요 삭제-->
+    <delete id="deleteLike" parameterType="map">
+        delete
+        from likes
+        where post_id = #{post_id}
+        And member_email = #{member_email}
+    </delete>
+
+    <!--즐겨찾기한 장소 모두 조회-->
+    <select id="favoritePlaceList" parameterType="String" resultType="favoritePlaceVO">
+        SELECT *
+        FROM favorite
+        where member_email = #{memberEmail};
+    </select>
+
+    <!--팔로우하기-->
+    <insert id="relationships" parameterType="relationshipsDTO">
+        insert into relationships (from_email, to_email)
+        VALUES (#{from_email}, #{to_email})
+    </insert>
+
+    <!--팔로우취소-->
+    <delete id="deleterelationships" parameterType="map">
+        delete
+        from relationships
+        where from_email = #{from_email}
+        And to_email = #{to_email}
+    </delete>
+
+    <!--팔로잉 보기-->
+    <select id="selectfollowing" parameterType="relationshipsDTO">
+        select m.member_email, m.member_name, m.member_nickname, m.member_profile_photo
+        from relationships r
+        join members m on r.to_email = m.member_email
+        where r.from_email = #{from_email};
+    </select>
+
+    <!--팔로워 보기-->
+    <select id="selectfollower" parameterType="relationshipsDTO">
+        select m.member_email, m.member_name, m.member_nickname, m.member_profile_photo
+        from relationships r
+        join members m on r.from_email = m.member_email
+        where r.to_email = #{to_email};
+    </select>
 
 </mapper>
