@@ -1,7 +1,7 @@
 package com.shinhan.daengdong.plan.model.repository;
 
-import java.util.List;
+import com.shinhan.daengdong.plan.dto.PlanDTO;
 
 public interface PlanRepositoryInterface {
-    List<String> findAllRegions();
+    void save(PlanDTO planDTO);
 }

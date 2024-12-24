@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface PlanServiceInterface {
 
-    List<String> getAllRegions();
-    PlanDTO savePlan(PlanDTO planDTO);
+    //PlanDTO savePlan(PlanDTO planDTO);
+    void saveTempPlan(PlanDTO planDTO);
+    void commitPlans();
+    List<PlanDTO> getTempPlans();
 }
