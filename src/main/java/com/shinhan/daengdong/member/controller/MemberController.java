@@ -82,16 +82,36 @@ public class MemberController {
         return "member/reviews";
     }
 
+
+    //마이페이지 전환
     @GetMapping("viewMypage.do")
     public String viewMypage() {
         return "member/mypage";
+    }
+
+
+    //마이페이지 > 유저 정보
+    @GetMapping("getProfileFragment.do")
+    public String getProfileFragment() {
+        return "member/profileFragment";
+    }
+
+    //'내 저장' > 세미 카테고리
+    @GetMapping("getSemiSaveCategory.do")
+    public String getSemiSaveCategory() {
+        return "member/semiSaveCategory";
+    }
+
+    //'내 저장' > 세미 카테고리 > 즐겨찾기 컨텐츠
+    @GetMapping("getFavoritePlace.do")
+    public String getFavoritePlace() {
+        return "member/favoritePlace";
     }
 
     @GetMapping("viewProfileFragment.do")
     public String viewProfileFragment() {
         return "member/profileFragment";
     }
-
 
     @GetMapping("reviewFragment.do")
     public String viewReviewFragment (@RequestBody List<Map<String, Object>> reviews, Model model) {

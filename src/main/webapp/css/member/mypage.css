@@ -129,6 +129,38 @@ body {
 }
 
 .categories ul li:hover {
+  color: #0AB75B;
+  /*text-decoration: underline;*/
+}
+
+.semiCategories {
+  padding: 0 0 15px 0;
+  text-align: center;
+  position: sticky; /* 고정 */
+  top: 0; /* 화면 상단에 고정 */
+  z-index: 10; /* 다른 요소보다 위에 표시 */
+  display: flex; /* 가로 배열 */
+  justify-content: center; /* 중앙 정렬 */
+  gap: 15px; /* 항목 간 간격 */
+}
+
+.semiCategories ul {
+  display: flex; /* 가로 배열 */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.semiCategories ul li {
+  font-size: 13px;
+  font-weight: bolder;
+  margin: 5px 20px;
+  color: #8a8a8a;
+  cursor: pointer;
+}
+
+.semiCategories ul li:hover {
+  color: #0AB75B;
   color: #7650E0;
   /*text-decoration: underline;*/
 }
@@ -141,6 +173,8 @@ body {
 }
 
 .announcement {
+  display: flex;
+  align-items: center;
   background-color: #ffffff;
   padding: 15px;
   border-radius: 10px;
@@ -221,6 +255,7 @@ body {
   width: 100%;
   margin: 10px 0;
   padding: 8px 16px;
+  background-color: #0AB75B;
   background-color: #7650E0;
   color: white;
   border: none;
@@ -230,5 +265,6 @@ body {
 }
 
 #edit-profile:hover {
+  background-color: #32a86e;
   background-color: #8567dd;
 }
