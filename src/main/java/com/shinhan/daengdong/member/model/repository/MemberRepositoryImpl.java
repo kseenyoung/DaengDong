@@ -1,7 +1,7 @@
 package com.shinhan.daengdong.member.model.repository;
 
 import com.shinhan.daengdong.member.dto.MemberDTO;
-import com.shinhan.daengdong.member.dto.SignUpDTO;
+import com.shinhan.daengdong.review.dto.ReviewDTO;
 import com.shinhan.daengdong.pet.dto.PetDTO;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -39,5 +39,9 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
         return null;
     }
 
-
+    @Override
+    public List<ReviewDTO> viewReviewList(String memberEmail) {
+        List<ReviewDTO> reviewList = sqlSession.selectList(namespace + "viewReviewList", memberEmail);
+        return reviewList;
+    }
 }

@@ -82,11 +82,13 @@ public class MemberController {
         return "member/reviews";
     }
 
+
     //마이페이지 전환
     @GetMapping("viewMypage.do")
     public String viewMypage() {
         return "member/mypage";
     }
+
 
     //마이페이지 > 유저 정보
     @GetMapping("getProfileFragment.do")
@@ -106,6 +108,10 @@ public class MemberController {
         return "member/favoritePlace";
     }
 
+    @GetMapping("viewProfileFragment.do")
+    public String viewProfileFragment() {
+        return "member/profileFragment";
+    }
 
     @GetMapping("reviewFragment.do")
     public String viewReviewFragment (@RequestBody List<Map<String, Object>> reviews, Model model) {
