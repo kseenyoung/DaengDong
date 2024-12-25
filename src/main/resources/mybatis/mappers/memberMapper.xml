@@ -240,5 +240,4 @@
         from posts
         where member_email = 'user1@example.com';
     </select>
-
 </mapper>
