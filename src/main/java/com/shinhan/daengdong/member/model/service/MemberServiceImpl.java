@@ -1,12 +1,14 @@
 package com.shinhan.daengdong.member.model.service;
 
 import com.shinhan.daengdong.member.dto.MemberDTO;
+import com.shinhan.daengdong.review.dto.ReviewDTO;
 import com.shinhan.daengdong.member.dto.SignUpDTO;
 import com.shinhan.daengdong.member.model.repository.MemberRepositoryInterface;
-import com.shinhan.daengdong.pet.dto.PetDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class MemberServiceImpl implements MemberServiceInterface{
@@ -38,4 +40,8 @@ public class MemberServiceImpl implements MemberServiceInterface{
         return member;
     }
 
+    @Override
+    public List<ReviewDTO> viewReviewList(String memberEmail) {
+        return memberRepository.viewReviewList(memberEmail);
+    }
 }

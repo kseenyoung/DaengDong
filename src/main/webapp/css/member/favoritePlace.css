@@ -1,0 +1,24 @@
+#placeImg {
+  width: 50px; /* 이미지 크기 조절 */
+  height: 50px;
+  margin-right: 20px; /* 텍스트와의 간격 */
+  border-radius: 50px; /* 둥근 모서리 */
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.place-title {
+  font-size: 18px; /* 제목 크기 */
+  color: black; /* 제목 색상 */
+  margin: 0 0 10px 0; /* 하단 간격 */
+}
+
+.participants {
+  font-size: 14px; /* 참여자 글자 크기 */
+  color: gray; /* 회색 텍스트 */
+  margin: 0; /* 기본 마진 제거 */
+}
