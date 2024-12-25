@@ -197,7 +197,7 @@
 <!--        And to_email = #{to_email}-->
 <!--    </delete>-->
 
-<!--    &lt;!&ndash;todo: 여기서 부터 다시 보기&ndash;&gt;-->
+<!--    &lt;!&ndash;-->
 <!--    &lt;!&ndash;팔로잉 보기&ndash;&gt;-->
 <!--    <select id="selectFollowing" parameterType="relationshipsDTO">-->
 <!--        select m.member_email, m.member_name, m.member_nickname, m.member_profile_photo-->
