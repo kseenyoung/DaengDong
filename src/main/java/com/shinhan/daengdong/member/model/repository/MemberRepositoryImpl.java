@@ -1,5 +1,6 @@
 package com.shinhan.daengdong.member.model.repository;
 
+import com.shinhan.daengdong.member.dto.FavoritePlaceDTO;
 import com.shinhan.daengdong.member.dto.MemberDTO;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 import com.shinhan.daengdong.pet.dto.PetDTO;
@@ -40,8 +41,15 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     }
 
     @Override
-    public List<ReviewDTO> viewReviewList(String memberEmail) {
+    public List<ReviewDTO> getReviewList(String memberEmail) {
         List<ReviewDTO> reviewList = sqlSession.selectList(namespace + "viewReviewList", memberEmail);
         return reviewList;
+    }
+
+    @Override
+    public List<FavoritePlaceDTO> getFavoritePlace(String memberEmail) {
+        List<FavoritePlaceDTO> favoritePlaceList = sqlSession.selectList(namespace + "favoritePlaceList", memberEmail);
+        System.out.println(favoritePlaceList);
+        return favoritePlaceList;
     }
 }

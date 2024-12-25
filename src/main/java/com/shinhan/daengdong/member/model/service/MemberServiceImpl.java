@@ -1,5 +1,6 @@
 package com.shinhan.daengdong.member.model.service;
 
+import com.shinhan.daengdong.member.dto.FavoritePlaceDTO;
 import com.shinhan.daengdong.member.dto.MemberDTO;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 import com.shinhan.daengdong.member.dto.SignUpDTO;
@@ -41,7 +42,12 @@ public class MemberServiceImpl implements MemberServiceInterface{
     }
 
     @Override
-    public List<ReviewDTO> viewReviewList(String memberEmail) {
-        return memberRepository.viewReviewList(memberEmail);
+    public List<ReviewDTO> getReviewList(String memberEmail) {
+        return memberRepository.getReviewList(memberEmail);
+    }
+
+    @Override
+    public List<FavoritePlaceDTO> getFavoritePlace(String memberEmail) {
+        return memberRepository.getFavoritePlace(memberEmail);
     }
 }

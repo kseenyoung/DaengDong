@@ -17,8 +17,15 @@
   margin: 0 0 10px 0; /* 하단 간격 */
 }
 
-.participants {
-  font-size: 14px; /* 참여자 글자 크기 */
-  color: gray; /* 회색 텍스트 */
-  margin: 0; /* 기본 마진 제거 */
+.place-address {
+  font-size: 14px;
+  color: gray;
+  margin: 0;
+}
+
+.place-address-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 }

@@ -176,12 +176,23 @@
 <!--        And member_email = #{member_email}-->
 <!--    </delete>-->
 
-<!--    &lt;!&ndash;즐겨찾기한 장소 모두 조회&ndash;&gt;-->
-<!--    <select id="favoritePlaceList" parameterType="String" resultType="favoritePlaceVO">-->
-<!--        SELECT *-->
-<!--        FROM favorite-->
-<!--        where member_email = #{memberEmail};-->
-<!--    </select>-->
+    <!--즐겨찾기한 장소 모두 조회-->
+    <select id="favoritePlaceList" parameterType="String" resultType="favoritePlaceVO">
+        SELECT
+            f.star_id,
+            f.member_email,
+            p.kakao_place_id,
+            p.kakao_place_name,
+            p.kakao_road_address_name,
+            p.kakao_phone,
+            p.kakao_place_url,
+            r.region_name,
+            f.create_at,
+            f.update_at
+        FROM favorites f JOIN places p ON f.kakao_place_id = p.kakao_place_id
+                         JOIN regions r ON p.region_id = r.region_id
+        where member_email = #{memberEmail}
+    </select>
 
 <!--    &lt;!&ndash;팔로우하기&ndash;&gt;-->
 <!--    <insert id="relationships" parameterType="relationshipsDTO">-->

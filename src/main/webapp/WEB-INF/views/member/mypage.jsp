@@ -39,7 +39,6 @@
             url: `${path}/auth/getSemiSaveCategory.do`,
             type: "get",
             success: function (response) {
-              console.log("success")
               $("#myTripFragment").css("color", "#0AB75B")
               $("#myPhotoCardFragment").css("color", "#8a8a8a")
               $("#mySaveFragment").css("color", "#8a8a8a")
@@ -91,7 +90,6 @@
             url: `${path}/auth/getFavoritePlace.do`,
             type: "get",
             success: function (response) {
-              console.log(response);
               $("#myFavoritePlace").css("color", "#0AB75B")
               $("#myReview").css("color", "#8a8a8a")
               $("#myLikes").css("color", "#8a8a8a")
@@ -109,7 +107,6 @@
             url: `${path}/auth/getFavoritePlace.do`,
             type: "get",
             success: function (response) {
-              console.log(response);
               $("#myFavoritePlace").css("color", "#8a8a8a")
               $("#myReview").css("color", "#0AB75B")
               $("#myLikes").css("color", "#8a8a8a")
@@ -127,7 +124,6 @@
             url: `${path}/auth/getFavoritePlace.do`,
             type: "get",
             success: function (response) {
-              console.log(response);
               $("#myFavoritePlace").css("color", "#8a8a8a")
               $("#myReview").css("color", "#8a8a8a")
               $("#myLikes").css("color", "#0AB75B")
@@ -145,7 +141,6 @@
             url: `${path}/auth/getFavoritePlace.do`,
             type: "get",
             success: function (response) {
-              console.log(response);
               $("#myFavoritePlace").css("color", "#8a8a8a")
               $("#myReview").css("color", "#8a8a8a")
               $("#myLikes").css("color", "#8a8a8a")

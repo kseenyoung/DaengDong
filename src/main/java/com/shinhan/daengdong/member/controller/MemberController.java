@@ -1,5 +1,6 @@
 package com.shinhan.daengdong.member.controller;
 
+import com.shinhan.daengdong.member.dto.FavoritePlaceDTO;
 import com.shinhan.daengdong.member.dto.MemberDTO;
 import com.shinhan.daengdong.member.dto.SignUpDTO;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
@@ -102,7 +103,12 @@ public class MemberController {
 
     //'내 저장' > 세미 카테고리 > 즐겨찾기 컨텐츠
     @GetMapping("getFavoritePlace.do")
-    public String getFavoritePlace() {
+    public String getFavoritePlace(HttpSession session, Model model) {
+//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
+        List<FavoritePlaceDTO> favoritePlaceList = memberService.getFavoritePlace(memberDTO.getMemberEmail());
+        model.addAttribute("favoritePlaceList", favoritePlaceList);
+        log.info("favoritePlaceList: " + favoritePlaceList);
         return "member/favoritePlace";
     }
 
