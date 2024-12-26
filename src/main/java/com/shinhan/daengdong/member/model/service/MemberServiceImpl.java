@@ -61,4 +61,9 @@ public class MemberServiceImpl implements MemberServiceInterface{
     public void deleteFavoritePlace(int starId) {
         memberRepository.deleteFavoritePlace(starId);
     }
+
+    @Override
+    public void deleteReview(int reviewId) {
+        memberRepository.deleteReview(reviewId);
+    }
 }

@@ -63,4 +63,9 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     public void deleteFavoritePlace(int starId) {
         sqlSession.delete(namespace + "deleteFavoritePlace", starId);
     }
+
+    @Override
+    public void deleteReview(int reviewId) {
+        sqlSession.delete(namespace + "deleteReview", reviewId);
+    }
 }

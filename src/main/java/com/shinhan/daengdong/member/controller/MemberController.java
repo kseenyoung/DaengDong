@@ -109,7 +109,7 @@ public class MemberController {
         MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
         List<FavoritePlaceDTO> favoritePlaceList = memberService.getFavoritePlaceList(memberDTO.getMemberEmail());
         model.addAttribute("favoritePlaceList", favoritePlaceList);
-        return "member/favoritePlace";
+        return "member/favoritePlaceFragment";
     }
 
     //'내 저장' > 세미 카테고리 > 내가 쓴 리뷰(장소) 컨텐츠
