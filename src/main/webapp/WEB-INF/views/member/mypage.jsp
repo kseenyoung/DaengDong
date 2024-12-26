@@ -179,7 +179,7 @@
             </ul>
         </div>
 
-        <!-- 아래 컨텐츠 -->
+        <!-- 아래 컨텐츠 영역 -->
         <div id="content" class="content">
             <div id="semiCategories" class="semiCategories">
             </div>
