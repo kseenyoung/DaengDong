@@ -200,6 +200,13 @@
         where member_email = #{memberEmail}
     </select>
 
+    <!--즐겨찾기 삭제-->
+    <delete id="deleteFavoritePlace" parameterType="int">
+        delete
+        from favorite
+        where favorite_id = #{favorite_id}
+    </delete>
+
 <!--    &lt;!&ndash;팔로우하기&ndash;&gt;-->
 <!--    <insert id="relationships" parameterType="relationshipsDTO">-->
 <!--        insert into relationships (from_email, to_email)-->
@@ -237,11 +244,6 @@
 <!--        member_email = #{memebr_id},-->
 <!--        kakao_place_id = #{kakao_place_id}-->
 <!--    </insert>-->
-<!--    &lt;!&ndash;즐겨찾기 삭제&ndash;&gt;-->
-<!--    <delete id="deleteFavorite" parameterType="int">-->
-<!--        delete from favorite-->
-<!--        where favorite_id = #{favorite_id}-->
-<!--    </delete>-->
 
 <!--    &lt;!&ndash;유저 게시글 조회&ndash;&gt;-->
 <!--    <select id="selectPosts" parameterType="String" resultType="postsVO">-->

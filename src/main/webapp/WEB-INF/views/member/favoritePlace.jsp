@@ -22,5 +22,10 @@
                 <span class="place-address">${favoritePlaceList.kakao_phone}</span>
             </div>
         </div>
+        <div class="button-container">
+            <button class="delete-favoritePlace" data-star-id="${favoritePlaceList.star_id}" hidden="hidden">
+                <img id="delete-favoritePlace" class="hoverable-star" src="${path}/img/star.png" alt="delete_place">
+            </button>
+        </div>
     </div>
 </c:forEach>

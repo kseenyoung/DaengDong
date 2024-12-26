@@ -20,4 +20,6 @@ public interface MemberRepositoryInterface {
     List<FavoritePlaceDTO> getFavoritePlaceList(String memberEmail);
 
     List<LikePostsDTO> getLikePosts(String memberEmail);
+
+    void deleteFavoritePlace(int starId);
 }
