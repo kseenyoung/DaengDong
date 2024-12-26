@@ -20,8 +20,8 @@ public class MemberRestController {
     @Autowired
     MemberServiceInterface memberService;
 
-    @DeleteMapping("/favoritePlace")
-    public void deleteFavoritePlace(@RequestParam("star_id") int starId) {
+    @GetMapping("/favoritePlace/{star_id}")
+    public void deleteFavoritePlace(@PathVariable("star_id") int starId) {
         memberService.deleteFavoritePlace(starId);
     }
 }

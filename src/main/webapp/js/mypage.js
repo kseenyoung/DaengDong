@@ -13,7 +13,6 @@ $(document).ready(function () {
   $("#myTripFragment").on("click", moveToMyTrip);
   $("#mySaveFragment").on("click", getSemiSaveCategory);
   $("#semiCategories").on("click", ".action-item", injectAction);
-  $(document).on("click", ".delete-favoritePlace", deleteFavoritePlace);
   // $("#myFavoritePlace").on("click", getFavoritePlace)
 
   function moveToMyTrip() {
@@ -78,6 +77,8 @@ $(document).ready(function () {
         $("#myPosts").css("color", "#8a8a8a")
         $("#announcement-box").html(response);
         addHoverScript();
+        $(document).on("click", ".delete-favoritePlace", deleteFavoritePlace);
+
       },
       error: function (err) {
         console.log(err);
@@ -153,16 +154,19 @@ $(document).ready(function () {
     });
   }
 
-  function deleteFavoritePlace() {
-    let star_id = $(this).data("star-id"); // data-star-id 속성 값 가져오기
-    console.log(star_id);
+  function deleteFavoritePlace(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    let star_id = $(this).data("star-id");
     $.ajax({
-      url: `${path}/favoritePlace?star_id=${star_id}`,
-      type: "DELETE",
-      success: function () {
-        location.href = `${path}/auth/getFavoritePlace.do`;
+      url: `${path}/favoritePlace/${star_id}`,
+      type: 'get',
+      contentType: 'application/json',
+      success: function() {
+        // 페이지 새로고침 대신 해당 요소만 제거
+        $(e.target).closest('.announcement').remove();
       },
-      error: function (err) {
+      error: function(err) {
         console.log(err);
       }
     });
