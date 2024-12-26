@@ -58,4 +58,9 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
         List<LikePostsDTO> likePostsList = sqlSession.selectList(namespace + "getLikePostList", memberEmail);
         return likePostsList;
     }
+
+    @Override
+    public void deleteFavoritePlace(int starId) {
+        sqlSession.delete(namespace + "deleteFavoritePlace", starId);
+    }
 }

@@ -56,4 +56,9 @@ public class MemberServiceImpl implements MemberServiceInterface{
     public List<LikePostsDTO> getLikePosts(String memberEmail) {
         return memberRepository.getLikePosts(memberEmail);
     }
+
+    @Override
+    public void deleteFavoritePlace(int starId) {
+        memberRepository.deleteFavoritePlace(starId);
+    }
 }

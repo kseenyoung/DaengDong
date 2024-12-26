@@ -19,4 +19,6 @@ public interface MemberServiceInterface {
     List<ReviewDTO> getReviewList(String memberEmail);
 
     List<LikePostsDTO> getLikePosts(String memberEmail);
+
+    void deleteFavoritePlace(int starId);
 }

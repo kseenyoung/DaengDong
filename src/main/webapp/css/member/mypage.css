@@ -181,6 +181,7 @@ body {
 
 .announcement {
   display: flex;
+  justify-content: space-between; /* 텍스트와 버튼을 양쪽 끝으로 */
   align-items: center;
   background-color: #ffffff;
   padding: 15px;
