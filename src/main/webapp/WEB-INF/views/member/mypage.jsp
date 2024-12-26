@@ -121,7 +121,7 @@
 
         function getLikes() {
           $.ajax({
-            url: `${path}/auth/getFavoritePlace.do`,
+            url: `${path}/auth/getLikePostsFragment.do`,
             type: "get",
             success: function (response) {
               $("#myFavoritePlace").css("color", "#8a8a8a")

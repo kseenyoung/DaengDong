@@ -1,6 +1,7 @@
 package com.shinhan.daengdong.member.model.repository;
 
 import com.shinhan.daengdong.member.dto.FavoritePlaceDTO;
+import com.shinhan.daengdong.member.dto.LikePostsDTO;
 import com.shinhan.daengdong.member.dto.MemberDTO;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 import com.shinhan.daengdong.pet.dto.PetDTO;
@@ -17,4 +18,6 @@ public interface MemberRepositoryInterface {
     List<ReviewDTO> getReviewList(String memberEmail);
 
     List<FavoritePlaceDTO> getFavoritePlaceList(String memberEmail);
+
+    List<LikePostsDTO> getLikePosts(String memberEmail);
 }
