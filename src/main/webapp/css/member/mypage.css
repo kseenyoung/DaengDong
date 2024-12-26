@@ -129,8 +129,17 @@ body {
 }
 
 .categories ul li:hover {
-  color: #0AB75B;
+  color: #0AB75B!important;
   /*text-decoration: underline;*/
+}
+
+.categories ul li.active {
+  color: #0AB75B!important;;
+}
+
+/* Active 상태에서도 Hover 작동 */
+.categories ul li.active:hover {
+  color: #0AB75B!important;; /* Active 상태에서 Hover 색상 */
 }
 
 .semiCategories {
@@ -160,9 +169,7 @@ body {
 }
 
 .semiCategories ul li:hover {
-  color: #0AB75B;
-  color: #7650E0;
-  /*text-decoration: underline;*/
+  color: #0AB75B!important;
 }
 
 .content {
@@ -256,7 +263,6 @@ body {
   margin: 10px 0;
   padding: 8px 16px;
   background-color: #0AB75B;
-  background-color: #7650E0;
   color: white;
   border: none;
   border-radius: 4px;
@@ -266,5 +272,4 @@ body {
 
 #edit-profile:hover {
   background-color: #32a86e;
-  background-color: #8567dd;
 }
