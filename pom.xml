@@ -254,8 +254,15 @@
     <finalName>daengdong</finalName>
     <resources>
       <resource>
+        <directory>src/main/resources</directory>
+        <filtering>false</filtering>
+      </resource>
+      <resource>
         <directory>src/main/webapp</directory>
         <filtering>false</filtering>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
       </resource>
     </resources>
   </build>

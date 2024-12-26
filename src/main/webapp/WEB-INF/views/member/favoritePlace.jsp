@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="button-container">
-            <button class="delete-favoritePlace" data-star-id="${favoritePlaceList.star_id}" hidden="hidden">
+            <button class="delete-favoritePlace" data-star-id="${favoritePlaceList.star_id}">
                 <img id="delete-favoritePlace" class="hoverable-star" src="${path}/img/star.png" alt="delete_place">
             </button>
         </div>

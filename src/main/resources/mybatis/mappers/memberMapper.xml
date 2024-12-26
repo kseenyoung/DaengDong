@@ -200,11 +200,11 @@
         where member_email = #{memberEmail}
     </select>
 
-    <!--즐겨찾기 삭제-->
+    <!--즐겨찾기 삭제!-->
     <delete id="deleteFavoritePlace" parameterType="int">
         delete
-        from favorite
-        where favorite_id = #{favorite_id}
+        from favorites
+        where star_id = #{star_id}
     </delete>
 
 <!--    &lt;!&ndash;팔로우하기&ndash;&gt;-->
