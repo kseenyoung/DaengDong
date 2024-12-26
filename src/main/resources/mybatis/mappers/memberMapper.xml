@@ -145,12 +145,12 @@
         where member_email = #{memberEmail}
     </select>
 
-<!--    &lt;!&ndash;member19 내가 쓴 리뷰 삭제&ndash;&gt;-->
-<!--    <delete id="deleteReview" parameterType="int">-->
-<!--        delete-->
-<!--        from reviews-->
-<!--        where review_id = #{review_id}-->
-<!--    </delete>-->
+    <!--member19 내가 쓴 리뷰 삭제-->
+    <delete id="deleteReview" parameterType="int">
+        delete
+        from reviews
+        where review_id = #{review_id}
+    </delete>
 
 <!--    &lt;!&ndash;내가 쓴 리뷰 수정&ndash;&gt;-->
 <!--    <update id="modifyReview" parameterType="ReviewDTO" >-->

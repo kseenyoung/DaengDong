@@ -96,6 +96,7 @@ $(document).ready(function () {
         $("#myLikes").css("color", "#8a8a8a")
         $("#myPosts").css("color", "#8a8a8a")
         $("#announcement-box").html(response);
+        $(document).on("click", ".delete-review", deleteReview);
       },
       error: function (err) {
         console.log(err);
@@ -155,11 +156,25 @@ $(document).ready(function () {
   }
 
   function deleteFavoritePlace(e) {
-    e.preventDefault();
-    e.stopPropagation();
     let star_id = $(this).data("star-id");
     $.ajax({
       url: `${path}/favoritePlace/${star_id}`,
+      type: 'get',
+      contentType: 'application/json',
+      success: function() {
+        // 페이지 새로고침 대신 해당 요소만 제거
+        $(e.target).closest('.announcement').remove();
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    });
+  }
+
+  function deleteReview(e) {
+    let review_id = $(this).data("review-id");
+    $.ajax({
+      url: `${path}/reviews/${review_id}`,
       type: 'get',
       contentType: 'application/json',
       success: function() {

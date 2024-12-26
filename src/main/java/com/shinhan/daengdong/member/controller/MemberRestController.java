@@ -24,4 +24,9 @@ public class MemberRestController {
     public void deleteFavoritePlace(@PathVariable("star_id") int starId) {
         memberService.deleteFavoritePlace(starId);
     }
+
+    @GetMapping("/reviews/{review_id}")
+    public void deleteReview(@PathVariable("review_id") int reviewId) {
+        memberService.deleteReview(reviewId);
+    }
 }
