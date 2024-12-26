@@ -1,0 +1,30 @@
+#star {
+  width: 15px; /* 이미지 크기 조절 */
+  height: 15px;
+  margin-right: 0px; /* 텍스트와의 간격 */
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.place-title {
+  font-size: 18px; /* 제목 크기 */
+  color: black; /* 제목 색상 */
+  margin: 0 0 10px 0; /* 하단 간격 */
+}
+
+.place-address {
+  font-size: 14px;
+  color: gray;
+  margin: 0;
+}
+
+.place-address-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}

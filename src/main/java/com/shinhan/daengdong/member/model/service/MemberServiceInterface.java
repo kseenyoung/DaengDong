@@ -13,7 +13,7 @@ public interface MemberServiceInterface {
 
     MemberDTO signUp(SignUpDTO signUpDTO);
 
-    List<FavoritePlaceDTO> getFavoritePlace(String memberEmail);
+    List<FavoritePlaceDTO> getFavoritePlaceList(String memberEmail);
 
     List<ReviewDTO> getReviewList(String memberEmail);
 }

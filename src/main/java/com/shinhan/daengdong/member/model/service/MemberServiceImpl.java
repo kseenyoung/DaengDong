@@ -47,7 +47,7 @@ public class MemberServiceImpl implements MemberServiceInterface{
     }
 
     @Override
-    public List<FavoritePlaceDTO> getFavoritePlace(String memberEmail) {
-        return memberRepository.getFavoritePlace(memberEmail);
+    public List<FavoritePlaceDTO> getFavoritePlaceList(String memberEmail) {
+        return memberRepository.getFavoritePlaceList(memberEmail);
     }
 }

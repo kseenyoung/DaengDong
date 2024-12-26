@@ -140,9 +140,9 @@
 
     <!--내 리뷰 모두 보기-->
     <select id="viewReviewList" parameterType="String" resultType="ReviewVO">
-        SELECT *
-        FROM reviews
-        where member_email = #{memberEmail};
+        SELECT r.review_id, p.kakao_place_name, r.kakao_place_id, r.review_rating, r.review_content, r.create_at, r.update_at
+        FROM reviews as r join places as p using (kakao_place_id)
+        where member_email = #{memberEmail}
     </select>
 
 <!--    &lt;!&ndash;member19 내가 쓴 리뷰 삭제&ndash;&gt;-->
@@ -223,14 +223,6 @@
 <!--        from relationships r-->
 <!--        join members m on r.from_email = m.member_email-->
 <!--        where r.to_email = #{to_email};-->
-<!--    </select>-->
-
-<!--    &lt;!&ndash;즐겨찾기&ndash;&gt;-->
-<!--    &lt;!&ndash;즐겨찾기한 장소 모두 조회&ndash;&gt;-->
-<!--    <select id="favoritePlaceList" parameterType="String" resultType="favoritePlaceVO">-->
-<!--        SELECT *-->
-<!--        FROM favorite-->
-<!--        where member_email = #{memberEmail}-->
 <!--    </select>-->
 
 <!--    &lt;!&ndash;즐겨찾기 등록&ndash;&gt;-->

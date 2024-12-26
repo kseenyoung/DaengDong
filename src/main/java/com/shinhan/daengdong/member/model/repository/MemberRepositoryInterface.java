@@ -16,5 +16,5 @@ public interface MemberRepositoryInterface {
 
     List<ReviewDTO> getReviewList(String memberEmail);
 
-    List<FavoritePlaceDTO> getFavoritePlace(String memberEmail);
+    List<FavoritePlaceDTO> getFavoritePlaceList(String memberEmail);
 }

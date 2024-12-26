@@ -47,9 +47,8 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     }
 
     @Override
-    public List<FavoritePlaceDTO> getFavoritePlace(String memberEmail) {
+    public List<FavoritePlaceDTO> getFavoritePlaceList(String memberEmail) {
         List<FavoritePlaceDTO> favoritePlaceList = sqlSession.selectList(namespace + "favoritePlaceList", memberEmail);
-        System.out.println(favoritePlaceList);
         return favoritePlaceList;
     }
 }
