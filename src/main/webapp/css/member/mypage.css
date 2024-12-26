@@ -161,6 +161,7 @@ body {
 
 .semiCategories ul li:hover {
   color: #0AB75B;
+  color: #7650E0;
   /*text-decoration: underline;*/
 }
 
@@ -179,6 +180,11 @@ body {
   border-radius: 10px;
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
+}
+
+.announcement h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
 .announcement p {
@@ -250,6 +256,7 @@ body {
   margin: 10px 0;
   padding: 8px 16px;
   background-color: #0AB75B;
+  background-color: #7650E0;
   color: white;
   border: none;
   border-radius: 4px;
@@ -259,4 +266,5 @@ body {
 
 #edit-profile:hover {
   background-color: #32a86e;
+  background-color: #8567dd;
 }

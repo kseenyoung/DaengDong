@@ -51,4 +51,5 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
         List<FavoritePlaceDTO> favoritePlaceList = sqlSession.selectList(namespace + "favoritePlaceList", memberEmail);
         return favoritePlaceList;
     }
+
 }
