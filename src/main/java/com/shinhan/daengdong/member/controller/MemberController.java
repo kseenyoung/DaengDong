@@ -1,5 +1,6 @@
 package com.shinhan.daengdong.member.controller;
 
+import com.shinhan.daengdong.member.dto.FavoritePlaceDTO;
 import com.shinhan.daengdong.member.dto.MemberDTO;
 import com.shinhan.daengdong.member.dto.SignUpDTO;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
@@ -7,6 +8,7 @@ import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.shinhan.daengdong.review.dto.ReviewDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Controller
@@ -102,20 +103,28 @@ public class MemberController {
         return "member/semiSaveCategory";
     }
 
-    //'내 저장' > 세미 카테고리 > 즐겨찾기 컨텐츠
+    //'내 저장' > 세미 카테고리 > 즐겨찾기(장소) 컨텐츠
     @GetMapping("getFavoritePlace.do")
-    public String getFavoritePlace() {
+    public String getFavoritePlaceList(HttpSession session, Model model) {
+//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
+        List<FavoritePlaceDTO> favoritePlaceList = memberService.getFavoritePlaceList(memberDTO.getMemberEmail());
+        model.addAttribute("favoritePlaceList", favoritePlaceList);
         return "member/favoritePlace";
     }
+
+
+    //'내 저장' > 세미 카테고리 > 내가 쓴 리뷰(장소) 컨텐츠
+    @GetMapping("getReviewFragment.do")
+    public String getReviewList(HttpSession session, Model model) {
+//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
+        List<ReviewDTO> reviewList = memberService.getReviewList(memberDTO.getMemberEmail());
+        model.addAttribute("reviewList", reviewList);
+        log.info("reviewList: " + reviewList);
 
     @GetMapping("viewProfileFragment.do")
     public String viewProfileFragment() {
         return "member/profileFragment";
-    }
-
-    @GetMapping("reviewFragment.do")
-    public String viewReviewFragment (@RequestBody List<Map<String, Object>> reviews, Model model) {
-        model.addAttribute("reviews", reviews);
-        return "member/reviewFragment";
     }
 }

@@ -12,6 +12,8 @@
 		<!-- Member 부분 -->
 		<typeAlias type="com.shinhan.daengdong.member.dto.MemberDTO" alias="memberDTO" />
 		<typeAlias type="com.shinhan.daengdong.pet.dto.PetDTO" alias="petDTO" />
+		<typeAlias type="com.shinhan.daengdong.review.dto.ReviewDTO" alias="ReviewVO" />
+		<typeAlias type="com.shinhan.daengdong.member.dto.FavoritePlaceDTO" alias="favoritePlaceVO" />
 
 		<!-- Place 부분 -->
 		<typeAlias type="com.shinhan.daengdong.place.dto.RegionDTO" alias="regionDTO" />
