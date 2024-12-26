@@ -160,13 +160,19 @@
 <!--        where review_id = #{review_id}-->
 <!--    </update>-->
 
-<!--    &lt;!&ndash;좋아요 모두 조회&ndash;&gt;-->
-<!--    <select id="viewLikeList" parameterType="String" resultType="LikePostsVO">-->
-<!--        SELECT posts.post_title, photos.image_url-->
-<!--        FROM likes join posts using (post_id)-->
-<!--        join photos using (post_id)-->
-<!--        where likes.member_email = #{memberEmail};-->
-<!--    </select>-->
+    <!--좋아요 모두 조회-->
+    <select id="getLikePostList" parameterType="String" resultType="LikePostsVO">
+        SELECT
+            posts.post_id,
+            posts.post_title,
+            post_images.image_url,
+            members.member_nickname
+        FROM likes
+                JOIN posts ON likes.post_id = posts.post_id
+                JOIN post_images ON posts.post_id = post_images.post_id
+                JOIN members ON posts.member_email = members.member_email
+        where likes.member_email = #{memberEmail};
+    </select>
 
 <!--    &lt;!&ndash;좋아요 삭제&ndash;&gt;-->
 <!--    <delete id="deleteLike" parameterType="likesDTO">-->
@@ -243,4 +249,5 @@
 <!--        from posts-->
 <!--        where member_email = 'user1@example.com';-->
 <!--    </select>-->
+
 </mapper>

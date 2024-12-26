@@ -14,13 +14,8 @@
 		<typeAlias type="com.shinhan.daengdong.pet.dto.PetDTO" alias="petDTO" />
 		<typeAlias type="com.shinhan.daengdong.review.dto.ReviewDTO" alias="ReviewVO" />
 		<typeAlias type="com.shinhan.daengdong.member.dto.FavoritePlaceDTO" alias="favoritePlaceVO" />
+		<typeAlias type="com.shinhan.daengdong.member.dto.LikePostsDTO" alias="LikePostsVO" />
 
-		<!-- Place 부분 -->
-		<typeAlias type="com.shinhan.daengdong.place.dto.RegionDTO" alias="regionDTO" />
-		<typeAlias type="com.shinhan.daengdong.place.dto.PlaceDTO" alias="placeDTO" />
-
-		<!-- Plan 부분 -->
-		<typeAlias type="com.shinhan.daengdong.plan.dto.PlanDTO" alias="planDTO" />
 		<!-- 위 코드처럼 채워 나가면 됨.. -->
 	</typeAliases>
 </configuration>

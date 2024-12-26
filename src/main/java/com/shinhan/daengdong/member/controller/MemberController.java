@@ -1,6 +1,7 @@
 package com.shinhan.daengdong.member.controller;
 
 import com.shinhan.daengdong.member.dto.FavoritePlaceDTO;
+import com.shinhan.daengdong.member.dto.LikePostsDTO;
 import com.shinhan.daengdong.member.dto.MemberDTO;
 import com.shinhan.daengdong.member.dto.SignUpDTO;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
@@ -83,13 +84,11 @@ public class MemberController {
         return "member/reviews";
     }
 
-
     //마이페이지 전환
     @GetMapping("viewMypage.do")
     public String viewMypage() {
         return "member/mypage";
     }
-
 
     //마이페이지 > 유저 정보
     @GetMapping("getProfileFragment.do")
@@ -113,7 +112,6 @@ public class MemberController {
         return "member/favoritePlace";
     }
 
-
     //'내 저장' > 세미 카테고리 > 내가 쓴 리뷰(장소) 컨텐츠
     @GetMapping("getReviewFragment.do")
     public String getReviewList(HttpSession session, Model model) {
@@ -121,10 +119,17 @@ public class MemberController {
         MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
         List<ReviewDTO> reviewList = memberService.getReviewList(memberDTO.getMemberEmail());
         model.addAttribute("reviewList", reviewList);
-        log.info("reviewList: " + reviewList);
+        return "member/reviewFragment";
+    }
 
-    @GetMapping("viewProfileFragment.do")
-    public String viewProfileFragment() {
-        return "member/profileFragment";
+    //'내 저장' > 세미 카테고리 > 내가 좋아요 한(게시글) 컨텐츠
+    @GetMapping("getLikePostsFragment.do")
+    public String getLikePosts(HttpSession session, Model model) {
+//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
+        List<LikePostsDTO> likePostsList = memberService.getLikePosts(memberDTO.getMemberEmail());
+        model.addAttribute("likePostsList", likePostsList);
+        log.info("reviewList: " + likePostsList);
+        return "member/likePostsFragment";
     }
 }

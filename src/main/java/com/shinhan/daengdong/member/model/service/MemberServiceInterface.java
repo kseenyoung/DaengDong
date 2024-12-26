@@ -1,6 +1,7 @@
 package com.shinhan.daengdong.member.model.service;
 
 import com.shinhan.daengdong.member.dto.FavoritePlaceDTO;
+import com.shinhan.daengdong.member.dto.LikePostsDTO;
 import com.shinhan.daengdong.member.dto.MemberDTO;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 import com.shinhan.daengdong.member.dto.SignUpDTO;
@@ -16,4 +17,6 @@ public interface MemberServiceInterface {
     List<FavoritePlaceDTO> getFavoritePlaceList(String memberEmail);
 
     List<ReviewDTO> getReviewList(String memberEmail);
+
+    List<LikePostsDTO> getLikePosts(String memberEmail);
 }
