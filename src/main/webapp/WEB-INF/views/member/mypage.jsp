@@ -39,9 +39,9 @@
             url: `${path}/auth/getSemiSaveCategory.do`,
             type: "get",
             success: function (response) {
-              $("#myTripFragment").css("color", "#0AB75B")
-              $("#myPhotoCardFragment").css("color", "#8a8a8a")
-              $("#mySaveFragment").css("color", "#8a8a8a")
+              $("#mySaveFragment").removeClass("active");
+              $("#myPhotoCardFragment").removeClass("active");
+              $("#myTripFragment").addClass("active"); // '내 여행' 활성화
               $("#semiCategories").html(response);
             },
             error: function (err) {
@@ -55,9 +55,9 @@
             url: `${path}/auth/getSemiSaveCategory.do`,
             type: "get",
             success: function (response) {
-              $("#myTripFragment").css("color", "#8a8a8a")
-              $("#myPhotoCardFragment").css("color", "#8a8a8a")
-              $("#mySaveFragment").css("color", "#0AB75B")
+              $("#myTripFragment").removeClass("active");
+              $("#myPhotoCardFragment").removeClass("active");
+              $("#mySaveFragment").addClass("active"); // '내 여행' 활성화
               $("#semiCategories").html(response);
             },
             error: function (err) {
@@ -104,7 +104,7 @@
 
         function getReview() {
           $.ajax({
-            url: `${path}/auth/getFavoritePlace.do`,
+            url: `${path}/auth/getReviewFragment.do`,
             type: "get",
             success: function (response) {
               $("#myFavoritePlace").css("color", "#8a8a8a")
