@@ -66,4 +66,9 @@ public class MemberServiceImpl implements MemberServiceInterface{
     public void deleteReview(int reviewId) {
         memberRepository.deleteReview(reviewId);
     }
+
+    @Override
+    public void modifyReview(int reviewId) {
+        memberRepository.modifyReview(reviewId);
+    }
 }

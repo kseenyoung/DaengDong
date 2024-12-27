@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  initializeEventHandlers();
   $.ajax({
     url: `${path}/auth/getProfileFragment.do`,
     type: "get",
@@ -10,10 +11,11 @@ $(document).ready(function () {
     }
   });
 
-  $("#myTripFragment").on("click", moveToMyTrip);
-  $("#mySaveFragment").on("click", getSemiSaveCategory);
-  $("#semiCategories").on("click", ".action-item", injectAction);
-  // $("#myFavoritePlace").on("click", getFavoritePlace)
+  function initializeEventHandlers() {
+    $(document).on("click", "#myTripFragment", moveToMyTrip);
+    $(document).on("click", "#mySaveFragment", getSemiSaveCategory);
+    $(document).on("click", "#semiCategories .action-item", injectAction);
+  }
 
   function moveToMyTrip() {
     $.ajax({
@@ -24,6 +26,8 @@ $(document).ready(function () {
         $("#myPhotoCardFragment").removeClass("active");
         $("#myTripFragment").addClass("active"); // '내 여행' 활성화
         $("#semiCategories").html(response);
+        // initializeEventHandlers();
+
       },
       error: function (err) {
         console.log(err);
@@ -40,6 +44,7 @@ $(document).ready(function () {
         $("#myPhotoCardFragment").removeClass("active");
         $("#mySaveFragment").addClass("active"); // '내 여행' 활성화
         $("#semiCategories").html(response);
+        // initializeEventHandlers();
       },
       error: function (err) {
         console.log(err);
@@ -78,10 +83,12 @@ $(document).ready(function () {
         $("#announcement-box").html(response);
         addHoverScript();
         $(document).on("click", ".delete-favoritePlace", deleteFavoritePlace);
-
+        $(this).closest('.announcement').remove();
+        // initializeEventHandlers();
       },
       error: function (err) {
         console.log(err);
+        $(this).closest('.announcement').remove();
       }
     });
   }
@@ -97,9 +104,13 @@ $(document).ready(function () {
         $("#myPosts").css("color", "#8a8a8a")
         $("#announcement-box").html(response);
         $(document).on("click", ".delete-review", deleteReview);
+        $(document).on("click", ".update-review", updateReview);
+        $(this).closest('.announcement').remove();
+        // initializeEventHandlers();
       },
       error: function (err) {
         console.log(err);
+        $(this).closest('.announcement').remove();
       }
     });
   }
@@ -114,9 +125,12 @@ $(document).ready(function () {
         $("#myLikes").css("color", "#0AB75B")
         $("#myPosts").css("color", "#8a8a8a")
         $("#announcement-box").html(response);
+        // initializeEventHandlers();
+        $(this).closest('.announcement').remove();
       },
       error: function (err) {
         console.log(err);
+        $(this).closest('.announcement').remove();
       }
     });
   }
@@ -131,9 +145,12 @@ $(document).ready(function () {
         $("#myLikes").css("color", "#8a8a8a")
         $("#myPosts").css("color", "#0AB75B")
         $("#announcement-box").html(response);
+        $(this).closest('.announcement').remove();
+        initializeEventHandlers();
       },
       error: function (err) {
         console.log(err);
+        $(this).closest('.announcement').remove();
       }
     });
   }
@@ -155,7 +172,7 @@ $(document).ready(function () {
     });
   }
 
-  function deleteFavoritePlace(e) {
+  function deleteFavoritePlace() {
     let star_id = $(this).data("star-id");
     $.ajax({
       url: `${path}/favoritePlace/${star_id}`,
@@ -163,15 +180,17 @@ $(document).ready(function () {
       contentType: 'application/json',
       success: function() {
         // 페이지 새로고침 대신 해당 요소만 제거
-        $(e.target).closest('.announcement').remove();
+        $(this).closest('.announcement').remove();
+        initializeEventHandlers();
       },
       error: function(err) {
         console.log(err);
+        $(this).closest('.announcement').remove();
       }
     });
   }
 
-  function deleteReview(e) {
+  function deleteReview() {
     let review_id = $(this).data("review-id");
     $.ajax({
       url: `${path}/reviews/${review_id}`,
@@ -179,11 +198,54 @@ $(document).ready(function () {
       contentType: 'application/json',
       success: function() {
         // 페이지 새로고침 대신 해당 요소만 제거
-        $(e.target).closest('.announcement').remove();
+        $(this).closest('.announcement').remove();
+
       },
       error: function(err) {
         console.log(err);
+        $(this).closest('.announcement').remove();
       }
     });
   }
+
+  function updateReview() {
+    const reviewId = $(this).data('review-id'); // 데이터 속성에서 리뷰 ID 가져오기
+    const reviewContent = $(this).data('review-content'); // 리뷰 내용
+    const reviewRating = $(this).data('review-rating'); // 평점
+
+    // 모달 내부의 입력 필드에 데이터 설정
+    $('#bootstrap-modal #review_id').val(reviewId); // 숨겨진 필드에 ID 설정
+    $('#bootstrap-modal #review_content').val(reviewContent); // 리뷰 내용 설정
+    $('#bootstrap-modal #review_rating').val(reviewRating); // 평점 설정
+
+    // 모달 열기 (부트스트랩 모달)
+    $('#bootstrap-modal').modal('show');
+  }
+
+  // 저장 버튼 클릭 이벤트
+  $('#bootstrap-modal .btn-primary').click(function () {
+    const reviewId = $('#bootstrap-modal #review-id').val();
+    const reviewContent = $('#bootstrap-modal #review-content').val();
+    const reviewRating = $('#bootstrap-modal #review-rating').val();
+
+    // AJAX로 수정 요청 보내기
+    $.ajax({
+      url: `${path}/reviews/${review_id}`,
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        review_id: reviewId,
+        review_content: reviewContent,
+        review_rating: reviewRating,
+      }),
+      success: function (response) {
+        alert('리뷰가 성공적으로 수정되었습니다.');
+        location.reload(); // 페이지 새로고침
+      },
+      error: function (err) {
+        console.error(err);
+        alert('리뷰 수정에 실패했습니다.');
+      }
+    });
+  });
 });

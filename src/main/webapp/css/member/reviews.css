@@ -1,3 +1,54 @@
+#bootstrap-wrapper .modal {
+  display: none;
+  position: fixed;
+  z-index: 1050;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+}
+
+#bootstrap-wrapper .modal-dialog {
+  margin: 1.75rem auto;
+  max-width: 500px;
+}
+
+#bootstrap-wrapper .modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+  outline: 0;
+}
+
+#bootstrap-wrapper .btn {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+}
+
+#bootstrap-wrapper .btn-primary {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
 #star {
   width: 15px; /* 이미지 크기 조절 */
   height: 15px;
@@ -40,12 +91,66 @@
   color: white; /* 버튼 텍스트 색상 */
   border: none; /* 테두리 제거 */
   border-radius: 5px; /* 둥근 모서리 */
-  padding: 5px 10px; /* 버튼 크기 */
+  padding: 10px 15px; /* 버튼 크기 */
   cursor: pointer; /* 클릭 커서 */
   font-size: 14px; /* 글씨 크기 */
   transition: background-color 0.3s; /* 호버 효과 */
+  margin: 0 7px;
 }
 
 .delete-review:hover {
   background-color: #d9363e; /* 호버 시 색상 변경 */
+}
+
+.update-review {
+  background-color: #4CAF50; /* 빨간색 배경 */
+  color: white; /* 버튼 텍스트 색상 */
+  border: none; /* 테두리 제거 */
+  border-radius: 5px; /* 둥근 모서리 */
+  padding: 10px 15px; /* 버튼 크기 */
+  cursor: pointer; /* 클릭 커서 */
+  font-size: 14px; /* 글씨 크기 */
+  transition: background-color 0.3s; /* 호버 효과 */
+  margin: 0 7px;}
+
+.update-review:hover {
+  background-color: #37ae3b; /* 호버 시 색상 변경 */
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }

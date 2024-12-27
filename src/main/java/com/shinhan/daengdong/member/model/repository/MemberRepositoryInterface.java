@@ -24,4 +24,6 @@ public interface MemberRepositoryInterface {
     void deleteFavoritePlace(int starId);
 
     void deleteReview(int reviewId);
+
+    void modifyReview(int reviewId);
 }

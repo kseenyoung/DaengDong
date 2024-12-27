@@ -13,6 +13,7 @@
 		<typeAlias type="com.shinhan.daengdong.member.dto.MemberDTO" alias="memberDTO" />
 		<typeAlias type="com.shinhan.daengdong.pet.dto.PetDTO" alias="petDTO" />
 		<typeAlias type="com.shinhan.daengdong.review.dto.ReviewDTO" alias="ReviewVO" />
+		<typeAlias type="com.shinhan.daengdong.review.dto.ReviewDTO" alias="ReviewDTO" />
 		<typeAlias type="com.shinhan.daengdong.member.dto.FavoritePlaceDTO" alias="favoritePlaceVO" />
 		<typeAlias type="com.shinhan.daengdong.member.dto.LikePostsDTO" alias="LikePostsVO" />
 
