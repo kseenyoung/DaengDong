@@ -9,4 +9,13 @@
         values (#{planName}, #{startDate}, #{endDate}, #{planState})
     </insert>
 
+    <select id="planList" resultType="planDTO">
+        select
+            plan_name AS planName,
+            start_date AS startDate,
+            end_date AS endDate
+        from plans
+        where plan_state = 1;
+    </select>
+
 </mapper>

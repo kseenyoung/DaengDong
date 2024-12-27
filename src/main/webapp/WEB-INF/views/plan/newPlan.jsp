@@ -14,7 +14,6 @@ $(function () {
         window.location.href = "/daengdong/plan/create";
     });
 });
-</script>
-
+</script
 </body>
 </html>
