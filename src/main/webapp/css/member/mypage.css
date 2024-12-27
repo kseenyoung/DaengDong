@@ -1,3 +1,6 @@
+* {
+  overflow: hidden;
+}
 /* General Styles */
 body {
   font-family: Arial, sans-serif;
@@ -28,7 +31,7 @@ body {
 
 .profile-header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
 }
 
 .profile-image {
@@ -44,6 +47,7 @@ body {
 
 .profile-id {
   font-size: 14px;
+  margin-bottom: 0px;
   /*color: #aaaaaa;*/
   color: #535353;
 }
@@ -73,6 +77,11 @@ body {
   margin-bottom: 10px;
 }
 
+#my-pet {
+  font-size: 18px;
+  font-weight: bold;
+}
+
 .pet-detail {
   display: flex;
   flex-direction: column; /* 세로 방향으로 정렬 */
@@ -83,7 +92,7 @@ body {
   width: 80px;
   height: 80px;
   padding: 5px;
-  margin: 10px 10px;
+  margin: 5px;
   border-radius: 50%;
 }
 
@@ -256,7 +265,7 @@ body {
 
 #edit-profile {
   width: 100%;
-  margin: 10px 0;
+  margin: 5px 0;
   padding: 8px 16px;
   background-color: #0AB75B;
   color: white;

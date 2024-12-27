@@ -152,13 +152,13 @@
         where review_id = #{review_id}
     </delete>
 
-<!--    &lt;!&ndash;내가 쓴 리뷰 수정&ndash;&gt;-->
-<!--    <update id="modifyReview" parameterType="ReviewDTO" >-->
-<!--        update reviews-->
-<!--        set review_rating = #{review_rating},-->
-<!--            review_content = #{review_content}-->
-<!--        where review_id = #{review_id}-->
-<!--    </update>-->
+    <!--내가 쓴 리뷰 수정-->
+    <update id="modifyReview" parameterType="ReviewDTO" >
+        update reviews
+        set review_rating = #{review_rating},
+            review_content = #{review_content}
+        where review_id = #{review_id}
+    </update>
 
     <!--좋아요 모두 조회-->
     <select id="getLikePostList" parameterType="String" resultType="LikePostsVO">
