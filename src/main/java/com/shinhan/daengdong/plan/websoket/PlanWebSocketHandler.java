@@ -22,7 +22,7 @@ public class PlanWebSocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         log.info("수신된 메시지: {}", message.getPayload());
-        broadcast(message); // 메시지 브로드캐스트
+        broadcast(message);  // 메시지 브로드캐스트
     }
 
     @Override

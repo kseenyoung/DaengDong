@@ -34,7 +34,7 @@ $(function () {
         });
     }
 
-    // WebSocket 연결 성공 시 이벤트 추적 시작
+    // WebSocket 연결 성공 시 이벤트 추적(마우스, 키보드, 버튼) 시작
     socket.onopen = function () {
         console.log("WebSocket 연결 성공");
         trackEvents();

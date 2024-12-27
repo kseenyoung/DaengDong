@@ -15,4 +15,5 @@ public class WebSocketConfig implements WebSocketConfigurer {
         registry.addHandler(new PlanWebSocketHandler(), "/plan/screen")
             .setAllowedOrigins("*");
     }
+
 }
