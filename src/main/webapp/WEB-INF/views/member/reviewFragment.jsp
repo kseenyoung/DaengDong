@@ -23,21 +23,26 @@
                 <div class="modal-body">
                     <!-- Profile Section -->
                     <div class="text-center mb-4">
-                        <img src="placeholder-profile.png" alt="Profile Picture" class="rounded-circle" width="120" height="120" />
-                        <button class="btn btn-link mt-2">Click to change photo</button>
+                        <img src="${path}/img/kseenyoungProfile.jpeg" alt="Profile Picture" class="rounded-circle" width="120" height="120" />
+                        <div id="kakao-place-name-display" class="mt-2 text-muted"></div>
                     </div>
 
                     <!-- Form Section -->
                     <form>
                         <div class="form-group">
                             <input type="hidden" id="review-id">
-                            <label for="review_content">리뷰 내용</label>
-                            <textarea type="text" class="form-control" id="review-content" placeholder="리뷰 내용"/>
+                            <label for="review-content">리뷰 내용</label>
+                            <textarea type="text" class="form-control" id="review-content" placeholder="리뷰 내용"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="lastName">Last Name</label>
-                            <input type="number" id="review-rating" class="form-control" placeholder="별점">
-                            <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+                            <label for="review-rating">별점</label>
+                            <select id="review-rating" class="form-control">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
                         </div>
                     </form>
                 </div>
@@ -45,23 +50,7 @@
                 <!-- Modal Footer -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Update</button>
-                </div>
-
-                <div class="modal-header">
-                    <h5 class="modal-title">모달 제목</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="review_id">
-                    <textarea id="review_content"></textarea>
-                    <input type="number" id="review_rating">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                    <button type="button" class="btn btn-primary">저장</button>
+                    <button type="button" class="btn btn-primary" id="confirm-update">Update</button>
                 </div>
             </div>
         </div>
@@ -86,10 +75,11 @@
             <button
                     class="update-review"
                     data-toggle="modal"
-                    data-target="bootstrap-modal"
+                    data-target="#bootstrap-modal"
                     data-review-id="${reviewList.review_id}"
                     data-review-content="${reviewList.review_content}"
-                    data-review-rating="${reviewList.review_rating}">
+                    data-review-rating="${reviewList.review_rating}"
+                    data-kakao-place-name="${reviewList.kakao_place_name}">
                 수정
             </button>
             <button class="delete-review" data-review-id="${reviewList.review_id}">삭제</button>

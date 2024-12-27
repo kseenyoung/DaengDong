@@ -104,7 +104,8 @@ $(document).ready(function () {
         $("#myPosts").css("color", "#8a8a8a")
         $("#announcement-box").html(response);
         $(document).on("click", ".delete-review", deleteReview);
-        $(document).on("click", ".update-review", updateReview);
+        $(document).on('click', '.update-review', updateReview);
+        $(document).on('click', '#confirm-update', confirmUpdate);
         $(this).closest('.announcement').remove();
         // initializeEventHandlers();
       },
@@ -178,12 +179,12 @@ $(document).ready(function () {
       url: `${path}/favoritePlace/${star_id}`,
       type: 'get',
       contentType: 'application/json',
-      success: function() {
+      success: function () {
         // 페이지 새로고침 대신 해당 요소만 제거
         $(this).closest('.announcement').remove();
         initializeEventHandlers();
       },
-      error: function(err) {
+      error: function (err) {
         console.log(err);
         $(this).closest('.announcement').remove();
       }
@@ -196,12 +197,12 @@ $(document).ready(function () {
       url: `${path}/reviews/${review_id}`,
       type: 'get',
       contentType: 'application/json',
-      success: function() {
+      success: function () {
         // 페이지 새로고침 대신 해당 요소만 제거
         $(this).closest('.announcement').remove();
 
       },
-      error: function(err) {
+      error: function (err) {
         console.log(err);
         $(this).closest('.announcement').remove();
       }
@@ -212,25 +213,28 @@ $(document).ready(function () {
     const reviewId = $(this).data('review-id'); // 데이터 속성에서 리뷰 ID 가져오기
     const reviewContent = $(this).data('review-content'); // 리뷰 내용
     const reviewRating = $(this).data('review-rating'); // 평점
+    const kakaoPlaceNameDisplay = $(this).data('kakao-place-name'); // 평점
 
     // 모달 내부의 입력 필드에 데이터 설정
-    $('#bootstrap-modal #review_id').val(reviewId); // 숨겨진 필드에 ID 설정
-    $('#bootstrap-modal #review_content').val(reviewContent); // 리뷰 내용 설정
-    $('#bootstrap-modal #review_rating').val(reviewRating); // 평점 설정
-
-    // 모달 열기 (부트스트랩 모달)
+    $('#bootstrap-modal #review-id').val(reviewId);
+    $('#bootstrap-modal #review-content').val(reviewContent);
+    $('#bootstrap-modal #review-rating').val(reviewRating);
+    $('#kakao-place-name-display').text(`${kakaoPlaceNameDisplay}`);
+    // 모달 열기
     $('#bootstrap-modal').modal('show');
   }
 
   // 저장 버튼 클릭 이벤트
-  $('#bootstrap-modal .btn-primary').click(function () {
+  function confirmUpdate() {
     const reviewId = $('#bootstrap-modal #review-id').val();
     const reviewContent = $('#bootstrap-modal #review-content').val();
     const reviewRating = $('#bootstrap-modal #review-rating').val();
-
+    console.log(reviewId)
+    console.log(reviewContent)
+    console.log(reviewRating)
     // AJAX로 수정 요청 보내기
     $.ajax({
-      url: `${path}/reviews/${review_id}`,
+      url: `${path}/reviews`,
       type: 'POST',
       contentType: 'application/json',
       data: JSON.stringify({
@@ -239,13 +243,15 @@ $(document).ready(function () {
         review_rating: reviewRating,
       }),
       success: function (response) {
-        alert('리뷰가 성공적으로 수정되었습니다.');
-        location.reload(); // 페이지 새로고침
+        $('#bootstrap-modal').modal('hide');
+        $(this).removeData('bs.modal'); // 모달의 데이터 초기화
+        $('.modal-backdrop').remove(); // 검은 배경 제거
+        getReview();
       },
       error: function (err) {
         console.error(err);
         alert('리뷰 수정에 실패했습니다.');
       }
     });
-  });
+  }
 });

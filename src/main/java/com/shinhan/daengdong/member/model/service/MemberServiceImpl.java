@@ -68,7 +68,7 @@ public class MemberServiceImpl implements MemberServiceInterface{
     }
 
     @Override
-    public void modifyReview(int reviewId) {
-        memberRepository.modifyReview(reviewId);
+    public void modifyReview(ReviewDTO reviewDTO) {
+        memberRepository.modifyReview(reviewDTO);
     }
 }

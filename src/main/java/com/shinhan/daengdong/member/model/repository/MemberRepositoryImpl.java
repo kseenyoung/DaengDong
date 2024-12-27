@@ -70,7 +70,7 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     }
 
     @Override
-    public void modifyReview(int reviewId) {
-        sqlSession.update(namespace + "modifyReview", reviewId);
+    public void modifyReview(ReviewDTO reviewDTO) {
+        sqlSession.update(namespace + "modifyReview", reviewDTO);
     }
 }

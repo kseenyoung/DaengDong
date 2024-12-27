@@ -25,5 +25,5 @@ public interface MemberRepositoryInterface {
 
     void deleteReview(int reviewId);
 
-    void modifyReview(int reviewId);
+    void modifyReview(ReviewDTO reviewDTO);
 }
