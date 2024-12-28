@@ -14,7 +14,8 @@
             plan_id AS planId,
             plan_name AS planName,
             start_date AS startDate,
-            end_date AS endDate
+            end_date AS endDate,
+            plan_state AS planState
         from plans;
     </select>
 
@@ -29,6 +30,12 @@
         set
             start_date = #{startDate},
             end_date = #{endDate}
+        where plan_id = #{planId};
+    </update>
+
+    <update id="planState" parameterType="planDTO">
+        update plans
+        set plan_state = #{planState}
         where plan_id = #{planId};
     </update>
 </mapper>

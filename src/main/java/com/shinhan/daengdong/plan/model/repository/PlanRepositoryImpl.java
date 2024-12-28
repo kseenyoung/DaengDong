@@ -34,4 +34,9 @@ public class PlanRepositoryImpl implements PlanRepositoryInterface {
     public void planDate(PlanDTO planDTO) {
         sqlSessionTemplate.update("com.shinhan.plan.planDate", planDTO);
     }
+
+    @Override
+    public void planState(PlanDTO planDTO) {
+        sqlSessionTemplate.update("com.shinhan.plan.planState", planDTO);
+    }
 }

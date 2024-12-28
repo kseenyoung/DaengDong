@@ -223,5 +223,44 @@
     });
 </script>
 
+<!-- 여행 공개 여부 변경기능 -->
+<ul>
+    <c:forEach var="plan" items="${plans}">
+        <li>
+            <span>${plan.planName}</span>
+            <span>${plan.startDate} ~ ${plan.endDate}</span>
+            <!-- 공개 여부 스위치 -->
+            <label class="switch">
+                <input type="checkbox" class="state-switch"
+                       data-id="${plan.planId}"
+                    ${plan.planState == 1 ? 'checked' : ''}>
+                <span class="slider round"></span>
+            </label>
+        </li>
+    </c:forEach>
+</ul>
+<!-- 여행 공개 여부 변경 기능 Ajax -->
+<script>
+    $(document).on('change', '.state-switch', function () {
+        const planId = $(this).data('id');
+        const newState = $(this).is(':checked') ? 1 : 0;
+
+        $.ajax({
+            type: 'POST',
+            url: '${pageContext.request.contextPath}/plan/planState',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                planId: planId,
+                planState: newState
+            }),
+            success: function () {
+                alert('공개 상태가 변경되었습니다.');
+            },
+            error: function () {
+                alert('공개 상태 변경에 실패했습니다.');
+            }
+        });
+    });
+</script>
 </body>
 </html>

@@ -10,4 +10,5 @@ public interface PlanServiceInterface {
     List<PlanDTO> getPublicPlan();
     void planName(PlanDTO planDTO);
     void planDate(PlanDTO planDTO);
+    void planState(PlanDTO planDTO);
 }

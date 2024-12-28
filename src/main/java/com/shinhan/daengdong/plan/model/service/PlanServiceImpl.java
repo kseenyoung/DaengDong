@@ -39,4 +39,8 @@ public class PlanServiceImpl implements PlanServiceInterface {
         planRepository.planDate(planDTO);
     }
 
+    @Override
+    public void planState(PlanDTO planDTO) {
+        planRepository.planState(planDTO);
+    }
 }

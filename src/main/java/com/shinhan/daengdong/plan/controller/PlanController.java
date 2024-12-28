@@ -83,4 +83,12 @@ public class PlanController {
         });
     }
 
+    // 여행 공개 여부 상태 변경 기능
+    @PostMapping("/planState")
+    public String planState(@ModelAttribute PlanDTO planDTO) {
+        log.info("여행 공개 여부 수정 요청 데이터: {}", planDTO);
+        planService.planState(planDTO);
+        return "redirect:/plan/myPlace";
+    }
+
 }
