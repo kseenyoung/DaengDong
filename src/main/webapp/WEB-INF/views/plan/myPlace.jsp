@@ -131,7 +131,7 @@
                         <label for="newPlanName" class="form-label">새로운 여행 제목</label>
                         <input type="text" id="newPlanName" name="planName" class="form-control" placeholder="새 제목 입력">
                     </div>
-                    <input type="hidden" name="planId" id="modalPlanId">
+                    <input type="hidden" name="planId" id="modalPlanIdForTitle">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
@@ -154,7 +154,71 @@
 
             // 모달에 데이터 설정
             $('#currentPlanName').val(planName);
-            $('#modalPlanId').val(planId);
+            $('#modalPlanIdForTitle').val(planId);
+        });
+    });
+</script>
+
+<!-- 여행 날짜 변경 기능 -->
+<ul>
+    <c:forEach var="plan" items="${plans}">
+        <li>
+            <span>${plan.planName}</span> - <span>${plan.startDate} ~ ${plan.endDate}</span>
+            <!-- 수정 버튼 -->
+            <button type="button"
+                    class="edit-btn"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editDateModal"
+                    data-id="${plan.planId}"
+                    data-start="${plan.startDate}"
+                    data-end="${plan.endDate}">
+                날짜 수정
+            </button>
+        </li>
+    </c:forEach>
+</ul>
+<!-- 여행 날짜 수정 모달 -->
+<div class="modal fade" id="editDateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editDateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editDateModalLabel">여행 날짜 수정</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editDateForm" method="post" action="/daengdong/plan/planDate">
+                <div cl  ass="modal-body">
+                    <div class="mb-3">
+                        <label for="startDate" class="form-label">시작 날짜</label>
+                        <input type="date" id="startDate" name="startDate" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="endDate" class="form-label">종료 날짜</label>
+                        <input type="date" id="endDate" name="endDate" class="form-control">
+                    </div>
+                    <input type="hidden" name="planId" id="modalPlanIdForDate">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="submit" class="btn btn-primary">저장</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 날짜 수정 모달 데이터 채우기 -->
+<script>
+    $(function () {
+        // 모달 표시 전에 데이터 채우기
+        $('#editDateModal').on('show.bs.modal', function (event) {
+            const button = $(event.relatedTarget); // 버튼
+            const planId = button.data('id');
+            const startDate = button.data('start');
+            const endDate = button.data('end');
+
+            // 모달에 데이터 설정
+            $('#startDate').val(startDate);
+            $('#endDate').val(endDate);
+            $('#modalPlanIdForDate').val(planId);
         });
     });
 </script>

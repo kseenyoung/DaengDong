@@ -9,4 +9,5 @@ public interface PlanServiceInterface {
     PlanDTO savePlan(PlanDTO planDTO);
     List<PlanDTO> getPublicPlan();
     void planName(PlanDTO planDTO);
+    void planDate(PlanDTO planDTO);
 }

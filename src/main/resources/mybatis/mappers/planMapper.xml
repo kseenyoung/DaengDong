@@ -23,4 +23,12 @@
         set plan_name = #{planName}
         where plan_id = #{planId};
     </update>
+
+    <update id="planDate" parameterType="planDTO">
+        update plans
+        set
+            start_date = #{startDate},
+            end_date = #{endDate}
+        where plan_id = #{planId};
+    </update>
 </mapper>

@@ -8,8 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.beans.PropertyEditorSupport;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -51,9 +55,32 @@ public class PlanController {
     // 여행 프로젝트 제목 수정 기능
     @PostMapping("/planName")
     public String planName(@ModelAttribute PlanDTO planDTO) {
-        log.info("수정 요청 데이터: {}", planDTO);
+        log.info("여행 제목 수정 요청 데이터: {}", planDTO);
         planService.planName(planDTO);
         return "redirect:/plan/myPlace";
+    }
+
+    // 여행 날짜 변경 기능
+    @PostMapping("/planDate")
+    public String planDate(@ModelAttribute PlanDTO planDTO) {
+        log.info("여행 기간 수정 요청 데이터: {}", planDTO);
+        planService.planDate(planDTO);
+        return "redirect:/plan/myPlace";
+    }
+
+    // 여행 날짜 변경 기능의 날짜를 LocalDate형식으로 바꾸기 위해 필요
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if (text != null && !text.isEmpty()) {
+                    setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                } else {
+                    setValue(null);
+                }
+            }
+        });
     }
 
 }

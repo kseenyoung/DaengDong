@@ -34,4 +34,9 @@ public class PlanServiceImpl implements PlanServiceInterface {
         planRepository.planName(planDTO);
     }
 
+    @Override
+    public void planDate(PlanDTO planDTO) {
+        planRepository.planDate(planDTO);
+    }
+
 }

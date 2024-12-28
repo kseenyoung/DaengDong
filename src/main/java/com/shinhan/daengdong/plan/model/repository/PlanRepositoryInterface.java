@@ -8,4 +8,5 @@ public interface PlanRepositoryInterface {
     void save(PlanDTO planDTO);
     List<PlanDTO> getPlansByState();
     void planName(PlanDTO planDTO);
+    void planDate(PlanDTO planDTO);
 }
