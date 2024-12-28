@@ -8,10 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -35,14 +34,26 @@ public class PlanController {
     }
 
     @GetMapping("/myPlace")
-    public String getMyPlace() {
-        return "plan/myPlace"; // JSP 파일 반환
+    public String getMyPlace(Model model) {
+        List<PlanDTO> publicPlans = planService.getPublicPlan();
+        for (PlanDTO plan : publicPlans) log.info("Plan ID: {}, Plan Name: {}", plan.getPlanId(), plan.getPlanName());
+        model.addAttribute("plans", publicPlans);
+
+        return "plan/myPlace"; // myPlace.jsp 반환
     }
 
     // newPlan.jsp / WBS - 새로운 프로젝트 생성 기능
     @GetMapping("/newPlan")
     public String newPlanForm() {
         return "plan/newPlan";
+    }
+
+    // 여행 프로젝트 제목 수정 기능
+    @PostMapping("/planName")
+    public String planName(@ModelAttribute PlanDTO planDTO) {
+        log.info("수정 요청 데이터: {}", planDTO);
+        planService.planName(planDTO);
+        return "redirect:/plan/myPlace";
     }
 
 }

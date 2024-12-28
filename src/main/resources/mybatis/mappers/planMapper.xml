@@ -11,11 +11,16 @@
 
     <select id="planList" resultType="planDTO">
         select
+            plan_id AS planId,
             plan_name AS planName,
             start_date AS startDate,
             end_date AS endDate
-        from plans
-        where plan_state = 1;
+        from plans;
     </select>
 
+    <update id="planName" parameterType="planDTO">
+        update plans
+        set plan_name = #{planName}
+        where plan_id = #{planId};
+    </update>
 </mapper>

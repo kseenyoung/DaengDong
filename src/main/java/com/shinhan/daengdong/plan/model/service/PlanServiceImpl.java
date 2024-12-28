@@ -24,4 +24,14 @@ public class PlanServiceImpl implements PlanServiceInterface {
         return planDTO;
     }
 
+    @Override
+    public List<PlanDTO> getPublicPlan() {
+        return planRepository.getPlansByState();
+    }
+
+    @Override
+    public void planName(PlanDTO planDTO) {
+        planRepository.planName(planDTO);
+    }
+
 }
