@@ -17,6 +17,7 @@ public class ReviewDTO {
     private long kakao_place_id;
     private int review_rating;
     private String review_content;
+    private String region_name;
     private LocalDateTime create_at;
     private LocalDateTime update_at;    // 수정 일자
 }
