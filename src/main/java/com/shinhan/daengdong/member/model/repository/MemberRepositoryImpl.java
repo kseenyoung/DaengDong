@@ -73,4 +73,9 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     public void modifyReview(ReviewDTO reviewDTO) {
         sqlSession.update(namespace + "modifyReview", reviewDTO);
     }
+
+    @Override
+    public void deleteLikePosts(int postId) {
+        sqlSession.delete(namespace + "deleteLike", postId);
+    }
 }

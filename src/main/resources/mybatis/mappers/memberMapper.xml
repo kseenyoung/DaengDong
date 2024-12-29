@@ -174,13 +174,12 @@
         where likes.member_email = #{memberEmail};
     </select>
 
-<!--    &lt;!&ndash;좋아요 삭제&ndash;&gt;-->
-<!--    <delete id="deleteLike" parameterType="likesDTO">-->
-<!--        delete-->
-<!--        from likes-->
-<!--        where post_id = #{post_id}-->
-<!--        And member_email = #{member_email}-->
-<!--    </delete>-->
+    <!--좋아요 삭제-->
+    <delete id="deleteLike" parameterType="int">
+        delete
+        from likes
+        where post_id = #{post_id}
+    </delete>
 
     <!--즐겨찾기한 장소 모두 조회-->
     <select id="favoritePlaceList" parameterType="String" resultType="favoritePlaceVO">

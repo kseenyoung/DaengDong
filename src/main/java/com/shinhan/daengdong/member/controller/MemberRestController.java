@@ -27,7 +27,11 @@ public class MemberRestController {
 
     @PostMapping("/reviews")
     public void modifyReview(@RequestBody ReviewDTO reviewDTO) {
-        log.info("reviewDTO: " + reviewDTO);
         memberService.modifyReview(reviewDTO);
+    }
+
+    @GetMapping("/likePosts/{post_id}")
+    public void deleteLikePost(@PathVariable("post_id") int postId) {
+        memberService.deleteLikePosts(postId);
     }
 }

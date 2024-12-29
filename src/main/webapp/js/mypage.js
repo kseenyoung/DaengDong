@@ -81,7 +81,7 @@ $(document).ready(function () {
         $("#myLikes").css("color", "#8a8a8a")
         $("#myPosts").css("color", "#8a8a8a")
         $("#announcement-box").html(response);
-        addHoverScript();
+        addHoverScriptStar();
         $(document).on("click", ".delete-favoritePlace", deleteFavoritePlace);
         $(this).closest('.announcement').remove();
         // initializeEventHandlers();
@@ -126,7 +126,8 @@ $(document).ready(function () {
         $("#myLikes").css("color", "#0AB75B")
         $("#myPosts").css("color", "#8a8a8a")
         $("#announcement-box").html(response);
-        // initializeEventHandlers();
+        addHoverScriptHeart();
+        $(document).on("click", ".delete-likePosts", deleteLikePosts);
         $(this).closest('.announcement').remove();
       },
       error: function (err) {
@@ -156,7 +157,7 @@ $(document).ready(function () {
     });
   }
 
-  function addHoverScript() {
+  function addHoverScriptStar() {
     // 모든 이미지 태그에 hover 이벤트를 다시 설정
     const starImages = document.querySelectorAll(".hoverable-star");
 
@@ -173,38 +174,57 @@ $(document).ready(function () {
     });
   }
 
+  function addHoverScriptHeart() {
+    // 모든 이미지 태그에 hover 이벤트를 다시 설정
+    const starImages = document.querySelectorAll(".hoverable-star");
+
+    starImages.forEach((starImage) => {
+      const basePath = `${path}/img/`;
+
+      starImage.addEventListener("mouseover", () => {
+        starImage.src = basePath + "empty_like_icon.png"; // hover 시 이미지 변경
+      });
+
+      starImage.addEventListener("mouseout", () => {
+        starImage.src = basePath + "like_icon.png"; // 원래 이미지로 복원
+      });
+    });
+  }
+
   function deleteFavoritePlace() {
     let star_id = $(this).data("star-id");
+    let element = $(this).closest('.announcement'); // 삭제할 요소를 미리 저장
+
     $.ajax({
       url: `${path}/favoritePlace/${star_id}`,
       type: 'get',
       contentType: 'application/json',
       success: function () {
         // 페이지 새로고침 대신 해당 요소만 제거
-        $(this).closest('.announcement').remove();
+        element.remove();
         initializeEventHandlers();
       },
       error: function (err) {
         console.log(err);
-        $(this).closest('.announcement').remove();
       }
     });
   }
 
   function deleteReview() {
     let review_id = $(this).data("review-id");
+    let element = $(this).closest('.announcement'); // 삭제할 요소를 미리 저장
+
     $.ajax({
       url: `${path}/reviews/${review_id}`,
       type: 'get',
       contentType: 'application/json',
       success: function () {
         // 페이지 새로고침 대신 해당 요소만 제거
-        $(this).closest('.announcement').remove();
+        element.remove();
 
       },
       error: function (err) {
         console.log(err);
-        $(this).closest('.announcement').remove();
       }
     });
   }
@@ -229,9 +249,6 @@ $(document).ready(function () {
     const reviewId = $('#bootstrap-modal #review-id').val();
     const reviewContent = $('#bootstrap-modal #review-content').val();
     const reviewRating = $('#bootstrap-modal #review-rating').val();
-    console.log(reviewId)
-    console.log(reviewContent)
-    console.log(reviewRating)
     // AJAX로 수정 요청 보내기
     $.ajax({
       url: `${path}/reviews`,
@@ -251,6 +268,25 @@ $(document).ready(function () {
       error: function (err) {
         console.error(err);
         alert('리뷰 수정에 실패했습니다.');
+      }
+    });
+  }
+
+  function deleteLikePosts() {
+    let post_id = $(this).data("post-id");
+    let element = $(this).closest('.announcement'); // 삭제할 요소를 미리 저장
+
+    $.ajax({
+      url: `${path}/likePosts/${post_id}`,
+      type: 'get',
+      contentType: 'application/json',
+      success: function () {
+        // 페이지 새로고침 대신 해당 요소만 제거
+        element.remove();
+        initializeEventHandlers();
+      },
+      error: function (err) {
+        console.log(err);
       }
     });
   }
