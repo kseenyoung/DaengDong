@@ -71,4 +71,9 @@ public class MemberServiceImpl implements MemberServiceInterface{
     public void modifyReview(ReviewDTO reviewDTO) {
         memberRepository.modifyReview(reviewDTO);
     }
+
+    @Override
+    public void deleteLikePosts(int postId) {
+        memberRepository.deleteLikePosts(postId);
+    }
 }

@@ -25,4 +25,6 @@ public interface MemberServiceInterface {
     void deleteReview(int reviewId);
 
     void modifyReview(ReviewDTO reviewDTO);
+
+    void deleteLikePosts(int postId);
 }

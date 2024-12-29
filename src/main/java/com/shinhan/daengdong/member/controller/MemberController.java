@@ -129,7 +129,6 @@ public class MemberController {
         MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
         List<LikePostsDTO> likePostsList = memberService.getLikePosts(memberDTO.getMemberEmail());
         model.addAttribute("likePostsList", likePostsList);
-        log.info("reviewList: " + likePostsList);
         return "member/likePostsFragment";
     }
 }
