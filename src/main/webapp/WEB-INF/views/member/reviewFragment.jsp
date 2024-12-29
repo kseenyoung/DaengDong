@@ -23,7 +23,8 @@
                 <div class="modal-body">
                     <!-- Profile Section -->
                     <div class="text-center mb-4">
-                        <img src="${path}/img/kseenyoungProfile.jpeg" alt="Profile Picture" class="rounded-circle" width="120" height="120" />
+                        <img src="${path}/img/kseenyoungProfile.jpeg" alt="Profile Picture" class="rounded-circle"
+                             width="120" height="120"/>
                         <div id="kakao-place-name-display" class="mt-2 text-muted"></div>
                     </div>
 
@@ -32,7 +33,8 @@
                         <div class="form-group">
                             <input type="hidden" id="review-id">
                             <label for="review-content">리뷰 내용</label>
-                            <textarea type="text" class="form-control" id="review-content" placeholder="리뷰 내용"></textarea>
+                            <textarea type="text" class="form-control" id="review-content"
+                                      placeholder="리뷰 내용"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="review-rating">별점</label>
@@ -63,6 +65,7 @@
                 <a>${reviewList.review_content}</a>
             </h2>
             <div class="place-address-container">
+                <span class="place-address">${reviewList.region_name}</span>
                 <span class="place-address">${reviewList.kakao_place_name}</span>
                 <div class="star-rating">
                     <c:forEach var="star" begin="1" end="${reviewList.review_rating}">

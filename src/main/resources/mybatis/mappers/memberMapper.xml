@@ -140,8 +140,9 @@
 
     <!--내 리뷰 모두 보기-->
     <select id="viewReviewList" parameterType="String" resultType="ReviewVO">
-        SELECT r.review_id, p.kakao_place_name, r.kakao_place_id, r.review_rating, r.review_content, r.create_at, r.update_at
+        SELECT r.review_id, p.kakao_place_name, r.kakao_place_id, r.review_rating, r.review_content, reg.region_name, r.create_at, r.update_at
         FROM reviews as r join places as p using (kakao_place_id)
+                          join regions as reg on p.region_id = reg.region_id
         where member_email = #{memberEmail}
     </select>
 
