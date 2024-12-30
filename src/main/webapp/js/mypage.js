@@ -234,12 +234,15 @@ $(document).ready(function () {
     const reviewContent = $(this).data('review-content'); // 리뷰 내용
     const reviewRating = $(this).data('review-rating'); // 평점
     const kakaoPlaceNameDisplay = $(this).data('kakao-place-name'); // 평점
+    const imageUrl = $(this).data('kakao-image-url');
 
     // 모달 내부의 입력 필드에 데이터 설정
     $('#bootstrap-modal #review-id').val(reviewId);
     $('#bootstrap-modal #review-content').val(reviewContent);
     $('#bootstrap-modal #review-rating').val(reviewRating);
     $('#kakao-place-name-display').text(`${kakaoPlaceNameDisplay}`);
+    $('#placeImg').attr('src', imageUrl || `${path}/img/defaultImage.jpg`); // src 속성 설정
+    $('#placeImg').attr('alt', kakaoPlaceNameDisplay); // alt 속성 설정
     // 모달 열기
     $('#bootstrap-modal').modal('show');
   }
