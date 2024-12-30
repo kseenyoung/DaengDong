@@ -23,8 +23,8 @@
                 <div class="modal-body">
                     <!-- Profile Section -->
                     <div class="text-center mb-4">
-                        <img src="${path}/img/kseenyoungProfile.jpeg" alt="Profile Picture" class="rounded-circle"
-                             width="120" height="120"/>
+                        <img id="placeImg" src="" alt="placeImg"
+                              class="rounded-circle" width="120" height="120"/>
                         <div id="kakao-place-name-display" class="mt-2 text-muted"></div>
                     </div>
 
@@ -82,7 +82,8 @@
                     data-review-id="${reviewList.review_id}"
                     data-review-content="${reviewList.review_content}"
                     data-review-rating="${reviewList.review_rating}"
-                    data-kakao-place-name="${reviewList.kakao_place_name}">
+                    data-kakao-place-name="${reviewList.kakao_place_name}"
+                    data-kakao-image-url="${reviewList.imageUrl}">
                 수정
             </button>
             <button class="delete-review" data-review-id="${reviewList.review_id}">삭제</button>

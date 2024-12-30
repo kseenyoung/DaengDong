@@ -3,20 +3,30 @@ package com.shinhan.daengdong.member.model.service;
 import com.shinhan.daengdong.member.dto.FavoritePlaceDTO;
 import com.shinhan.daengdong.member.dto.LikePostsDTO;
 import com.shinhan.daengdong.member.dto.MemberDTO;
+import com.shinhan.daengdong.place.model.service.PlaceServiceInterface;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 import com.shinhan.daengdong.member.dto.SignUpDTO;
 import com.shinhan.daengdong.member.model.repository.MemberRepositoryInterface;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class MemberServiceImpl implements MemberServiceInterface{
 
     @Autowired
     MemberRepositoryInterface memberRepository;
+
+    @Autowired
+    PlaceServiceInterface placeService;
+
+    @Autowired
+    private ConversionService conversionService;
 
     @Override
     public MemberDTO login(String email){
@@ -44,12 +54,23 @@ public class MemberServiceImpl implements MemberServiceInterface{
 
     @Override
     public List<ReviewDTO> getReviewList(String memberEmail) {
-        return memberRepository.getReviewList(memberEmail);
+        List<ReviewDTO> reviewList = memberRepository.getReviewList(memberEmail);
+        for (ReviewDTO review : reviewList) {
+            String imageUrl = placeService.fetchPlaceImage(review.getKakao_place_id());
+            review.setImageUrl(imageUrl);
+        }
+        return reviewList;
     }
 
     @Override
     public List<FavoritePlaceDTO> getFavoritePlaceList(String memberEmail) {
-        return memberRepository.getFavoritePlaceList(memberEmail);
+        List<FavoritePlaceDTO> favoritePlaceList = memberRepository.getFavoritePlaceList(memberEmail);
+        for (FavoritePlaceDTO place : favoritePlaceList) {
+            String imageUrl = placeService.fetchPlaceImage(place.getKakao_place_id());
+            place.setImageUrl(imageUrl);
+        }
+        log.info("favoritePlaceList: " + favoritePlaceList);
+        return favoritePlaceList;
     }
 
     @Override

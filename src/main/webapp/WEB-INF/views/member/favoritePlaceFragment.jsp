@@ -11,7 +11,8 @@
 <link rel="stylesheet" href="${path}/css/member/favoritePlace.css">
 <c:forEach var="favoritePlaceList" items="${favoritePlaceList}">
     <div class="announcement">
-        <img id="placeImg" src="${path}/img/kseenyoungProfile.jpeg" alt="placeImg"/>
+        <img id="placeImg" src="${favoritePlaceList.imageUrl}" alt="placeImg"
+             onerror="this.src=`${path}/img/kseenyoungProfile`"/>
         <div class="text-container">
             <h2 class="place-title">
                 <a href="${favoritePlaceList.kakao_place_url}">${favoritePlaceList.kakao_place_name}</a>
