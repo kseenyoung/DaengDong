@@ -1,6 +1,7 @@
 package com.shinhan.daengdong.member.model.repository;
 
 import com.shinhan.daengdong.member.dto.FavoritePlaceDTO;
+import com.shinhan.daengdong.member.dto.RelationshipsDTO;
 import com.shinhan.daengdong.member.dto.LikePostsDTO;
 import com.shinhan.daengdong.member.dto.MemberDTO;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
@@ -28,4 +29,8 @@ public interface MemberRepositoryInterface {
     void modifyReview(ReviewDTO reviewDTO);
 
     void deleteLikePosts(int postId);
+
+    List<RelationshipsDTO> getFollowingList(String memberEmail);
+
+    List<RelationshipsDTO> getFollowerList(String memberEmail);
 }

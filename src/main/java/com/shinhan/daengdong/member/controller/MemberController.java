@@ -1,9 +1,6 @@
 package com.shinhan.daengdong.member.controller;
 
-import com.shinhan.daengdong.member.dto.FavoritePlaceDTO;
-import com.shinhan.daengdong.member.dto.LikePostsDTO;
-import com.shinhan.daengdong.member.dto.MemberDTO;
-import com.shinhan.daengdong.member.dto.SignUpDTO;
+import com.shinhan.daengdong.member.dto.*;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
 
 import javax.servlet.http.HttpServletRequest;
@@ -130,5 +127,25 @@ public class MemberController {
         List<LikePostsDTO> likePostsList = memberService.getLikePosts(memberDTO.getMemberEmail());
         model.addAttribute("likePostsList", likePostsList);
         return "member/likePostsFragment";
+    }
+
+    //팔로잉 보기
+    @GetMapping("viewFollowingModal.do")
+    public String viewFollowingModal(HttpSession session, Model model) {
+//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
+        List<RelationshipsDTO> followingList = memberService.getFollowingList(memberDTO.getMemberEmail());
+        model.addAttribute("followingList", followingList);
+        return "member/followingModal";
+    }
+
+    //팔로워 보기
+    @GetMapping("viewFollowerModal.do")
+    public String viewFollowerModal(HttpSession session, Model model) {
+//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
+        List<RelationshipsDTO> followerList = memberService.getFollowerList(memberDTO.getMemberEmail());
+        model.addAttribute("followerList", followerList);
+        return "member/followerModal";
     }
 }

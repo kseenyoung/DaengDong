@@ -221,22 +221,31 @@
 <!--        And to_email = #{to_email}-->
 <!--    </delete>-->
 
-<!--    &lt;!&ndash;-->
-<!--    &lt;!&ndash;팔로잉 보기&ndash;&gt;-->
-<!--    <select id="selectFollowing" parameterType="relationshipsDTO">-->
-<!--        select m.member_email, m.member_name, m.member_nickname, m.member_profile_photo-->
-<!--        from relationships r-->
-<!--        join members m on r.to_email = m.member_email-->
-<!--        where r.from_email = #{from_email};-->
-<!--    </select>-->
+    <!--팔로잉 보기-->
+    <select id="selectFollowing" parameterType="String" resultType="relationshipsVO">
+        select m.member_email, m.member_name, m.member_nickname, m.member_profile_photo,  r1.create_at, r1.update_at,
+               EXISTS (
+                   SELECT 1
+                   FROM relationships r2
+                   WHERE r2.from_email = r1.to_email AND r2.to_email = r1.from_email
+               ) AS is_following_back
+        from relationships r1
+                 join members m on r1.to_email = m.member_email
+        where r1.from_email = #{from_email}
+    </select>
 
-<!--    &lt;!&ndash;팔로워 보기&ndash;&gt;-->
-<!--    <select id="selectfollower" parameterType="relationshipsDTO">-->
-<!--        select m.member_email, m.member_name, m.member_nickname, m.member_profile_photo-->
-<!--        from relationships r-->
-<!--        join members m on r.from_email = m.member_email-->
-<!--        where r.to_email = #{to_email};-->
-<!--    </select>-->
+    <!--팔로워 보기-->
+    <select id="selectFollower" parameterType="String" resultType="relationshipsVO">
+        select m.member_email, m.member_name, m.member_nickname, m.member_profile_photo,  r1.create_at, r1.update_at,
+               EXISTS (
+                   SELECT 1
+                   FROM relationships r2
+                   WHERE r2.from_email = r1.to_email AND r2.to_email = r1.from_email
+               ) AS is_following_back
+        from relationships r1
+                 join members m on r1.from_email = m.member_email
+        where r1.to_email = #{to_email}
+    </select>
 
 <!--    &lt;!&ndash;즐겨찾기 등록&ndash;&gt;-->
 <!--    <insert id="insertFavoritePlaceList" parameterType="favoriteDTO">-->
