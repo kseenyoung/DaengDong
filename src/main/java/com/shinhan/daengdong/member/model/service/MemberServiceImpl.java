@@ -1,11 +1,8 @@
 package com.shinhan.daengdong.member.model.service;
 
-import com.shinhan.daengdong.member.dto.FavoritePlaceDTO;
-import com.shinhan.daengdong.member.dto.LikePostsDTO;
-import com.shinhan.daengdong.member.dto.MemberDTO;
+import com.shinhan.daengdong.member.dto.*;
 import com.shinhan.daengdong.place.model.service.PlaceServiceInterface;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
-import com.shinhan.daengdong.member.dto.SignUpDTO;
 import com.shinhan.daengdong.member.model.repository.MemberRepositoryInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +66,6 @@ public class MemberServiceImpl implements MemberServiceInterface{
             String imageUrl = placeService.fetchPlaceImage(place.getKakao_place_id());
             place.setImageUrl(imageUrl);
         }
-        log.info("favoritePlaceList: " + favoritePlaceList);
         return favoritePlaceList;
     }
 
@@ -96,5 +92,15 @@ public class MemberServiceImpl implements MemberServiceInterface{
     @Override
     public void deleteLikePosts(int postId) {
         memberRepository.deleteLikePosts(postId);
+    }
+
+    @Override
+    public List<RelationshipsDTO> getFollowingList(String memberEmail) {
+        return memberRepository.getFollowingList(memberEmail);
+    }
+
+    @Override
+    public List<RelationshipsDTO> getFollowerList(String memberEmail) {
+        return memberRepository.getFollowerList(memberEmail);
     }
 }

@@ -12,6 +12,8 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <!-- Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Modal Placeholder -->
+<div id="view-follow-modal-placeholder"></div>
 <div class="profile-header">
     <img class="profile-image" src="${path}/img/kseenyoungProfile.jpeg" alt="Profile Image">
     <h1 class="profile-username">userNickName</h1>
@@ -22,7 +24,7 @@
 <%--    <p>흰 천과 바람만 있다면 어디든 갈 수 있어</p>--%>
 <%--</div>--%>
 <div class="profile-follow-info">
-    <span>34 followers</span> · <span>49 following</span>
+    <span id="follower">34 followers</span> · <span id="following">49 following</span>
 </div>
 <span id="my-pet">나의 반려동물</span>
 <div class="profile-pet">

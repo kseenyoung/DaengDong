@@ -15,6 +15,8 @@ $(document).ready(function () {
     $(document).on("click", "#myTripFragment", moveToMyTrip);
     $(document).on("click", "#mySaveFragment", getSemiSaveCategory);
     $(document).on("click", "#semiCategories .action-item", injectAction);
+    $(document).on("click", "#following", viewFollowingModal)
+    $(document).on("click", "#follower", viewFollowerModal)
   }
 
   function moveToMyTrip() {
@@ -157,40 +159,6 @@ $(document).ready(function () {
     });
   }
 
-  function addHoverScriptStar() {
-    // 모든 이미지 태그에 hover 이벤트를 다시 설정
-    const starImages = document.querySelectorAll(".hoverable-star");
-
-    starImages.forEach((starImage) => {
-      const basePath = `${path}/img/`;
-
-      starImage.addEventListener("mouseover", () => {
-        starImage.src = basePath + "empty_star.png"; // hover 시 이미지 변경
-      });
-
-      starImage.addEventListener("mouseout", () => {
-        starImage.src = basePath + "star.png"; // 원래 이미지로 복원
-      });
-    });
-  }
-
-  function addHoverScriptHeart() {
-    // 모든 이미지 태그에 hover 이벤트를 다시 설정
-    const starImages = document.querySelectorAll(".hoverable-star");
-
-    starImages.forEach((starImage) => {
-      const basePath = `${path}/img/`;
-
-      starImage.addEventListener("mouseover", () => {
-        starImage.src = basePath + "empty_like_icon.png"; // hover 시 이미지 변경
-      });
-
-      starImage.addEventListener("mouseout", () => {
-        starImage.src = basePath + "like_icon.png"; // 원래 이미지로 복원
-      });
-    });
-  }
-
   function deleteFavoritePlace() {
     let star_id = $(this).data("star-id");
     let element = $(this).closest('.announcement'); // 삭제할 요소를 미리 저장
@@ -221,7 +189,6 @@ $(document).ready(function () {
       success: function () {
         // 페이지 새로고침 대신 해당 요소만 제거
         element.remove();
-
       },
       error: function (err) {
         console.log(err);
@@ -243,6 +210,7 @@ $(document).ready(function () {
     $('#kakao-place-name-display').text(`${kakaoPlaceNameDisplay}`);
     $('#placeImg').attr('src', imageUrl || `${path}/img/defaultImage.jpg`); // src 속성 설정
     $('#placeImg').attr('alt', kakaoPlaceNameDisplay); // alt 속성 설정
+
     // 모달 열기
     $('#bootstrap-modal').modal('show');
   }
@@ -291,6 +259,78 @@ $(document).ready(function () {
       error: function (err) {
         console.log(err);
       }
+    });
+  }
+
+  function viewFollowingModal() {
+    // 모달 컨테이너에 AJAX로 콘텐츠 로드
+    $("#view-follow-modal-placeholder").load(`${path}/auth/viewFollowingModal.do`, function (response, status, xhr) {
+      if (status === "error") {
+        console.log("failed to load modal");
+      } else {
+        $("#followModal").modal("show");
+        addHoverScripDeleteFollower();
+      }
+    });
+  }
+
+  function viewFollowerModal() {
+    $("#view-follow-modal-placeholder").load(`${path}/auth/viewFollowerModal.do`, function (response, status, xhr) {
+      if (status === "error") {
+        console.log("failed to load modal");
+      } else {
+        $("#followModal").modal("show");
+        addHoverScripDeleteFollower();
+      }
+    });
+  }
+
+  //hover효과
+  function addHoverScriptStar() {
+    // 모든 이미지 태그에 hover 이벤트를 다시 설정
+    const starImages = document.querySelectorAll(".hoverable-star");
+
+    starImages.forEach((starImage) => {
+      const basePath = `${path}/img/`;
+
+      starImage.addEventListener("mouseover", () => {
+        starImage.src = basePath + "empty_star.png"; // hover 시 이미지 변경
+      });
+
+      starImage.addEventListener("mouseout", () => {
+        starImage.src = basePath + "star.png"; // 원래 이미지로 복원
+      });
+    });
+  }
+
+  function addHoverScriptHeart() {
+    // 모든 이미지 태그에 hover 이벤트를 다시 설정
+    const starImages = document.querySelectorAll(".hoverable-star");
+
+    starImages.forEach((starImage) => {
+      const basePath = `${path}/img/`;
+
+      starImage.addEventListener("mouseover", () => {
+        starImage.src = basePath + "empty_like_icon.png"; // hover 시 이미지 변경
+      });
+
+      starImage.addEventListener("mouseout", () => {
+        starImage.src = basePath + "like_icon.png"; // 원래 이미지로 복원
+      });
+    });
+  }
+
+  function addHoverScripDeleteFollower() {
+    let buttons = document.querySelectorAll(".delete-following");
+
+    buttons.forEach((button) => {
+      button.addEventListener("mouseover", () => {
+        button.textContent = "취소";
+      });
+
+      button.addEventListener("mouseout", () => {
+        button.textContent = "팔로잉";
+      });
     });
   }
 });

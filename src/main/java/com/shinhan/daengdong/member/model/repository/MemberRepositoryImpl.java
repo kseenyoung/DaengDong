@@ -1,6 +1,7 @@
 package com.shinhan.daengdong.member.model.repository;
 
 import com.shinhan.daengdong.member.dto.FavoritePlaceDTO;
+import com.shinhan.daengdong.member.dto.RelationshipsDTO;
 import com.shinhan.daengdong.member.dto.LikePostsDTO;
 import com.shinhan.daengdong.member.dto.MemberDTO;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
@@ -77,5 +78,17 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     @Override
     public void deleteLikePosts(int postId) {
         sqlSession.delete(namespace + "deleteLike", postId);
+    }
+
+    @Override
+    public List<RelationshipsDTO> getFollowingList(String memberEmail) {
+        List<RelationshipsDTO> followingList = sqlSession.selectList(namespace + "selectFollowing", memberEmail);
+        return followingList;
+    }
+
+    @Override
+    public List<RelationshipsDTO> getFollowerList(String memberEmail) {
+        List<RelationshipsDTO> followerList = sqlSession.selectList(namespace + "selectFollower", memberEmail);
+        return followerList;
     }
 }

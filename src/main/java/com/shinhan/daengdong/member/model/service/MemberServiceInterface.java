@@ -1,10 +1,7 @@
 package com.shinhan.daengdong.member.model.service;
 
-import com.shinhan.daengdong.member.dto.FavoritePlaceDTO;
-import com.shinhan.daengdong.member.dto.LikePostsDTO;
-import com.shinhan.daengdong.member.dto.MemberDTO;
+import com.shinhan.daengdong.member.dto.*;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
-import com.shinhan.daengdong.member.dto.SignUpDTO;
 
 import java.util.List;
 
@@ -27,4 +24,8 @@ public interface MemberServiceInterface {
     void modifyReview(ReviewDTO reviewDTO);
 
     void deleteLikePosts(int postId);
+
+    List<RelationshipsDTO> getFollowingList(String memberEmail);
+
+    List<RelationshipsDTO> getFollowerList(String memberEmail);
 }
