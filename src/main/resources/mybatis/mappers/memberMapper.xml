@@ -23,4 +23,242 @@
         values (#{memberEmail},#{petName},#{petGender},#{petBirthday},#{petBloodType},#{petProfilePhoto},#{petSpecies})
     </insert>
 
+    <!--member18 반려동물 프로필 변경!!-->
+    <update id="updatepetProfile" parameterType="String">
+        update pets
+        set pet_profile_photo = #{pet_profile_photo}
+        where member_id = #{member_id}
+    </update>
+
+    <!--member18-1 반려동물 삭제!!!!-->
+    <delete id="deletepetProfile" parameterType="int">
+        delete
+        from pets
+        where pet_id = #{pet_id}
+    </delete>
+
+    <!--모든 알림 조회!!!!@@@@@-->
+<!--    <select id="selectnotification" parameterType="String" resultType="notificationDTO">-->
+<!--        select *-->
+<!--        from notification-->
+<!--        where receiver_email = #{receiver_email}-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;모든 알림 삭제&ndash;&gt;-->
+<!--    <delete id="deletenotification" parameterType="String">-->
+<!--        delete-->
+<!--        from notification-->
+<!--        where sender_email = #{sender_email}-->
+<!--    </delete>-->
+
+<!--    &lt;!&ndash;member8 닉네임 변경하기 &ndash;&gt;-->
+<!--    <update id="modifyNickname" parameterType="memberDTO">-->
+<!--        update members-->
+<!--        set member_nickname = #{memberNickname}-->
+<!--        where member_email = #{memberEmail}-->
+<!--    </update>-->
+
+<!--    &lt;!&ndash;member11 여행 기록 보기&ndash;&gt;-->
+<!--    <select id="viewTravelList" parameterType="String" resultType="travelListVO">-->
+<!--        select plans.plan_id, plans.plan_name,plans.start_date ,plans.end_date, plans.plan_state, planPlaces.kakao_place_id-->
+<!--        from plans join planPlaces using(plan_id)-->
+<!--        where plans.member_email = #{memberEmail}-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;여행 기록 별 같이 간 여행자 보기&ndash;&gt;-->
+<!--    <select id="personWithTravelList" parameterType="int" resultType="personWithTravelVO">-->
+<!--        select member_email, plan_id-->
+<!--        from memberPlans-->
+<!--        where plan_id = #{planId};-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;여행만들기&ndash;&gt;-->
+<!--    <insert id="insertTravelList" parameterType="plansDTO">-->
+<!--        insert into plans INSERT INTO plans (member_email, start_date, end_date, plan_state)-->
+<!--        values(#{member_email},#{start_date},#{end_date},#{plan_state})-->
+<!--    </insert>-->
+
+<!--    &lt;!&ndash;여행 기록 수정&ndash;&gt;-->
+<!--    <update id="modifyTravelList" parameterType="plansDTO">-->
+<!--        update plans p-->
+<!--        join memberPlans mp on p.plan_id = mp.plan_id-->
+<!--        set-->
+<!--        p.start_date = #{start_date}-->
+<!--        p.end_date = #{end_date}-->
+<!--        p.plan_state = #{plan_state}-->
+<!--        where p.plan_id = #{plan_id}-->
+<!--        And mp.member_email = #{member_email}-->
+<!--    </update>-->
+<!--    -->
+<!--    &lt;!&ndash;여행 기록 삭제&ndash;&gt;-->
+<!--    <delete id="deleteTravelList" parameterType="String">-->
+<!--        delete-->
+<!--        from membersPlans-->
+<!--        where member_plan_id = #{member_plan_id}-->
+<!--    </delete>-->
+
+<!--    &lt;!&ndash;member13 내가 가진 포토카드 모두 보기&ndash;&gt;-->
+<!--    <select id="viewPhotoCardList" parameterType="String" resultType="PhotoCardVO">-->
+<!--    SELECT * FROM photocards-->
+<!--    where member_email = #{memberEmail};-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;member13-1 포토카드 만들기&ndash;&gt;-->
+<!--    <insert id="addPhotoCart" parameterType="photocardsDTO">-->
+<!--        insert into photocards(member_email,photo_card_image_url , photo_card_perior)-->
+<!--        value (#{member_email} ,#{photo_card_image_url},#{photo_card_perior})-->
+<!--    </insert>-->
+
+<!--    &lt;!&ndash;member13-2 포토카드 삭제&ndash;&gt;-->
+<!--    <delete id="deletePhotoCard" parameterType="int">-->
+<!--        delete-->
+<!--        from photocards-->
+<!--        where photo_card_id = #{photo_card_id}-->
+<!--    </delete>-->
+
+<!--    &lt;!&ndash;프로필 사진 변경하기&ndash;&gt;-->
+<!--    <update id="updateprofilePhoto" parameterType="memberDTO">-->
+<!--        update members-->
+<!--        set member_profile_photo = #{memberprofilephoto}-->
+<!--        where member_email = #{memberEmail}-->
+<!--    </update>-->
+
+<!--    &lt;!&ndash;프로필 사진 등록하기 -> 기존사용자가 사진만 없을때&ndash;&gt;-->
+<!--    <update id="updateprofilePhoto" parameterType="memberDTO">-->
+<!--        UPDATE members-->
+<!--        SET member_profile_photo = #{memberprofilephoto}-->
+<!--        WHERE member_email = #{memberEmail}-->
+<!--        AND member_profile_photo IS NULL;-->
+<!--    </update>-->
+
+<!--    &lt;!&ndash;프로필 사진 삭제하기&ndash;&gt;-->
+<!--    <update id="clearProfilePhoto" parameterType="String">-->
+<!--        update members-->
+<!--        set member_profile_photo = NULL-->
+<!--        where member_profile_photo = #{memberprofilephoto}-->
+<!--    </update>-->
+
+    <!--내 리뷰 모두 보기-->
+    <select id="viewReviewList" parameterType="String" resultType="ReviewVO">
+        SELECT r.review_id, p.kakao_place_name, r.kakao_place_id, r.review_rating, r.review_content, reg.region_name, r.create_at, r.update_at
+        FROM reviews as r join places as p using (kakao_place_id)
+                          join regions as reg on p.region_id = reg.region_id
+        where member_email = #{memberEmail}
+    </select>
+
+    <!--member19 내가 쓴 리뷰 삭제-->
+    <delete id="deleteReview" parameterType="int">
+        delete
+        from reviews
+        where review_id = #{review_id}
+    </delete>
+
+    <!--내가 쓴 리뷰 수정-->
+    <update id="modifyReview" parameterType="ReviewDTO" >
+        update reviews
+        set review_rating = #{review_rating},
+            review_content = #{review_content}
+        where review_id = #{review_id}
+    </update>
+
+    <!--좋아요 모두 조회-->
+    <select id="getLikePostList" parameterType="String" resultType="LikePostsVO">
+        SELECT
+            posts.post_id,
+            posts.post_title,
+            post_images.image_url,
+            members.member_nickname
+        FROM likes
+                JOIN posts ON likes.post_id = posts.post_id
+                JOIN post_images ON posts.post_id = post_images.post_id
+                JOIN members ON posts.member_email = members.member_email
+        where likes.member_email = #{memberEmail};
+    </select>
+
+    <!--좋아요 삭제-->
+    <delete id="deleteLike" parameterType="int">
+        delete
+        from likes
+        where post_id = #{post_id}
+    </delete>
+
+    <!--즐겨찾기한 장소 모두 조회-->
+    <select id="favoritePlaceList" parameterType="String" resultType="favoritePlaceVO">
+        SELECT
+            f.star_id,
+            f.member_email,
+            p.kakao_place_id,
+            p.kakao_place_name,
+            p.kakao_road_address_name,
+            p.kakao_phone,
+            p.kakao_place_url,
+            r.region_name,
+            f.create_at,
+            f.update_at
+        FROM favorites f JOIN places p ON f.kakao_place_id = p.kakao_place_id
+                         JOIN regions r ON p.region_id = r.region_id
+        where member_email = #{memberEmail}
+    </select>
+
+    <!--즐겨찾기 삭제!-->
+    <delete id="deleteFavoritePlace" parameterType="int">
+        delete
+        from favorites
+        where star_id = #{star_id}
+    </delete>
+
+<!--    &lt;!&ndash;팔로우하기&ndash;&gt;-->
+<!--    <insert id="relationships" parameterType="relationshipsDTO">-->
+<!--        insert into relationships (from_email, to_email)-->
+<!--        VALUES (#{from_email}, #{to_email})-->
+<!--    </insert>-->
+
+    <!--팔로우취소-->
+    <delete id="deleteRelationships" parameterType="followDTO">
+        delete
+        from relationships
+        where from_email = #{from_email}
+        And to_email = #{to_email}
+    </delete>
+
+    <!--팔로잉 보기-->
+    <select id="selectFollowing" parameterType="String" resultType="relationshipsVO">
+        select m.member_email, m.member_name, m.member_nickname, m.member_profile_photo,  r1.create_at, r1.update_at,
+               EXISTS (
+                   SELECT 1
+                   FROM relationships r2
+                   WHERE r2.from_email = r1.to_email AND r2.to_email = r1.from_email
+               ) AS is_following_back
+        from relationships r1
+                 join members m on r1.to_email = m.member_email
+        where r1.from_email = #{from_email}
+    </select>
+
+    <!--팔로워 보기-->
+    <select id="selectFollower" parameterType="String" resultType="relationshipsVO">
+        select m.member_email, m.member_name, m.member_nickname, m.member_profile_photo,  r1.create_at, r1.update_at,
+               EXISTS (
+                   SELECT 1
+                   FROM relationships r2
+                   WHERE r2.from_email = r1.to_email AND r2.to_email = r1.from_email
+               ) AS is_following_back
+        from relationships r1
+                 join members m on r1.from_email = m.member_email
+        where r1.to_email = #{to_email}
+    </select>
+
+<!--    &lt;!&ndash;즐겨찾기 등록&ndash;&gt;-->
+<!--    <insert id="insertFavoritePlaceList" parameterType="favoriteDTO">-->
+<!--        insert favorites set-->
+<!--        member_email = #{memebr_id},-->
+<!--        kakao_place_id = #{kakao_place_id}-->
+<!--    </insert>-->
+
+<!--    &lt;!&ndash;유저 게시글 조회&ndash;&gt;-->
+<!--    <select id="selectPosts" parameterType="String" resultType="postsVO">-->
+<!--        select *-->
+<!--        from posts-->
+<!--        where member_email = 'user1@example.com';-->
+<!--    </select>-->
+
 </mapper>

@@ -1,3 +1,6 @@
+* {
+  overflow: hidden;
+}
 /* General Styles */
 body {
   font-family: Arial, sans-serif;
@@ -28,7 +31,7 @@ body {
 
 .profile-header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
 }
 
 .profile-image {
@@ -44,6 +47,7 @@ body {
 
 .profile-id {
   font-size: 14px;
+  margin-bottom: 0px;
   /*color: #aaaaaa;*/
   color: #535353;
 }
@@ -57,8 +61,11 @@ body {
 
 .profile-follow-info,
 .profile-details {
+  display: flex;
+  justify-content: center;
   font-size: 14px;
-  margin-bottom: 15px;
+  margin: 10px;
+
 }
 
 .profile-pet {
@@ -73,6 +80,11 @@ body {
   margin-bottom: 10px;
 }
 
+#my-pet {
+  font-size: 18px;
+  font-weight: bold;
+}
+
 .pet-detail {
   display: flex;
   flex-direction: column; /* 세로 방향으로 정렬 */
@@ -83,8 +95,15 @@ body {
   width: 80px;
   height: 80px;
   padding: 5px;
-  margin: 10px 10px;
+  margin: 5px;
   border-radius: 50%;
+}
+
+#follower,
+#following {
+  cursor: pointer;
+  margin: 0 15px;
+  color: blue;
 }
 
 /* Right Section - Main Content */
@@ -129,8 +148,47 @@ body {
 }
 
 .categories ul li:hover {
-  color: #7650E0;
+  color: #0AB75B!important;
   /*text-decoration: underline;*/
+}
+
+.categories ul li.active {
+  color: #0AB75B!important;
+}
+
+/* Active 상태에서도 Hover 작동 */
+.categories ul li.active:hover {
+  color: #0AB75B!important; /* Active 상태에서 Hover 색상 */
+}
+
+.semiCategories {
+  padding: 0 0 15px 0;
+  text-align: center;
+  position: sticky; /* 고정 */
+  top: 0; /* 화면 상단에 고정 */
+  z-index: 10; /* 다른 요소보다 위에 표시 */
+  display: flex; /* 가로 배열 */
+  justify-content: center; /* 중앙 정렬 */
+  gap: 15px; /* 항목 간 간격 */
+}
+
+.semiCategories ul {
+  display: flex; /* 가로 배열 */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.semiCategories ul li {
+  font-size: 13px;
+  font-weight: bolder;
+  margin: 5px 20px;
+  color: #8a8a8a;
+  cursor: pointer;
+}
+
+.semiCategories ul li:hover {
+  color: #0AB75B!important;
 }
 
 .content {
@@ -141,16 +199,14 @@ body {
 }
 
 .announcement {
+  display: flex;
+  justify-content: space-between; /* 텍스트와 버튼을 양쪽 끝으로 */
+  align-items: center;
   background-color: #ffffff;
   padding: 15px;
   border-radius: 10px;
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
-}
-
-.announcement h3 {
-  font-size: 16px;
-  margin-bottom: 10px;
 }
 
 .announcement p {
@@ -219,9 +275,9 @@ body {
 
 #edit-profile {
   width: 100%;
-  margin: 10px 0;
+  margin: 5px 0;
   padding: 8px 16px;
-  background-color: #7650E0;
+  background-color: #0AB75B;
   color: white;
   border: none;
   border-radius: 4px;
@@ -230,5 +286,5 @@ body {
 }
 
 #edit-profile:hover {
-  background-color: #8567dd;
+  background-color: #32a86e;
 }

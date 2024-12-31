@@ -26,6 +26,7 @@
         <appender-ref ref="dailyFileAppender" />
     </logger>
 
+
     <!-- Application Loggers -->
     <logger name="com.shinhan.myapp">
         <level value="DEBUG" />

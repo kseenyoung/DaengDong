@@ -1,0 +1,93 @@
+/* 글래스모피즘 기본 스타일 */
+.modal .modal-dialog {
+  display: flex;
+  justify-content: center;
+}
+
+.modal-content {
+  background: rgba(255, 255, 255, 0.2); /* 투명도 */
+  backdrop-filter: blur(10px); /* 흐림 효과 */
+  -webkit-backdrop-filter: blur(10px); /* 사파리 지원 */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* 유리 테두리 효과 */
+  border-radius: 15px; /* 둥근 모서리 */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  color: #fff; /* 기본 텍스트 색상 */
+  width: 400px;
+
+}
+
+/* 팔로워 버튼 스타일 */
+.delete-following, .delete-follower {
+  color: black !important;
+  border: 1px solid black !important;
+  background-color: rgba(255, 255, 255, 0.1) !important; /* 연한 반투명 배경 */
+  min-width: 60px; /* 고정 너비 */
+  min-height: 25px; /* 고정 높이 */
+  margin: 10px;
+  border-radius: 5px; /* 더 둥근 모서리 */
+  font-weight: 500; /* 텍스트 두께 */
+  text-transform: uppercase; /* 텍스트 대문자 */
+  transition: transform 0.2s, background-color 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s; /* 부드러운 애니메이션 */
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+  backdrop-filter: blur(10px); /* 글래스 효과 흐림 */
+  -webkit-backdrop-filter: blur(10px); /* 사파리 지원 */
+}
+
+.delete-following:hover, .delete-follower:hover {
+  color: white !important; /* 침울한 빨간색 텍스트 */
+  border-color: #b71c1c !important; /* 침울한 빨간색 테두리 */
+  background-color: rgb(183, 28, 28) !important; /* 어두운 빨간색 배경 (투명) */
+  transform: scale(1.05); /* 살짝 확대 */
+  box-shadow: 0px 6px 15px rgba(183, 28, 28, 0.3); /* 빨간 그림자 */
+}
+
+.insert-follower {
+  color: white !important; /* 텍스트 색상 */
+  border-color: #21D456 !important; /* 버튼 테두리 색상 */
+  background: linear-gradient(120deg, #008000, #00ff80, #21D456, #005f38); /* 초록색 계열 배경 */
+  background-size: 300% 300%; /* 배경 크기 */
+  min-width: 60px; /* 고정 너비 */
+  min-height: 25px; /* 고정 높이 */
+  transition: transform 0.2s, background-position 0.5s; /* 애니메이션 전환 */
+  margin: 10px;
+  border-radius: 5px; /* 둥근 모서리 */
+  font-weight: bold; /* 기본 텍스트 두께 */
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+}
+
+.insert-follower:hover {
+  background-position: 100% 0; /* 배경 움직임 */
+  transform: scale(1.1); /* 확대 효과 */
+  color: #ffffff !important; /* 텍스트 색상 */
+  border-color: #ffffff !important; /* 버튼 테두리 색상 */
+  transition: transform 0.2s, background-position 1s; /* 애니메이션 전환 */
+  box-shadow: 3px 3px 6px rgba(255, 255, 255, 0.3); /* 호버 시 그림자 효과 */
+}
+
+/* 은하 애니메이션 */
+@keyframes galaxy-flow {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 100% 0%;
+  }
+}
+
+/* 이미지 둥글게 처리 */
+.rounded-circle {
+  border: 0 solid rgba(255, 255, 255, 0.5); /* 유리 효과와 조화 */
+}
+
+/* Modal Header 스타일 */
+.modal-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* 투명한 경계선 */
+}
+
+/* Modal Body 스타일 */
+.modal-body {
+  color: #ffffff; /* 텍스트 흰색 */
+}
