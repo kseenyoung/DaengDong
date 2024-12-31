@@ -1,16 +1,18 @@
 package com.shinhan.daengdong.member.controller;
 
-import com.shinhan.daengdong.member.dto.MemberDTO;
-import com.shinhan.daengdong.member.dto.SignUpDTO;
+import com.shinhan.daengdong.member.dto.*;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.shinhan.daengdong.review.dto.ReviewDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Controller
@@ -39,6 +40,7 @@ public class MemberController {
 
     @GetMapping("login.do")
     public String login(HttpServletRequest request){
+        log.info("로그인 페이지 요청");
         request.setAttribute("rest_api_key", rest_api_key);
         request.setAttribute("redirect_uri", redirect_uri);
         return "member/login";
@@ -47,17 +49,18 @@ public class MemberController {
     // 회원가입 페이지
     @GetMapping("signUp.do")
     public String signUp(){
+        log.info("회원가입 페이지 요청");
         return "member/signUp";
     }
 
     @PostMapping("signUp.do")
     @ResponseBody
     public SignUpDTO signUp(@RequestBody SignUpDTO signUpDTO, HttpServletRequest request){
-        log.info("signUpDTO : " + signUpDTO);
+        log.info("회원가입 요청 데이터: {}", signUpDTO);
         HttpSession session = request.getSession();
         if (session == null){
             // session 없음 = 로그인 시도한 적 없음
-            log.info("session is null");
+            log.info("세션이 존재하지 않음");
             return null;
         }
 
@@ -67,8 +70,13 @@ public class MemberController {
         // signUpDTO에 session에 저장된 MemberDTO 정보 삽입
         signUpDTO.setMemberEmail(member.getMemberEmail());
         signUpDTO.setMemberProfilePhoto(member.getMemberProfilePhoto());
-        if(signUpDTO.getMemberNickname()==null){
-            signUpDTO.setMemberNickname(member.getMemberNickname());
+        if (signUpDTO.getMemberNickname() == null) {
+            if (member.getMemberNickname() != null) {
+                signUpDTO.setMemberNickname(member.getMemberNickname());
+            } else {
+                log.error("닉네임이 null입니다.");
+                // 적절한 기본값을 설정하거나 에러 처리
+            }
         }
         log.info("member in session !! : " + member);
 
@@ -82,13 +90,11 @@ public class MemberController {
         return "member/reviews";
     }
 
-
     //마이페이지 전환
     @GetMapping("viewMypage.do")
     public String viewMypage() {
         return "member/mypage";
     }
-
 
     //마이페이지 > 유저 정보
     @GetMapping("getProfileFragment.do")
@@ -102,20 +108,53 @@ public class MemberController {
         return "member/semiSaveCategory";
     }
 
-    //'내 저장' > 세미 카테고리 > 즐겨찾기 컨텐츠
+    //'내 저장' > 세미 카테고리 > 즐겨찾기(장소) 컨텐츠
     @GetMapping("getFavoritePlace.do")
-    public String getFavoritePlace() {
-        return "member/favoritePlace";
+    public String getFavoritePlaceList(HttpSession session, Model model) {
+//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
+        List<FavoritePlaceDTO> favoritePlaceList = memberService.getFavoritePlaceList(memberDTO.getMemberEmail());
+        model.addAttribute("favoritePlaceList", favoritePlaceList);
+        return "member/favoritePlaceFragment";
     }
 
-    @GetMapping("viewProfileFragment.do")
-    public String viewProfileFragment() {
-        return "member/profileFragment";
-    }
-
-    @GetMapping("reviewFragment.do")
-    public String viewReviewFragment (@RequestBody List<Map<String, Object>> reviews, Model model) {
-        model.addAttribute("reviews", reviews);
+    //'내 저장' > 세미 카테고리 > 내가 쓴 리뷰(장소) 컨텐츠
+    @GetMapping("getReviewFragment.do")
+    public String getReviewList(HttpSession session, Model model) {
+//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
+        List<ReviewDTO> reviewList = memberService.getReviewList(memberDTO.getMemberEmail());
+        model.addAttribute("reviewList", reviewList);
         return "member/reviewFragment";
+    }
+
+    //'내 저장' > 세미 카테고리 > 내가 좋아요 한(게시글) 컨텐츠
+    @GetMapping("getLikePostsFragment.do")
+    public String getLikePosts(HttpSession session, Model model) {
+//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
+        List<LikePostsDTO> likePostsList = memberService.getLikePosts(memberDTO.getMemberEmail());
+        model.addAttribute("likePostsList", likePostsList);
+        return "member/likePostsFragment";
+    }
+
+    //팔로잉 보기
+    @GetMapping("viewFollowingModal.do")
+    public String viewFollowingModal(HttpSession session, Model model) {
+//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
+        List<RelationshipsDTO> followingList = memberService.getFollowingList(memberDTO.getMemberEmail());
+        model.addAttribute("followingList", followingList);
+        return "member/followingModal";
+    }
+
+    //팔로워 보기
+    @GetMapping("viewFollowerModal.do")
+    public String viewFollowerModal(HttpSession session, Model model) {
+//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
+        List<RelationshipsDTO> followerList = memberService.getFollowerList(memberDTO.getMemberEmail());
+        model.addAttribute("followerList", followerList);
+        return "member/followerModal";
     }
 }

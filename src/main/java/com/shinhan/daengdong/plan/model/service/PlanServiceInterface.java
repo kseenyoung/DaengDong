@@ -6,6 +6,9 @@ import java.util.List;
 
 public interface PlanServiceInterface {
 
-    List<String> getAllRegions();
     PlanDTO savePlan(PlanDTO planDTO);
+    List<PlanDTO> getPublicPlan();
+    void planName(PlanDTO planDTO);
+    void planDate(PlanDTO planDTO);
+    void planState(PlanDTO planDTO);
 }

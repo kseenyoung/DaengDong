@@ -4,21 +4,38 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shinhan.plan">
 
-    <insert id="addInfo" parameterType="planDTO">
-        insert into plans(plan_name, member_email, start_date, end_date, plan_state)
-        values (#{planName}, #{memberEmail}, #{startDate}, #{endDate}, #{planState})
+    <insert id="save" parameterType="planDTO">
+        insert into plans(plan_name, start_date, end_date, plan_state)
+        values (#{planName}, #{startDate}, #{endDate}, #{planState})
     </insert>
 
-    <select id="addRegion" parameterType="regionDTO">
-        select region_name
-        from regions
-        where region_id = #{regionId}
+    <select id="planList" resultType="planDTO">
+        select
+            plan_id AS planId,
+            plan_name AS planName,
+            start_date AS startDate,
+            end_date AS endDate,
+            plan_state AS planState
+        from plans;
     </select>
 
-    <insert id="addPlace" parameterType="placeDTO">
-        insert into places (region_id, kakao_palace_name,kakao_road_address_name,kakao_phone,kakao_x,kakao_y,kakao_place_url)
-        values (#{regionId}, #{kakaoPlaceName}, #{kakaoRoadAddressName}, #{kakaoPhone}, #{kakaoX}, #{kakaoY}, #{kakaoPlaceUrl})
+    <update id="planName" parameterType="planDTO">
+        update plans
+        set plan_name = #{planName}
+        where plan_id = #{planId};
+    </update>
 
-    </insert>
+    <update id="planDate" parameterType="planDTO">
+        update plans
+        set
+            start_date = #{startDate},
+            end_date = #{endDate}
+        where plan_id = #{planId};
+    </update>
 
+    <update id="planState" parameterType="planDTO">
+        update plans
+        set plan_state = #{planState}
+        where plan_id = #{planId};
+    </update>
 </mapper>

@@ -36,7 +36,7 @@ $(function () {
         });
 
         $.ajax({
-            url: `/auth/signUp.do`,
+            url: `/daengdong/auth/signUp.do`,
             type : 'post',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify({
@@ -50,12 +50,12 @@ $(function () {
                 if( result == null){
                     // 세션 없는 사람 -> 로그인 시도 후 회원가입 하세요!
                     alert('session이 없습니다. 로그인 시도를 먼저 해주세요..')
-                    location.href= `/login.do`;
+                    location.href= `/daengdong/auth/login.do`;
                 }
                 else{
                     // 회원가입 성공 -> home.jsp
                     alert('회원가입 성공!')
-                    location.href=`/home`;
+                    location.href=`/daengdong/views/home`;
                 }
             },
             error: function (e){

@@ -1,14 +1,11 @@
 package com.shinhan.daengdong.plan.model.repository;
 
+import com.shinhan.daengdong.plan.dto.PlanDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.dbcp2.BasicDataSource;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -16,27 +13,30 @@ import java.util.List;
 public class PlanRepositoryImpl implements PlanRepositoryInterface {
 
     @Autowired
-    private BasicDataSource dataSource;
+    private SqlSessionTemplate sqlSessionTemplate;  // MyBatis 세션 사용
 
     @Override
-    public List<String> findAllRegions() {
-        log.info("DB Query [region_name]...");
-        List<String> regions = new ArrayList<>();
-        String sql = "SELECT region_name FROM regions";
+    public void save(PlanDTO planDTO) {
+        sqlSessionTemplate.insert("com.shinhan.plan.save", planDTO); // XML 매핑된 쿼리 호출
+    }
 
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet resultSet = ps.executeQuery()) {
+    @Override
+    public List<PlanDTO> getPlansByState() {
+        return sqlSessionTemplate.selectList("com.shinhan.plan.planList");
+    }
 
-            while (resultSet.next()) {
-                regions.add(resultSet.getString("region_name"));
-            }
+    @Override
+    public void planName(PlanDTO planDTO) {
+        sqlSessionTemplate.update("com.shinhan.plan.planName", planDTO);
+    }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error fetching regions", e);
-        }
+    @Override
+    public void planDate(PlanDTO planDTO) {
+        sqlSessionTemplate.update("com.shinhan.plan.planDate", planDTO);
+    }
 
-        return regions;
+    @Override
+    public void planState(PlanDTO planDTO) {
+        sqlSessionTemplate.update("com.shinhan.plan.planState", planDTO);
     }
 }
