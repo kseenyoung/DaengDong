@@ -22,5 +22,4 @@ public class SearchPlaceController {
         return "place/searchPlace"; // searchPlace.jsp
     }
 
-
 }

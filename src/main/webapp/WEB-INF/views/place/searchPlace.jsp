@@ -1,11 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: minyoung
-  Date: 24. 12. 23.
-  Time: 오후 12:20
-  To change this template use File | Settings | File Templates.
---%>
-
 <!DOCTYPE html>
 <html>
 <head>
