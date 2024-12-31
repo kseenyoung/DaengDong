@@ -18,22 +18,46 @@
 .map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
 .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
 .map_wrap {position:relative;width:100%;height:930px;}
-/*#menu_wrap {
-    position: absolute;
+#menu_wrap {
+    position: fixed;
     top: 0;
-    left: 0;
+    left: 10%;
+    transform: translate(0, 0);
+    display: none;
     bottom: 0;
-    width: 400px;
+    width: 80%;
     margin: 10px 0 30px 10px;
     padding: 15px;
     overflow-y: auto;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
-    z-index: 1;
+    z-index: 1000;
     font-size: 13px;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border: 1px solid #ddd;
-}*/
+}
+#menu_wrap.show {
+    display: block;
+}
+
+#menu_wrap.hidden {
+    display: none;
+}
+
+#modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+#modalOverlay.show {
+    display: block;
+}
 
 .bg_white {
     background: #ffffff;
@@ -58,6 +82,29 @@
     font-size: 14px;
     color: #333;
 }
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    font-size: 40px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    z-index: 1001;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.close-btn:hover {
+    color: #ff5252;
+    transform: scale(1.2);
+}
+
+.close-btn:focus {
+    outline: none;
+}
+
 #pinbutton {
     position: absolute;
     padding: 0.8vw 1.8vw;
@@ -80,8 +127,9 @@
 }
 
 #menu_wrap .option button {
-    margin-left: 5px;
-    padding: 8px 15px;
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 14px;
     font-weight: bold;
     color: #fff;
     background-color: #4CAF50;
@@ -152,18 +200,18 @@
 .placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
 .container {
     display: flex;
-    flex-direction: column; /* 세로 정렬 */
-    align-items: center; /* 가운데 정렬 */
-    width: 100%; /* 부모 컨테이너 크기 */
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 #category-container {
-    margin-bottom: 20px; /* 카테고리와 목록 사이의 간격 */
+    margin-bottom: 40px;
 }
 
 #category {
     display: flex;
-    justify-content: center; /* 가로로 중앙 정렬 */
+    justify-content: center;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -173,7 +221,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 65px;
+    width: 200px;
     margin: 0px;
     cursor: pointer;
 }
@@ -501,10 +549,68 @@ body, h4, p, button, a {
   text-decoration: none;
 }
 
+
+
+#list_wrap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 400px;
+            margin: 10px 0 30px 10px;
+            padding: 15px;
+            overflow-y: auto;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
+            z-index: 500;
+            font-size: 13px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid #ddd;
+        }
+
+        #addPlaceBtn, .delete-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        #addPlaceBtn:hover, .delete-btn:hover {
+            background-color: #45a049;
+        }
+
+        .place-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .search-input {
+            width: 80%;
+            max-width: 600px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            outline: none;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .search-input:focus {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-color: #007BFF;
+        }
+
 </style>
-<jsp:include page="../plan/addPlan.jsp">
-    <jsp:param name="paramName" value="paramValue" />
-</jsp:include>
 </head>
 <body>
 
@@ -551,7 +657,7 @@ body, h4, p, button, a {
     <p class="sidebar-info"><strong>도로명주소:</strong> <span id="place-road_address_name"></span></p>
     <p class="sidebar-info"><strong>주소:</strong> <span id="place-address_name"></span></p>
     <p class="sidebar-info"><strong>전화번호:</strong> <span id="place-phone"></span></p>
-    <button id="add" class="add-btn" place.place_name="장소 이름" place.address_name="장소 주소">
+    <button id="addPlanBtn" class="add-btn" place.place_name="장소 이름" place.address_name="주소">
         + 내 일정에 추가
     </button>
     <a id="map-link" href="#" target="_blank" class="map-link">자세히 보기</a>
@@ -561,10 +667,11 @@ body, h4, p, button, a {
     <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
     <button id = "pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
     <div id="menu_wrap" class="bg_white">
+    <button id="closeMenu" class="close-btn">✖</button>
         <div class="option">
             <div>
                 <form onsubmit="searchPlaces(); return false;">
-                    <input type="text" value="홍대 맛집" id="keyword" size="40">
+                    <input type="text" value="홍대 맛집" id="keyword" size="80" class="search-input" >
                     <button type="submit">검색하기</button>
                 </form>
             </div>
@@ -603,6 +710,12 @@ body, h4, p, button, a {
         <div id="pagination"></div>
     </div>
 </div>
+    <div id="list_wrap">
+        <ul id="placeList"></ul>
+        <div class="button">
+            <button id="addPlaceBtn">장소 추가</button>
+        </div>
+    </div>
 
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e0559b7888458bf024586f6213185e7b&libraries=services"></script>
@@ -1427,6 +1540,83 @@ function deleteAllPins() {
         pinPositions = [];
         dots = [];
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    let places = JSON.parse(localStorage.getItem("places")) || [];
+    const placeList = document.getElementById("placeList");
+
+    // 장소 목록 렌더링 함수
+    function renderPlaceList() {
+        placeList.innerHTML = "";
+        places.forEach((place, index) => {
+            const li = document.createElement("li");
+            li.className = "place-item";
+            li.id = `place-${index}`;
+            li.innerHTML = `
+                <span>${place.place_name} - ${place.address_name}</span>
+                <button class="delete-btn" data-index="${index}">삭제</button>
+            `;
+
+            li.querySelector(".delete-btn").addEventListener("click", function () {
+                deletePlace(index);
+            });
+
+            placeList.appendChild(li);
+        });
+    }
+
+    // 장소 삭제 함수
+    function deletePlace(index) {
+        places.splice(index, 1);
+        localStorage.setItem("places", JSON.stringify(places));
+        renderPlaceList();
+    }
+
+    // 내 일정에 추가 버튼 클릭 이벤트
+    document.getElementById("addPlanBtn").addEventListener("click", function () {
+        // 장소 이름과 주소를 올바르게 가져오기
+        const placeName = document.getElementById("place.place_name").textContent;
+        const addressName = document.getElementById("place.address_name").textContent;
+
+        if (placeName && addressName) {
+            const newPlace = { place_name: placeName, address_name: addressName };
+            places.push(newPlace);
+            localStorage.setItem("places", JSON.stringify(places));
+            renderPlaceList();
+        }
+    });
+
+    // 초기 렌더링
+    renderPlaceList();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const menuWrap = document.getElementById("menu_wrap");
+    const modalOverlay = document.createElement("div");
+    modalOverlay.id = "modalOverlay";
+    document.body.appendChild(modalOverlay);
+
+    const openMenuBtn = document.getElementById("addPlaceBtn");
+    const closeMenuBtn = document.getElementById("closeMenu");
+
+    // 모달 열기
+    openMenuBtn.addEventListener("click", function () {
+        menuWrap.classList.add("show");
+        modalOverlay.classList.add("show");
+    });
+
+    // 모달 닫기
+    closeMenuBtn.addEventListener("click", function () {
+        menuWrap.classList.remove("show");
+        modalOverlay.classList.remove("show");
+    });
+
+    // 배경 클릭 시 모달 닫기
+    modalOverlay.addEventListener("click", function () {
+        menuWrap.classList.remove("show");
+        modalOverlay.classList.remove("show");
+    });
+});
 
 </script>
 </body>
