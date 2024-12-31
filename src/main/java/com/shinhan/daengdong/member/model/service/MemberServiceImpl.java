@@ -103,4 +103,9 @@ public class MemberServiceImpl implements MemberServiceInterface{
     public List<RelationshipsDTO> getFollowerList(String memberEmail) {
         return memberRepository.getFollowerList(memberEmail);
     }
+
+    @Override
+    public void deleteFollowing(FollowDTO followDTO) {
+        memberRepository.deleteFollowing(followDTO);
+    }
 }

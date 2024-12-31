@@ -18,6 +18,7 @@
 		<typeAlias type="com.shinhan.daengdong.member.dto.LikePostsDTO" alias="LikePostsVO" />
 		<typeAlias type="com.shinhan.daengdong.member.dto.RelationshipsDTO" alias="relationshipsDTO" />
 		<typeAlias type="com.shinhan.daengdong.member.dto.RelationshipsDTO" alias="relationshipsVO" />
+		<typeAlias type="com.shinhan.daengdong.member.dto.FollowDTO" alias="followDTO" />
 
 		<!-- 위 코드처럼 채워 나가면 됨.. -->
 	</typeAliases>

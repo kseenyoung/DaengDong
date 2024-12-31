@@ -15,8 +15,9 @@ $(document).ready(function () {
     $(document).on("click", "#myTripFragment", moveToMyTrip);
     $(document).on("click", "#mySaveFragment", getSemiSaveCategory);
     $(document).on("click", "#semiCategories .action-item", injectAction);
-    $(document).on("click", "#following", viewFollowingModal)
-    $(document).on("click", "#follower", viewFollowerModal)
+    $(document).on("click", "#following", viewFollowingModal);
+    $(document).on("click", "#follower", viewFollowerModal);
+    $(document).on("click", ".delete-following", deleteFollowing);
   }
 
   function moveToMyTrip() {
@@ -244,11 +245,11 @@ $(document).ready(function () {
   }
 
   function deleteLikePosts() {
-    let post_id = $(this).data("post-id");
+    let postId = $(this).data("post-id");
     let element = $(this).closest('.announcement'); // 삭제할 요소를 미리 저장
 
     $.ajax({
-      url: `${path}/likePosts/${post_id}`,
+      url: `${path}/likePosts/${postId}`,
       type: 'get',
       contentType: 'application/json',
       success: function () {
@@ -332,5 +333,25 @@ $(document).ready(function () {
         button.textContent = "팔로잉";
       });
     });
+  }
+
+  function deleteFollowing() {
+    let toEmail = $(this).data('to-email');
+    let FollowingElement = $(this).closest('.following-list'); // 삭제할 요소를 미리 저장
+    let FollowerElement = $(this).closest('.delete-following'); // 삭제할 요소를 미리 저장
+
+    $.ajax({
+      url: `${path}/following/${toEmail}`,
+      type: "GET",
+      contentType: 'application/json',
+      success: function () {
+        FollowingElement.remove();
+        FollowerElement.replaceWith('<button class="btn btn-primary btn-sm insert-follower">팔로우</button>');
+
+      },
+      error: function (err) {
+        console.log(err)
+      }
+    })
   }
 });

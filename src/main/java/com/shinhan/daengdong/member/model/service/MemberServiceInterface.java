@@ -28,4 +28,6 @@ public interface MemberServiceInterface {
     List<RelationshipsDTO> getFollowingList(String memberEmail);
 
     List<RelationshipsDTO> getFollowerList(String memberEmail);
+
+    void deleteFollowing(FollowDTO followDTO);
 }

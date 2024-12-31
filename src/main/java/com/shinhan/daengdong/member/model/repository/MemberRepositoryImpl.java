@@ -1,9 +1,6 @@
 package com.shinhan.daengdong.member.model.repository;
 
-import com.shinhan.daengdong.member.dto.FavoritePlaceDTO;
-import com.shinhan.daengdong.member.dto.RelationshipsDTO;
-import com.shinhan.daengdong.member.dto.LikePostsDTO;
-import com.shinhan.daengdong.member.dto.MemberDTO;
+import com.shinhan.daengdong.member.dto.*;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 import com.shinhan.daengdong.pet.dto.PetDTO;
 import java.util.List;
@@ -90,5 +87,10 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     public List<RelationshipsDTO> getFollowerList(String memberEmail) {
         List<RelationshipsDTO> followerList = sqlSession.selectList(namespace + "selectFollower", memberEmail);
         return followerList;
+    }
+
+    @Override
+    public void deleteFollowing(FollowDTO followDTO) {
+        sqlSession.delete(namespace + "deleteRelationships", followDTO);
     }
 }
