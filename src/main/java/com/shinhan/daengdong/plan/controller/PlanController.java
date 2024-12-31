@@ -5,6 +5,8 @@ import com.shinhan.daengdong.plan.dto.PlanDTO;
 import com.shinhan.daengdong.plan.model.service.PlanServiceInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -50,30 +52,33 @@ public class PlanController {
 
     @PostMapping("/create")
     @ResponseBody
-    public PlanDTO createPlan(@RequestBody PlanDTO planDTO, HttpServletRequest request) {
+    public ResponseEntity<?> createPlan(@RequestBody PlanDTO planDTO, HttpServletRequest request) {
         log.info("플랜 등록 요청: {}", planDTO);
 
         HttpSession session = request.getSession(false);
-        if (session == null) {
-            log.warn("세션이 없어 등록 불가");
-            return null;
+        if (session == null || session.getAttribute("member") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
 
         MemberDTO member = (MemberDTO) session.getAttribute("member");
-        if (member == null) {
-            log.warn("세션에 member가 없어 등록 불가");
-            return null;
-        }
+        planDTO.setMemberEmail(member.getMemberEmail()); // 세션 이메일 할당
 
-        // 이 이메일로 PlanDTO 에서 db insert
-        String memberEmail = member.getMemberEmail();
-        log.info("플랜 등록 -> memberEmail: {}", memberEmail);
+        long generatedId = 20;
+        planDTO.setPlanId(generatedId);
+        log.info("생성된 plan_id: {}", planDTO.getPlanId());
 
-        // 예시: planDTO.setMemberEmail(memberEmail);
-        // planService.createPlan(planDTO);
+        planService.savePlan(planDTO); // DB INSERT
+        log.info("PlanRepositoryImpl.save 실행됨: {}", planDTO);
 
-        return planDTO;
+
+        log.info("플랜이 성공적으로 저장되었습니다.");
+        return ResponseEntity.ok("플랜 등록 성공");
+        // } else {
+        //     log.error("플랜 저장 실패");
+        //     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("플랜 등록 실패");
+        // }
     }
+
 
     @PostMapping ("/myPlace")
     public String postMyPlace(@RequestBody PlanDTO planDTO, Model model) {

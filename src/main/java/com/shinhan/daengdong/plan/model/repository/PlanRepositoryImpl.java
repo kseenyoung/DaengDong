@@ -17,7 +17,9 @@ public class PlanRepositoryImpl implements PlanRepositoryInterface {
 
     @Override
     public void save(PlanDTO planDTO) {
-        sqlSessionTemplate.insert("com.shinhan.plan.save", planDTO); // XML 매핑된 쿼리 호출
+        log.info("result 값:!!!!!!!!!!!!!!!! ");
+        int result = sqlSessionTemplate.insert("com.shinhan.plan.save", planDTO); // XML 매핑된 쿼리 호출
+        log.info("result 값: {}", result);
     }
 
     @Override
