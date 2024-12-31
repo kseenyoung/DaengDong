@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <!-- Appenders -->
     <appender name="console" class="org.apache.log4j.ConsoleAppender">
         <param name="Target" value="System.out" />
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%-5p: %c - %m%n" />
         </layout>
     </appender>
-    <!-- DailyFile Appenders -->
-    <appender name="dailyFileAppender"
-              class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="\/Users\/ksy\/spring\/logs\/output.log" />
+
+    <appender name="dailyFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="C:/Users/uichan/daengdong/logs/output.log" />
         <param name="Append" value="true" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="DatePattern" value="'.'yyyy-MM-dd" />
-            <param name="ConversionPattern"
-                   value="[%d{HH:mm:ss}][%-5p](%F:%L)-%m%n" />
+            <param name="ConversionPattern" value="[%d{HH:mm:ss}][%-5p](%F:%L)-%m%n" />
         </layout>
     </appender>
 
@@ -23,40 +23,39 @@
     <logger name="jdbc.sqlonly" additivity="false">
         <level value="INFO" />
         <appender-ref ref="console" />
-    </logger>
-
-    <!-- MyBatis Loggers -->
-    <logger name="org.mybatis">
-        <level value="info" />
+        <appender-ref ref="dailyFileAppender" />
     </logger>
 
 
     <!-- Application Loggers -->
     <logger name="com.shinhan.myapp">
-        <level value="info" />
+        <level value="DEBUG" />
         <appender-ref ref="console" />
+        <appender-ref ref="dailyFileAppender" />
+    </logger>
+
+    <!-- WebSocket Handler Logger -->
+    <logger name="com.shinhan.daengdong.plan.websoket">
+        <level value="DEBUG" />
+        <appender-ref ref="console" />
+        <appender-ref ref="dailyFileAppender" />
     </logger>
 
     <!-- 3rdparty Loggers -->
     <logger name="org.springframework.core">
-        <level value="info" />
+        <level value="INFO" />
     </logger>
 
     <logger name="org.springframework.beans">
-        <level value="info" />
+        <level value="INFO" />
     </logger>
 
     <logger name="org.springframework.context">
-        <level value="info" />
+        <level value="INFO" />
     </logger>
 
     <logger name="org.springframework.web">
-        <level value="info" />
-    </logger>
-
-    <!-- Spring Framework Loggers -->
-    <logger name="org.springframework">
-        <level value="info" />
+        <level value="INFO" />
     </logger>
 
     <!-- Root Logger -->
