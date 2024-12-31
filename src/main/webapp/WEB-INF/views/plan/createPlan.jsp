@@ -50,8 +50,8 @@
     const [startDate, endDate] = formData.dateRange.split(" - ");
     const requestData = {
       planName: formData.planName,
-      startDate: startDate.trim(),
-      endDate: endDate.trim(),
+      startDate: `\${startDate.trim()}`,  // 시작 날짜에 시간 추가
+      endDate: `\${endDate.trim()}`,      // 종료 날짜에 시간 추가
       planState: formData.planState
     };
 
@@ -59,7 +59,7 @@
     console.log("전송 데이터:", requestData);
 
     // 서버로 전송
-    fetch('/daengdong/plan/myPlace', {
+    fetch('/daengdong/plan/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestData)
