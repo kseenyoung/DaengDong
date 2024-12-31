@@ -20,6 +20,8 @@
 		<typeAlias type="com.shinhan.daengdong.member.dto.RelationshipsDTO" alias="relationshipsVO" />
 		<typeAlias type="com.shinhan.daengdong.member.dto.FollowDTO" alias="followDTO" />
 
+		<!-- Plan 부분 -->
+		<typeAlias type="com.shinhan.daengdong.plan.dto.PlanDTO" alias="planDTO" />
 		<!-- 위 코드처럼 채워 나가면 됨.. -->
 	</typeAliases>
 </configuration>
