@@ -1,6 +1,7 @@
 package com.shinhan.daengdong.plan.model.service;
 
 import com.shinhan.daengdong.plan.dto.PlanDTO;
+import com.shinhan.daengdong.plan.model.repository.PlanRepositoryImpl;
 import com.shinhan.daengdong.plan.model.repository.PlanRepositoryInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,12 @@ import java.util.List;
 public class PlanServiceImpl implements PlanServiceInterface {
 
     @Autowired
-    private PlanRepositoryInterface planRepository;
+    private PlanRepositoryImpl planRepository;
 
     @Override
-    public PlanDTO savePlan(PlanDTO planDTO) {
-        log.info("새 플랜 저장 : " + planDTO);
-        // 데이터 저장 후 저장된 객체 반환 (여기서는 예시로 입력 데이터를 반환)
-        return planDTO;
+    public void savePlan(PlanDTO planDTO) {
+        log.info("플랜 저장 요청!!!!!!!!!!!!!: {}", planDTO);
+        planRepository.save(planDTO); // DB에 저장
     }
 
     @Override
