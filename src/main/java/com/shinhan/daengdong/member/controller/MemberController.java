@@ -15,11 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -126,6 +122,21 @@ public class MemberController {
         List<ReviewDTO> reviewList = memberService.getReviewList(memberDTO.getMemberEmail());
         model.addAttribute("reviewList", reviewList);
         return "member/reviewFragment";
+    }
+
+    @GetMapping("getReviewModal.do")
+    public String getReviewModal(@RequestParam String reviewId,
+                                 @RequestParam String reviewContent,
+                                 @RequestParam int reviewRating,
+                                 @RequestParam String kakaoPlaceName,
+                                 @RequestParam String imageUrl,
+                                 Model model) {
+        model.addAttribute("reviewId", reviewId);
+        model.addAttribute("reviewContent", reviewContent);
+        model.addAttribute("reviewRating", reviewRating);
+        model.addAttribute("kakaoPlaceName", kakaoPlaceName);
+        model.addAttribute("imageUrl", imageUrl);
+        return "member/reviewUpdateModal";
     }
 
     //'내 저장' > 세미 카테고리 > 내가 좋아요 한(게시글) 컨텐츠

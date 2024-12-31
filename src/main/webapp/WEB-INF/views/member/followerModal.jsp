@@ -33,7 +33,8 @@
                                 <span class="ml-2">${followerList.member_nickname}</span>
                             </div>
                             <c:if test="${followerList.is_following_back == 0}">
-                                <button class="btn btn-primary btn-sm insert-follower">팔로우</button>
+                                <button class="btn btn-primary btn-sm insert-follower"
+                                        data-to-email="${followerList.member_email}">팔로우</button>
                             </c:if>
                             <c:if test="${followerList.is_following_back == 1}">
                                 <button id="delete-follow" class="btn btn-primary btn-sm delete-following"

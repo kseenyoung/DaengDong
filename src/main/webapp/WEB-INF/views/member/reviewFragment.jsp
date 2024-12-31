@@ -15,49 +15,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="${path}/css/member/reviews.css">
 </head>
-<div id="bootstrap-wrapper">
-    <!-- 부트스트랩 모달 -->
-    <div id="bootstrap-modal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <!-- Profile Section -->
-                    <div class="text-center mb-4">
-                        <img id="placeImg" src="" alt="placeImg"
-                              class="rounded-circle" width="120" height="120"/>
-                        <div id="kakao-place-name-display" class="mt-2 text-muted"></div>
-                    </div>
-
-                    <!-- Form Section -->
-                    <form>
-                        <div class="form-group">
-                            <input type="hidden" id="review-id">
-                            <label for="review-content">리뷰 내용</label>
-                            <textarea type="text" class="form-control" id="review-content"
-                                      placeholder="리뷰 내용"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="review-rating">별점</label>
-                            <select id="review-rating" class="form-control">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Modal Footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="confirm-update">Update</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<div id="view-review-modal-placeholder"></div>
 <c:forEach var="reviewList" items="${reviewList}">
     <div class="announcement">
         <div class="text-container">

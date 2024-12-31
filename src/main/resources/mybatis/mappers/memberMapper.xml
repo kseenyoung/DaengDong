@@ -404,11 +404,11 @@
         where star_id = #{star_id}
     </delete>
 
-<!--    &lt;!&ndash;팔로우하기&ndash;&gt;-->
-<!--    <insert id="relationships" parameterType="relationshipsDTO">-->
-<!--        insert into relationships (from_email, to_email)-->
-<!--        VALUES (#{from_email}, #{to_email})-->
-<!--    </insert>-->
+    <!--팔로우하기-->
+    <insert id="addRelationships" parameterType="followDTO">
+        insert into relationships (from_email, to_email)
+        VALUES (#{from_email}, #{to_email})
+    </insert>
 
     <!--팔로우취소-->
     <delete id="deleteRelationships" parameterType="followDTO">
