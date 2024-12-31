@@ -1,8 +1,6 @@
 package com.shinhan.daengdong.member.controller;
 
 import com.shinhan.daengdong.member.dto.FollowDTO;
-import com.shinhan.daengdong.member.dto.MemberDTO;
-import com.shinhan.daengdong.member.dto.RelationshipsDTO;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -49,5 +46,17 @@ public class MemberRestController {
                 .to_email(toEmail)
                 .build();
         memberService.deleteFollowing(followDTO);
+    }
+
+    @PostMapping("/following/{to_email}")
+    public void addFollowing(@PathVariable("to_email") String toEmail, HttpSession session) {
+//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+//        String fromEmail = memberDTO.getMemberEmail();
+        String fromEmail = "user1@example.com";
+        FollowDTO followDTO = FollowDTO.builder()
+                .from_email(fromEmail)
+                .to_email(toEmail)
+                .build();
+        memberService.addFollowing(followDTO);
     }
 }

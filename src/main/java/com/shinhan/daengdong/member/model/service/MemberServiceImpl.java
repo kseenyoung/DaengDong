@@ -108,4 +108,9 @@ public class MemberServiceImpl implements MemberServiceInterface{
     public void deleteFollowing(FollowDTO followDTO) {
         memberRepository.deleteFollowing(followDTO);
     }
+
+    @Override
+    public void addFollowing(FollowDTO followDTO) {
+        memberRepository.addFollowing(followDTO);
+    }
 }

@@ -30,4 +30,6 @@ public interface MemberServiceInterface {
     List<RelationshipsDTO> getFollowerList(String memberEmail);
 
     void deleteFollowing(FollowDTO followDTO);
+
+    void addFollowing(FollowDTO followDTO);
 }

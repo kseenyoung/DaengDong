@@ -18,6 +18,8 @@ $(document).ready(function () {
     $(document).on("click", "#following", viewFollowingModal);
     $(document).on("click", "#follower", viewFollowerModal);
     $(document).on("click", ".delete-following", deleteFollowing);
+    $(document).on("click", ".insert-follower", addFollowing)
+    $(document).on('click', '.insert-follower, .delete-following', addPopAnimation)
   }
 
   function moveToMyTrip() {
@@ -107,6 +109,10 @@ $(document).ready(function () {
         $("#myPosts").css("color", "#8a8a8a")
         $("#announcement-box").html(response);
         $(document).on("click", ".delete-review", deleteReview);
+
+        //todo: update 클릭 시, 정보 가져와서 모달에 표시해주기
+        //todo: modal이 곂곂이 쌓이는 버그 해결
+        //todo: 내가쓴 리뷰, 좋아요에서는 팔로워, 팔로잉 모달이 제대로 나오지 않는 버그 해결
         $(document).on('click', '.update-review', updateReview);
         $(document).on('click', '#confirm-update', confirmUpdate);
         $(this).closest('.announcement').remove();
@@ -198,22 +204,34 @@ $(document).ready(function () {
   }
 
   function updateReview() {
-    const reviewId = $(this).data('review-id'); // 데이터 속성에서 리뷰 ID 가져오기
-    const reviewContent = $(this).data('review-content'); // 리뷰 내용
-    const reviewRating = $(this).data('review-rating'); // 평점
-    const kakaoPlaceNameDisplay = $(this).data('kakao-place-name'); // 평점
+    const reviewId = $(this).data('review-id');
+    const reviewContent = $(this).data('review-content');
+    const reviewRating = $(this).data('review-rating');
+    const kakaoPlaceName = $(this).data('kakao-place-name');
     const imageUrl = $(this).data('kakao-image-url');
 
-    // 모달 내부의 입력 필드에 데이터 설정
-    $('#bootstrap-modal #review-id').val(reviewId);
-    $('#bootstrap-modal #review-content').val(reviewContent);
-    $('#bootstrap-modal #review-rating').val(reviewRating);
-    $('#kakao-place-name-display').text(`${kakaoPlaceNameDisplay}`);
-    $('#placeImg').attr('src', imageUrl || `${path}/img/defaultImage.jpg`); // src 속성 설정
-    $('#placeImg').attr('alt', kakaoPlaceNameDisplay); // alt 속성 설정
+    // 서버에서 모달 HTML 가져오기
+    $.ajax({
+      url: `${path}/auth/getReviewModal.do`,
+      type: 'GET',
+      data: {
+        reviewId: reviewId,
+        reviewContent: reviewContent,
+        reviewRating: reviewRating,
+        kakaoPlaceName: kakaoPlaceName,
+        imageUrl: imageUrl,
+      },
+      success: function (response) {
+        // Placeholder에 동적으로 HTML 삽입
+        $('#view-review-modal-placeholder').html(response);
 
-    // 모달 열기
-    $('#bootstrap-modal').modal('show');
+        // 모달 표시
+        $('#review-modal').modal('show');
+      },
+      error: function (err) {
+        console.error('Failed to load modal:', err);
+      }
+    });
   }
 
   // 저장 버튼 클릭 이벤트
@@ -337,8 +355,8 @@ $(document).ready(function () {
 
   function deleteFollowing() {
     let toEmail = $(this).data('to-email');
-    let FollowingElement = $(this).closest('.following-list'); // 삭제할 요소를 미리 저장
-    let FollowerElement = $(this).closest('.delete-following'); // 삭제할 요소를 미리 저장
+    let FollowingElement = $(this).closest('.following-list');
+    let FollowerElement = $(this).closest('.delete-following');
 
     $.ajax({
       url: `${path}/following/${toEmail}`,
@@ -346,12 +364,47 @@ $(document).ready(function () {
       contentType: 'application/json',
       success: function () {
         FollowingElement.remove();
-        FollowerElement.replaceWith('<button class="btn btn-primary btn-sm insert-follower">팔로우</button>');
-
+        addPopAnimation();
       },
       error: function (err) {
         console.log(err)
       }
-    })
+    });
+  }
+
+  function addFollowing() {
+    let toEmail = $(this).data('to-email');
+    let FollowerElement = $(this).closest('.insert-follower');
+
+    $.ajax({
+      url: `${path}/following/${toEmail}`,
+      type: "POST",
+      contentType: 'application/json',
+      success: function () {
+        addPopAnimation();
+      },
+      error: function (err) {
+        console.log(err)
+      }
+    });
+  }
+
+  function addPopAnimation() {
+    let button = $(this);
+
+    // 애니메이션 클래스 추가
+    button.addClass('pop-explode');
+
+    // 애니메이션 끝난 후 버튼 교체 또는 제거
+    setTimeout(() => {
+      if (button.hasClass('insert-follower')) {
+        button.replaceWith('<button class="btn btn-primary btn-sm delete-following" data-to-email="' +
+          button.data('to-email') + '">팔로잉</button>');
+      } else if (button.hasClass('delete-following')) {
+        button.replaceWith('<button class="btn btn-primary btn-sm insert-follower" data-to-email="' +
+          button.data('to-email') + '">팔로우</button>');
+      }
+      addHoverScripDeleteFollower();
+    }, 400); // 애니메이션 시간과 일치시킴
   }
 });

@@ -93,4 +93,9 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     public void deleteFollowing(FollowDTO followDTO) {
         sqlSession.delete(namespace + "deleteRelationships", followDTO);
     }
+
+    @Override
+    public void addFollowing(FollowDTO followDTO) {
+        sqlSession.insert(namespace + "addRelationships", followDTO);
+    }
 }
