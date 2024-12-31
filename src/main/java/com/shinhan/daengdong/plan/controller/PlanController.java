@@ -1,5 +1,6 @@
 package com.shinhan.daengdong.plan.controller;
 
+import com.shinhan.daengdong.member.dto.MemberDTO;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
 import com.shinhan.daengdong.plan.model.service.PlanServiceInterface;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.beans.PropertyEditorSupport;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -22,9 +25,54 @@ public class PlanController {
     @Autowired
     private PlanServiceInterface planService;
 
+    // @GetMapping("/create")
+    // public String createPlanForm() {
+    //     return "plan/createPlan"; // createPlan.jsp
+    // }
     @GetMapping("/create")
-    public String createPlanForm() {
-        return "plan/createPlan"; // createPlan.jsp
+    public String createPlanForm(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            log.warn("세션이 없어 로그인 페이지로 이동");
+            return "redirect:/auth/login.do";
+        }
+
+        MemberDTO member = (MemberDTO) session.getAttribute("member");
+        if (member == null) {
+            log.warn("세션에 member가 없어 로그인 페이지로 이동");
+            return "redirect:/auth/login.do";
+        }
+
+        // 필요하면 member 정보 모델에 담아서 화면 표시
+        model.addAttribute("member", member);
+        return "plan/createPlan";
+    }
+
+    @PostMapping("/create")
+    @ResponseBody
+    public PlanDTO createPlan(@RequestBody PlanDTO planDTO, HttpServletRequest request) {
+        log.info("플랜 등록 요청: {}", planDTO);
+
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            log.warn("세션이 없어 등록 불가");
+            return null;
+        }
+
+        MemberDTO member = (MemberDTO) session.getAttribute("member");
+        if (member == null) {
+            log.warn("세션에 member가 없어 등록 불가");
+            return null;
+        }
+
+        // 이 이메일로 PlanDTO 에서 db insert
+        String memberEmail = member.getMemberEmail();
+        log.info("플랜 등록 -> memberEmail: {}", memberEmail);
+
+        // 예시: planDTO.setMemberEmail(memberEmail);
+        // planService.createPlan(planDTO);
+
+        return planDTO;
     }
 
     @PostMapping ("/myPlace")
@@ -36,13 +84,45 @@ public class PlanController {
     }
 
     @GetMapping("/myPlace")
-    public String getMyPlace(Model model) {
+    public String getMyPlace(HttpServletRequest request, Model model) {
+        log.info("'/myPlace' 요청 처리 시작");
+
+        // 1) 세션 가져오기
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            log.warn("세션이 존재하지 않습니다. 로그인 후 접근해야 합니다.");
+            return "redirect:/auth/login.do";
+        }
+
+        // 2) 세션에서 member 가져오기
+        MemberDTO member = (MemberDTO) session.getAttribute("member");
+        if (member == null) {
+            log.warn("세션에 'member'가 존재하지 않습니다. 로그인 페이지로 이동.");
+            return "redirect:/auth/login.do";
+        }
+        // 세션 확인용 로그
+        log.info("세션 ID(plan): {}", session.getId());
+        log.info("세션에 있는 멤버: {}", member);
+
+        // 3) 공용(공개) 여행플랜 목록 조회
         List<PlanDTO> publicPlans = planService.getPublicPlan();
-        for (PlanDTO plan : publicPlans) log.info("Plan ID: {}, Plan Name: {}", plan.getPlanId(), plan.getPlanName());
+        for (PlanDTO plan : publicPlans) {
+            log.info("Plan ID: {}, Plan Name: {}", plan.getPlanId(), plan.getPlanName());
+        }
         model.addAttribute("plans", publicPlans);
 
-        return "plan/myPlace"; // myPlace.jsp 반환
+        // 4) 원하는 로직(멤버 플랜 목록 등)을 처리한 뒤 myPlace.jsp로 이동
+        return "plan/myPlace";
     }
+
+    // @GetMapping("/myPlace")
+    // public String getMyPlace(Model model) {
+    //     List<PlanDTO> publicPlans = planService.getPublicPlan();
+    //     for (PlanDTO plan : publicPlans) log.info("Plan ID: {}, Plan Name: {}", plan.getPlanId(), plan.getPlanName());
+    //     model.addAttribute("plans", publicPlans);
+    //
+    //     return "plan/myPlace"; // myPlace.jsp 반환
+    // }
 
     // newPlan.jsp / WBS - 새로운 프로젝트 생성 기능
     @GetMapping("/newPlan")

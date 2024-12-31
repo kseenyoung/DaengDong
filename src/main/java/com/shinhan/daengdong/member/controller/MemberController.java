@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +40,7 @@ public class MemberController {
 
     @GetMapping("login.do")
     public String login(HttpServletRequest request){
+        log.info("로그인 페이지 요청");
         request.setAttribute("rest_api_key", rest_api_key);
         request.setAttribute("redirect_uri", redirect_uri);
         return "member/login";
@@ -46,17 +49,18 @@ public class MemberController {
     // 회원가입 페이지
     @GetMapping("signUp.do")
     public String signUp(){
+        log.info("회원가입 페이지 요청");
         return "member/signUp";
     }
 
     @PostMapping("signUp.do")
     @ResponseBody
     public SignUpDTO signUp(@RequestBody SignUpDTO signUpDTO, HttpServletRequest request){
-        log.info("signUpDTO : " + signUpDTO);
+        log.info("회원가입 요청 데이터: {}", signUpDTO);
         HttpSession session = request.getSession();
         if (session == null){
             // session 없음 = 로그인 시도한 적 없음
-            log.info("session is null");
+            log.info("세션이 존재하지 않음");
             return null;
         }
 
@@ -66,8 +70,13 @@ public class MemberController {
         // signUpDTO에 session에 저장된 MemberDTO 정보 삽입
         signUpDTO.setMemberEmail(member.getMemberEmail());
         signUpDTO.setMemberProfilePhoto(member.getMemberProfilePhoto());
-        if(signUpDTO.getMemberNickname()==null){
-            signUpDTO.setMemberNickname(member.getMemberNickname());
+        if (signUpDTO.getMemberNickname() == null) {
+            if (member.getMemberNickname() != null) {
+                signUpDTO.setMemberNickname(member.getMemberNickname());
+            } else {
+                log.error("닉네임이 null입니다.");
+                // 적절한 기본값을 설정하거나 에러 처리
+            }
         }
         log.info("member in session !! : " + member);
 
