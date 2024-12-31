@@ -25,14 +25,16 @@
             <div class="modal-body">
                 <div class="mb-3">
                     <c:forEach var="followingList" items="${followingList}">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex justify-content-between align-items-center mb-2 following-list">
                             <div>
                                 <img src="${path}/img/${followingList.member_profile_photo}"
                                      alt="${followingList.member_profile_photo}" class="rounded-circle" width="40"
                                      height="40">
                                 <span class="ml-2">${followingList.member_nickname}</span>
                             </div>
-                            <button id="delete-follow" class="btn btn-primary btn-sm delete-following">팔로잉</button>
+                            <button id="delete-follow" class="btn btn-primary btn-sm delete-following"
+                                    data-to-email="${followingList.member_email}">팔로잉
+                            </button>
                         </div>
                     </c:forEach>
                 </div>

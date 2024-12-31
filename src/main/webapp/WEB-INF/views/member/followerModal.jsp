@@ -25,7 +25,7 @@
             <div class="modal-body">
                 <div class="mb-3">
                     <c:forEach var="followerList" items="${followerList}">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex justify-content-between align-items-center mb-2 follower-list">
                             <div>
                                 <img src="${path}/img/${followerList.member_profile_photo}"
                                      alt="${followerList.member_profile_photo}" class="rounded-circle" width="40"
@@ -36,7 +36,9 @@
                                 <button class="btn btn-primary btn-sm insert-follower">팔로우</button>
                             </c:if>
                             <c:if test="${followerList.is_following_back == 1}">
-                                <button class="btn btn-primary btn-sm delete-following">팔로잉</button>
+                                <button id="delete-follow" class="btn btn-primary btn-sm delete-following"
+                                        data-to-email="${followerList.member_email}">팔로잉
+                                </button>
                             </c:if>
                         </div>
                     </c:forEach>

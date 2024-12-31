@@ -213,13 +213,13 @@
 <!--        VALUES (#{from_email}, #{to_email})-->
 <!--    </insert>-->
 
-<!--    &lt;!&ndash;팔로우취소&ndash;&gt;-->
-<!--    <delete id="deleteRelationships" parameterType="relationshipsDTO">-->
-<!--        delete-->
-<!--        from relationships-->
-<!--        where from_email = #{from_email}-->
-<!--        And to_email = #{to_email}-->
-<!--    </delete>-->
+    <!--팔로우취소-->
+    <delete id="deleteRelationships" parameterType="followDTO">
+        delete
+        from relationships
+        where from_email = #{from_email}
+        And to_email = #{to_email}
+    </delete>
 
     <!--팔로잉 보기-->
     <select id="selectFollowing" parameterType="String" resultType="relationshipsVO">

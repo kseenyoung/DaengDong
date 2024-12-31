@@ -1,9 +1,6 @@
 package com.shinhan.daengdong.member.model.repository;
 
-import com.shinhan.daengdong.member.dto.FavoritePlaceDTO;
-import com.shinhan.daengdong.member.dto.RelationshipsDTO;
-import com.shinhan.daengdong.member.dto.LikePostsDTO;
-import com.shinhan.daengdong.member.dto.MemberDTO;
+import com.shinhan.daengdong.member.dto.*;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 import com.shinhan.daengdong.pet.dto.PetDTO;
 import java.util.List;
@@ -33,4 +30,6 @@ public interface MemberRepositoryInterface {
     List<RelationshipsDTO> getFollowingList(String memberEmail);
 
     List<RelationshipsDTO> getFollowerList(String memberEmail);
+
+    void deleteFollowing(FollowDTO followDTO);
 }
