@@ -6,7 +6,7 @@
 
     <insert id="save" parameterType="map">
         INSERT INTO plans (plan_id, member_email, plan_name, start_date, end_date, plan_state)
-        VALUES (#{planId}, #{memberEmail}, #{planName}, #{startDate}, #{endDate}, #{planState});
+        VALUES (#{planId}, #{memberEmail}, #{planName}, #{startDate}, #{endDate}, #{planState})
     </insert>
 
     <select id="planList" resultType="planDTO">
@@ -16,7 +16,8 @@
             start_date AS startDate,
             end_date AS endDate,
             plan_state AS planState
-        from plans;
+        from plans
+        where member_email = #{memberEmail}
     </select>
 
     <update id="planName" parameterType="planDTO">

@@ -27,43 +27,30 @@ public class PlanController {
     @Autowired
     private PlanServiceInterface planService;
 
-    // @GetMapping("/create")
-    // public String createPlanForm() {
-    //     return "plan/createPlan"; // createPlan.jsp
-    // }
+    // 플랜 생성 페이지
     @GetMapping("/create")
     public String createPlanForm(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            log.warn("세션이 없어 로그인 페이지로 이동");
+        try {
+            HttpSession session = request.getSession(false);
+
+            MemberDTO member = (MemberDTO) session.getAttribute("member");
+            model.addAttribute("member", member);
+            return "plan/createPlan";
+        } catch (IllegalStateException e) {
+            log.info(e.getMessage());
             return "redirect:/auth/login.do";
         }
-
-        MemberDTO member = (MemberDTO) session.getAttribute("member");
-        if (member == null) {
-            log.warn("세션에 member가 없어 로그인 페이지로 이동");
-            return "redirect:/auth/login.do";
-        }
-
-        // 필요하면 member 정보 모델에 담아서 화면 표시
-        model.addAttribute("member", member);
-        return "plan/createPlan";
     }
 
     @PostMapping("/create")
     @ResponseBody
     public ResponseEntity<?> createPlan(@RequestBody PlanDTO planDTO, HttpServletRequest request) {
-        log.info("플랜 등록 요청: {}", planDTO);
-
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("member") == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
-        }
 
         MemberDTO member = (MemberDTO) session.getAttribute("member");
         planDTO.setMemberEmail(member.getMemberEmail()); // 세션 이메일 할당
 
-        long generatedId = 20;
+        long generatedId = 25;
         planDTO.setPlanId(generatedId);
         log.info("생성된 plan_id: {}", planDTO.getPlanId());
 
@@ -73,52 +60,33 @@ public class PlanController {
 
         log.info("플랜이 성공적으로 저장되었습니다.");
         return ResponseEntity.ok("플랜 등록 성공");
-        // } else {
-        //     log.error("플랜 저장 실패");
-        //     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("플랜 등록 실패");
-        // }
-    }
-
-
-    @PostMapping ("/myPlace")
-    public String postMyPlace(@RequestBody PlanDTO planDTO, Model model) {
-        log.info("POST 요청으로 'myPlace' 호출됨");
-        log.info("전송 받은 데이터: {}", planDTO);
-
-        return "plan/myPlace";
     }
 
     @GetMapping("/myPlace")
     public String getMyPlace(HttpServletRequest request, Model model) {
-        log.info("'/myPlace' 요청 처리 시작");
+        try {
+            HttpSession session = request.getSession(false);
 
-        // 1) 세션 가져오기
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            log.warn("세션이 존재하지 않습니다. 로그인 후 접근해야 합니다.");
+            MemberDTO member = (MemberDTO) session.getAttribute("member");
+
+            String memberEmail = member.getMemberEmail();
+            List<PlanDTO> userPlans = planService.getPlansByEmail(memberEmail);
+
+            model.addAttribute("plans", userPlans);
+
+            return "plan/myPlace";
+        } catch (Exception e) {
+            log.info(e.getMessage());
             return "redirect:/auth/login.do";
         }
+    }
 
-        // 2) 세션에서 member 가져오기
-        MemberDTO member = (MemberDTO) session.getAttribute("member");
-        if (member == null) {
-            log.warn("세션에 'member'가 존재하지 않습니다. 로그인 페이지로 이동.");
-            return "redirect:/auth/login.do";
-        }
-        // 세션 확인용 로그
-        log.info("세션 ID(plan): {}", session.getId());
-        log.info("세션에 있는 멤버: {}", member);
+    @PostMapping ("/myPlace")
+    public String postMyPlace(@RequestBody PlanDTO planDTO, Model model) {
 
-        // 3) 공용(공개) 여행플랜 목록 조회
-        List<PlanDTO> publicPlans = planService.getPublicPlan();
-        for (PlanDTO plan : publicPlans) {
-            log.info("Plan ID: {}, Plan Name: {}", plan.getPlanId(), plan.getPlanName());
-        }
-        model.addAttribute("plans", publicPlans);
-
-        // 4) 원하는 로직(멤버 플랜 목록 등)을 처리한 뒤 myPlace.jsp로 이동
         return "plan/myPlace";
     }
+
 
     // @GetMapping("/myPlace")
     // public String getMyPlace(Model model) {
@@ -168,10 +136,15 @@ public class PlanController {
 
     // 여행 공개 여부 상태 변경 기능
     @PostMapping("/planState")
-    public String planState(@ModelAttribute PlanDTO planDTO) {
-        log.info("여행 공개 여부 수정 요청 데이터: {}", planDTO);
-        planService.planState(planDTO);
-        return "redirect:/plan/myPlace";
+    @ResponseBody
+    public ResponseEntity<?> updatePlanState(@RequestBody PlanDTO planDTO) {
+        try {
+            planService.planState(planDTO);
+            return ResponseEntity.ok("플랜 상태가 성공적으로 변경되었습니다.");
+        } catch (Exception e) {
+            log.error("플랜 상태 변경 중 오류 발생", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("플랜 상태 변경 실패");
+        }
     }
 
 }

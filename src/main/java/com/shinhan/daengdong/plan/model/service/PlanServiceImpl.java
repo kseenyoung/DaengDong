@@ -25,8 +25,8 @@ public class PlanServiceImpl implements PlanServiceInterface {
     }
 
     @Override
-    public List<PlanDTO> getPublicPlan() {
-        return planRepository.getPlansByState();
+    public List<PlanDTO> getPlansByEmail(String memberEmail) {
+        return planRepository.getPlansByEmail(memberEmail);
     }
 
     @Override

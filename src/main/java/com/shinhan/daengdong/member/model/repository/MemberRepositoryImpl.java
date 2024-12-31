@@ -20,7 +20,6 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     @Override
     public MemberDTO login(String email){
         MemberDTO result = sqlSession.selectOne(namespace+"login", email);
-        log.info("login : " + result);
         return result;
     }
 
