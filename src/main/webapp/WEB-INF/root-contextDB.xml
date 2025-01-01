@@ -38,7 +38,16 @@
         <constructor-arg ref="sqlSessionFactory"></constructor-arg>
     </bean>
 
-
+    <bean id="dataSource"
+          class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+        <constructor-arg ref="dataSourceOriginal"/>
+        <property name="logFormatter">
+            <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+                <property name="loggingType" value="MULTI_LINE"></property>
+                <property name="sqlPrefix" value="[SQL문장]"></property>
+            </bean>
+        </property>
+    </bean>
 
     <!-- 3. JNDI Connection Pooling 이용하기 -->
     <!-- 	<jee:jndi-lookup id="dataSourceOriginal"
@@ -46,7 +55,7 @@
 
 
     <!-- 2. Connection Pooling 이용하기 -->
-    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+    <bean id="dataSourceOriginal" class="org.apache.commons.dbcp2.BasicDataSource">
         <property name="driverClassName" value="${driverClassName}"/>
         <property
                 name="url" value="${url}"/>
