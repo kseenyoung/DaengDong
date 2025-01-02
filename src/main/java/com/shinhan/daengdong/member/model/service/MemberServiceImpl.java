@@ -2,6 +2,7 @@ package com.shinhan.daengdong.member.model.service;
 
 import com.shinhan.daengdong.member.dto.*;
 import com.shinhan.daengdong.place.model.service.PlaceServiceInterface;
+import com.shinhan.daengdong.post.dto.PostDTO;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 import com.shinhan.daengdong.member.model.repository.MemberRepositoryInterface;
 import lombok.extern.slf4j.Slf4j;
@@ -112,5 +113,10 @@ public class MemberServiceImpl implements MemberServiceInterface{
     @Override
     public void addFollowing(FollowDTO followDTO) {
         memberRepository.addFollowing(followDTO);
+    }
+
+    @Override
+    public List<PostDTO> getMyPosts(String memberEmail) {
+        return memberRepository.getMyPosts(memberEmail);
     }
 }

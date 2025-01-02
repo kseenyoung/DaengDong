@@ -119,6 +119,8 @@ body {
 }
 
 .categories {
+  flex-shrink: 0;
+  height: 65px; !important;
   background-color: #F5F4F9;
   padding: 15px;
   border-bottom: 1px solid #e1e8ed;
@@ -134,12 +136,14 @@ body {
 
 .categories ul {
   display: flex; /* 가로 배열 */
+  height: 34px; !important;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
 .categories ul li {
+  height: 24px; !important;
   font-size: 16px;
   font-weight: bold;
   margin: 5px 20px;
@@ -162,11 +166,12 @@ body {
 }
 
 .semiCategories {
-  padding: 0 0 15px 0;
+  background: #f5f8fa;
+  padding: 10px 0;
   text-align: center;
   position: sticky; /* 고정 */
-  top: 0; /* 화면 상단에 고정 */
-  z-index: 10; /* 다른 요소보다 위에 표시 */
+  top: 0px; /* 화면 상단에 고정 */
+  z-index: 9; /* 다른 요소보다 위에 표시 */
   display: flex; /* 가로 배열 */
   justify-content: center; /* 중앙 정렬 */
   gap: 15px; /* 항목 간 간격 */
@@ -192,9 +197,10 @@ body {
 }
 
 .content {
+  scrollbar-gutter: stable; /* 스크롤바 공간 고정 */
   flex-grow: 1; /* 남은 공간을 모두 차지 */
   overflow-y: auto; /* 스크롤 허용 */
-  padding: 20px;
+  padding: 0 10px 20px 20px;
   background-color: #f5f8fa; /* 배경색 상단과 맞춤 */
 }
 

@@ -1,3 +1,10 @@
+#placeImg {
+  width: 50px; /* 이미지 크기 조절 */
+  height: 50px;
+  margin-right: 20px; /* 텍스트와의 간격 */
+  border-radius: 50px; /* 둥근 모서리 */
+}
+
 #bootstrap-wrapper .modal {
   display: none;
   position: fixed;
@@ -56,9 +63,10 @@
 }
 
 .text-container {
+  flex: 1; /* 남은 공간을 차지 */
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; /* 세로 가운데 정렬 */
 }
 
 .place-title {
