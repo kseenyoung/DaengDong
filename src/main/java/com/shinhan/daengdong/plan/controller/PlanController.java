@@ -48,7 +48,7 @@ public class PlanController {
         HttpSession session = request.getSession(false);
 
         MemberDTO member = (MemberDTO) session.getAttribute("member");
-        planDTO.setMemberEmail(member.getMemberEmail()); // 세션 이메일 할당
+        planDTO.setMemberEmail(member.getMember_email()); // 세션 이메일 할당
 
         log.info("생성된 plan_id: {}", planDTO.getPlanId());
 
@@ -67,7 +67,7 @@ public class PlanController {
 
             MemberDTO member = (MemberDTO) session.getAttribute("member");
 
-            String memberEmail = member.getMemberEmail();
+            String memberEmail = member.getMember_email();
             List<PlanDTO> userPlans = planService.getPlansByEmail(memberEmail);
 
             model.addAttribute("plans", userPlans);

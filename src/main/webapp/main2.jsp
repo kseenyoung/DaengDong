@@ -2,15 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="path" value="${pageContext.servletContext.contextPath}"/>
 <!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-    <title>댕동</title>
+    <title>Document</title>
     <link
             href="
     https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css
@@ -20,11 +17,11 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-            href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Dongle:wght@400;700&family=Rubik+Bubbles&family=Rubik+Gemstones&display=swap"
-            rel="stylesheet">
-    <link rel="stylesheet" href="./style2.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Dongle:wght@400;700&family=Rubik+Bubbles&family=Rubik+Gemstones&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style2.css" />
+
 </head>
+
 <body>
 <!--  div는 위치나 형태?를 나타낸다. 선택자는 최대 2개, 태그만 있는 경우는
 무조건 앞에 선택자 써주기  -->
@@ -34,15 +31,15 @@
             <h1 id="logo">댕동</h1>
             <div id="header_right">
                 <a href="">
-                    <img src="./images/community.png" alt="커뮤니티" width="30" height="30"/>
+                    <img src="./images/community.png" alt="커뮤니티" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
                 <a href="">
-                    <img src="./images/plan.png" alt="플랜" width="30" height="30"/>
+                    <img src="./images/plan.png" alt="플랜" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
                 <a href="${path}/auth/viewMypage.do">
-                    <img src="./images/user.png" alt="사용자" width="30" height="30"/>
+                    <img src="./images/user.png" alt="사용자" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
             </div>
@@ -87,9 +84,7 @@
                         <button><span>3</span><span>현지인 맛집 탐방</span></button>
                         <button><span>4</span><span>현지인 맛집 탐방</span></button>
                     </div>
-                    <a href="">
-                        <button>일정 살펴보기</button>
-                    </a>
+                    <a href=""><button>일정 살펴보기</button></a>
                 </div>
                 <div id="sec1_bottom_right">
                     <img
@@ -121,9 +116,7 @@
                     <h2>여행지 정보</h2>
                     <p>지금은 어디가 핫플?</p>
                     <p>같이 알아보아요</p>
-                    <a href="">
-                        <button>핫플 속으로 Go</button>
-                    </a>
+                    <a href=""><button>핫플 속으로 Go</button></a>
                 </div>
             </div>
             <div id="sec2_right">
@@ -224,7 +217,6 @@
       altText.textContent = img.alt;
     }
   });
-
   // 스크롤 트리거를 사용하여 애니메이션 추가
   // gsap.to("#main", {
   //   scrollTrigger: {

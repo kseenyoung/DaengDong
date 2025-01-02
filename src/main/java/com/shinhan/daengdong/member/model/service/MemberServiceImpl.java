@@ -2,6 +2,7 @@ package com.shinhan.daengdong.member.model.service;
 
 import com.shinhan.daengdong.member.dto.*;
 import com.shinhan.daengdong.place.model.service.PlaceServiceInterface;
+import com.shinhan.daengdong.post.dto.PostDTO;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 import com.shinhan.daengdong.member.model.repository.MemberRepositoryInterface;
 import lombok.extern.slf4j.Slf4j;
@@ -35,10 +36,10 @@ public class MemberServiceImpl implements MemberServiceInterface{
     public MemberDTO signUp(SignUpDTO signUpDTO) {
         // member 등록
         MemberDTO member = MemberDTO.builder()
-                .memberEmail(signUpDTO.getMemberEmail())
-                .memberProfilePhoto(signUpDTO.getMemberProfilePhoto())
-                .memberNickname(signUpDTO.getMemberNickname())
-                .memberName(signUpDTO.getMemberName())
+                .member_email(signUpDTO.getMemberEmail())
+                .member_profile_photo(signUpDTO.getMemberProfilePhoto())
+                .member_nickname(signUpDTO.getMemberNickname())
+                .member_name(signUpDTO.getMemberName())
                 .build();
 
         memberRepository.insertMember(member);
@@ -48,6 +49,14 @@ public class MemberServiceImpl implements MemberServiceInterface{
 
         return member;
     }
+    @Override
+    public MemberDTO selectMember(String memberEmail) {
+        return memberRepository.selectMember(memberEmail);
+    }
+    @Override
+    public void modifyNickname(MemberDTO memberDTO) {memberRepository.modifyNickname(memberDTO);}
+
+    public void updateprofilePhoto(MemberDTO memberDTO) {memberRepository.updateprofilePhoto(memberDTO);}
 
     @Override
     public List<ReviewDTO> getReviewList(String memberEmail) {
@@ -112,5 +121,10 @@ public class MemberServiceImpl implements MemberServiceInterface{
     @Override
     public void addFollowing(FollowDTO followDTO) {
         memberRepository.addFollowing(followDTO);
+    }
+
+    @Override
+    public List<PostDTO> getMyPosts(String memberEmail) {
+        return memberRepository.getMyPosts(memberEmail);
     }
 }
