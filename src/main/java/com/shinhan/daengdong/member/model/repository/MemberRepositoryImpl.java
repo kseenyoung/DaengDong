@@ -20,7 +20,6 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     @Override
     public MemberDTO login(String email){
         MemberDTO result = sqlSession.selectOne(namespace+"login", email);
-        log.info("login : " + result);
         return result;
     }
 
@@ -92,5 +91,10 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     @Override
     public void deleteFollowing(FollowDTO followDTO) {
         sqlSession.delete(namespace + "deleteRelationships", followDTO);
+    }
+
+    @Override
+    public void addFollowing(FollowDTO followDTO) {
+        sqlSession.insert(namespace + "addRelationships", followDTO);
     }
 }
