@@ -1,9 +1,6 @@
 package com.shinhan.daengdong.review.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

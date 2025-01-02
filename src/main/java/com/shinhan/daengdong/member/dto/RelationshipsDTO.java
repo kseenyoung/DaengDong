@@ -2,8 +2,6 @@ package com.shinhan.daengdong.member.dto;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @NoArgsConstructor

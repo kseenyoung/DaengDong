@@ -12,6 +12,12 @@ public interface MemberServiceInterface {
 
     MemberDTO signUp(SignUpDTO signUpDTO);
 
+    MemberDTO selectMember(String memberEmail);
+
+    void modifyNickname(MemberDTO memberDTO);
+
+    void updateprofilePhoto(MemberDTO memberDTO);
+
     List<FavoritePlaceDTO> getFavoritePlaceList(String memberEmail);
 
     List<ReviewDTO> getReviewList(String memberEmail);
