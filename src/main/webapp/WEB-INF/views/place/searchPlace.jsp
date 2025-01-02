@@ -20,6 +20,8 @@
 .map_wrap {position:relative;width:100%;height:930px;}
 #menu_wrap {
     position: fixed;
+    max-height: 100%;
+    overflow-y: auto;
     top: 0;
     left: 10%;
     transform: translate(0, 0);
@@ -28,7 +30,7 @@
     width: 80%;
     margin: 10px 0 30px 10px;
     padding: 15px;
-    overflow-y: auto;
+    overflow: visible;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
     z-index: 1000;
     font-size: 13px;
@@ -206,6 +208,7 @@
 }
 
 #category-container {
+width: 100%;
     margin-bottom: 40px;
 }
 
@@ -228,7 +231,7 @@
 
 #placesList {
     width: 90%;
-    max-height: 640px;
+    max-height: 400px;
     overflow-y: auto;
     padding: 20px;
     background: linear-gradient(to bottom right, #ffffff, #e3f2fd);
@@ -332,18 +335,27 @@ body, h4, p, button, a {
 }
 
 #sidebar .add-btn {
+    background: #4caf50;
+    border: none;
+    margin: 20px 0;
+    cursor: pointer;
+}
+
+#sidebar .map-link {
+    background: #2196f3;
+    text-decoration: none;
+    margin-top: 30px;
+}
+
+#sidebar .button {
     display: block;
     width: 100%;
     padding: 12px;
-    background: #4caf50;
     color: white;
     font-size: 16px;
     font-weight: bold;
     text-align: center;
-    border: none;
     border-radius: 8px;
-    margin: 20px 0;
-    cursor: pointer;
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
@@ -351,21 +363,6 @@ body, h4, p, button, a {
 #sidebar .add-btn:hover {
     background-color: #388e3c;
     transform: translateY(-2px);
-}
-
-#sidebar .map-link {
-    display: block;
-    text-align: center;
-    margin-top: 15px;
-    padding: 12px;
-    background: #2196f3;
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 8px;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 #sidebar .map-link:hover {
@@ -504,10 +501,17 @@ body, h4, p, button, a {
 }
 
 .button{
+    display: flex;
+    flex-direction: column;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Arial', sans-serif;
+}
+.line {
+    border: 0;
+    border-bottom: 1px solid #ddd;
+    margin: 0px 0;
 }
 
 /* 모달 */
@@ -566,9 +570,11 @@ body, h4, p, button, a {
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border: 1px solid #ddd;
+            overflow: visible;
         }
 
-        #addPlaceBtn, .delete-btn {
+
+        #addPlaceBtn {
             background-color: #4CAF50;
             color: white;
             padding: 10px 20px;
@@ -580,19 +586,15 @@ body, h4, p, button, a {
             margin: 5px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease, transform 0.2s ease;
+            z-index : 1050;
+            position: absolute;
+            right: 15px;
         }
 
         #addPlaceBtn:hover, .delete-btn:hover {
             background-color: #45a049;
         }
 
-        .place-item {
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
         .search-input {
             width: 80%;
             max-width: 600px;
@@ -609,6 +611,46 @@ body, h4, p, button, a {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border-color: #007BFF;
         }
+
+#placeList{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+
+        .place-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            color: black;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            z-index: 1050;
+            position: relative
+        }
+                .delete-btn {
+                            background-color: #4CAF50;
+                            color: white;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            font-weight: bold;
+                            border: none;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            margin: 5px;
+                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                            transition: background-color 0.3s ease, transform 0.2s ease;
+                            z-index : 1050;
+                            position: absolute;
+                            right: 10px;
+                            top: 40%;
+                            transform: translateY(-50%);
+                        }
+
+
 
 </style>
 </head>
@@ -657,10 +699,8 @@ body, h4, p, button, a {
     <p class="sidebar-info"><strong>도로명주소:</strong> <span id="place-road_address_name"></span></p>
     <p class="sidebar-info"><strong>주소:</strong> <span id="place-address_name"></span></p>
     <p class="sidebar-info"><strong>전화번호:</strong> <span id="place-phone"></span></p>
-    <button id="addPlanBtn" class="add-btn" place.place_name="장소 이름" place.address_name="주소">
-        + 내 일정에 추가
-    </button>
-    <a id="map-link" href="#" target="_blank" class="map-link">자세히 보기</a>
+    <button id = "addPlanBtn" class="add-btn button">+ 내 일정에 추가</button>
+    <a id="map-link" href="#" target="_blank" class="map-link button">자세히 보기</a>
 </div>
 
 <div class="map_wrap">
@@ -710,13 +750,15 @@ body, h4, p, button, a {
         <div id="pagination"></div>
     </div>
 </div>
-    <div id="list_wrap">
-        <ul id="placeList"></ul>
-        <div class="button">
-            <button id="addPlaceBtn">장소 추가</button>
-        </div>
+
+<div id="list_wrap">
+    <ul id="placeList"></ul>
+    <div class="button">
+        <button id="addPlaceBtn">장소 추가</button>
+        <div class="line"></div>
     </div>
 
+</div>
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e0559b7888458bf024586f6213185e7b&libraries=services"></script>
 <script>
@@ -941,6 +983,44 @@ function addMarker(position, idx, title, place) {
 
         // 사이드바 표시
         sidebar.style.display = "block";
+
+        const addPlanBtn = document.getElementById("addPlanBtn");
+
+        addPlanBtn.addEventListener("click", function () {
+
+            const placeTitle = document.getElementById("place-title").textContent;
+            const placeAddress = document.getElementById("place-address_name").textContent;
+
+            const placeList = document.getElementById("placeList")
+            const newItem = document.createElement("li");
+            newItem.classList.add("place-item");
+
+            const titleElement = document.createElement("h4");
+            titleElement.classList.add("placeTitle");
+            titleElement.textContent = placeTitle;
+
+            const addressElement = document.createElement("p");
+            addressElement.classList.add("placeAddress");
+            addressElement.textContent = placeAddress;
+
+            const deleteButton = document.createElement("button");
+            deleteButton.classList.add("delete-btn");
+            deleteButton.textContent = "삭제";
+
+            // 삭제 버튼 클릭 이벤트
+            deleteButton.addEventListener("click", function () {
+                newItem.remove(); // 클릭 시 해당 항목 삭제
+                console.log(`${placeTitle} 삭제됨`);
+            });
+
+            newItem.appendChild(titleElement);
+            newItem.appendChild(addressElement);
+            newItem.appendChild(deleteButton);
+
+            placeList.appendChild(newItem);
+            console.log("새로운 일정 추가됨:", placeTitle, placeAddress);
+
+        });
 
         // 닫기 버튼 이벤트 등록
         sidebar.querySelector("#closeSidebar").addEventListener("click", function () {
@@ -1547,7 +1627,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 장소 목록 렌더링 함수
     function renderPlaceList() {
+        const placeList = document.getElementById("placeList");
         placeList.innerHTML = "";
+
         places.forEach((place, index) => {
             const li = document.createElement("li");
             li.className = "place-item";
@@ -1564,7 +1646,7 @@ document.addEventListener("DOMContentLoaded", function () {
             placeList.appendChild(li);
         });
     }
-
+});
     // 장소 삭제 함수
     function deletePlace(index) {
         places.splice(index, 1);
@@ -1572,23 +1654,17 @@ document.addEventListener("DOMContentLoaded", function () {
         renderPlaceList();
     }
 
-    // 내 일정에 추가 버튼 클릭 이벤트
-    document.getElementById("addPlanBtn").addEventListener("click", function () {
-        // 장소 이름과 주소를 올바르게 가져오기
-        const placeName = document.getElementById("place.place_name").textContent;
-        const addressName = document.getElementById("place.address_name").textContent;
+function deletePlace(index) {
+    const confirmed = confirm("정말 삭제하시겠습니까?");
+    if (confirmed) {
+        places.splice(index, 1); // 해당 항목 삭제
+        console.log(`place-${index} 삭제 완료`);
 
-        if (placeName && addressName) {
-            const newPlace = { place_name: placeName, address_name: addressName };
-            places.push(newPlace);
-            localStorage.setItem("places", JSON.stringify(places));
-            renderPlaceList();
-        }
-    });
+        renderPlaceList(); // 목록 갱신
+    }
+}
 
-    // 초기 렌더링
-    renderPlaceList();
-});
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const menuWrap = document.getElementById("menu_wrap");
@@ -1619,5 +1695,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 </script>
+
+//<script src="<%= request.getContextPath() %>/js/addPlan.js"></script>
 </body>
 </html>
