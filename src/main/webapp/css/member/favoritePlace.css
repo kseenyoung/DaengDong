@@ -1,0 +1,53 @@
+#placeImg {
+  width: 50px; /* 이미지 크기 조절 */
+  height: 50px;
+  margin-right: 20px; /* 텍스트와의 간격 */
+  border-radius: 50px; /* 둥근 모서리 */
+}
+
+.text-container {
+  flex: 1; /* 남은 공간을 차지 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 세로 가운데 정렬 */
+}
+
+.place-title {
+  font-size: 18px; /* 제목 크기 */
+  color: black; /* 제목 색상 */
+  margin: 0 0 10px 0; /* 하단 간격 */
+}
+
+.place-address {
+  font-size: 14px;
+  color: gray;
+  margin: 0;
+}
+
+.place-address-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.delete-favoritePlace {
+  background: none; /* 버튼 배경 제거 */
+  border: none; /* 버튼 테두리 제거 */
+  padding: 0; /* 기본 패딩 제거 */
+  cursor: pointer; /* 커서를 클릭 가능한 손가락 모양으로 변경 */
+  display: inline-flex; /* 이미지 크기만큼 버튼 크기 조정 */
+  align-items: center; /* 이미지 정렬 */
+  justify-content: center; /* 이미지 정렬 */
+}
+
+#delete-favoritePlace {
+  width: 24px; /* 이미지 크기 */
+  height: 24px; /* 이미지 크기 */
+  transition: transform 0.2s; /* 호버 시 애니메이션 효과 */
+  margin: 10px;
+}
+
+.delete-favoritePlace:hover #delete-favoritePlace {
+  transform: scale(1.1); /* 호버 시 약간 확대 */
+}
