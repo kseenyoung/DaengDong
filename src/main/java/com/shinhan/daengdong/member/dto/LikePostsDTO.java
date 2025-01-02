@@ -13,4 +13,5 @@ public class LikePostsDTO {
     String post_title;
     String image_url;
     String member_nickname;
+    String category_id;
 }

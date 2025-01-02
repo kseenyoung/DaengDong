@@ -103,6 +103,11 @@ $(document).ready(function () {
       url: `${path}/auth/getReviewFragment.do`,
       type: "get",
       success: function (response) {
+        $('#review-modal').on('hidden.bs.modal', function () {
+          $('.modal-backdrop').remove(); // 백드롭 제거
+          $(this).removeData('bs.modal'); // 모달 데이터 초기화
+        });
+
         $("#myFavoritePlace").css("color", "#8a8a8a")
         $("#myReview").css("color", "#0AB75B")
         $("#myLikes").css("color", "#8a8a8a")
@@ -148,7 +153,7 @@ $(document).ready(function () {
 
   function getPosts() {
     $.ajax({
-      url: `${path}/auth/getFavoritePlace.do`,
+      url: `${path}/auth/getMyPosts.do`,
       type: "get",
       success: function (response) {
         $("#myFavoritePlace").css("color", "#8a8a8a")
@@ -156,8 +161,8 @@ $(document).ready(function () {
         $("#myLikes").css("color", "#8a8a8a")
         $("#myPosts").css("color", "#0AB75B")
         $("#announcement-box").html(response);
-        $(this).closest('.announcement').remove();
-        initializeEventHandlers();
+        // $(this).closest('.announcement').remove();
+        // initializeEventHandlers();
       },
       error: function (err) {
         console.log(err);
@@ -227,6 +232,11 @@ $(document).ready(function () {
 
         // 모달 표시
         $('#review-modal').modal('show');
+
+        $('#review-modal').on('hidden.bs.modal', function () {
+          $('.modal-backdrop').remove(); // 백드롭 제거
+          $(this).removeData('bs.modal'); // 모달 데이터 초기화
+        });
       },
       error: function (err) {
         console.error('Failed to load modal:', err);
@@ -264,7 +274,7 @@ $(document).ready(function () {
 
   function deleteLikePosts() {
     let postId = $(this).data("post-id");
-    let element = $(this).closest('.announcement'); // 삭제할 요소를 미리 저장
+    let element = $(this).closest('.post-card'); // 삭제할 요소를 미리 저장
 
     $.ajax({
       url: `${path}/likePosts/${postId}`,
@@ -324,17 +334,15 @@ $(document).ready(function () {
 
   function addHoverScriptHeart() {
     // 모든 이미지 태그에 hover 이벤트를 다시 설정
-    const starImages = document.querySelectorAll(".hoverable-star");
+    const heartButtons = document.querySelectorAll(".hoverable-heart");
 
-    starImages.forEach((starImage) => {
-      const basePath = `${path}/img/`;
-
-      starImage.addEventListener("mouseover", () => {
-        starImage.src = basePath + "empty_like_icon.png"; // hover 시 이미지 변경
+    heartButtons.forEach((button) => {
+      button.addEventListener("mouseover", () => {
+        button.textContent = "💔"; // hover 시 변경
       });
 
-      starImage.addEventListener("mouseout", () => {
-        starImage.src = basePath + "like_icon.png"; // 원래 이미지로 복원
+      button.addEventListener("mouseout", () => {
+        button.textContent = "❤️"; // 원래 상태로 복원
       });
     });
   }

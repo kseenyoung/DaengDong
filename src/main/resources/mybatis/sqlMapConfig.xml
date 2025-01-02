@@ -19,6 +19,8 @@
 		<typeAlias type="com.shinhan.daengdong.member.dto.RelationshipsDTO" alias="relationshipsDTO" />
 		<typeAlias type="com.shinhan.daengdong.member.dto.RelationshipsDTO" alias="relationshipsVO" />
 		<typeAlias type="com.shinhan.daengdong.member.dto.FollowDTO" alias="followDTO" />
+		<typeAlias type="com.shinhan.daengdong.post.dto.PostDTO" alias="postsDTO" />
+		<typeAlias type="com.shinhan.daengdong.post.dto.PostDTO" alias="postsVO" />
 
 		<!-- Plan 부분 -->
 		<typeAlias type="com.shinhan.daengdong.plan.dto.PlanDTO" alias="planDTO" />
