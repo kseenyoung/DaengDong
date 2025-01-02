@@ -23,8 +23,8 @@ public class PlanRepositoryImpl implements PlanRepositoryInterface {
     }
 
     @Override
-    public List<PlanDTO> getPlansByState() {
-        return sqlSessionTemplate.selectList("com.shinhan.plan.planList");
+    public List<PlanDTO> getPlansByEmail(String memberEmail) {
+        return sqlSessionTemplate.selectList("com.shinhan.plan.planList", memberEmail);
     }
 
     @Override

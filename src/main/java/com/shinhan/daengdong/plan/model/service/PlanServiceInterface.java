@@ -7,7 +7,7 @@ import java.util.List;
 public interface PlanServiceInterface {
 
     void savePlan(PlanDTO planDTO);
-    List<PlanDTO> getPublicPlan();
+    List<PlanDTO> getPlansByEmail(String email);
     void planName(PlanDTO planDTO);
     void planDate(PlanDTO planDTO);
     void planState(PlanDTO planDTO);
