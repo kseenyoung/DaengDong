@@ -1,10 +1,6 @@
 package com.shinhan.daengdong.member.dto;
 
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDateTime;
 
 @Getter @Setter
 @NoArgsConstructor

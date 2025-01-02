@@ -201,15 +201,15 @@
     <!--member18 반려동물 프로필 변경!!-->
     <update id="updatepetProfile" parameterType="String">
         update pets
-        set pet_profile_photo = #{pet_profile_photo}
-        where member_id = #{member_id}
+        set pet_profile_photo = #{petProfilePhoto}
+        where member_id = #{memberId}
     </update>
 
     <!--member18-1 반려동물 삭제!!!!-->
     <delete id="deletepetProfile" parameterType="int">
         delete
         from pets
-        where pet_id = #{pet_id}
+        where pet_id = #{petId}
     </delete>
 
     <!--모든 알림 조회!!!!@@@@@-->
@@ -226,12 +226,19 @@
 <!--        where sender_email = #{sender_email}-->
 <!--    </delete>-->
 
-<!--    &lt;!&ndash;member8 닉네임 변경하기 &ndash;&gt;-->
-<!--    <update id="modifyNickname" parameterType="memberDTO">-->
-<!--        update members-->
-<!--        set member_nickname = #{memberNickname}-->
-<!--        where member_email = #{memberEmail}-->
-<!--    </update>-->
+    <!--member 조회하기-->
+    <select id="selectMember" resultType="memberDTO" parameterType="String">
+        select *
+        from members
+        where member_email = #{memberEmail}
+    </select>
+
+    <!--member8 닉네임 변경하기 -->
+    <update id="modifyNickname" parameterType="memberDTO">
+        update members
+        set member_nickname = #{member_nickname}
+        where member_email = #{member_email}
+    </update>
 
 <!--    &lt;!&ndash;member11 여행 기록 보기&ndash;&gt;-->
 <!--    <select id="viewTravelList" parameterType="String" resultType="travelListVO">-->
@@ -291,12 +298,12 @@
 <!--        where photo_card_id = #{photo_card_id}-->
 <!--    </delete>-->
 
-<!--    &lt;!&ndash;프로필 사진 변경하기&ndash;&gt;-->
-<!--    <update id="updateprofilePhoto" parameterType="memberDTO">-->
-<!--        update members-->
-<!--        set member_profile_photo = #{memberprofilephoto}-->
-<!--        where member_email = #{memberEmail}-->
-<!--    </update>-->
+    <!--프로필 사진 변경하기-->
+    <update id="updateprofilePhoto" parameterType="memberDTO">
+        update members
+        set member_profile_photo = #{memberprofilephoto}
+        where member_email = #{memberEmail}
+    </update>
 
 <!--    &lt;!&ndash;프로필 사진 등록하기 -> 기존사용자가 사진만 없을때&ndash;&gt;-->
 <!--    <update id="updateprofilePhoto" parameterType="memberDTO">-->

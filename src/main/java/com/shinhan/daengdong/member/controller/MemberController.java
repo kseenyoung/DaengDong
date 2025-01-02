@@ -61,11 +61,11 @@ public class MemberController {
         MemberDTO member = (MemberDTO) session.getAttribute("member");
 
         // signUpDTO에 session에 저장된 MemberDTO 정보 삽입
-        signUpDTO.setMemberEmail(member.getMemberEmail());
-        signUpDTO.setMemberProfilePhoto(member.getMemberProfilePhoto());
+        signUpDTO.setMemberEmail(member.getMember_email());
+        signUpDTO.setMemberProfilePhoto(member.getMember_profile_photo());
         if (signUpDTO.getMemberNickname() == null) {
-            if (member.getMemberNickname() != null) {
-                signUpDTO.setMemberNickname(member.getMemberNickname());
+            if (member.getMember_nickname() != null) {
+                signUpDTO.setMemberNickname(member.getMember_nickname());
             } else {
                 log.error("닉네임이 null입니다.");
                 // 적절한 기본값을 설정하거나 에러 처리
@@ -91,8 +91,20 @@ public class MemberController {
 
     //마이페이지 > 유저 정보
     @GetMapping("getProfileFragment.do")
-    public String getProfileFragment() {
+    public String getProfileFragment(HttpSession session, Model model) {
+        //MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = MemberDTO.builder().member_email("user2@example.com").build();
+        MemberDTO selectMember = memberService.selectMember(memberDTO.getMember_email());
+        model.addAttribute("selectMember", selectMember);
+        //log.info("selectMember : " + selectMember);
         return "member/profileFragment";
+    }
+    @PostMapping("modifyNickname.do")
+    @ResponseBody
+    public void modifyNickname(@RequestBody MemberDTO memberDTO) {
+        //log.info("modifyNickname: {}  " + memberDTO);
+        memberService.modifyNickname(memberDTO);
+        //log.info("modifyNickname: {}  " + memberDTO);
     }
 
     //'내 저장' > 세미 카테고리
@@ -105,8 +117,8 @@ public class MemberController {
     @GetMapping("getFavoritePlace.do")
     public String getFavoritePlaceList(HttpSession session, Model model) {
 //        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
-        List<FavoritePlaceDTO> favoritePlaceList = memberService.getFavoritePlaceList(memberDTO.getMemberEmail());
+        MemberDTO memberDTO = MemberDTO.builder().member_email("user1@example.com").build();
+        List<FavoritePlaceDTO> favoritePlaceList = memberService.getFavoritePlaceList(memberDTO.getMember_email());
         model.addAttribute("favoritePlaceList", favoritePlaceList);
         return "member/favoritePlaceFragment";
     }
@@ -115,8 +127,8 @@ public class MemberController {
     @GetMapping("getReviewFragment.do")
     public String getReviewList(HttpSession session, Model model) {
 //        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
-        List<ReviewDTO> reviewList = memberService.getReviewList(memberDTO.getMemberEmail());
+        MemberDTO memberDTO = MemberDTO.builder().member_email("user1@example.com").build();
+        List<ReviewDTO> reviewList = memberService.getReviewList(memberDTO.getMember_email());
         model.addAttribute("reviewList", reviewList);
         return "member/reviewFragment";
     }
@@ -140,8 +152,8 @@ public class MemberController {
     @GetMapping("getLikePostsFragment.do")
     public String getLikePosts(HttpSession session, Model model) {
 //        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
-        List<LikePostsDTO> likePostsList = memberService.getLikePosts(memberDTO.getMemberEmail());
+        MemberDTO memberDTO = MemberDTO.builder().member_email("user1@example.com").build();
+        List<LikePostsDTO> likePostsList = memberService.getLikePosts(memberDTO.getMember_email());
         model.addAttribute("likePostsList", likePostsList);
         return "member/likePostsFragment";
     }
@@ -150,8 +162,8 @@ public class MemberController {
     @GetMapping("getMyPosts.do")
     public String getMyPosts(HttpSession session, Model model) {
 //        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
-        List<PostDTO> postsList = memberService.getMyPosts(memberDTO.getMemberEmail());
+        MemberDTO memberDTO = MemberDTO.builder().member_email("user1@example.com").build();
+        List<PostDTO> postsList = memberService.getMyPosts(memberDTO.getMember_email());
         model.addAttribute("postsList", postsList);
         return "member/myPostsFragment";
     }
@@ -160,8 +172,8 @@ public class MemberController {
     @GetMapping("viewFollowingModal.do")
     public String viewFollowingModal(HttpSession session, Model model) {
 //        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
-        List<RelationshipsDTO> followingList = memberService.getFollowingList(memberDTO.getMemberEmail());
+        MemberDTO memberDTO = MemberDTO.builder().member_email("user1@example.com").build();
+        List<RelationshipsDTO> followingList = memberService.getFollowingList(memberDTO.getMember_email());
         model.addAttribute("followingList", followingList);
         return "member/followingModal";
     }
@@ -170,8 +182,8 @@ public class MemberController {
     @GetMapping("viewFollowerModal.do")
     public String viewFollowerModal(HttpSession session, Model model) {
 //        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
-        List<RelationshipsDTO> followerList = memberService.getFollowerList(memberDTO.getMemberEmail());
+        MemberDTO memberDTO = MemberDTO.builder().member_email("user1@example.com").build();
+        List<RelationshipsDTO> followerList = memberService.getFollowerList(memberDTO.getMember_email());
         model.addAttribute("followerList", followerList);
         return "member/followerModal";
     }

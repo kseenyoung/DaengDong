@@ -40,6 +40,22 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     }
 
     @Override
+    public MemberDTO selectMember(String memberEmail){
+        MemberDTO selectMember = sqlSession.selectOne(namespace+ "selectMember", memberEmail);
+        return selectMember;
+    }
+
+    @Override
+    public void modifyNickname(MemberDTO memberDTO) {
+        //log.info("modifyNickname!!!!!!!!!!!!!!!!! : " + memberDTO);
+        sqlSession.update(namespace + "modifyNickname", memberDTO);
+    }
+
+    public void updateprofilePhoto(MemberDTO memberDTO) {
+        sqlSession.update(namespace + "updateprofilePhoto", memberDTO);
+    }
+
+    @Override
     public List<ReviewDTO> getReviewList(String memberEmail) {
         List<ReviewDTO> reviewList = sqlSession.selectList(namespace + "viewReviewList", memberEmail);
         return reviewList;
@@ -68,9 +84,7 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     }
 
     @Override
-    public void modifyReview(ReviewDTO reviewDTO) {
-        sqlSession.update(namespace + "modifyReview", reviewDTO);
-    }
+    public void modifyReview(ReviewDTO reviewDTO) {sqlSession.update(namespace + "modifyReview", reviewDTO);}
 
     @Override
     public void deleteLikePosts(int postId) {
