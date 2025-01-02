@@ -169,7 +169,7 @@
 
 //카테고리
 #category {position:absolute;top:10px;left:10px;border-radius: 5px; border:1px solid #909090;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);background: #fff;overflow: hidden;z-index: 2;}
-#category li {float:left;list-style: none;width:50px;px;border-right:1px solid #acacac;padding:6px 0;text-align: center; cursor: pointer;}
+#category li {float:left;list-style: none;width:50px;border-right:1px solid #acacac;padding:6px 0;text-align: center; cursor: pointer;}
 #category li.on {background: #eee;}
 #category li:hover {background: #ffe6e6;border-left:1px solid #acacac;margin-left: -1px;}
 #category li:last-child{margin-right:0;border-right:0;}
@@ -739,12 +739,14 @@ body, h4, p, button, a {
                </ul>
            </div>
            <ul id="placesList"></ul>
-        <div id="pagination"></div>
+           <div id="pagination"></div>
+       </div>
     </div>
 </div>
 
 <div id="list_wrap">
     <ul id="placeList"></ul>
+    <hr>
     <div class="button">
         <button id="addPlaceBtn">장소 추가</button>
         <div class="line"></div>
@@ -752,10 +754,11 @@ body, h4, p, button, a {
 
 </div>
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e0559b7888458bf024586f6213185e7b&libraries=services"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62bd6cc1e013b8a659ae61760dc9fd7f&libraries=services"></script>
 <script>
 // 마커를 담을 배열입니다
 var markers = [];
+
 
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div
     mapOption = {
