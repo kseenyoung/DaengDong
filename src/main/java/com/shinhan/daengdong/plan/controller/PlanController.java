@@ -50,8 +50,6 @@ public class PlanController {
         MemberDTO member = (MemberDTO) session.getAttribute("member");
         planDTO.setMemberEmail(member.getMemberEmail()); // 세션 이메일 할당
 
-        long generatedId = 25;
-        planDTO.setPlanId(generatedId);
         log.info("생성된 plan_id: {}", planDTO.getPlanId());
 
         planService.savePlan(planDTO); // DB INSERT
@@ -117,21 +115,6 @@ public class PlanController {
         log.info("여행 기간 수정 요청 데이터: {}", planDTO);
         planService.planDate(planDTO);
         return "redirect:/plan/myPlace";
-    }
-
-    // 여행 날짜 변경 기능의 날짜를 LocalDate형식으로 바꾸기 위해 필요
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
-            @Override
-            public void setAsText(String text) throws IllegalArgumentException {
-                if (text != null && !text.isEmpty()) {
-                    setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                } else {
-                    setValue(null);
-                }
-            }
-        });
     }
 
     // 여행 공개 여부 상태 변경 기능
