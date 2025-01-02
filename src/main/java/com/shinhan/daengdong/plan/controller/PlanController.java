@@ -1,6 +1,7 @@
 package com.shinhan.daengdong.plan.controller;
 
 import com.shinhan.daengdong.member.dto.MemberDTO;
+import com.shinhan.daengdong.plan.dto.MemberPlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
 import com.shinhan.daengdong.plan.model.service.PlanServiceInterface;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import java.beans.PropertyEditorSupport;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -43,8 +45,7 @@ public class PlanController {
     }
 
     @PostMapping("/create")
-    @ResponseBody
-    public ResponseEntity<?> createPlan(@RequestBody PlanDTO planDTO, HttpServletRequest request) {
+    public String createPlan(@RequestBody PlanDTO planDTO, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
 
         MemberDTO member = (MemberDTO) session.getAttribute("member");
@@ -52,12 +53,17 @@ public class PlanController {
 
         log.info("생성된 plan_id: {}", planDTO.getPlanId());
 
-        planService.savePlan(planDTO); // DB INSERT
+        // DB에 플랜 저장 및 생성된 planId 반환
+        Long planId = planService.savePlan(planDTO); // DB INSERT
         log.info("PlanRepositoryImpl.save 실행됨: {}", planDTO);
+        log.info("생성된 plan_id: {}", planId);
 
+        // 반환된 planId를 세션에 저장
+        session.setAttribute("currentPlanId", planId);
+        session.setAttribute("currentMemberEmail", member.getMember_email());
 
-        log.info("플랜이 성공적으로 저장되었습니다.");
-        return ResponseEntity.ok("플랜 등록 성공");
+        session.setAttribute("currentPlan", planDTO);
+        return "redirect:/plan/place";
     }
 
     @GetMapping("/myPlace")
@@ -131,9 +137,35 @@ public class PlanController {
     }
 
     @GetMapping("/place")
-    public String searchPlaceForm(Model model) {
+    public String searchPlaceForm(HttpServletRequest request, Model model) {
+
         return "place/searchPlace"; // searchPlace.jsp
     }
 
+    @PostMapping("addCompanion")
+    public ResponseEntity<?> addCompanion(@RequestBody String companionEmail, HttpSession session) {
+
+        // 세션에서 planId와 memberEmail 가져오기
+        Long currentPlanId = (Long) session.getAttribute("currentPlanId");
+        String currentMemberEmail = (String) session.getAttribute("currentMemberEmail");
+
+        // 세션 값 로그로 출력
+        log.info("currentPlanId: {}", currentPlanId);
+        log.info("currentMemberEmail: {}", currentMemberEmail);
+
+        // 첫 번째 저장: 현재 사용자의 이메일
+        MemberPlanDTO currentUserPlan = new MemberPlanDTO();
+        currentUserPlan.setPlanId(currentPlanId);
+        currentUserPlan.setMemberEmail(currentMemberEmail);
+        planService.addCompanionToPlan(currentUserPlan);
+
+        // 두 번째 저장: 입력된 동행자의 이메일
+        MemberPlanDTO companionPlan = new MemberPlanDTO();
+        companionPlan.setPlanId(currentPlanId);
+        companionPlan.setMemberEmail(companionEmail);
+        planService.addCompanionToPlan(companionPlan);
+
+        return ResponseEntity.ok("동행자가 성공적으로 추가되었습니다.");
+    }
 
 }
