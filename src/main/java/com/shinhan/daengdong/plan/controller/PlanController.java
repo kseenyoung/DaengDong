@@ -130,4 +130,13 @@ public class PlanController {
         }
     }
 
+    @Autowired
+    private PlanServiceInterface planSearchService;
+
+    @GetMapping("/place")
+    public String searchPlaceForm(Model model) {
+        return "place/searchPlace"; // searchPlace.jsp
+    }
+
+
 }
