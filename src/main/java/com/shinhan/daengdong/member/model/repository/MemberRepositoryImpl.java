@@ -1,6 +1,7 @@
 package com.shinhan.daengdong.member.model.repository;
 
 import com.shinhan.daengdong.member.dto.*;
+import com.shinhan.daengdong.post.dto.PostDTO;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 import com.shinhan.daengdong.pet.dto.PetDTO;
 import java.util.List;
@@ -96,5 +97,11 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     @Override
     public void addFollowing(FollowDTO followDTO) {
         sqlSession.insert(namespace + "addRelationships", followDTO);
+    }
+
+    @Override
+    public List<PostDTO> getMyPosts(String memberEmail) {
+        List<PostDTO> myPostList = sqlSession.selectList(namespace + "selectMyPosts", memberEmail);
+        return myPostList;
     }
 }

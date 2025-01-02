@@ -2,21 +2,18 @@ package com.shinhan.daengdong.member.controller;
 
 import com.shinhan.daengdong.member.dto.*;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import com.shinhan.daengdong.post.dto.PostDTO;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Slf4j
@@ -147,6 +144,16 @@ public class MemberController {
         List<LikePostsDTO> likePostsList = memberService.getLikePosts(memberDTO.getMemberEmail());
         model.addAttribute("likePostsList", likePostsList);
         return "member/likePostsFragment";
+    }
+
+    //'내 저장' > 세미 카테고리 > 내 게시글 컨텐츠
+    @GetMapping("getMyPosts.do")
+    public String getMyPosts(HttpSession session, Model model) {
+//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = MemberDTO.builder().memberEmail("user1@example.com").build();
+        List<PostDTO> postsList = memberService.getMyPosts(memberDTO.getMemberEmail());
+        model.addAttribute("postsList", postsList);
+        return "member/myPostsFragment";
     }
 
     //팔로잉 보기

@@ -19,6 +19,4 @@ public class ReviewDTO {
     private String review_content;
     private String region_name;
     private String imageUrl;
-    private LocalDateTime create_at;
-    private LocalDateTime update_at;    // 수정 일자
 }

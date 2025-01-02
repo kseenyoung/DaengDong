@@ -21,6 +21,4 @@ public class FavoritePlaceDTO {
     private String kakao_place_url;
     private String region_name;
     private String imageUrl;
-    private LocalDateTime create_at;    // 생성 일자
-    private LocalDateTime update_at;    // 수정 일자
     }
