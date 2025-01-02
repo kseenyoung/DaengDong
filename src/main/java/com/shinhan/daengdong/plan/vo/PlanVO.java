@@ -6,7 +6,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Builder
 @Getter @Setter
@@ -17,6 +16,4 @@ public class PlanVO {
     private LocalDate startDate; // 시작 날짜
     private LocalDate endDate;   // 종료 날짜
     private int planState;           // 플랜 상태 (0: 비공개, 1: 공개)
-    private LocalDateTime createAt;  // 생성일
-    private LocalDateTime updateAt;  // 수정일
 }

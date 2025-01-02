@@ -14,11 +14,19 @@ public interface MemberRepositoryInterface {
 
     PetDTO insertPet(List<PetDTO> petDTO, String memberEmail);
 
+    MemberDTO selectMember(String memberEmail);
+
+    void modifyNickname(MemberDTO memberDTO);
+
+    void updateprofilePhoto(MemberDTO memberDTO);
+
     List<ReviewDTO> getReviewList(String memberEmail);
 
     List<FavoritePlaceDTO> getFavoritePlaceList(String memberEmail);
 
     List<LikePostsDTO> getLikePosts(String memberEmail);
+
+
 
     void deleteFavoritePlace(int starId);
 

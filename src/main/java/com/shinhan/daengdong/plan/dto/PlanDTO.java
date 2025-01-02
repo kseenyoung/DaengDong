@@ -1,11 +1,8 @@
 package com.shinhan.daengdong.plan.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.LocalDate;
 
 @Getter @Setter
 @ToString
