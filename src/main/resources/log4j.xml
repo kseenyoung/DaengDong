@@ -9,9 +9,8 @@
             <param name="ConversionPattern" value="%-5p: %c - %m%n" />
         </layout>
     </appender>
-
     <appender name="dailyFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="C:/Users/uichan/daengdong/logs/output.log" />
+        <param name="File" value="C:/Users/uichan/Desktop/shinhan4/workspace-intalliJ/DaengDong/src/main/logs/output.log" />
         <param name="Append" value="true" />
         <param name="DatePattern" value="'.'yyyy-MM-dd" />
         <layout class="org.apache.log4j.PatternLayout">
@@ -28,7 +27,7 @@
 
 
     <!-- Application Loggers -->
-    <logger name="com.shinhan.myapp">
+    <logger name="com.shinhan.daengdong">
         <level value="DEBUG" />
         <appender-ref ref="console" />
         <appender-ref ref="dailyFileAppender" />
