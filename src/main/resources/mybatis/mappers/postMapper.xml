@@ -17,6 +17,7 @@
         <result property="postContent" column="post_content"/>
         <result property="memberNickName" column="member_nickname"/>
         <result property="likeCount" column="like_count"/>
+        <result property="imageUrl" column="image_url"/>
     </resultMap>
     <select id="viewPost" resultMap="postResultMap">
 <!--        SELECT-->

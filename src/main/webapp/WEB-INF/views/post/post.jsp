@@ -42,7 +42,7 @@
     <div id="container">
       <header id="header">
         <div id="header_box">
-          <h1 id="logo">댕동</h1>
+          <h1 id="Slogo">댕동</h1>
           <div id="header_right">
             <a href="">
               <img src="./images/community.png" alt="커뮤니티" width="30" height="30" />
@@ -142,7 +142,7 @@
                        <div class="post_info">
                            <div class="post_info_left"><img src="" alt="userprofile"><span>${post.memberNickName}</span></div>
                            <div class="post_info_right">
-                               <img src="./images/love.png" alt="like"><span>356</span>
+                               <img src="./images/love.png" alt="like"><span>${post.likeCount}</span>
                            </div>
                        </div>
                    </div>
