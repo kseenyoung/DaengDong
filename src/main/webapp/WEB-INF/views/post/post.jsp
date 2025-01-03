@@ -14,6 +14,8 @@
   <c:set var="path" value="${pageContext.servletContext.contextPath}"/>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
@@ -123,28 +125,33 @@
                <c:if test="${status.index % 4 == 0}">
                    <div class="post">
                        <div class="post_relative">
-                           <img class="post_img" src="" alt="">
-                            <c:if test="${post.category} == 꿀팁}">
+                           <img class="post_img" src="${path}/img/${post.imageUrl}" alt="">
+                            <c:if test="${post.category == '꿀팁'}">
                                 <div class="honeytip">
                                    💡Tip
-                               </div>
+                                </div>
                             </c:if>
 
                            <div class="post_content">
-                               <h2>${post.postTitle}</h2>
-                                    <c:if test="${post.category} == 꿀팁}">
-                                       <p>${post.postContent}</p>
-                                   </c:if>
 
+                                <c:if test="${post.category == '꿀팁'}">
+                                   <h2>${post.postTitle}</h2>
+                                   <p>${post.postContent}</p>
+                               </c:if>
                            </div>
                        </div>
-
                        <div class="post_info">
-                           <div class="post_info_left"><img src="" alt="userprofile"><span>${post.memberNickName}</span></div>
+                           <div class="post_info_left"><img src="${path}/img/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
                            <div class="post_info_right">
-                               <img src="./images/love.png" alt="like"><span>${post.likeCount}</span>
+                               <img src="${path}/img/Like.png" alt="like"><span>${post.likeCount}</span>
                            </div>
                        </div>
+                        <c:if test="${post.category != '꿀팁'}">
+                            <div class="post_bottom">
+                            ${post.postContent}
+                            </div>
+
+                        </c:if>
                    </div>
 
                </c:if>
@@ -155,7 +162,36 @@
            <c:forEach var="post" items="${postList}" varStatus="status">
                <c:if test="${status.index % 4 == 1}">
                    <!-- 두 번째 컬럼에 해당하는 게시글 -->
-                      <div class="post">${post.postTitle}</div>
+                      <div class="post">
+                                             <div class="post_relative">
+                                                 <img class="post_img" src="${path}/img/${post.imageUrl}" alt="">
+                                                  <c:if test="${post.category == '꿀팁'}">
+                                                      <div class="honeytip">
+                                                         💡Tip
+                                                      </div>
+                                                  </c:if>
+
+                                                 <div class="post_content">
+
+                                                      <c:if test="${post.category == '꿀팁'}">
+                                                         <h2>${post.postTitle}</h2>
+                                                         <p>${post.postContent}</p>
+                                                     </c:if>
+                                                 </div>
+                                             </div>
+                                             <div class="post_info">
+                                                 <div class="post_info_left"><img src="${path}/img/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                                                 <div class="post_info_right">
+                                                     <img src="${path}/img/Like.png" alt="like"><span>${post.likeCount}</span>
+                                                 </div>
+                                             </div>
+                                              <c:if test="${post.category != '꿀팁'}">
+                                                  <div class="post_bottom">
+                                                  ${post.postContent}
+                                                  </div>
+
+                                              </c:if>
+                                         </div>
                </c:if>
            </c:forEach>
        </div>
@@ -164,7 +200,36 @@
            <c:forEach var="post" items="${postList}" varStatus="status">
                <c:if test="${status.index % 4 == 2}">
                    <!-- 세 번째 컬럼에 해당하는 게시글 -->
-                    <div class="post">${post.postTitle}</div>
+                     <div class="post">
+                                            <div class="post_relative">
+                                                <img class="post_img" src="${path}/img/${post.imageUrl}" alt="">
+                                                 <c:if test="${post.category == '꿀팁'}">
+                                                     <div class="honeytip">
+                                                        💡Tip
+                                                     </div>
+                                                 </c:if>
+
+                                                <div class="post_content">
+
+                                                     <c:if test="${post.category == '꿀팁'}">
+                                                        <h2>${post.postTitle}</h2>
+                                                        <p>${post.postContent}</p>
+                                                    </c:if>
+                                                </div>
+                                            </div>
+                                            <div class="post_info">
+                                                <div class="post_info_left"><img src="${path}/img/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                                                <div class="post_info_right">
+                                                    <img src="${path}/img/Like.png" alt="like"><span>${post.likeCount}</span>
+                                                </div>
+                                            </div>
+                                             <c:if test="${post.category != '꿀팁'}">
+                                                 <div class="post_bottom">
+                                                 ${post.postContent}
+                                                 </div>
+
+                                             </c:if>
+                                        </div>
                </c:if>
            </c:forEach>
        </div>
@@ -173,7 +238,36 @@
            <c:forEach var="post" items="${postList}" varStatus="status">
                <c:if test="${status.index % 4 == 3}">
                    <!-- 네 번째 컬럼에 해당하는 게시글 -->
-                     <div class="post">${post.postTitle}</div>
+                     <div class="post">
+                                            <div class="post_relative">
+                                                <img class="post_img" src="${path}/img/${post.imageUrl}" alt="">
+                                                 <c:if test="${post.category == '꿀팁'}">
+                                                     <div class="honeytip">
+                                                        💡Tip
+                                                     </div>
+                                                 </c:if>
+
+                                                <div class="post_content">
+
+                                                     <c:if test="${post.category == '꿀팁'}">
+                                                        <h2>${post.postTitle}</h2>
+                                                        <p>${post.postContent}</p>
+                                                    </c:if>
+                                                </div>
+                                            </div>
+                                            <div class="post_info">
+                                                <div class="post_info_left"><img src="${path}/img/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                                                <div class="post_info_right">
+                                                    <img src="${path}/img/Like.png" alt="like"><span>${post.likeCount}</span>
+                                                </div>
+                                            </div>
+                                             <c:if test="${post.category != '꿀팁'}">
+                                                 <div class="post_bottom">
+                                                 ${post.postContent}
+                                                 </div>
+
+                                             </c:if>
+                                        </div>
                </c:if>
            </c:forEach>
        </div>
@@ -185,6 +279,13 @@
 
   <script>
  document.addEventListener('DOMContentLoaded', () => {
+   const writeButton = document.querySelector(".post_write");
+   const modal = document.getElementById("post_write_modal");
+   writeButton.addEventListener("click", function () {
+     console.log(1)
+      modal.style.display = "flex";
+   });
+
     const dropZone = document.getElementById('dropZone');
     const dropzoneImg = document.getElementById('dropzoneImg');
     const buttons = document.getElementById('buttons');
@@ -193,7 +294,43 @@
     const prevButton = document.getElementById('prevButton');
     const post_form = document.getElementById('post_form');
     const fileInput = document.getElementById('fileInput');
-    const postFormData = new FormData(); // FormData 객체 생성
+    let postFormData = new FormData(); // FormData 객체 생성
+
+    document.getElementById('post_form').addEventListener('submit', (event) => {
+        event.preventDefault(); // 폼의 기본 제출 동작 방지
+
+        // 폼 데이터 추가
+
+
+        // 텍스트 필드 추가
+        const title = document.getElementById('title').value; // 제목 가져오기
+        const category = document.getElementById('category').value; // 카테고리 가져오기
+        const content = document.querySelector('#post_form textarea').value; // 내용 가져오기
+
+        postFormData.append('title', title);
+        postFormData.append('category', category);
+        postFormData.append('content', content);
+
+          for (let pair of postFormData.entries()) {
+                    console.log(pair[0] + ": ", pair[1]); // key와 value를 출력
+                }
+        // 서버로 전송
+       $.ajax({
+               url: `${path}/post/po`,
+               type: "POST",
+               data: postFormData,
+               contentType: false,  // FormData를 사용하므로, 기본 content-type을 설정하지 않음
+               processData: false,  // jQuery가 데이터를 자동으로 처리하지 않도록 설정
+               success: function (response) {
+                    console.log(response)
+
+
+               },
+               error: function (err) {
+                  console.log(err)
+               }
+           });
+        });
 
     const otherInput = document.getElementById('otherInput'); // 다른 입력값을 위한 input 요소
 
@@ -263,8 +400,8 @@
             const reader = new FileReader();
             reader.onload = (e) => {
                 images.push(e.target.result); // 이미지 URL 배열에 추가
-                // console.log('Uploaded image:', e.target.result); // 콘솔에 업로드된 이미지 출력
-                // console.log('File Name:', file.name); // 파일 이름
+                 //console.log('Uploaded image:', e.target.result); // 콘솔에 업로드된 이미지 출력
+                //console.log('File Name:', file.name); // 파일 이름
                 // console.log('File Size:', file.size); // 파일 크기 (bytes)
                 // console.log('File Type:', file.type); // 파일 타입 (MIME type)
                 currentIndex = 0; // 새로 업로드된 이미지가 첫 번째 이미지가 되도록 설정
@@ -276,6 +413,7 @@
         for (let pair of postFormData.entries()) {
             console.log(pair[0] + ": ", pair[1]); // key와 value를 출력
         }
+
     }
 
 
@@ -285,52 +423,27 @@
         dropZone.querySelector('span').style.display = 'none';   // dropZone 숨기기
         post_form.style.display = 'block';
         console.log(("files : ", files))
-        // if(event.dataTransfer.files.length >= 2){
-        //     buttons.style.display = 'flex';
-        // }
+        if(files.length >= 2){
+             buttons.style.display = 'flex';
+        }
 }
     // 드롭존 배경 업데이트
     function updateDropZoneBackground() {
+    console.log(`url(${images[currentIndex]})`)
+    console.log(`${images[currentIndex]}`)
+    console.log(`${images}`)
+    console.log(currentIndex)
         if (images.length > 0) {
-            dropZone.style.backgroundImage = `url(${images[currentIndex]})`;
+            dropZone.style.backgroundImage = 'url(' + images[currentIndex] + ')';
             dropZone.style.backgroundSize = 'cover';
             dropZone.style.backgroundPosition = 'center';
         }
     }
  });
 
- document.getElementById('post_form').addEventListener('submit', (event) => {
-    event.preventDefault(); // 폼의 기본 제출 동작 방지
-
-    // 폼 데이터 추가
 
 
-    // 텍스트 필드 추가
-    const title = document.getElementById('title').value; // 제목 가져오기
-    const category = document.getElementById('category').value; // 카테고리 가져오기
-    const content = document.querySelector('#post_form textarea').value; // 내용 가져오기
 
-    postFormData.append('title', title);
-    postFormData.append('category', category);
-    postFormData.append('content', content);
-
-    // 서버로 전송
-    fetch('https://example.com/upload', {
-        method: 'POST',
-        body: postFormData,
-    })
-        .then((response) => {
-            if (response.ok) {
-                alert('폼이 성공적으로 전송되었습니다!');
-            } else {
-                alert('폼 전송 실패');
-            }
-        })
-        .catch((error) => {
-            console.error('전송 중 오류 발생:', error);
-            alert('서버 오류');
-        });
-});
 
 
 

@@ -1,5 +1,6 @@
 package com.shinhan.daengdong.post.model.repository;
 
+import com.shinhan.daengdong.post.vo.LikeVO;
 import com.shinhan.daengdong.post.vo.PostVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
@@ -20,6 +21,11 @@ public class PostRepositoryImpl implements PostRepositoryInterface {
     @Override
     public List<PostVO> getTopPosts() {
         List<PostVO> result = sqlSession.selectList(namespace + "viewPost");
+        log.info(result.toString());
+        return result;
+    }
+    public List<LikeVO> getMyLike() {
+        List<LikeVO> result = sqlSession.selectList(namespace + "getMyLike");
         log.info(result.toString());
         return result;
     }

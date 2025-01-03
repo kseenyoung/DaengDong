@@ -3,12 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shinhan.post">
-    <!--    <select id="viewPost" resultType="PostDTO">-->
-    <!--        SELECT-->
-    <!--            post_id-->
-    <!--        FROM-->
-    <!--            posts-->
-    <!--    </select>-->
 
     <resultMap id="postResultMap" type="PostVO">
         <id property="postId" column="post_id"/>
@@ -16,49 +10,44 @@
         <result property="category" column="category_id"/>
         <result property="postContent" column="post_content"/>
         <result property="memberNickName" column="member_nickname"/>
-        <result property="likeCount" column="like_count"/>
-        <result property="imageUrl" column="image_url"/>
+        <result property="memberProfilePhoto" column="member_profile_photo"/>
+         <result property="likeCount" column="like_count"/>
+         <result property="imageUrl" column="image_url"/>
     </resultMap>
     <select id="viewPost" resultMap="postResultMap">
-<!--        SELECT-->
-<!--            p.post_id,-->
-<!--            p.post_title,-->
-<!--            p.post_content,-->
-<!--            p.category_id,-->
-<!--            COUNT(l.post_id) AS like_count-->
-<!--        FROM-->
-<!--            posts p-->
-<!--        LEFT JOIN-->
-<!--            likes l-->
-<!--        ON-->
-<!--            p.post_id = l.post_id-->
-<!--        GROUP BY-->
-<!--            p.post_id-->
-<!--        ORDER BY-->
-<!--            like_count DESC-->
-<!--        LIMIT 20;-->
+
         SELECT
-            p.post_id,
-            p.post_title,
-            p.post_content,
-            p.category_id,
-            m.member_nickname,
-            COUNT(l.post_id) AS like_count
+        p.post_id,
+        p.post_title,
+        p.category_id,
+        p.post_content,
+        m.member_nickname,
+        m.member_profile_photo,
+        COUNT(l.post_id) AS like_count,
+        MIN(pi.image_url)
         FROM
-            posts p
+        posts p
         LEFT JOIN
-            likes l
-        ON
-            p.post_id = l.post_id
+        likes l ON p.post_id = l.post_id
         LEFT JOIN
-            members m
-        ON
-            p.member_email = m.member_email
+        members m ON p.member_email = m.member_email
+        LEFT JOIN
+        post_images pi ON p.post_id = pi.post_id
         GROUP BY
-            p.post_id
+        p.post_id, pi.image_url
         ORDER BY
-            like_count DESC
-        LIMIT 20;
+        like_count DESC
+
     </select>
+
+<!--    <select id="getMyLike" parameterType="LikeVO">-->
+
+<!--        SELECT-->
+<!--            *-->
+<!--        FROM-->
+<!--            likes-->
+
+
+<!--    </select>-->
 
 </mapper>
