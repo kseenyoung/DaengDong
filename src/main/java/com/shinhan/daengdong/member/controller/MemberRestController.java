@@ -2,6 +2,7 @@ package com.shinhan.daengdong.member.controller;
 
 import com.shinhan.daengdong.member.dto.FollowDTO;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
+import com.shinhan.daengdong.post.model.service.PostServiceInterface;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
