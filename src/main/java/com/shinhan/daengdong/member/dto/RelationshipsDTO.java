@@ -2,8 +2,6 @@ package com.shinhan.daengdong.member.dto;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,6 +14,4 @@ public class RelationshipsDTO {
     private String member_nickname;
     private String member_profile_photo;
     private int is_following_back;
-    private LocalDateTime create_at;
-    private LocalDateTime update_at;
 }

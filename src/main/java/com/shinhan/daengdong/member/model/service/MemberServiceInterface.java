@@ -1,6 +1,7 @@
 package com.shinhan.daengdong.member.model.service;
 
 import com.shinhan.daengdong.member.dto.*;
+import com.shinhan.daengdong.post.dto.PostDTO;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 
 import java.util.List;
@@ -10,6 +11,12 @@ public interface MemberServiceInterface {
     MemberDTO login(String email);
 
     MemberDTO signUp(SignUpDTO signUpDTO);
+
+    MemberDTO selectMember(String memberEmail);
+
+    void modifyNickname(MemberDTO memberDTO);
+
+    void updateprofilePhoto(MemberDTO memberDTO);
 
     List<FavoritePlaceDTO> getFavoritePlaceList(String memberEmail);
 
@@ -32,4 +39,6 @@ public interface MemberServiceInterface {
     void deleteFollowing(FollowDTO followDTO);
 
     void addFollowing(FollowDTO followDTO);
+
+    List<PostDTO> getMyPosts(String memberEmail);
 }

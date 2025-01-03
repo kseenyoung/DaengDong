@@ -19,11 +19,13 @@
 		<typeAlias type="com.shinhan.daengdong.member.dto.RelationshipsDTO" alias="relationshipsDTO" />
 		<typeAlias type="com.shinhan.daengdong.member.dto.RelationshipsDTO" alias="relationshipsVO" />
 		<typeAlias type="com.shinhan.daengdong.member.dto.FollowDTO" alias="followDTO" />
+		<typeAlias type="com.shinhan.daengdong.post.dto.PostDTO" alias="postsDTO" />
+		<typeAlias type="com.shinhan.daengdong.post.dto.PostDTO" alias="postsVO" />
 
 		<!-- Plan 부분 -->
 		<typeAlias type="com.shinhan.daengdong.plan.dto.PlanDTO" alias="planDTO" />
+		<typeAlias type="com.shinhan.daengdong.plan.dto.MemberPlanDTO" alias="memberPlanDTO" />
 		<!-- 위 코드처럼 채워 나가면 됨.. -->
-		<typeAlias type="com.shinhan.daengdong.place.dto.PlaceDTO" alias="placeDTO" />
 		<typeAlias type="com.shinhan.daengdong.place.dto.RegionDTO" alias="regionDTO" />
 		<typeAlias type="com.shinhan.daengdong.post.vo.PostVO" alias="PostVO" />
 

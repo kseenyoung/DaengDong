@@ -1,14 +1,9 @@
 package com.shinhan.daengdong.pet.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
+
 import java.sql.Date;
-import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Getter @Setter
 @Builder
@@ -28,6 +23,4 @@ public class PetDTO {
     private String petBloodType;
     private Integer petProfilePhoto;
     private String petSpecies;
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
 }

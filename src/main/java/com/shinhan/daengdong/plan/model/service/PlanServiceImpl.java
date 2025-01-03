@@ -1,5 +1,6 @@
 package com.shinhan.daengdong.plan.model.service;
 
+import com.shinhan.daengdong.plan.dto.MemberPlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
 import com.shinhan.daengdong.plan.model.repository.PlanRepositoryImpl;
 import com.shinhan.daengdong.plan.model.repository.PlanRepositoryInterface;
@@ -19,9 +20,10 @@ public class PlanServiceImpl implements PlanServiceInterface {
     private PlanRepositoryImpl planRepository;
 
     @Override
-    public void savePlan(PlanDTO planDTO) {
-        log.info("플랜 저장 요청!!!!!!!!!!!!!: {}", planDTO);
-        planRepository.save(planDTO); // DB에 저장
+    public Long savePlan(PlanDTO planDTO) {
+        planRepository.save(planDTO); // Repository 호출
+        log.info("Generated Plan ID: {}", planDTO.getPlanId());
+        return planDTO.getPlanId(); // 반환된 planId
     }
 
     @Override
@@ -43,4 +45,10 @@ public class PlanServiceImpl implements PlanServiceInterface {
     public void planState(PlanDTO planDTO) {
         planRepository.planState(planDTO);
     }
+
+    @Override
+    public void addCompanionToPlan(MemberPlanDTO memberPlanDTO) {
+        planRepository.saveMemberPlan(memberPlanDTO);
+    }
+
 }
