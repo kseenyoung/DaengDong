@@ -87,13 +87,69 @@
     }
 </script>
 
-<!-- 공개된 여행 계획 리스트 -->
-<h2>공개된 여행 계획</h2>
+<!-- 여행 계획 리스트 -->
+<%-- <h2>여행 계획</h2> --%>
+<%-- <ul> --%>
+<%--     <c:forEach var="plan" items="${plans}"> --%>
+<%--         <li>${plan.planName}</li> --%>
+<%--     </c:forEach> --%>
+<%-- </ul> --%>
+
+<h2>여행 계획</h2>
 <ul>
     <c:forEach var="plan" items="${plans}">
-        <li>${plan.planName}</li>
+        <li>
+            <a href="#" class="open-modal" data-plan-id="${plan.planId}">
+                ${plan.planName}
+            </a>
+        </li>
     </c:forEach>
 </ul>
+
+<!-- 여행계획 모달창 searchPlace와 연동 -->
+<div id="modal" style="display: none; position: fixed; top: 10%; left: 10%; width: 80%; height: 80%; background-color: white; border: 1px solid #ccc; padding: 20px; z-index: 1000; overflow-y: auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+    <button id="close-modal" style="float: right;">닫기</button>
+    <div id="modal-content">
+        <!-- Ajax로 로드된 내용이 여기에 표시됩니다 -->
+    </div>
+</div>
+<div id="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+
+<script>
+    // 여행계획 모달 열기 이벤트
+    document.querySelectorAll('.open-modal').forEach(item => {
+        item.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            const planId = this.dataset.planId;
+
+            // Ajax 요청으로 컨트롤러 호츌
+            fetch(`/daengdong/search/place?planId=${planId}`)
+                .then(response => response.text())
+                .then(data => {
+                    // 모달에 컨텐츠 삽입
+                    document.getElementById('modal-content').innerHTML = data;
+
+                    // 모달 표시
+                    document.getElementById('modal').style.display = 'block';
+                    document.getElementById('modal-overlay').style.display = 'block';
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+
+    // 모달 닫기 이벤트
+    document.getElementById('close-modal').addEventListener('click', function () {
+        document.getElementById('modal').style.display = 'none';
+        document.getElementById('modal-overlay').style.display = 'none';
+    });
+
+    // 모달 외부 클릭 시 닫기
+    document.getElementById('modal-overlay').addEventListener('click', function () {
+        document.getElementById('modal').style.display = 'none';
+        document.getElementById('modal-overlay').style.display = 'none';
+    });
+</script>
 
 <%-- 여행 프로젝트 제목 수정 기능 --%>
 <h2>여행 제목 수정</h2>

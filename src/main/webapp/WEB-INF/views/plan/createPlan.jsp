@@ -66,7 +66,7 @@
     }).then(response => {
       if (response.ok) {
         alert("플랜이 성공적으로 생성되었습니다!");
-        location.href = "/daengdong/plan/myPlace";
+        location.href = "/daengdong/plan/place";
       } else {
         alert("플랜 생성에 실패했습니다.");
       }
