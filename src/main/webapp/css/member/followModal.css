@@ -1,10 +1,10 @@
 /* 글래스모피즘 기본 스타일 */
-.modal .modal-dialog {
+#followModal-dialog {
   display: flex;
   justify-content: center;
 }
 
-.modal-content {
+#followModal-content {
   background: rgba(255, 255, 255, 0.2); /* 투명도 */
   backdrop-filter: blur(10px); /* 흐림 효과 */
   -webkit-backdrop-filter: blur(10px); /* 사파리 지원 */
@@ -13,7 +13,6 @@
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
   color: #fff; /* 기본 텍스트 색상 */
   width: 400px;
-
 }
 
 /* 팔로워 버튼 스타일 */
@@ -109,4 +108,17 @@
 /* Modal Body 스타일 */
 .modal-body {
   color: #ffffff; /* 텍스트 흰색 */
+}
+
+.follow-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px; /* 우측 상단 */
+  background-color: transparent;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  cursor: pointer;
+  z-index: 10; /* 다른 요소 위에 표시 */
 }

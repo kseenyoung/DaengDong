@@ -13,12 +13,32 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  position: relative; /* 배지 위치를 조정하기 위한 부모 설정 */
+  align-items: center;
+  position: relative;
   transition: transform 0.2s ease-in-out;
 }
 
 .post-card:hover {
   transform: scale(1.05);
+}
+
+
+/* 삭제 버튼 스타일 */
+.delete-post-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px; /* 우측 상단 */
+  background-color: transparent;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  color: #959595;
+  cursor: pointer;
+  z-index: 10; /* 다른 요소 위에 표시 */
+}
+
+.delete-post-btn:hover {
+  color: red;
 }
 
 .button-container .hoverable-heart {
@@ -34,68 +54,68 @@
   transform: scale(1.2);
 }
 
-  .post-image {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-  }
+.post-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
 
-  .post-info {
-    padding: 10px;
-    text-align: center;
-  }
+.post-info {
+  padding: 10px;
+  text-align: center;
+}
 
-  .post-title {
-    font-size: 1rem;
-    font-weight: bold;
-    margin: 5px 0;
-  }
+.post-title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 5px 0;
+}
 
-  .post-user {
-    font-size: 0.9rem;
-    color: gray;
-    margin: 5px 0;
-  }
+.post-user {
+  font-size: 0.9rem;
+  color: gray;
+  margin: 5px 0;
+}
 
-  .post-likes {
-    font-size: 0.9rem;
-    color: red;
-    margin: 5px 0;
-  }
+.post-likes {
+  font-size: 0.9rem;
+  color: red;
+  margin: 5px 0;
+}
 
-  /* 배지 스타일 */
+/* 배지 스타일 */
 
-  .badge {
-    position: absolute;
-    top: 10px;
-    left: 10px; /* 이미지 좌측 상단 */
-    padding: 5px 10px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 5px; /* 아이콘과 텍스트 간격 */
-  }
+.badge {
+  position: absolute;
+  top: 10px;
+  left: 10px; /* 이미지 좌측 상단 */
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 5px; /* 아이콘과 텍스트 간격 */
+}
 
-  .badge-icon {
-    font-size: 1rem;
-  }
+.badge-icon {
+  font-size: 1rem;
+}
 
-  /* 카테고리별 배지 색상 */
+/* 카테고리별 배지 색상 */
 
-  .badge.여행중 {
-    background-color: #007bff; /* 파란색 */
-  }
+.badge.여행중 {
+  background-color: #007bff; /* 파란색 */
+}
 
-  .badge.여행완료 {
-    background-color: #28a745; /* 초록색 */
-  }
+.badge.여행완료 {
+  background-color: #28a745; /* 초록색 */
+}
 
-  .badge.사진자랑 {
-    background-color: #ffc107; /* 노란색 */
-  }
+.badge.사진자랑 {
+  background-color: #ffc107; /* 노란색 */
+}
 
-  .badge.꿀팁 {
-    background-color: #ff5733; /* 주황색 */
-  }
+.badge.꿀팁 {
+  background-color: #ff5733; /* 주황색 */
+}

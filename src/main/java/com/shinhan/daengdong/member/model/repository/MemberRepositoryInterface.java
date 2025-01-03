@@ -26,8 +26,6 @@ public interface MemberRepositoryInterface {
 
     List<LikePostsDTO> getLikePosts(String memberEmail);
 
-
-
     void deleteFavoritePlace(int starId);
 
     void deleteReview(int reviewId);

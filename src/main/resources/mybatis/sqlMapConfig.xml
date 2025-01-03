@@ -27,7 +27,5 @@
 		<typeAlias type="com.shinhan.daengdong.plan.dto.MemberPlanDTO" alias="memberPlanDTO" />
 		<!-- 위 코드처럼 채워 나가면 됨.. -->
 		<typeAlias type="com.shinhan.daengdong.place.dto.RegionDTO" alias="regionDTO" />
-		<typeAlias type="com.shinhan.daengdong.post.vo.PostVO" alias="PostVO" />
-
 	</typeAliases>
 </configuration>

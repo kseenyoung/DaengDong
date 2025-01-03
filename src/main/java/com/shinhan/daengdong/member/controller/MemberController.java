@@ -134,7 +134,7 @@ public class MemberController {
     }
 
     @GetMapping("getReviewModal.do")
-    public String getReviewModal(@RequestParam String reviewId,
+    public String getReviewModal(@RequestParam int reviewId,
                                  @RequestParam String reviewContent,
                                  @RequestParam int reviewRating,
                                  @RequestParam String kakaoPlaceName,
@@ -164,6 +164,7 @@ public class MemberController {
 //        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
         MemberDTO memberDTO = MemberDTO.builder().member_email("user1@example.com").build();
         List<PostDTO> postsList = memberService.getMyPosts(memberDTO.getMember_email());
+        log.info("postsList: " + postsList);
         model.addAttribute("postsList", postsList);
         return "member/myPostsFragment";
     }

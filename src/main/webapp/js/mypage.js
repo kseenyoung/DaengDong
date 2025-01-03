@@ -12,14 +12,33 @@ $(document).ready(function () {
   });
 
   function initializeEventHandlers() {
+    $(document).off("click", "#myTripFragment")
+      .off("click", "#mySaveFragment")
+      .off("click", "#semiCategories .action-item")
+      .off("click", "#following")
+      .off("click", "#follower")
+      .off("click", ".delete-following")
+      .off("click", ".insert-follower")
+      .off("click", ".delete-review")
+      .off("click", ".update-review")
+      .off("click", "#confirm-update")
+      .off("click", ".delete-likePosts")
+      .off("click", "");
+
     $(document).on("click", "#myTripFragment", moveToMyTrip);
     $(document).on("click", "#mySaveFragment", getSemiSaveCategory);
     $(document).on("click", "#semiCategories .action-item", injectAction);
     $(document).on("click", "#following", viewFollowingModal);
     $(document).on("click", "#follower", viewFollowerModal);
     $(document).on("click", ".delete-following", deleteFollowing);
-    $(document).on("click", ".insert-follower", addFollowing)
-    $(document).on('click', '.insert-follower, .delete-following', addPopAnimation)
+    $(document).on("click", ".insert-follower", addFollowing);
+    $(document).on("click", ".delete-review", deleteReview);
+    $(document).on("click", ".update-review", updateReview);
+    $(document).on("click", "#confirm-update", confirmUpdate);
+    $(document).on("click", ".delete-likePosts", deleteLikePosts)
+    $(document).on("click", ".delete-post-btn", deletePost)
+    $(document).on("click", ".delete-favoritePlace", deleteFavoritePlace)
+
   }
 
   function moveToMyTrip() {
@@ -31,8 +50,6 @@ $(document).ready(function () {
         $("#myPhotoCardFragment").removeClass("active");
         $("#myTripFragment").addClass("active"); // '내 여행' 활성화
         $("#semiCategories").html(response);
-        // initializeEventHandlers();
-
       },
       error: function (err) {
         console.log(err);
@@ -49,7 +66,6 @@ $(document).ready(function () {
         $("#myPhotoCardFragment").removeClass("active");
         $("#mySaveFragment").addClass("active"); // '내 여행' 활성화
         $("#semiCategories").html(response);
-        // initializeEventHandlers();
       },
       error: function (err) {
         console.log(err);
@@ -87,9 +103,6 @@ $(document).ready(function () {
         $("#myPosts").css("color", "#8a8a8a")
         $("#announcement-box").html(response);
         addHoverScriptStar();
-        $(document).on("click", ".delete-favoritePlace", deleteFavoritePlace);
-        $(this).closest('.announcement').remove();
-        // initializeEventHandlers();
       },
       error: function (err) {
         console.log(err);
@@ -103,25 +116,12 @@ $(document).ready(function () {
       url: `${path}/auth/getReviewFragment.do`,
       type: "get",
       success: function (response) {
-        $('#review-modal').on('hidden.bs.modal', function () {
-          $('.modal-backdrop').remove(); // 백드롭 제거
-          $(this).removeData('bs.modal'); // 모달 데이터 초기화
-        });
-
         $("#myFavoritePlace").css("color", "#8a8a8a")
         $("#myReview").css("color", "#0AB75B")
         $("#myLikes").css("color", "#8a8a8a")
         $("#myPosts").css("color", "#8a8a8a")
         $("#announcement-box").html(response);
-        $(document).on("click", ".delete-review", deleteReview);
-
-        //todo: update 클릭 시, 정보 가져와서 모달에 표시해주기
-        //todo: modal이 곂곂이 쌓이는 버그 해결
-        //todo: 내가쓴 리뷰, 좋아요에서는 팔로워, 팔로잉 모달이 제대로 나오지 않는 버그 해결
-        $(document).on('click', '.update-review', updateReview);
-        $(document).on('click', '#confirm-update', confirmUpdate);
         $(this).closest('.announcement').remove();
-        // initializeEventHandlers();
       },
       error: function (err) {
         console.log(err);
@@ -141,7 +141,6 @@ $(document).ready(function () {
         $("#myPosts").css("color", "#8a8a8a")
         $("#announcement-box").html(response);
         addHoverScriptHeart();
-        $(document).on("click", ".delete-likePosts", deleteLikePosts);
         $(this).closest('.announcement').remove();
       },
       error: function (err) {
@@ -161,8 +160,6 @@ $(document).ready(function () {
         $("#myLikes").css("color", "#8a8a8a")
         $("#myPosts").css("color", "#0AB75B")
         $("#announcement-box").html(response);
-        // $(this).closest('.announcement').remove();
-        // initializeEventHandlers();
       },
       error: function (err) {
         console.log(err);
@@ -182,7 +179,6 @@ $(document).ready(function () {
       success: function () {
         // 페이지 새로고침 대신 해당 요소만 제거
         element.remove();
-        initializeEventHandlers();
       },
       error: function (err) {
         console.log(err);
@@ -208,12 +204,21 @@ $(document).ready(function () {
     });
   }
 
-  function updateReview() {
-    const reviewId = $(this).data('review-id');
-    const reviewContent = $(this).data('review-content');
-    const reviewRating = $(this).data('review-rating');
-    const kakaoPlaceName = $(this).data('kakao-place-name');
-    const imageUrl = $(this).data('kakao-image-url');
+  function updateReview(e) {
+    // 1) 클릭된 요소(버튼)에서 필요한 데이터 추출
+    const button = $(this);
+    const reviewId = button.data('review-id');
+    const reviewContent = button.data('review-content');
+    const reviewRating = button.data('review-rating');
+    const kakaoPlaceName = button.data('kakao-place-name');
+    const kakaoImageUrl = button.data('kakao-image-url');
+
+    // 2) 모달 내부에 데이터 세팅
+    $("#review-modal #review-id").val(reviewId);
+    $("#review-modal #review-content").val(reviewContent);
+    $("#review-modal #review-rating").val(reviewRating);
+    $("#review-modal #placeImg").attr("src", kakaoImageUrl);
+    $("#kakao-place-name-display").text(kakaoPlaceName);
 
     // 서버에서 모달 HTML 가져오기
     $.ajax({
@@ -224,19 +229,19 @@ $(document).ready(function () {
         reviewContent: reviewContent,
         reviewRating: reviewRating,
         kakaoPlaceName: kakaoPlaceName,
-        imageUrl: imageUrl,
+        imageUrl: kakaoImageUrl
       },
       success: function (response) {
         // Placeholder에 동적으로 HTML 삽입
-        $('#view-review-modal-placeholder').html(response);
-
-        // 모달 표시
-        $('#review-modal').modal('show');
-
-        $('#review-modal').on('hidden.bs.modal', function () {
-          $('.modal-backdrop').remove(); // 백드롭 제거
-          $(this).removeData('bs.modal'); // 모달 데이터 초기화
-        });
+        $('#share-placeholder').html(response);
+        // 4) Vanilla JS 방식으로 모달 표시
+        const modalElement = document.getElementById('review-modal');
+        if (modalElement) {
+          const modalInstance = new bootstrap.Modal(modalElement); // 모달 초기화
+          modalInstance.show(); // 모달 표시
+        } else {
+          console.error("Modal element not found!");
+        }
       },
       error: function (err) {
         console.error('Failed to load modal:', err);
@@ -246,9 +251,9 @@ $(document).ready(function () {
 
   // 저장 버튼 클릭 이벤트
   function confirmUpdate() {
-    const reviewId = $('#bootstrap-modal #review-id').val();
-    const reviewContent = $('#bootstrap-modal #review-content').val();
-    const reviewRating = $('#bootstrap-modal #review-rating').val();
+    const reviewId = $('#review-id').val();
+    const reviewContent = $('#review-content').val();
+    const reviewRating = $('#review-rating').val();
     // AJAX로 수정 요청 보내기
     $.ajax({
       url: `${path}/reviews`,
@@ -260,9 +265,27 @@ $(document).ready(function () {
         review_rating: reviewRating,
       }),
       success: function (response) {
-        $('#bootstrap-modal').modal('hide');
-        $(this).removeData('bs.modal'); // 모달의 데이터 초기화
-        $('.modal-backdrop').remove(); // 검은 배경 제거
+        // 1) 모달 닫기
+        const modalElement = document.getElementById('review-modal');
+        if (modalElement) {
+          const modalInstance = bootstrap.Modal.getInstance(modalElement); // 기존 모달 인스턴스 가져오기
+          if (modalInstance) {
+            modalInstance.hide(); // 모달 닫기
+          }
+        }
+
+        // 2) 모달 데이터 초기화 및 backdrop 제거 (필요한 경우)
+        modalElement.addEventListener('hidden.bs.modal', () => {
+          // 모달 관련 데이터 초기화
+          modalElement.removeAttribute('data-bs-modal');
+          // backdrop 제거 (필요한 경우)
+          const backdrop = document.querySelector('.modal-backdrop');
+          if (backdrop) {
+            backdrop.remove();
+          }
+        });
+
+        // 3) 리뷰 가져오기 함수 호출
         getReview();
       },
       error: function (err) {
@@ -283,7 +306,6 @@ $(document).ready(function () {
       success: function () {
         // 페이지 새로고침 대신 해당 요소만 제거
         element.remove();
-        initializeEventHandlers();
       },
       error: function (err) {
         console.log(err);
@@ -293,22 +315,34 @@ $(document).ready(function () {
 
   function viewFollowingModal() {
     // 모달 컨테이너에 AJAX로 콘텐츠 로드
-    $("#view-follow-modal-placeholder").load(`${path}/auth/viewFollowingModal.do`, function (response, status, xhr) {
+    $("#share-placeholder").load(`${path}/auth/viewFollowingModal.do`, function (response, status, xhr) {
       if (status === "error") {
         console.log("failed to load modal");
       } else {
-        $("#followModal").modal("show");
+        const modalElement = document.getElementById("followModal"); // 모달 DOM 요소 가져오기
+        if (modalElement) {
+          const modalInstance = new bootstrap.Modal(modalElement); // 모달 초기화
+          modalInstance.show(); // 모달 표시
+        } else {
+          console.error("Modal element not found!");
+        }
         addHoverScripDeleteFollower();
       }
     });
   }
 
   function viewFollowerModal() {
-    $("#view-follow-modal-placeholder").load(`${path}/auth/viewFollowerModal.do`, function (response, status, xhr) {
+    $("#share-placeholder").load(`${path}/auth/viewFollowerModal.do`, function (response, status, xhr) {
       if (status === "error") {
         console.log("failed to load modal");
       } else {
-        $("#followModal").modal("show");
+        const modalElement = document.getElementById("followModal"); // 모달 DOM 요소 가져오기
+        if (modalElement) {
+          const modalInstance = new bootstrap.Modal(modalElement); // 모달 초기화
+          modalInstance.show(); // 모달 표시
+        } else {
+          console.error("Modal element not found!");
+        }
         addHoverScripDeleteFollower();
       }
     });
@@ -364,7 +398,7 @@ $(document).ready(function () {
   function deleteFollowing() {
     let toEmail = $(this).data('to-email');
     let FollowingElement = $(this).closest('.following-list');
-    let FollowerElement = $(this).closest('.delete-following');
+    let button = $(this);
 
     $.ajax({
       url: `${path}/following/${toEmail}`,
@@ -372,7 +406,7 @@ $(document).ready(function () {
       contentType: 'application/json',
       success: function () {
         FollowingElement.remove();
-        addPopAnimation();
+        addPopAnimation(button);
       },
       error: function (err) {
         console.log(err)
@@ -382,14 +416,14 @@ $(document).ready(function () {
 
   function addFollowing() {
     let toEmail = $(this).data('to-email');
-    let FollowerElement = $(this).closest('.insert-follower');
+    let button = $(this);
 
     $.ajax({
       url: `${path}/following/${toEmail}`,
       type: "POST",
       contentType: 'application/json',
       success: function () {
-        addPopAnimation();
+        addPopAnimation(button);
       },
       error: function (err) {
         console.log(err)
@@ -397,9 +431,7 @@ $(document).ready(function () {
     });
   }
 
-  function addPopAnimation() {
-    let button = $(this);
-
+  function addPopAnimation(button) {
     // 애니메이션 클래스 추가
     button.addClass('pop-explode');
 
@@ -413,6 +445,32 @@ $(document).ready(function () {
           button.data('to-email') + '">팔로우</button>');
       }
       addHoverScripDeleteFollower();
+      const modalElement = document.querySelector('.modal.show'); // 현재 열려 있는 모달
+      if (modalElement) {
+        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        if (modalInstance) {
+          modalInstance._config.keyboard = true; // ESC 키 활성화
+          modalInstance._config.backdrop = true; // 모달 바깥 클릭 활성화
+        }
+      }
     }, 400); // 애니메이션 시간과 일치시킴
+  }
+
+  function deletePost() {
+    let postId = $(this).data("post-id");
+    let element = $(this).closest('.post-card');
+
+    $.ajax({
+      url: `${path}/myPost/${postId}`,
+      method: 'DELETE',
+      contentType: 'application/json',
+      success: function () {
+        console.log("success")
+        element.remove();
+      },
+      error: function (err) {
+        console.log(err);
+      }
+    });
   }
 });
