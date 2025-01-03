@@ -20,7 +20,7 @@
     <!-- 로그인 이메일 중복검사 -->
     <select id="findMemberByEmail" parameterType="String" resultType="memberDTO">
        select *
-       from member
+       from members
        where member_email = #{email}
     </select>
 

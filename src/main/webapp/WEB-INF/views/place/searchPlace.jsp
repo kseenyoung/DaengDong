@@ -1067,8 +1067,8 @@
 
                 fetch('/daengdong/plan/addCompanion', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ companionEmail })
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: companionEmail
                 })
                     .then(response => {
                         if (response.ok) {
