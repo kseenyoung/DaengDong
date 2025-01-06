@@ -776,7 +776,6 @@ height: 80%;
     </div>
 </div>
 
-
 <div id="sidebar" style="
     width: 320px;
     height: 400px;
