@@ -934,7 +934,27 @@
             top: 40%;
             transform: translateY(-50%);
         }
+    #day {
+        display: flex; /* 버튼을 한 줄에 배치 */
+        gap: 10px; /* 버튼 간격 */
+        overflow-x: auto; /* 가로 스크롤 활성화 */
+        white-space: nowrap; /* 버튼 줄 바꿈 방지 */
+        padding: 10px; /* 내부 여백 */
+        border: 1px solid #ccc; /* 컨테이너 테두리 (테스트용) */
+        border-radius: 5px; /* 컨테이너 둥근 모서리 */
+    }
 
+    .day-btn {
+        display: inline-block;
+        background-color: #4CAF50;
+        color: white;
+        border: 1px solid gray;
+        padding: 10px 15px;
+        font-size: 16px;
+        text-align: center;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 
     </style>
 </head>
@@ -1036,12 +1056,13 @@
     </div>
 
     <div id="list_wrap">
-        <ul id="placeList"></ul>
+        <div id="day"></div>
+
         <div class="button">
             <button id="addPlaceBtn">장소 추가</button>
             <div class="line"></div>
         </div>
-
+        <ul id="placeList"></ul>
         <!-- 동행자 추가 버튼 -->
         <button id="addCompanionBtn">추가</button>
         <input type="text" id="companionEmailInput" placeholder="동행자 이메일 입력">
@@ -1081,7 +1102,6 @@
                     .catch(error => console.error("동행자 추가 요청 실패:", error));
             });
         </script>
-
     </div>
 
     <script type="text/javascript"
@@ -2021,7 +2041,31 @@
                 modalOverlay.classList.remove("show");
             });
         });
+// n일차 버튼
+function createDayButtons(dateDifference){
+    const dayContainer = document.getElementById("day");
 
+console.log("dayContainer:", dayContainer);
+
+    dayContainer.innerHTML="";
+
+for (let i = 1; i <= dateDifference; i++) {
+        const dayBtn = document.createElement("button");
+
+        dayBtn.textContent = i + "일차"
+
+        dayBtn.classList.add("day-btn");
+        dayBtn.setAttribute("data-day", i);
+
+        dayContainer.appendChild(dayBtn);
+    }
+
+}
+document.getElementById("day").addEventListener("click", function (event) {
+    if (event.target && event.target.classList.contains("day-btn")) {
+        const selectedDay = event.target.getAttribute("data-day");
+    }
+});
     </script>
 
     <script src="<%= request.getContextPath() %>/js/addPlan.js"></script>
