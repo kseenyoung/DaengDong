@@ -6,33 +6,43 @@
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <meta charset="utf-8">
     <title>장소검색</title>
-<style>
-.map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
-.map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
-.map_wrap {position:relative;width:100%;height:930px;}
-#menu_wrap {
-    position: fixed;
-    max-height: 100%;
-    overflow-y: auto;
-    top: 0;
-    left: 10%;
-    transform: translate(0, 0);
-    display: none;
-    bottom: 0;
-    width: 80%;
-    margin: 10px 0 30px 10px;
-    padding: 15px;
-    overflow: visible;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
-    z-index: 1000;
-    font-size: 13px;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border: 1px solid #ddd;
-}
-#menu_wrap.show {
-    display: block;
-}
+
+    <!-- CSS파일 -->
+    <link rel="stylesheet" href="/daengdong/css/header.css">
+
+    <!-- JavaScript 라이브러리 -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- 외부 JSP 파일 -->
+    <%@ include file="/WEB-INF/views/member/header.jsp" %>
+
+    <style>
+        .map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
+        .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
+        .map_wrap {position:relative;width:100%;height:930px;}
+        #menu_wrap {
+            position: fixed;
+            max-height: 100%;
+            overflow-y: auto;
+            top: 0;
+            left: 10%;
+            transform: translate(0, 0);
+            display: none;
+            bottom: 0;
+            width: 80%;
+            margin: 10px 0 30px 10px;
+            padding: 15px;
+            overflow: visible;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
+            z-index: 1000;
+            font-size: 13px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid #ddd;
+        }
+        #menu_wrap.show {
+            display: block;
+        }
 
 #menu_wrap.hidden {
     display: none;
@@ -1945,6 +1955,7 @@ document.getElementById("planTitle").textContent = planTitleFromDB;
 
 </script>
 
-//<script src="<%= request.getContextPath() %>/js/addPlan.js"></script>
+<script src="<%= request.getContextPath() %>/js/addPlan.js"></script>
+<script src="/daengdong/js/websocket.js"></script>
 </body>
 </html>

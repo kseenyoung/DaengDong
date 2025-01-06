@@ -4,6 +4,7 @@ import com.shinhan.daengdong.member.dto.MemberDTO;
 import com.shinhan.daengdong.plan.dto.MemberPlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
 import com.shinhan.daengdong.plan.model.service.PlanServiceInterface;
+import com.shinhan.daengdong.plan.websoket.PlanWebSocketHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.beans.PropertyEditorSupport;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -159,13 +161,27 @@ public class PlanController {
         currentUserPlan.setMemberEmail(currentMemberEmail);
         planService.addCompanionToPlan(currentUserPlan);
 
-        // 두 번째 저장: 입력된 동행자의 이메일
-        MemberPlanDTO companionPlan = new MemberPlanDTO();
-        companionPlan.setPlanId(currentPlanId);
-        companionPlan.setMemberEmail(companionEmail);
-        planService.addCompanionToPlan(companionPlan);
+        // 쉼표로 구분된 동행자 이메일 문자열을 리스트로 변환
+        List<String> companionEmailList = Arrays.asList(companionEmail.split(","));
+
+        // 동행자 추가 처리
+        for (String email : companionEmailList) { // 변수 이름을 email로 변경
+            String trimmedEmail = email.trim(); // 공백 제거
+            if (!trimmedEmail.isEmpty()) { // 유효성 검사
+                MemberPlanDTO companionPlan = new MemberPlanDTO();
+                companionPlan.setPlanId(currentPlanId);
+                companionPlan.setMemberEmail(trimmedEmail); // 이메일 설정
+
+                planService.addCompanionToPlan(companionPlan); // 동행자 추가
+                log.info("추가된 동행자 이메일: {}", trimmedEmail); // 로그 출력
+            } else {
+                log.warn("빈 이메일이 발견되었습니다. 처리하지 않습니다."); // 로그 경고
+            }
+        }
+
+        String message = "동행자가 추가되었습니다.";
+        PlanWebSocketHandler.sendMessageToUsers(currentPlanId.toString(), message);
 
         return ResponseEntity.ok("동행자가 성공적으로 추가되었습니다.");
     }
-
 }
