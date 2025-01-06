@@ -124,7 +124,7 @@
             const planId = this.dataset.planId;
 
             // Ajax 요청으로 컨트롤러 호츌
-            fetch(`/daengdong/search/place?planId=${planId}`)
+            fetch(`/daengdong/plan/place?planId=${planId}`)
                 .then(response => response.text())
                 .then(data => {
                     // 모달에 컨텐츠 삽입

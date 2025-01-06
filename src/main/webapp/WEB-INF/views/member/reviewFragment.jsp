@@ -9,11 +9,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="path" value="${pageContext.servletContext.contextPath}"/>
 <link rel="stylesheet" href="${path}/css/member/reviews.css">
-<div id="view-review-modal-placeholder"></div>
 <c:forEach var="reviewList" items="${reviewList}">
     <div class="announcement">
         <img id="placeImg" src="${reviewList.imageUrl}" alt="placeImg"
-             onerror="this.src=`${path}/img/kseenyoungProfile`"/>
+             onerror=this.src="${path}/img/kseenyoungProfile">
         <div class="text-container">
             <h2 class="place-title">
                 <a>${reviewList.review_content}</a>
@@ -30,9 +29,8 @@
         </div>
         <div class="button-container">
             <button
+                    id="update-review-${reviewList.review_id}"
                     class="update-review"
-                    data-toggle="modal"
-                    data-target="#bootstrap-modal"
                     data-review-id="${reviewList.review_id}"
                     data-review-content="${reviewList.review_content}"
                     data-review-rating="${reviewList.review_rating}"

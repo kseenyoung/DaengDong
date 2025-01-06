@@ -29,4 +29,8 @@ public class PostRepositoryImpl implements PostRepositoryInterface {
         log.info(result.toString());
         return result;
     }
+    @Override
+    public void deletePost(int postId) {
+        sqlSession.delete(namespace + "deletePost", postId);
+    }
 }

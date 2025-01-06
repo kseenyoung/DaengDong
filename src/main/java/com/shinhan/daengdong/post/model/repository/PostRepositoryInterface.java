@@ -10,4 +10,7 @@ public interface PostRepositoryInterface {
     List<PostVO> getTopPosts();  // 상위 게시글 조회
 
     List<LikeVO> getMyLike();
+
+    void deletePost(int postId);
+
 }

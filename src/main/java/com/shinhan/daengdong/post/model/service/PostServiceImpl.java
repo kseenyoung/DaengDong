@@ -23,6 +23,10 @@ public class PostServiceImpl implements PostServiceInterface {
         return postRepository.getMyLike();
     }
 
+    @Override
+    public void deletePost(int postId) {
+        postRepository.deletePost(postId);
+    }
 }
 
 

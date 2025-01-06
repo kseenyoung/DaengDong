@@ -6,6 +6,7 @@
 <div class="post-container">
     <c:forEach var="postsList" items="${postsList}">
         <div class="post-card">
+            <input type="button" class="delete-post-btn" data-post-id="${postsList.post_id}" value="&times">
             <span class="badge ${postsList.category_id}">
                 <!-- 조건에 따라 아이콘 클래스 변경 -->
                 <i class="<c:choose>
