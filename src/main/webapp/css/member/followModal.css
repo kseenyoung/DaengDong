@@ -1,10 +1,10 @@
 /* 글래스모피즘 기본 스타일 */
-#followModal-dialog {
+#followModal-dialog, #editNicknameModal-dialog {
   display: flex;
   justify-content: center;
 }
 
-#followModal-content {
+#followModal-content, #editNicknameModal-modal-content {
   background: rgba(255, 255, 255, 0.2); /* 투명도 */
   backdrop-filter: blur(10px); /* 흐림 효과 */
   -webkit-backdrop-filter: blur(10px); /* 사파리 지원 */
