@@ -10,14 +10,12 @@
 <c:set var="path" value="${pageContext.servletContext.contextPath}"/>
 <body>
 <div id="followModal" class="modal fade" tabindex="-1" aria-labelledby="shareProjectLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
+    <div id="followModal-dialog" class="modal-dialog">
+        <div id="followModal-content" class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
                 <h5 class="modal-title" id="shareProjectLabel">팔로워</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button class="follow-modal-close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
             </div>
 
             <!-- Modal Body -->

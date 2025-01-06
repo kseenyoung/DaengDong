@@ -345,17 +345,37 @@
 
     <!--좋아요 모두 조회-->
     <select id="getLikePostList" parameterType="String" resultType="LikePostsVO">
-        SELECT DISTINCT
-            posts.post_id,
-            posts.post_title,
-            post_images.image_url,
-            posts.category_id,
-            members.member_nickname
-        FROM likes
-                 JOIN posts ON likes.post_id = posts.post_id
-                 JOIN post_images ON posts.post_id = post_images.post_id
-                 JOIN members ON posts.member_email = members.member_email
-        WHERE likes.member_email = #{member_email}
+        SELECT
+            p.post_id,
+            p.member_email,
+            p.plan_id,
+            p.category_id,
+            p.post_title,
+            p.post_content,
+            m.member_nickname,
+            MIN(img.photo_id)        AS photo_id,      -- 여러 이미지 중 가장 작은 photo_id
+            MIN(img.image_url)       AS image_url,     -- 여러 이미지 중 하나의 url
+            COALESCE(likes_count.total_likes, 0) AS total_likes
+        FROM likes AS l
+                 JOIN posts AS p ON l.post_id = p.post_id
+                 JOIN post_images AS img ON p.post_id = img.post_id
+                 JOIN members AS m ON p.member_email = m.member_email
+                 LEFT JOIN (
+            SELECT
+                post_id,
+                COUNT(*) AS total_likes
+            FROM likes
+            GROUP BY post_id
+        ) AS likes_count ON p.post_id = likes_count.post_id
+        WHERE l.member_email = #{member_email}
+        GROUP BY
+            p.post_id,
+            p.member_email,
+            p.plan_id,
+            p.category_id,
+            p.post_title,
+            p.post_content,
+            m.member_nickname
     </select>
 
     <!--좋아요 삭제-->
@@ -439,7 +459,7 @@
     <select id="selectMyPosts" parameterType="String" resultType="postsVO">
         SELECT
             p.post_id, p.member_email, p.plan_id, p.category_id, p.post_title, p.post_content,
-            members.member_nickname, img.photo_id, img.image_url,
+            members.member_nickname, MIN(img.photo_id) AS photo_id, MIN(img.image_url) AS image_url,
             COALESCE(likes_count.total_likes, 0) AS total_likes
         FROM posts AS p
                  JOIN post_images AS img ON p.post_id = img.post_id
@@ -451,6 +471,7 @@
             GROUP BY post_id
         ) AS likes_count ON p.post_id = likes_count.post_id
         where p.member_email = #{member_email}
+        GROUP BY p.post_id
     </select>
 
 </mapper>

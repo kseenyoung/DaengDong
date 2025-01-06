@@ -10,17 +10,15 @@
 <c:set var="path" value="${pageContext.servletContext.contextPath}"/>
 
 <!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 <%--<link rel="stylesheet" href="${path}/css/member/profileFragment.css"/>--%>
 <!-- jQuery 추가 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap JS !!!-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${path}/css/member/followModal.css"/>
 
 
-<!-- Modal Placeholder -->
-<div id="view-follow-modal-placeholder"></div>
 <div class="profile-header">
     <img class="profile-image" src="${path}/img/kseenyoungProfile.jpeg" alt="Profile Image" onclick="showModal(this)">
     <h1 class="profile-username">${selectMember.member_nickname}</h1>
