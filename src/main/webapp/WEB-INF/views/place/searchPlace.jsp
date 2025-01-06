@@ -1165,36 +1165,56 @@ function addMarker(position, idx, title, place) {
     return marker;
 }
 
-function addPlaceToPlan(placeTitle, placeAddress) {
+function displayDayPlan(day) {
     const placeList = document.getElementById("placeList");
-    const newItem = document.createElement("li");
-    newItem.classList.add("place-item");
+    placeList.innerHTML = ""; // 기존 리스트 초기화
 
-    const titleElement = document.createElement("h4");
-    titleElement.classList.add("placeTitle");
-    titleElement.textContent = placeTitle;
+    // 선택된 일차에 해당하는 장소 표시
+    dayPlans[day].forEach(({ title, address }) => {
+        const newItem = document.createElement("li");
+        newItem.classList.add("place-item");
 
-    const addressElement = document.createElement("p");
-    addressElement.classList.add("placeAddress");
-    addressElement.textContent = placeAddress;
+        const titleElement = document.createElement("h4");
+        titleElement.classList.add("placeTitle");
+        titleElement.textContent = title;
 
-    const deleteButton = document.createElement("button");
-    deleteButton.classList.add("delete-btn");
-    deleteButton.textContent = "삭제";
+        const addressElement = document.createElement("p");
+        addressElement.classList.add("placeAddress");
+        addressElement.textContent = address;
 
-    // 삭제 버튼 클릭 이벤트
-    deleteButton.addEventListener("click", function () {
-        newItem.remove(); // 클릭 시 해당 항목 삭제
-        console.log(`${placeTitle} 삭제됨`);
+        const deleteButton = document.createElement("button");
+        deleteButton.classList.add("delete-btn");
+        deleteButton.textContent = "삭제";
+
+        // 삭제 버튼 클릭 이벤트
+        deleteButton.addEventListener("click", function () {
+            newItem.remove();
+            dayPlans[day] = dayPlans[day].filter(item => item.title !== title);
+            console.log(`${title} 삭제됨`);
+        });
+
+        newItem.appendChild(titleElement);
+        newItem.appendChild(addressElement);
+        newItem.appendChild(deleteButton);
+        placeList.appendChild(newItem);
     });
-
-    newItem.appendChild(titleElement);
-    newItem.appendChild(addressElement);
-    newItem.appendChild(deleteButton);
-
-    placeList.appendChild(newItem);
-    console.log("새로운 일정 추가됨:", placeTitle, placeAddress);
 }
+
+// 기존 addPlaceToPlan 수정
+function addPlaceToPlan(placeTitle, placeAddress) {
+    const selectedDay = document.querySelector(".day-btn.selected")?.getAttribute("data-day");
+    if (!selectedDay) {
+        alert("일차를 선택해주세요!");
+        return;
+    }
+
+    // 선택된 일차에 장소 추가
+    dayPlans[selectedDay].push({ title: placeTitle, address: placeAddress });
+    displayDayPlan(selectedDay); // 업데이트된 리스트 표시
+
+    console.log("새로운 일정 추가됨:", placeTitle, placeAddress, "on Day", selectedDay);
+}
+
 
 
 // 지도 위에 표시되고 있는 마커를 모두 제거합니다
@@ -1861,27 +1881,39 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+const dayPlans = {};
+
 // n일차 버튼
 function createDayButtons(dateDifference){
     const dayContainer = document.getElementById("day");
 
     dayContainer.innerHTML="";
 
-for (let i = 1; i <= dateDifference; i++) {
-        const dayBtn = document.createElement("button");
+    for (let i = 1; i <= dateDifference; i++) {
+            const dayBtn = document.createElement("button");
+            dayBtn.textContent = i + "일차"
+            dayBtn.classList.add("day-btn");
+            dayBtn.setAttribute("data-day", i);
 
-        dayBtn.textContent = i + "일차"
+            dayContainer.appendChild(dayBtn);
 
-        dayBtn.classList.add("day-btn");
-        dayBtn.setAttribute("data-day", i);
-
-        dayContainer.appendChild(dayBtn);
-    }
+            if (!dayPlans[i]){
+                dayPlans[i] = [];
+            }
+        }
 
 }
 document.getElementById("day").addEventListener("click", function (event) {
     if (event.target && event.target.classList.contains("day-btn")) {
+        const previousSelected = document.querySelector(".day-btn.selected");
+        if (previousSelected) {
+            previousSelected.classList.remove("selected");
+        }
+
+        event.target.classList.add("selected");
+
         const selectedDay = event.target.getAttribute("data-day");
+        displayDayPlan(selectedDay);
     }
 });
 
