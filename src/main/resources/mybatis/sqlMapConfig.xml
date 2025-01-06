@@ -28,6 +28,7 @@
 		<!-- 위 코드처럼 채워 나가면 됨.. -->
 		<typeAlias type="com.shinhan.daengdong.place.dto.RegionDTO" alias="regionDTO" />
 		<typeAlias type="com.shinhan.daengdong.post.vo.PostVO" alias="PostVO" />
+		<typeAlias type="com.shinhan.daengdong.post.dto.PostDTO" alias="PostDTO" />
 		<typeAlias type="com.shinhan.daengdong.post.vo.LikeVO" alias="LikeVO" />
 
 

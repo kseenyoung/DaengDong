@@ -66,7 +66,7 @@
             <h2>새 게시물 만들기</h2>
             <div class="modal_relative">
 
-                <input type="file" id="fileInput" style="display: none;"  multiple />
+
                 <div id="post_form_box">
 
                     <form id="dropZone">
@@ -80,7 +80,7 @@
                     </form>
 
 
-                    <form action="" id="post_form">
+                    <form action="${path}/post/po" id="post_form" method="POST" enctype="multipart/form-data">
                         <label for="category">카테고리 선택:</label>
                         <select id="category" name="category">
                             <option value="여행중">여행중</option>
@@ -89,10 +89,11 @@
                             <option value="꿀팁">꿀팁</option>
                         </select>
 
-                        <input type="text" id="title" placeholder="제목 : ">
+                        <input type="text" name="title" id="title" placeholder="제목 : ">
 
-                        <textarea name="" id="" placeholder="내용 : "></textarea>
+                       <textarea name="content" id="content" placeholder="내용 : "></textarea>
 
+                        // <input type="file" id="fileInput" style="display: none;" name="files[]"   multiple />
                         <button type="submit">만들기</button>
                     </form>
                 </div>
@@ -296,41 +297,7 @@
     const fileInput = document.getElementById('fileInput');
     let postFormData = new FormData(); // FormData 객체 생성
 
-    document.getElementById('post_form').addEventListener('submit', (event) => {
-        event.preventDefault(); // 폼의 기본 제출 동작 방지
 
-        // 폼 데이터 추가
-
-
-        // 텍스트 필드 추가
-        const title = document.getElementById('title').value; // 제목 가져오기
-        const category = document.getElementById('category').value; // 카테고리 가져오기
-        const content = document.querySelector('#post_form textarea').value; // 내용 가져오기
-
-        postFormData.append('title', title);
-        postFormData.append('category', category);
-        postFormData.append('content', content);
-
-          for (let pair of postFormData.entries()) {
-                    console.log(pair[0] + ": ", pair[1]); // key와 value를 출력
-                }
-        // 서버로 전송
-       $.ajax({
-               url: `${path}/post/po`,
-               type: "POST",
-               data: postFormData,
-               contentType: false,  // FormData를 사용하므로, 기본 content-type을 설정하지 않음
-               processData: false,  // jQuery가 데이터를 자동으로 처리하지 않도록 설정
-               success: function (response) {
-                    console.log(response)
-
-
-               },
-               error: function (err) {
-                  console.log(err)
-               }
-           });
-        });
 
     const otherInput = document.getElementById('otherInput'); // 다른 입력값을 위한 input 요소
 
@@ -395,7 +362,19 @@
 
         for (let file of files) {
             // 파일을 postFormData에 추가
-            postFormData.append("files[]", file); // 서버로 전송할 파일 추가
+            // postFormData.append("files[]", file); // 서버로 전송할 파일 추가
+
+               const newFileList = new DataTransfer();
+
+               // 드롭된 파일들 추가
+                 for (let i = 0; i < files.length; i++) {
+                     newFileList.items.add(files[i]);
+                 }
+
+
+
+                // 새로운 FileList를 input에 설정
+                fileInput.files = newFileList.files;
 
             const reader = new FileReader();
             reader.onload = (e) => {

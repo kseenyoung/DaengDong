@@ -1,5 +1,6 @@
 package com.shinhan.daengdong.post.model.service;
 
+import com.shinhan.daengdong.post.dto.PostDTO;
 import com.shinhan.daengdong.post.vo.LikeVO;
 import com.shinhan.daengdong.post.vo.PostVO;
 import com.shinhan.daengdong.post.model.repository.PostRepositoryInterface;
@@ -21,6 +22,10 @@ public class PostServiceImpl implements PostServiceInterface {
     @Override
     public List<LikeVO> getMyLike(){
         return postRepository.getMyLike();
+    }
+    @Override
+    public void createPost(PostDTO postDTO, List<String> imageUrls){
+         postRepository.createPost(postDTO, imageUrls);
     }
 
     @Override

@@ -54,5 +54,16 @@
         from posts
         where post_id = #{post_id}
     </delete>
+    <insert id="createPost" parameterType="PostDTO" useGeneratedKeys="true" keyProperty="postId">
+        INSERT INTO posts (plan_id, post_title, post_content, category_id, member_email)
+        VALUES (#{planId}, #{postTitle}, #{postContent}, #{category}, #{memberEmail});
+    </insert>
+    <insert id="createPostImages" parameterType="map">
+        INSERT INTO post_images (post_id, image_url)
+        VALUES
+        <foreach collection="imageUrls" item="imageUrl" index="index" separator=",">
+        (#{postId}, #{imageUrl})
+        </foreach>
+    </insert>
 
 </mapper>

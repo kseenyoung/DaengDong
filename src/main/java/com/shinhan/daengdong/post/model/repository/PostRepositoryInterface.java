@@ -1,5 +1,6 @@
 package com.shinhan.daengdong.post.model.repository;
 
+import com.shinhan.daengdong.post.dto.PostDTO;
 import com.shinhan.daengdong.post.vo.LikeVO;
 import com.shinhan.daengdong.post.vo.PostVO;
 
@@ -12,5 +13,7 @@ public interface PostRepositoryInterface {
     List<LikeVO> getMyLike();
 
     void deletePost(int postId);
+
+    void createPost(PostDTO postDTO, List<String> imageUrls);
 
 }

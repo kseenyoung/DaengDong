@@ -8,6 +8,8 @@ import com.shinhan.daengdong.post.model.service.PostServiceInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -38,19 +43,40 @@ public class PostController {
 
     @PostMapping("/po")
     public String createPost(
-            @RequestPart("title") String title, // 'title' 필드 받기
-            @RequestPart("category") String category, // 'category' 필드 받기
-            @RequestPart("content") String content, // 'content' 필드 받기
-            @RequestPart("files") List<MultipartFile> files,
+            @RequestParam("files[]") List<MultipartFile> files,
+            @RequestParam(value="title", required=true) String title,
+            @RequestParam(value="category", required=true) String category, // 'category' 필드 받기
+            @RequestParam("content") String content, // 'content' 필드 받기
+
             HttpServletRequest request) {
         log.info(title);
         log.info(category);
         log.info(content);
         log.info(files.toString());
 
+        try {
+            // 이미지 저장 및 URL 생성
+            List<String> imageUrls = new ArrayList<>();
+            for (MultipartFile file : files) {
+                String imageUrl = saveImageFile(file); // 파일 저장 로직
+                imageUrls.add(imageUrl);
+            }
+
+            // 게시글 및 이미지 생성
+            PostDTO postDTO = new PostDTO(1, title, content, category, "user1@example.com");
+            postService.createPost(postDTO, imageUrls);
+
+//            return ResponseEntity.ok("게시글 생성 성공");
+            return "redirect:/post/posts";
+        } catch (Exception e) {
+             log.error("예외 발생: ", e);
+
+             return "redirect:/post/posts";
+        }
 
 
-        return "redirect:/post/posts";
+
+
 //        HttpSession session = request.getSession();
 //        if (session == null){
 //            // session 없음 = 로그인 시도한 적 없음
@@ -75,5 +101,11 @@ public class PostController {
 //            model.addAttribute("error", "서버 오류로 게시글을 생성할 수 없습니다.");
 //            return "redirect:/post/posts";
 //        }
+    }
+
+    private String saveImageFile(MultipartFile file) throws IOException {
+        String filePath = "C:\\Users\\User\\Desktop\\shinhan\\daeng\\DaengDong\\upload" + file.getOriginalFilename();
+        file.transferTo(new File(filePath));
+        return filePath;
     }
 }

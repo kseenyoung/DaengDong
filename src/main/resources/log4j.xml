@@ -18,24 +18,24 @@
         </layout>
     </appender>
 
-    <!-- Query Loggers -->
+     Query Loggers
     <logger name="jdbc.sqlonly" additivity="false">
-        <level value="INFO" />
+        <level value="info" />
         <appender-ref ref="console" />
         <appender-ref ref="dailyFileAppender" />
     </logger>
 
 
     <!-- Application Loggers -->
-    <logger name="com.shinhan.daengdong">
-        <level value="DEBUG" />
+    <logger name="com.shinhan.daengdong" additivity="false">
+        <level value="INFO" />
         <appender-ref ref="console" />
         <appender-ref ref="dailyFileAppender" />
     </logger>
 
     <!-- WebSocket Handler Logger -->
     <logger name="com.shinhan.daengdong.plan.websoket">
-        <level value="DEBUG" />
+        <level value="INFO" />
         <appender-ref ref="console" />
         <appender-ref ref="dailyFileAppender" />
     </logger>
@@ -59,8 +59,8 @@
 
     <!-- Root Logger -->
     <root>
-        <priority value="info" />
-        <appender-ref ref="console" />
+        <priority value="warn" />
+        <appender-ref ref="dailyFileAppender" />
     </root>
 
 </log4j:configuration>
