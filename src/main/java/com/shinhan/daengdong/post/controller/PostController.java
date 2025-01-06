@@ -104,8 +104,34 @@ public class PostController {
     }
 
     private String saveImageFile(MultipartFile file) throws IOException {
-        String filePath = "C:\\Users\\User\\Desktop\\shinhan\\daeng\\DaengDong\\upload" + file.getOriginalFilename();
-        file.transferTo(new File(filePath));
-        return filePath;
+        String uploadDir = "C:\\Users\\User\\Desktop\\shinhan\\daeng\\DaengDong\\upload\\";
+
+        // 디렉토리 존재 여부 확인, 없다면 생성
+        File dir = new File(uploadDir);
+        if (!dir.exists()) {
+            dir.mkdirs();  // 디렉토리가 없으면 생성
+        }
+
+        // 파일 정보 확인
+        log.info("파일 이름: " + file.getOriginalFilename());
+        log.info("파일 크기: " + file.getSize());
+        log.info("파일 타입: " + file.getContentType());
+
+        // 파일 이름 추출
+        String fileName = file.getOriginalFilename();
+
+        // 파일 경로 설정
+        String filePath = uploadDir + fileName;
+
+        // 파일 저장
+        try {
+            file.transferTo(new File(filePath));
+            log.info("이미지 파일 저장 경로: " + filePath);  // 파일 경로 로그
+        } catch (IOException e) {
+            log.error("파일 저장 실패: " + e.getMessage());
+            throw new IOException("파일 저장에 실패했습니다.");
+        }
+
+        return fileName; // DB에는 파일 이름만 저장
     }
 }
