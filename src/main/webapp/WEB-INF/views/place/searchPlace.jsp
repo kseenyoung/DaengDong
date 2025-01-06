@@ -2059,7 +2059,6 @@ for (let i = 1; i <= dateDifference; i++) {
 
         dayContainer.appendChild(dayBtn);
     }
-
 }
 document.getElementById("day").addEventListener("click", function (event) {
     if (event.target && event.target.classList.contains("day-btn")) {
