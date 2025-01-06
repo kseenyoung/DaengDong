@@ -651,8 +651,6 @@ body, h4, p, button, a {
     overflow-x: auto; /* 가로 스크롤 활성화 */
     white-space: nowrap; /* 버튼 줄 바꿈 방지 */
     padding: 10px; /* 내부 여백 */
-    border: 1px solid #ccc; /* 컨테이너 테두리 (테스트용) */
-    border-radius: 5px; /* 컨테이너 둥근 모서리 */
 }
 
 .day-btn {
@@ -704,12 +702,49 @@ body, h4, p, button, a {
 
 #companionSection,
 #daysSection {
+height: 80%;
     margin-top: 20px;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
 }
+        /* 제목과 버튼을 감싸는 컨테이너 */
+        #mainControls {
+            display: flex;
+            flex-direction: column; /* 세로 방향으로 정렬 */
+            align-items: center; /* 중앙 정렬 */
+            margin: 20px; /* 외부 여백 */
+        }
 
+        /* 플랜 제목 스타일 */
+        #planTitle {
+            font-size: 24px; /* 제목 글자 크기 */
+            font-weight: bold; /* 굵은 텍스트 */
+            margin-bottom: 20px; /* 제목과 버튼 사이 여백 */
+        }
+
+        /* 버튼 그룹 */
+        #mainControls {
+            flex-direction: row; /* 가로 방향으로 정렬 */
+            justify-content: center; /* 가운데 정렬 */
+            display: flex;
+            gap: 20px; /* 버튼 간 간격 */
+        }
+
+        /* 버튼 스타일 */
+        #mainControls button {
+            background-color: #007BFF; /* 버튼 배경색 */
+            color: white; /* 버튼 텍스트 색상 */
+            border: none; /* 테두리 제거 */
+            border-radius: 5px; /* 모서리 둥글게 */
+            padding: 5px 50px; /* 버튼 크기 */
+            font-size: 12px; /* 글자 크기 */
+            cursor: pointer; /* 마우스 커서 */
+            transition: background-color 0.3s; /* 호버 애니메이션 */
+        }
+
+        /* 버튼 호버 효과 */
+        #mainControls button:hover {
+            background-color: #0056b3; /* 호버 시 색상 */
+        }
 </style>
 </head>
 <body>
@@ -811,7 +846,7 @@ body, h4, p, button, a {
 </div>
 
 <div id="list_wrap">
-
+    <div id="planTitle"></div>
     <div id="mainControls">
         <button id="showDays">일정</button>
         <button id="showCompanion">동행자</button>
@@ -1067,6 +1102,47 @@ function addMarker(position, idx, title, place) {
         sidebar.querySelector("#place-road_address_name").textContent = place.road_address_name || "도로명 주소 없음";
         sidebar.querySelector("#place-address_name").textContent = place.address_name || "주소 없음";
         sidebar.querySelector("#place-phone").textContent = place.phone || "전화번호 없음";
+
+
+
+        // 링크 업데이트 및 모달로 URL 표시
+        let mapLink = sidebar.querySelector("#map-link");
+        let placeUrl = place && place.place_url; // 안전한 참조
+
+        // 모달 DOM 요소 가져오기
+        const modal = document.getElementById("myModal");
+        const modalIframe = document.getElementById("modalIframe");
+        const closeModalBtn = document.querySelector(".close");
+
+        if (placeUrl) {
+            // 링크 클릭 시 모달 열기
+            mapLink.href = "#"; // 기존 링크 기능 제거
+            mapLink.addEventListener("click", function (e) {
+                e.preventDefault(); // 기본 링크 동작 방지
+
+                // 모달에 URL 로드
+                modalIframe.src = placeUrl;
+
+                // 모달 열기
+                modal.style.display = "block";
+            });
+        } else {
+            mapLink.style.display = "none"; // 유효한 URL이 없으면 링크 숨기기
+        }
+
+        // 모달 닫기 버튼 이벤트 등록
+        closeModalBtn.addEventListener("click", function () {
+            modal.style.display = "none";
+            modalIframe.src = ""; // 모달 닫힐 때 iframe 초기화
+        });
+
+        // 모달 외부 클릭 시 닫기
+        window.addEventListener("click", function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+                modalIframe.src = ""; // 모달 닫힐 때 iframe 초기화
+            }
+        });
 
         // 사이드바 표시
         sidebar.style.display = "block";
@@ -1789,8 +1865,6 @@ document.addEventListener("DOMContentLoaded", function () {
 function createDayButtons(dateDifference){
     const dayContainer = document.getElementById("day");
 
-console.log("dayContainer:", dayContainer);
-
     dayContainer.innerHTML="";
 
 for (let i = 1; i <= dateDifference; i++) {
@@ -1833,6 +1907,9 @@ showDaysBtn.addEventListener("click", () => {
     daysSection.style.display = "block"; // 일정 섹션 보이기
 });
 
+const planTitleFromDB = "내 인생 첫 여행";
+
+document.getElementById("planTitle").textContent = planTitleFromDB;
 
 </script>
 
