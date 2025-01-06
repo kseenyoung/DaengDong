@@ -644,6 +644,7 @@ body, h4, p, button, a {
                             transform: translateY(-50%);
                         }
 
+
 #day {
     display: flex; /* 버튼을 한 줄에 배치 */
     gap: 10px; /* 버튼 간격 */
