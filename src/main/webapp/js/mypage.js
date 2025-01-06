@@ -239,6 +239,12 @@ $(document).ready(function () {
         if (modalElement) {
           const modalInstance = new bootstrap.Modal(modalElement); // 모달 초기화
           modalInstance.show(); // 모달 표시
+
+          $(modalElement).on('hidden.bs.modal', function () {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $(this).remove();
+          });
         } else {
           console.error("Modal element not found!");
         }
@@ -323,6 +329,12 @@ $(document).ready(function () {
         if (modalElement) {
           const modalInstance = new bootstrap.Modal(modalElement); // 모달 초기화
           modalInstance.show(); // 모달 표시
+
+          $(modalElement).on('hidden.bs.modal', function () {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $(this).remove();
+          });
         } else {
           console.error("Modal element not found!");
         }
@@ -340,6 +352,12 @@ $(document).ready(function () {
         if (modalElement) {
           const modalInstance = new bootstrap.Modal(modalElement); // 모달 초기화
           modalInstance.show(); // 모달 표시
+
+          $(modalElement).on('hidden.bs.modal', function () {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $(this).remove();
+          });
         } else {
           console.error("Modal element not found!");
         }

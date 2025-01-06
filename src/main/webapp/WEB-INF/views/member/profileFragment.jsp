@@ -18,12 +18,39 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${path}/css/member/followModal.css"/>
 
+<!-- edit-profile버튼 클릭 -> 닉네임 수정 모달 -->
+<div class="modal fade" id="editNicknameModal" tabindex="-1" aria-labelledby="editNicknameModalLabel" aria-hidden="true">
+    <div id="editNicknameModal-dialog" class="modal-dialog">
+        <div id="editNicknameModal-modal-content" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editNicknameModalLabel">닉네임 수정</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editNicknameForm">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="currentNickname" class="form-label">현재 닉네임</label>
+                        <input type="text" class="form-control" id="currentNickname" value="${selectMember.member_nickname}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="newNickname" class="form-label">새로운 닉네임</label>
+                        <input type="text" class="form-control" id="newNickname" placeholder="새 닉네임 입력" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">저장</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <div class="profile-header">
     <img class="profile-image" src="${path}/img/kseenyoungProfile.jpeg" alt="Profile Image" onclick="showModal(this)">
     <h1 class="profile-username">${selectMember.member_nickname}</h1>
     <p class="profile-id">${selectMember.member_name}</p>
-    <input type="hidden" id="memberEmail" name="member_email" value="${selectMember.member_email}" />
+    <input type="hidden" id="memberEmail" name="member_email" value="${selectMember.member_email}"/>
 </div>
 
 <%--이미지 클릭시 모달 닫기 버튼--%>
@@ -32,39 +59,9 @@
 <%--</div>--%>
 
 <%--edit-profile버튼--%>
-<button id="edit-profile" class="btn btn-primary" data-toggle="modal" data-target="#editNicknameModal">Edit Profile</button>
-
-<!-- edit-profile버튼 클릭 ->  닉네임 수정 모달 -->
-<div class="modal fade" id="editNicknameModal" tabindex="-1" aria-labelledby="editNicknameModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <%--Model Header--%>
-            <div class="modal-header">
-                <h5 class="modal-title" id="editNicknameModalLabel">닉네임 수정</h5>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <%--Model body--%>
-                <form id="editNicknameForm">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="currentNickname" class="form-label">닉네임</label>
-                        <input type="text" id="currentNickname" class="form-control" value="${selectMember.member_nickname}" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="newNickname" class="form-label">새로운 닉네임</label>
-                        <input type="text" id="newNickname" class="form-control" placeholder="새 닉네임 입력" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">저장</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">취소</button>
-                </div>
-                </form>
-        </div>
-    </div>
-</div>
+<button id="edit-profile" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editNicknameModal">Edit
+    Profile
+</button>
 
 <%--팔로우 팔로워 기능--%>
 <div class="profile-follow-info">
@@ -86,60 +83,67 @@
 
 <%--모달이미지 등 닉네임 수정할 scirpt--%>
 <script>
-    // 이미지 확대
-    function showModal(imgElement) {
-        const modal = document.getElementById("imageModal");
-        const modalImg = document.getElementById("modalImage");
-        modalImg.src = imgElement.src;
-        modal.style.display = "flex";
-    }
-    //확대된 이미지 닫기 모달 버튼모양
-    function closeModal() {
-        const modal = document.getElementById("imageModal");
-        modal.style.display = "none";
-    }
+  // 이미지 확대
+  function showModal(imgElement) {
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("modalImage");
+    modalImg.src = imgElement.src;
+    modal.style.display = "flex";
+  }
 
-    //닉네임 수정하는 ajax
-    $(document).ready(function () {
-        // 닉네임 수정 폼 제출 처리
-        $("#editNicknameForm").on("submit", function (event) {
-            event.preventDefault();
+  //확대된 이미지 닫기 모달 버튼모양
+  function closeModal() {
+    const modal = document.getElementById("imageModal");
+    modal.style.display = "none";
+  }
 
-            const newNickname = $("#newNickname").val();
-            const memberEmail = $("#memberEmail").val();
+  //닉네임 수정하는 ajax
+  $(document).ready(function () {
+    // 닉네임 수정 폼 제출 처리
+    $("#editNicknameForm").off("submit").on("submit", function (event) {
+      event.preventDefault();
 
-            if (newNickname.trim() === "") {
-                alert("닉네임을 입력해주세요.");
-                return;
-            }
+      const newNickname = $("#newNickname").val();
+      const memberEmail = $("#memberEmail").val();
 
-            // AJAX 요청
-            $.ajax({
-                url: `${path}/auth/modifyNickname.do`,
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({
-                    member_email: memberEmail,
-                    member_nickname: newNickname
-                }),
-                success: function (response) {
-                    alert("닉네임이 성공적으로 변경되었습니다!");
-                    $(".profile-username").text(newNickname); // 화면에 새로운 닉네임 반영
-                    $("#editNicknameModal").modal("hide"); // 모달 닫기
+      if (newNickname.trim() === "") {
+        alert("닉네임을 입력해주세요.");
+        return;
+      }
 
-                    $('#editNicknameModal').on('hidden.bs.modal', function () {
-                        $('.modal-backdrop').remove(); // 백드롭 제거
-                        $(this).removeData('bs.modal'); // 모달 데이터 초기화
-                    });
+      // AJAX 요청
+      $.ajax({
+        url: `${path}/auth/modifyNickname.do`,
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+          member_email: memberEmail,
+          member_nickname: newNickname
+        }),
+        success: function (response) {
+          alert("닉네임이 성공적으로 변경되었습니다!");
+          $(".profile-username").text(newNickname);
 
+          // 모달 닫기
+          const modal = bootstrap.Modal.getInstance(document.getElementById('editNicknameModal'));
+          if (modal) {
+            modal.hide();
 
-
-                },
-                error: function (err) {
-                    console.error("닉네임 변경 중 오류가 발생했습니다.", err);
-                    alert("닉네임 변경 중 오류가 발생했습니다.");
-                }
+            // backdrop 제거는 모달이 완전히 닫힌 후에 실행
+            $('#editNicknameModal').one('hidden.bs.modal', function () {
+              $('.modal-backdrop').remove();
+              $('body').removeClass('modal-open');
             });
-        });
+          }
+        },
+        error: function (err) {
+          console.error("닉네임 변경 중 오류가 발생했습니다.", err);
+          alert("닉네임 변경 중 오류가 발생했습니다.");
+        }
+      });
     });
+    $('#editNicknameModal').on('shown.bs.modal', function () {
+      $('#newNickname').val('').focus();
+    });
+  });
 </script>
