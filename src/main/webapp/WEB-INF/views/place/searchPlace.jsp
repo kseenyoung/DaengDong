@@ -549,7 +549,7 @@ body, h4, p, button, a {
 
 #list_wrap {
             position: absolute;
-            top: 0;
+            top: 50px;
             left: 0;
             bottom: 0;
             width: 400px;
@@ -563,6 +563,7 @@ body, h4, p, button, a {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border: 1px solid #ddd;
             overflow: visible;
+            flex-direction: column;
         }
 
 
@@ -608,6 +609,7 @@ body, h4, p, button, a {
     list-style:none;
     padding:0;
     margin:0;
+    margin-top: 50px;
 }
 
 
@@ -641,6 +643,28 @@ body, h4, p, button, a {
                             top: 40%;
                             transform: translateY(-50%);
                         }
+
+#day {
+    display: flex; /* 버튼을 한 줄에 배치 */
+    gap: 10px; /* 버튼 간격 */
+    overflow-x: auto; /* 가로 스크롤 활성화 */
+    white-space: nowrap; /* 버튼 줄 바꿈 방지 */
+    padding: 10px; /* 내부 여백 */
+    border: 1px solid #ccc; /* 컨테이너 테두리 (테스트용) */
+    border-radius: 5px; /* 컨테이너 둥근 모서리 */
+}
+
+.day-btn {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid gray;
+    padding: 10px 15px;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
 
 
@@ -696,7 +720,7 @@ body, h4, p, button, a {
 </div>
 
 <div class="map_wrap">
-    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+    <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
     <button id = "pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
     <div id="menu_wrap" class="bg_white">
     <button id="closeMenu" class="close-btn">✖</button>
@@ -745,13 +769,13 @@ body, h4, p, button, a {
 </div>
 
 <div id="list_wrap">
-    <ul id="placeList"></ul>
-    <hr>
+    <div id="day">
+    </div>
     <div class="button">
         <button id="addPlaceBtn">장소 추가</button>
         <div class="line"></div>
     </div>
-
+    <ul id="placeList"></ul>
 </div>
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62bd6cc1e013b8a659ae61760dc9fd7f&libraries=services"></script>
@@ -821,56 +845,77 @@ function placesSearchCB(data, status, pagination) {
 
 // 검색 결과 목록과 마커를 표출하는 함수입니다
 function displayPlaces(places) {
-
     var listEl = document.getElementById('placesList'),
-    menuEl = document.getElementById('menu_wrap'),
-    fragment = document.createDocumentFragment(),
-    bounds = new kakao.maps.LatLngBounds(),
-    listStr = '';
+        menuEl = document.getElementById('menu_wrap'),
+        fragment = document.createDocumentFragment(),
+        bounds = new kakao.maps.LatLngBounds();
 
-    // 검색 결과 목록에 추가된 항목들을 제거합니다
+    // 검색 결과 목록 초기화
     removeAllChildNods(listEl);
 
-    // 지도에 표시되고 있는 마커를 제거합니다
-    removeMarker();
+    for (var i = 0; i < places.length; i++) {
+        var place = places[i];
 
-    for ( var i=0; i<places.length; i++ ) {
+        var placePosition = new kakao.maps.LatLng(place.y, place.x),
+            marker = addMarker(placePosition, i, place.place_name, place);
 
-        // 마커를 생성하고 지도에 표시합니다
-        var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
-            marker = addMarker(placePosition, i, places[i].place_name,  places[i]),
-            itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+        var itemEl = document.createElement("li");
+        itemEl.classList.add("place-item");
 
+        var titleEl = document.createElement("h4");
+        titleEl.textContent = place.place_name || "정보 없음";
+        itemEl.appendChild(titleEl);
+
+        var addressEl = document.createElement("p");
+        addressEl.textContent = place.address_name || "주소 없음";
+        itemEl.appendChild(addressEl);
+
+        // 버튼 생성 및 추가
+        var button = document.createElement("button");
+        button.className = "add-btn";
+        button.textContent = "+ 내 일정에 추가";
+
+        // `data-*` 속성에 장소 이름과 주소 저장
+        button.setAttribute("data-place-name", place.place_name);
+        button.setAttribute("data-place-address", place.address_name);
+
+        itemEl.appendChild(button);
+
+        // 검색 결과 항목을 fragment에 추가
+        fragment.appendChild(itemEl);
+
+        // 지도 영역 확장
         bounds.extend(placePosition);
 
+        // 마커 이벤트 설정
         (function(marker, title) {
-            kakao.maps.event.addListener(marker, 'mouseover', function() {
+            kakao.maps.event.addListener(marker, 'mouseover', function () {
                 displayInfowindow(marker, title);
             });
-
-            kakao.maps.event.addListener(marker, 'mouseout', function() {
+            kakao.maps.event.addListener(marker, 'mouseout', function () {
                 infowindow.close();
             });
-
-            itemEl.onmouseover =  function () {
-                displayInfowindow(marker, title);
-            };
-
-            itemEl.onmouseout =  function () {
-                infowindow.close();
-            };
-        })(marker, places[i].place_name);
-
-        fragment.appendChild(itemEl);
+        })(marker, place.place_name);
     }
 
-    // 검색결과 항목들을 검색결과 목록 Element에 추가합니다
+    // 검색 결과를 목록에 추가
     listEl.appendChild(fragment);
     menuEl.scrollTop = 0;
 
-    // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+    // 지도 범위 재설정
     map.setBounds(bounds);
 }
+document.getElementById("placesList").addEventListener("click", function (event) {
+    if (event.target && event.target.classList.contains("add-btn")) {
+        const placeName = event.target.getAttribute("data-place-name");
+        const placeAddress = event.target.getAttribute("data-place-address");
+
+        addPlaceToPlan(placeName, placeAddress);
+    }
+});
+
+
+
 
 // 검색결과 항목을 Element로 반환하는 함수입니다
 function getListItem(index, places) {
@@ -916,8 +961,6 @@ function addMarker(position, idx, title, place) {
 
     // 마커에 클릭 이벤트 등록
     kakao.maps.event.addListener(marker, 'click', function () {
-        const x = position.getLat();
-        const y = position.getLng();
         const sidebar = document.getElementById("sidebar");
         const template = document.getElementById("sidebar-template");
 
@@ -926,95 +969,24 @@ function addMarker(position, idx, title, place) {
 
         console.log(place);
 
-
-
-                // 템플릿 내부 요소에 데이터 삽입
+        // 템플릿 내부 요소에 데이터 삽입
         sidebar.querySelector("#place-title").textContent = place.place_name || "정보 없음";
         sidebar.querySelector("#place-category_name").textContent = place.category_name || "정보 없음";
         sidebar.querySelector("#place-road_address_name").textContent = place.road_address_name || "도로명 주소 없음";
         sidebar.querySelector("#place-address_name").textContent = place.address_name || "주소 없음";
         sidebar.querySelector("#place-phone").textContent = place.phone || "전화번호 없음";
 
-
-
-        // 링크 업데이트 및 모달로 URL 표시
-        let mapLink = sidebar.querySelector("#map-link");
-        let placeUrl = place && place.place_url; // 안전한 참조
-
-        // 모달 DOM 요소 가져오기
-        const modal = document.getElementById("myModal");
-        const modalIframe = document.getElementById("modalIframe");
-        const closeModalBtn = document.querySelector(".close");
-
-        if (placeUrl) {
-            // 링크 클릭 시 모달 열기
-            mapLink.href = "#"; // 기존 링크 기능 제거
-            mapLink.addEventListener("click", function (e) {
-                e.preventDefault(); // 기본 링크 동작 방지
-
-                // 모달에 URL 로드
-                modalIframe.src = placeUrl;
-
-                // 모달 열기
-                modal.style.display = "block";
-            });
-        } else {
-            mapLink.style.display = "none"; // 유효한 URL이 없으면 링크 숨기기
-        }
-
-        // 모달 닫기 버튼 이벤트 등록
-        closeModalBtn.addEventListener("click", function () {
-            modal.style.display = "none";
-            modalIframe.src = ""; // 모달 닫힐 때 iframe 초기화
-        });
-
-        // 모달 외부 클릭 시 닫기
-        window.addEventListener("click", function (event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-                modalIframe.src = ""; // 모달 닫힐 때 iframe 초기화
-            }
-        });
-
         // 사이드바 표시
         sidebar.style.display = "block";
 
         const addPlanBtn = document.getElementById("addPlanBtn");
 
+        // addPlaceToPlan 함수 호출
         addPlanBtn.addEventListener("click", function () {
-
             const placeTitle = document.getElementById("place-title").textContent;
             const placeAddress = document.getElementById("place-address_name").textContent;
 
-            const placeList = document.getElementById("placeList")
-            const newItem = document.createElement("li");
-            newItem.classList.add("place-item");
-
-            const titleElement = document.createElement("h4");
-            titleElement.classList.add("placeTitle");
-            titleElement.textContent = placeTitle;
-
-            const addressElement = document.createElement("p");
-            addressElement.classList.add("placeAddress");
-            addressElement.textContent = placeAddress;
-
-            const deleteButton = document.createElement("button");
-            deleteButton.classList.add("delete-btn");
-            deleteButton.textContent = "삭제";
-
-            // 삭제 버튼 클릭 이벤트
-            deleteButton.addEventListener("click", function () {
-                newItem.remove(); // 클릭 시 해당 항목 삭제
-                console.log(`${placeTitle} 삭제됨`);
-            });
-
-            newItem.appendChild(titleElement);
-            newItem.appendChild(addressElement);
-            newItem.appendChild(deleteButton);
-
-            placeList.appendChild(newItem);
-            console.log("새로운 일정 추가됨:", placeTitle, placeAddress);
-
+            addPlaceToPlan(placeTitle, placeAddress);
         });
 
         // 닫기 버튼 이벤트 등록
@@ -1024,6 +996,38 @@ function addMarker(position, idx, title, place) {
     });
     return marker;
 }
+
+function addPlaceToPlan(placeTitle, placeAddress) {
+    const placeList = document.getElementById("placeList");
+    const newItem = document.createElement("li");
+    newItem.classList.add("place-item");
+
+    const titleElement = document.createElement("h4");
+    titleElement.classList.add("placeTitle");
+    titleElement.textContent = placeTitle;
+
+    const addressElement = document.createElement("p");
+    addressElement.classList.add("placeAddress");
+    addressElement.textContent = placeAddress;
+
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("delete-btn");
+    deleteButton.textContent = "삭제";
+
+    // 삭제 버튼 클릭 이벤트
+    deleteButton.addEventListener("click", function () {
+        newItem.remove(); // 클릭 시 해당 항목 삭제
+        console.log(`${placeTitle} 삭제됨`);
+    });
+
+    newItem.appendChild(titleElement);
+    newItem.appendChild(addressElement);
+    newItem.appendChild(deleteButton);
+
+    placeList.appendChild(newItem);
+    console.log("새로운 일정 추가됨:", placeTitle, placeAddress);
+}
+
 
 // 지도 위에 표시되고 있는 마커를 모두 제거합니다
 function removeMarker() {
@@ -1688,6 +1692,36 @@ document.addEventListener("DOMContentLoaded", function () {
         modalOverlay.classList.remove("show");
     });
 });
+
+// n일차 버튼
+function createDayButtons(dateDifference){
+    const dayContainer = document.getElementById("day");
+
+console.log("dayContainer:", dayContainer);
+
+    dayContainer.innerHTML="";
+
+for (let i = 1; i <= dateDifference; i++) {
+        const dayBtn = document.createElement("button");
+
+        dayBtn.textContent = i + "일차"
+
+        dayBtn.classList.add("day-btn");
+        dayBtn.setAttribute("data-day", i);
+
+        dayContainer.appendChild(dayBtn);
+    }
+
+}
+document.getElementById("day").addEventListener("click", function (event) {
+    if (event.target && event.target.classList.contains("day-btn")) {
+        const selectedDay = event.target.getAttribute("data-day");
+    }
+});
+
+// 예제 실행 (DB에서 받아온 날짜 차이)
+const dateDifference = 6; // DB에서 가져온 데이터
+createDayButtons(dateDifference);
 
 </script>
 
