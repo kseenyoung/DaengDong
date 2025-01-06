@@ -1,11 +1,13 @@
 package com.shinhan.daengdong.chat.model;
 
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Getter
 @Setter
 @AllArgsConstructor
@@ -34,12 +36,21 @@ public class ChatRoom {
     }
 
     public void sendMessage(ChatParticipant sender, String message) throws IOException {
-        String fullMsg = sender.getNickName() + ": " + message;
 
-        messageHistory.add(fullMsg);
+        messageHistory.add(message);
 
         for (ChatParticipant p : participants) {
-            p.sendMessage(p.receiveMessage(plan_id, fullMsg));
+            p.sendMessage(p.receiveMessage(plan_id, message));
+        }
+    }
+
+    public void broadcastMessage(String message) {
+        for (ChatParticipant participant : participants) {
+            try {
+                participant.sendMessage(message);
+            } catch (IOException e) {
+                log.info("failed send message: " + e);
+            }
         }
     }
 }

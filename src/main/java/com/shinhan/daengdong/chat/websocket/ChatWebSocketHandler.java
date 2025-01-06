@@ -1,5 +1,7 @@
 package com.shinhan.daengdong.chat.websocket;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shinhan.daengdong.chat.dto.ChatMessageDTO;
 import com.shinhan.daengdong.chat.model.ChatParticipant;
 import com.shinhan.daengdong.chat.model.ChatRoom;
 import com.shinhan.daengdong.chat.model.service.ChatService;
@@ -35,13 +37,18 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         ChatParticipant sender = info.getParticipant();
         int planId = info.getPlanId();
 
-        ChatRoom chatRoom = chatService.getChatRoom(planId);
+        //JSON message parsing
+        ObjectMapper mapper = new ObjectMapper();
+        ChatMessageDTO chatMessage = mapper.readValue(message.getPayload(), ChatMessageDTO.class);
+        chatMessage.setSender(sender.getNickName());
 
-        chatRoom.sendMessage(sender, message.getPayload());
+        ChatRoom chatRoom = chatService.getChatRoom(planId);
+        chatRoom.broadcastMessage(mapper.writeValueAsString(chatMessage));
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        log.info("WebSocket connected. Session ID: " + session.getId());
         int planId = 1;
 
         MemberDTO memberDTO = new MemberDTO();
