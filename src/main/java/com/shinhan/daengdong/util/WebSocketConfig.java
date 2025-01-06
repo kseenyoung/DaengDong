@@ -12,7 +12,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new PlanWebSocketHandler(), "/plan/screen")
+        registry.addHandler(new PlanWebSocketHandler(), "/websocket/plan")
             .setAllowedOrigins("*");
     }
 

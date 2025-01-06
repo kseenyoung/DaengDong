@@ -654,15 +654,13 @@
         }
 
 
-#day {
-    display: flex; /* 버튼을 한 줄에 배치 */
-    gap: 10px; /* 버튼 간격 */
-    overflow-x: auto; /* 가로 스크롤 활성화 */
-    white-space: nowrap; /* 버튼 줄 바꿈 방지 */
-    padding: 10px; /* 내부 여백 */
-    border: 1px solid #ccc; /* 컨테이너 테두리 (테스트용) */
-    border-radius: 5px; /* 컨테이너 둥근 모서리 */
-}
+        #day {
+            display: flex; /* 버튼을 한 줄에 배치 */
+            gap: 10px; /* 버튼 간격 */
+            overflow-x: auto; /* 가로 스크롤 활성화 */
+            white-space: nowrap; /* 버튼 줄 바꿈 방지 */
+            padding: 10px; /* 내부 여백 */
+        }
 
         .day-btn {
             display: inline-block;
@@ -711,15 +709,51 @@
             outline: none; /* 기본 아웃라인 제거 */
         }
 
-#companionSection,
-#daysSection {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
+        #companionSection,
+        #daysSection {
+            margin-top: 20px;
+            padding: 10px;
+        }
+        /* 제목과 버튼을 감싸는 컨테이너 */
+        #mainControls {
+            display: flex;
+            flex-direction: column; /* 세로 방향으로 정렬 */
+            align-items: center; /* 중앙 정렬 */
+            margin: 20px; /* 외부 여백 */
+        }
 
-</style>
+        /* 플랜 제목 스타일 */
+        #planTitle {
+            font-size: 24px; /* 제목 글자 크기 */
+            font-weight: bold; /* 굵은 텍스트 */
+            margin-bottom: 20px; /* 제목과 버튼 사이 여백 */
+        }
+
+        /* 버튼 그룹 */
+        #mainControls {
+            flex-direction: row; /* 가로 방향으로 정렬 */
+            justify-content: center; /* 가운데 정렬 */
+            display: flex;
+            gap: 20px; /* 버튼 간 간격 */
+        }
+
+        /* 버튼 스타일 */
+        #mainControls button {
+            background-color: #007BFF; /* 버튼 배경색 */
+            color: white; /* 버튼 텍스트 색상 */
+            border: none; /* 테두리 제거 */
+            border-radius: 5px; /* 모서리 둥글게 */
+            padding: 5px 50px; /* 버튼 크기 */
+            font-size: 12px; /* 글자 크기 */
+            cursor: pointer; /* 마우스 커서 */
+            transition: background-color 0.3s; /* 호버 애니메이션 */
+        }
+
+        /* 버튼 호버 효과 */
+        #mainControls button:hover {
+            background-color: #0056b3; /* 호버 시 색상 */
+        }
+    </style>
 </head>
 <body>
 
@@ -831,7 +865,12 @@
             <input type="text" id="companionEmailInput" placeholder="동행자 이메일 입력">
             <button id="addCompanionBtn">추가</button>
         </div>
-        <ul id = "companionList"></ul>
+
+        <!-- 동행자 리스트 -->
+        <ul id="companionList"></ul>
+
+        <!-- 동행자 제출 버튼 -->
+        <button id="submitCompanionsBtn">동행자 추가</button>
     </div>
     <div id="daysSection">
         <div id="day">
@@ -852,19 +891,64 @@
     </div>
 
     <script>
-        // 모달창 열기
-        document.getElementById("addCompanionBtn").addEventListener('click', function() {
-            const companionEmail = document.getElementById("companionEmailInput").value;
+        // 동행자 이메일 리스트
+        const companions = [];
+
+        document.getElementById("addCompanionBtn").addEventListener("click", function () {
+            const companionEmailInput = document.getElementById("companionEmailInput");
+            const companionEmail = companionEmailInput.value.trim();
 
             if (!companionEmail) {
                 alert("동행자 이메일을 입력해주세요.");
                 return;
             }
 
+            if (companions.includes(companionEmail)) {
+                alert("이미 추가된 동행자입니다.");
+                return;
+            }
+
+            // 리스트에 이메일 추가
+            companions.push(companionEmail);
+
+            // 동행자 리스트 UI 업데이트
+            const companionList = document.getElementById("companionList");
+            const listItem = document.createElement("li");
+            listItem.textContent = companionEmail;
+
+            // 삭제 버튼 생성
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "삭제";
+            deleteBtn.addEventListener("click", function () {
+                const index = companions.indexOf(companionEmail);
+                if (index > -1) {
+                    companions.splice(index, 1);
+                    companionList.removeChild(listItem);
+                }
+            });
+
+            listItem.appendChild(deleteBtn);
+            companionList.appendChild(listItem);
+
+            // 입력 필드 초기화
+            companionEmailInput.value = "";
+        });
+
+        // 동행자 제출 버튼 클릭 이벤트
+        document.getElementById("submitCompanionsBtn").addEventListener("click", function () {
+            if (companions.length === 0) {
+                alert("동행자를 추가해주세요.");
+                return;
+            }
+
+            // 쉼표로 구분된 문자열 생성
+            const companionData = companions.join(',');
+
+            // 서버로 전송
             fetch('/daengdong/plan/addCompanion', {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/plain' },
-                body: companionEmail
+                body: companionData
             })
                 .then(response => {
                     if (response.ok) {
@@ -1077,8 +1161,8 @@
             sidebar.querySelector("#place-address_name").textContent = place.address_name || "주소 없음";
             sidebar.querySelector("#place-phone").textContent = place.phone || "전화번호 없음";
 
-        // 사이드바 표시
-        sidebar.style.display = "block";
+            // 사이드바 표시
+            sidebar.style.display = "block";
 
             const addPlanBtn = document.getElementById("addPlanBtn");
 
@@ -1798,9 +1882,9 @@
     function createDayButtons(dateDifference){
         const dayContainer = document.getElementById("day");
 
-console.log("dayContainer:", dayContainer);
+        console.log("dayContainer:", dayContainer);
 
-    dayContainer.innerHTML="";
+        dayContainer.innerHTML="";
 
         for (let i = 1; i <= dateDifference; i++) {
             const dayBtn = document.createElement("button");
@@ -1842,9 +1926,12 @@ console.log("dayContainer:", dayContainer);
         daysSection.style.display = "block"; // 일정 섹션 보이기
     });
 
+    const planTitleFromDB = "내 인생 첫 여행";
 
+    document.getElementById("planTitle").textContent = planTitleFromDB;
 </script>
 
-//<script src="<%= request.getContextPath() %>/js/addPlan.js"></script>
+<script src="<%= request.getContextPath() %>/js/addPlan.js"></script>
+<script src="/daengdong/js/websocket.js"></script>
 </body>
 </html>

@@ -28,14 +28,14 @@
 
     <!-- Application Loggers -->
     <logger name="com.shinhan.daengdong">
-        <level value="DEBUG" />
+        <level value="info" />
         <appender-ref ref="console" />
         <appender-ref ref="dailyFileAppender" />
     </logger>
 
     <!-- WebSocket Handler Logger -->
     <logger name="com.shinhan.daengdong.plan.websoket">
-        <level value="DEBUG" />
+        <level value="info" />
         <appender-ref ref="console" />
         <appender-ref ref="dailyFileAppender" />
     </logger>
@@ -59,7 +59,7 @@
 
     <!-- Root Logger -->
     <root>
-        <priority value="info" />
+        <priority value="warn" />
         <appender-ref ref="console" />
     </root>
 
