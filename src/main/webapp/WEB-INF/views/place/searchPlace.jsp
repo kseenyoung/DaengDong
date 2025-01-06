@@ -6,7 +6,7 @@
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <meta charset="utf-8">
     <title>장소검색</title>
-    <style>
+<style>
 .map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
 .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
 .map_wrap {position:relative;width:100%;height:930px;}
@@ -666,8 +666,49 @@ body, h4, p, button, a {
     border-radius: 5px;
     cursor: pointer;
 }
+#together {
+    display: absolute;
+    align-items: center;
+    gap: 10px; /* 버튼과 입력 필드 간 간격 */
+    margin: 20px 0;
+}
 
+#addCompanionBtn {
+    background-color: #007BFF; /* 버튼 색상 */
+    color: white; /* 텍스트 색상 */
+    border: none; /* 테두리 제거 */
+    border-radius: 5px; /* 버튼 모서리 둥글게 */
+    padding: 10px 15px; /* 버튼 크기 조정 */
+    cursor: pointer; /* 커서 모양 변경 */
+    font-size: 14px; /* 텍스트 크기 */
+    transition: background-color 0.3s; /* 호버 애니메이션 */
+}
 
+#addCompanionBtn:hover {
+    background-color: #0056b3; /* 호버 시 버튼 색상 */
+}
+
+#companionEmailInput {
+    flex-grow: 1; /* 입력 필드가 가능한 공간을 채우도록 설정 */
+    padding: 10px; /* 내부 여백 */
+    border: 1px solid #ccc; /* 테두리 색상 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    font-size: 14px; /* 텍스트 크기 */
+    box-sizing: border-box; /* 박스 모델 설정 */
+}
+
+#companionEmailInput:focus {
+    border-color: #007BFF; /* 포커스 시 테두리 색상 변경 */
+    outline: none; /* 기본 아웃라인 제거 */
+}
+
+#companionSection,
+#daysSection {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
 
 </style>
 </head>
@@ -770,19 +811,28 @@ body, h4, p, button, a {
 </div>
 
 <div id="list_wrap">
-        <!-- 동행자 추가 버튼 -->
-        <button id="addCompanionBtn">추가</button>
-        <input type="text" id="companionEmailInput" placeholder="동행자 이메일 입력">
-    <div id="day">
+
+    <div id="mainControls">
+        <button id="showDays">일정</button>
+        <button id="showCompanion">동행자</button>
     </div>
-    <div class="button">
-        <button id="addPlaceBtn">장소 추가</button>
-        <div class="line"></div>
+    <div id="companionSection" style="display: none;">
+        <div id = "together">
+            <!-- 동행자 추가 버튼 -->
+            <input type="text" id="companionEmailInput" placeholder="동행자 이메일 입력">
+            <button id="addCompanionBtn">추가</button>
+        </div>
+        <ul id = "companionList"></ul>
     </div>
-    <ul id="placeList"></ul>
-
-
-
+    <div id="daysSection">
+        <div id="day">
+        </div>
+        <div class="button">
+            <button id="addPlaceBtn">장소 추가</button>
+            <div class="line"></div>
+        </div>
+        <ul id="placeList"></ul>
+    </div>
         <!-- 동행자 추가 모달 -->
         <div id="companionModal" style="display: none;">
             <form id="companionForm">
@@ -1764,6 +1814,25 @@ document.getElementById("day").addEventListener("click", function (event) {
 // 예제 실행 (DB에서 받아온 날짜 차이)
 const dateDifference = 6; // DB에서 가져온 데이터
 createDayButtons(dateDifference);
+
+// 버튼 누르는거에 따른 동행자, 일정 보여주기
+const showCompanionBtn = document.getElementById("showCompanion");
+const showDaysBtn = document.getElementById("showDays");
+
+const companionSection = document.getElementById("companionSection");
+const daysSection = document.getElementById("daysSection");
+
+showCompanionBtn.addEventListener("click", () => {
+    companionSection.style.display = "block"; // 동행자 섹션 보이기
+    daysSection.style.display = "none"; // 일정 섹션 숨기기
+});
+
+// 일정 버튼 클릭 시
+showDaysBtn.addEventListener("click", () => {
+    companionSection.style.display = "none"; // 동행자 섹션 숨기기
+    daysSection.style.display = "block"; // 일정 섹션 보이기
+});
+
 
 </script>
 
