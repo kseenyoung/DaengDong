@@ -120,14 +120,14 @@ body {
 
 .categories {
   flex-shrink: 0;
-  height: 65px; !important;
+  height: 65px!important;
   background-color: #F5F4F9;
   padding: 15px;
   border-bottom: 1px solid #e1e8ed;
   text-align: center;
   position: sticky; /* 고정 */
   top: 0; /* 화면 상단에 고정 */
-  /*z-index: 10; !* 다른 요소보다 위에 표시 *!*/
+  z-index: 2!important; /* 다른 요소보다 위에 표시 */
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 하단 그림자 추가 */
   display: flex; /* 가로 배열 */
   justify-content: center; /* 중앙 정렬 */
@@ -136,14 +136,14 @@ body {
 
 .categories ul {
   display: flex; /* 가로 배열 */
-  height: 34px; !important;
+  height: 34px!important;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
 .categories ul li {
-  height: 24px; !important;
+  height: 24px!important;
   font-size: 16px;
   font-weight: bold;
   margin: 5px 20px;
@@ -170,8 +170,8 @@ body {
   padding: 10px 0;
   text-align: center;
   position: sticky; /* 고정 */
-  top: 0px; /* 화면 상단에 고정 */
-  /*z-index: 9; !* 다른 요소보다 위에 표시 *!*/
+  top: 0; /* 화면 상단에 고정 */
+  z-index: 1!important;; /* 다른 요소보다 위에 표시 */
   display: flex; /* 가로 배열 */
   justify-content: center; /* 중앙 정렬 */
   gap: 15px; /* 항목 간 간격 */
