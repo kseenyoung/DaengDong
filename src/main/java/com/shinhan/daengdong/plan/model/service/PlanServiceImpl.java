@@ -51,4 +51,18 @@ public class PlanServiceImpl implements PlanServiceInterface {
         planRepository.saveMemberPlan(memberPlanDTO);
     }
 
+    @Override
+    public List<MemberPlanDTO> getCompanionsByPlanId(Long planId) {
+        return planRepository.getCompanionsByPlanId(planId);
+    }
+
+    @Override
+    public boolean isCompanionExists(Long planId, String memberEmail) {
+        return planRepository.isCompanionExists(planId, memberEmail);
+    }
+
+    @Override
+    public void deleteCompanionFromPlan(MemberPlanDTO memberPlanDTO) {
+        planRepository.deleteCompanion(memberPlanDTO);
+    }
 }

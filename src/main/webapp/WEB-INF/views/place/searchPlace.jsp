@@ -16,6 +16,9 @@
     <!-- 외부 JSP 파일 -->
     <%@ include file="/WEB-INF/views/member/header.jsp" %>
 
+    <!-- 외부 style -->
+    <link rel="stylesheet" href="addCompanion.css">
+
     <style>
         .map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
         .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
@@ -860,18 +863,40 @@
         <button id="showDays">일정</button>
         <button id="showCompanion">동행자</button>
     </div>
-    <div id="companionSection" style="display: none;">
-        <div id = "together">
-            <!-- 동행자 추가 버튼 -->
-            <input type="text" id="companionEmailInput" placeholder="동행자 이메일 입력">
-            <button id="addCompanionBtn">추가</button>
+
+    <!-- 동행자 섹션 -->
+    <div id="companionSection">
+        <h2>동행자 관리</h2>
+        <div id="together">
+            <!-- "+" 버튼 (모달 열기) -->
+            <button id="openCompanionModalBtn">+</button>
         </div>
 
         <!-- 동행자 리스트 -->
         <ul id="companionList"></ul>
-        <!-- 동행자 제출 버튼 -->
-        <button id="submitCompanionsBtn">동행자 추가</button>
+
     </div>
+
+    <!-- 동행자 추가 모달 -->
+    <div id="companionModal" class="modal">
+        <div class="modal-content">
+            <!-- 모달 닫기 버튼 -->
+            <span id="closeCompanionModalBtn" class="close">&times;</span>
+
+            <h3>동행자 추가</h3>
+
+            <!-- 동행자 추가 폼 -->
+            <form id="companionForm">
+                <label for="companionEmail">동행자 이메일:</label>
+                <input type="email" id="companionEmail" name="companionEmail" placeholder="example@domain.com" required>
+                <button type="submit" id="addCompanionBtn">추가</button>
+            </form>
+
+            <!-- 동행자 제출 버튼 -->
+            <button id="submitCompanionsBtn">동행자 제출</button>
+        </div>
+    </div>
+
     <div id="daysSection">
         <div id="day">
         </div>
@@ -880,14 +905,6 @@
             <div class="line"></div>
         </div>
         <ul id="placeList"></ul>
-    </div>
-    <!-- 동행자 추가 모달 -->
-    <div id="companionModal" style="display: none;">
-        <form id="companionForm">
-            <label for="companionEmail">동행자 이메일:</label>
-            <input type="email" id="companionEmail" name="companionEmail" required>
-            <button type="submit">추가</button>
-        </form>
     </div>
 </div>
 

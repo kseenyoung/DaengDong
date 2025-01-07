@@ -12,4 +12,7 @@ public interface PlanRepositoryInterface {
     void planDate(PlanDTO planDTO);
     void planState(PlanDTO planDTO);
     void saveMemberPlan(MemberPlanDTO memberPlanDTO);
+    List<MemberPlanDTO> getCompanionsByPlanId(Long PlanId);
+    boolean isCompanionExists(Long planId, String memberEmail);
+    void deleteCompanion(MemberPlanDTO memberPlanDTO);
 }

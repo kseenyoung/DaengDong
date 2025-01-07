@@ -41,7 +41,27 @@
     </update>
 
     <insert id="saveMemberPlan" parameterType="memberPlanDTO">
-        INSERT INTO member_plans (member_email, plan_id)
-        VALUES (#{memberEmail}, #{planId});
+        insert into member_plans (member_email, plan_id)
+        values (#{memberEmail}, #{planId});
     </insert>
+
+    <!-- Companion(동행자) 존재 여부 확인 -->
+    <select id="countCompanion" resultType="int">
+        select count(*) from member_plans
+        where plan_id = #{planId} and member_email = #{memberEmail}
+    </select>
+
+    <!-- Companion(동행자) 리스트 조회 -->
+    <select id="getCompanionsByPlanId" resultType="MemberPlanDTO">
+        select member_plan_id AS memberPlanId,
+               member_email AS memberEmail,
+               plan_id AS planId
+        from member_plans
+        where plan_id = #{planId}
+    </select>
+
+    <delete id="deleteCompanion" parameterType="memberPlanDTO">
+        delete from member_plans
+        where plan_id = #{planId} and member_email = #{memberEmail};
+    </delete>
 </mapper>
