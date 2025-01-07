@@ -15,5 +15,6 @@
 </header>
 <body>
 <img src="${path}/img/kakao_login.png" onclick="location.href='https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${rest_api_key}&redirect_uri=${redirect_uri}'">
+<a href="${path}/chat/room/1">바로입장하기</a>
 </body>
 </html>

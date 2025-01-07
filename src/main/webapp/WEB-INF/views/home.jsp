@@ -15,7 +15,7 @@
 <body>
 <h1>로그인 완료!</h1>
 <p>환영합니다</p>
-<a href="${path}/chat/${member.member_email}">채팅방입장하기</a>
+<a href="${path}/chat/room/1">채팅방입장하기</a>
 <p>${member.member_email}</p>
 <p>${member.member_name}</p>
 <p>${member.member_nickname}</p>
