@@ -1,6 +1,10 @@
 $(document).ready(function () {
+  $(document).off("click", "#sendButton")
+  $(document).off("keypress", "#messageInput")
+
   $(document).on("click", "#sendButton", sendMessage);
   $(document).on("keypress", "#messageInput", pressEnter)
+
   const planId = 1;
   let ws;
   connectWebSocket(planId)
@@ -16,14 +20,13 @@ $(document).ready(function () {
       console.log("WebSocket 연결됨");
     };
 
-    ws.onmessage = function (event) {
-      const message = JSON.parse(event.data);
-      const currentUser = `${sessionScope.member.member_nickname}`
+    ws.onmessage = function (e) {
+      const message = JSON.parse(e.data);
+      let currentUser = memberNickname || memberName || "Anonymous";
 
       if (message.sender === currentUser) {
         return;
       }
-
       displayReceivedMessage(message.content, message.sender);
     };
 
@@ -37,14 +40,24 @@ $(document).ready(function () {
       setTimeout(() => {
         console.log("WebSocket 재연결 시도...");
         connectWebSocket(planID);
-      }, 3000);    };
+      }, 3000);
+    };
   }
 
   function sendMessage() {
+    if (ws.readyState !== WebSocket.OPEN) {
+      console.log("WebSocket이 연결되지 않았습니다.")
+      return;
+    }
+
     const messageInput = $("#messageInput");
+    // let messageSender = memberNickname || memberName || "Anonymous";
+
+    // console.log("메세지 발신자>>sendMessage sender: " + messageSender)
+
     const message = {
       type: "CHAT",
-      sender: `${sessionScope.member.member_email}`,
+      sender: memberNickname || memberName || "Anonymous",
       content: messageInput.val().trim()
     };
 
@@ -57,7 +70,6 @@ $(document).ready(function () {
 
   function displaySentMessage(message) {
     const chatMassages = $("#chatMessages");
-
     const messageElement = `
       <div class="message sent">
         <div class="message-content">
@@ -66,29 +78,31 @@ $(document).ready(function () {
       </div>
     `;
 
-    chatMassages.innerHTML += messageElement;
-    scrollToBottom(chatMassages);
+    chatMassages.append(messageElement);
+    scrollToBottom(chatMassages[0]);
   }
 
-  function displayReceivedMessage(message) {
-    const chatMessage = document.getElementById("chatMessages");
+  function displayReceivedMessage(message, sender) {
+    const chatMessage = $("#chatMessages");
 
     const messageElement = `
       <div class="message received">
-        <img src="${path}/img/kseenyoungProfile.jpeg" alt="user"/>
-        <div class="message-content">
-          <span class="sender-anme">${sender}</span>
-          <p class="message-detail">${message}</p>
+        <img src="${profilePhoto}" alt="user"/>
+        <div class="message-wrapper">
+          <span class="sender-name">${sender}</span>
+          <span class="message-content">${message}</span>
         </div>
       </div>
       `;
 
-    chatMessage.innerHTML += messageElement;
-    scrollToBottom(chatMessage);
+    chatMessage.append(messageElement);
+    scrollToBottom(chatMessage[0]);
   }
 
   function scrollToBottom(element) {
-    element.scrollTop = element.scrollHeight;
+    if (element) {
+      element.scrollTop = element.scrollHeight;
+    }
   }
 
   function pressEnter(e) {

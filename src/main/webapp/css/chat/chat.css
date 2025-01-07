@@ -21,31 +21,56 @@
 /* 메시지 공통 스타일 */
 .message {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start; /* 아이템을 위쪽으로 정렬 */
   margin-bottom: 10px;
 }
 
 .message img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
+  width: 50px; /* 이미지 크기 */
+  height: 50px; /* 이미지 크기 */
+  border-radius: 50%; /* 원형 이미지 */
+  margin-right: 10px; /* 오른쪽 간격 */
 }
 
 .message-content {
-  max-width: 60%;
+  box-sizing: content-box!important; /* 이 요소만 content-box로 설정 */
   padding: 12px 16px;
   border-radius: 30px;
   font-size: 14px;
   position: relative;
-  word-wrap: break-word;
-  word-break: break-word;
+  word-wrap: break-word; /* 단어가 너무 길면 줄바꿈 */
+  word-break: break-word; /* 강제 줄바꿈 방지 */
+  hyphens: auto; /* 단어를 하이픈으로 나누기 */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  color: #333;
 }
 
 /* 받은 메시지 */
 .message.received {
-  flex-direction: row;
+  display: flex;
+  align-items: flex-start;
+
+}
+
+/* 메시지 래퍼 */
+.message-wrapper {
+  display: flex;
+  flex-direction: column; /* 세로 정렬 */
+  align-items: flex-start; /* 왼쪽 정렬 */
+  max-width: 70%; /* 콘텐츠 최대 너비 */
+}
+
+/* 보낸 사람 이름 */
+.sender-name {
+  display: inline-block;
+  position: relative;
+  font-size: 12px;
+  font-weight: bold;
+  color: #aaa;
+  margin-bottom: 5px; /* 메시지와의 간격 */
+  text-align: left;
 }
 
 /* 받은 메시지 스타일 */
@@ -82,6 +107,7 @@
   text-align: right;
   position: relative;
   border-radius: 25px 25px 0 25px;
+  max-width: 70%; /* 메시지 최대 너비를 적절히 조정 */
 }
 
 /*.message.sent .message-content::after {*/
@@ -140,6 +166,7 @@
 
 .message-content {
   animation: fadeIn 0.3s ease-in-out;
+
 }
 
 @keyframes fadeIn {
