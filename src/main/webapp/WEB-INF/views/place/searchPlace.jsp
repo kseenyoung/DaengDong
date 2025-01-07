@@ -851,6 +851,14 @@
                     </li>
                 </ul>
             </div>
+
+            <%-- 카카오 API를 활용한 장소 검색 --%>
+            <div>
+                <input type="text" id="searchInput" placeholder="검색어를 입력하세요"/>
+                <button id="saerchButton">검색</button>
+            </div>
+            <ul id="searchResults"></ul>
+
             <ul id="placesList"></ul>
             <div id="pagination"></div>
         </div>
@@ -949,7 +957,7 @@
         ps.keywordSearch( keyword, placesSearchCB);
     }
 
-    // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+    // 장소검색이 완료됐을 때 호출되는 콜백함수
     function placesSearchCB(data, status, pagination) {
         if (status === kakao.maps.services.Status.OK) {
 

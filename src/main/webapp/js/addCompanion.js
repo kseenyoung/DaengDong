@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.getElementById("openCompanionModalBtn").addEventListener("click", function () {
     document.getElementById("companionModal").style.display = "flex";
     fetchCompanions(); // 모달 열릴 때 동행자 리스트 가져오기
-    document.getElementById("companionEmail").focus(); // 입력 필드에 포커스
+    document.getElementById("companionEmail").focus();
 });
 
 // 모달 닫기 버튼 클릭 이벤트
@@ -49,7 +49,7 @@ document.getElementById("companionForm").addEventListener("submit", function (e)
 
     // 중복 체크 (프론트엔드에서도 중복 방지)
     if (companions.includes(companionEmail)) {
-        alert("이미 추가된 동행자입니다.");
+        // alert("이미 추가된 동행자입니다.");
         companionEmailInput.value = "";
         return;
     }
@@ -71,7 +71,7 @@ function addCompanion(email) {
             document.getElementById("companionEmail").value = "";
         })
         .catch(error => {
-            alert("동행자 추가에 실패했습니다.");
+            console.log("동행자 추가에 실패했습니다.");
         });
 }
 
@@ -110,7 +110,6 @@ function fetchCompanions() {
         })
         .catch(error => {
             console.error("동행자 리스트 가져오기 실패:", error);
-            alert("동행자 리스트를 가져오는 데 실패했습니다.");
         });
 }
 
@@ -125,20 +124,18 @@ function deleteCompanion(email) {
 
     )
         .then(response => response.text())
-        .then(message => {
-            alert(message);
+        .then(() => {
             fetchCompanions(); // 리스트 업데이트
         })
         .catch(error => {
             console.error("동행자 삭제 요청 실패:", error);
-            alert("동행자 삭제에 실패했습니다.");
         });
 }
 
 // 동행자 제출 버튼 클릭 이벤트
 document.getElementById("submitCompanionsBtn").addEventListener("click", function () {
     if (companions.length === 0) {
-        alert("동행자를 추가해주세요.");
+        //alert("동행자를 추가해주세요.");
         return;
     }
 
@@ -147,7 +144,7 @@ document.getElementById("submitCompanionsBtn").addEventListener("click", functio
         return;
     }
 
-    alert("동행자가 제출되었습니다.");
+    //alert("동행자가 제출되었습니다.");
     document.getElementById("companionModal").style.display = "none";
     location.reload(); // 페이지 새로고침
 });
