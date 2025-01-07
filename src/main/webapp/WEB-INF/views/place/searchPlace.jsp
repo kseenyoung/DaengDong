@@ -177,7 +177,7 @@
 #pagination a {display:inline-block;margin-right:10px;}
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
 
-//카테고리
+/* 카테고리 */
 #category {position:absolute;top:10px;left:10px;border-radius: 5px; border:1px solid #909090;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);background: #fff;overflow: hidden;z-index: 2;}
 #category li {float:left;list-style: none;width:50px;border-right:1px solid #acacac;padding:6px 0;text-align: center; cursor: pointer;}
 #category li.on {background: #eee;}
@@ -474,7 +474,7 @@ body, h4, p, button, a {
     }
 }
 
-//선과 거리
+/* 선과 거리 */
 .dot {overflow:hidden;float:left;width:12px;height:12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/mini_circle.png');}
 .dotOverlay {position:relative;bottom:10px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;font-size:12px;padding:5px;background:#fff;}
 .dotOverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
@@ -675,7 +675,7 @@ body, h4, p, button, a {
     cursor: pointer;
 }
 #together {
-    display: absolute;
+    display: flex;
     align-items: center;
     gap: 10px; /* 버튼과 입력 필드 간 간격 */
     margin: 20px 0;
@@ -1173,6 +1173,9 @@ function addMarker(position, idx, title, place) {
     });
     return marker;
 }
+
+const dateDifference = <%= session.getAttribute("travelDays") %>;
+console.log("총 여행 일수:", dateDifference);
 
 function displayDayPlan(day) {
     const placeList = document.getElementById("placeList");
@@ -1927,7 +1930,7 @@ document.getElementById("day").addEventListener("click", function (event) {
 });
 
 // 예제 실행 (DB에서 받아온 날짜 차이)
-const dateDifference = 6; // DB에서 가져온 데이터
+// const dateDifference = 6; // DB에서 가져온 데이터
 createDayButtons(dateDifference);
 
 // 버튼 누르는거에 따른 동행자, 일정 보여주기

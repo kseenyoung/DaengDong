@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.beans.PropertyEditorSupport;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,14 @@ public class PlanController {
 
         log.info("생성된 plan_id: {}", planDTO.getPlanId());
 
+        // 시작일과 종료일 계산
+        long days = ChronoUnit.DAYS.between(
+            planDTO.getStartDate().toLocalDate(),
+            planDTO.getEndDate().toLocalDate()
+        ) + 1;
+
+        log.info("총 여행 일수: {}", days);
+
         // DB에 플랜 저장 및 생성된 planId 반환
         Long planId = planService.savePlan(planDTO); // DB INSERT
         log.info("PlanRepositoryImpl.save 실행됨: {}", planDTO);
@@ -63,6 +72,7 @@ public class PlanController {
         // 반환된 planId를 세션에 저장
         session.setAttribute("currentPlanId", planId);
         session.setAttribute("currentMemberEmail", member.getMember_email());
+        session.setAttribute("travelDays", days);
 
         session.setAttribute("currentPlan", planDTO);
         return "redirect:/plan/place";
