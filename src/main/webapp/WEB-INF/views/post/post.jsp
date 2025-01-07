@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -81,7 +82,7 @@
 
 
                     <form action="${path}/post/po" id="post_form" method="POST" enctype="multipart/form-data">
-                        <label for="category">카테고리 선택:</label>
+                        <label class="postLabel" for="category">카테고리 선택:</label>
                         <select id="category" name="category">
                             <option value="여행중">여행중</option>
                             <option value="여행완료">여행완료</option>
@@ -89,9 +90,16 @@
                             <option value="꿀팁">꿀팁</option>
                         </select>
 
+                        <label for="category" class="postLabel" >내 여행:</label>
+                        <select id="myplan" name="planId">
+                             <c:forEach var="plan" items="${plans}">
+                                  <option value="${plan.planId}">${plan.planName}</option>
+                               </c:forEach>
+                        </select>
+
                         <input type="text" name="title" id="title" placeholder="제목 : ">
 
-                       <textarea name="content" id="content" placeholder="내용 : "></textarea>
+                        <textarea name="content" id="content" placeholder="내용 : "></textarea>
 
                         // <input type="file" id="fileInput" style="display: none;" name="files[]"   multiple />
                         <button type="submit">만들기</button>
@@ -105,17 +113,17 @@
       </div>
       <main id="postMain">
         <h2 id="community">community</h2>
-        <input id="search" type="search">
-        <div id="kewordAndwrite">
-            <ul id="categoryList">
-                <li><button class="select_category">인기글</button></li>
-                <li><button>여행중</button></li>
-                <li><button>여행완료</button></li>
-                <li><button>사진자랑</button></li>
-                <li><button>꿀팁</button></li>
-            </ul>
-            <button class="post_write">글 쓰기</button>
-        </div>
+
+      <div id="kewordAndwrite">
+          <ul id="categoryList">
+              <li><a href="${path}/post/posts"><button class="select_category">인기글</button></a></li>
+              <li><a href="${path}/post/posts?category=여행중"><button>여행중</button></a></li>
+              <li><a href="${path}/post/posts?category=여행완료"><button>여행완료</button></a></li>
+              <li><a href="${path}/post/posts?category=사진자랑"><button>사진자랑</button></a></li>
+              <li><a href="${path}/post/posts?category=꿀팁"><button>꿀팁</button></a></li>
+          </ul>
+          <button class="post_write">글 쓰기</button>
+      </div>
 
         <div class="filter">
             최신순/인기순
@@ -125,8 +133,9 @@
            <c:forEach var="post" items="${postList}" varStatus="status">
                <c:if test="${status.index % 4 == 0}">
                    <div class="post">
+                     <a href="${path}/post/${post.postId}">
                        <div class="post_relative">
-                           <img class="post_img" src="${path}/img/${post.imageUrl}" alt="">
+                           <img class="post_img" src="${path}/upload/${post.imageUrl}" alt="">
                             <c:if test="${post.category == '꿀팁'}">
                                 <div class="honeytip">
                                    💡Tip
@@ -141,10 +150,26 @@
                                </c:if>
                            </div>
                        </div>
+                     </a>
                        <div class="post_info">
-                           <div class="post_info_left"><img src="${path}/img/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                           <div class="post_info_left"><img src="${path}/upload/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
                            <div class="post_info_right">
-                               <img src="${path}/img/Like.png" alt="like"><span>${post.likeCount}</span>
+
+                                <c:set var="found" value="false" />
+
+                                <!-- likePostIdsArray에서 해당 post.postId가 있는지 확인 -->
+                                <c:forEach var="likePostId" items="${myLike}">
+                                    <c:if test="${likePostId == post.postId}">
+                                        <c:set var="found" value="true" />
+                                        <!-- 좋아요를 누른 경우 -->
+                                        <img class="like-img" src="${path}/img/Likefull.png" data-post-id="${post.postId}" alt="like"><span>${post.likeCount}</span>
+                                    </c:if>
+                                </c:forEach>
+
+                                <!-- likePostIdsArray에 해당 post.postId가 없으면 기본 이미지 출력 -->
+                                <c:if test="${not found}">
+                                    <img class="like-img" src="${path}/img/Like.png" data-post-id="${post.postId}" alt="like"><span>${post.likeCount}</span>
+                                </c:if>
                            </div>
                        </div>
                         <c:if test="${post.category != '꿀팁'}">
@@ -163,36 +188,53 @@
            <c:forEach var="post" items="${postList}" varStatus="status">
                <c:if test="${status.index % 4 == 1}">
                    <!-- 두 번째 컬럼에 해당하는 게시글 -->
-                      <div class="post">
-                                             <div class="post_relative">
-                                                 <img class="post_img" src="${path}/img/${post.imageUrl}" alt="">
-                                                  <c:if test="${post.category == '꿀팁'}">
-                                                      <div class="honeytip">
-                                                         💡Tip
-                                                      </div>
-                                                  </c:if>
+                      <<div class="post">
+                                            <a href="${path}/post/${post.postId}">
+                                              <div class="post_relative">
+                                                  <img class="post_img" src="${path}/upload/${post.imageUrl}" alt="">
+                                                   <c:if test="${post.category == '꿀팁'}">
+                                                       <div class="honeytip">
+                                                          💡Tip
+                                                       </div>
+                                                   </c:if>
 
-                                                 <div class="post_content">
+                                                  <div class="post_content">
 
-                                                      <c:if test="${post.category == '꿀팁'}">
-                                                         <h2>${post.postTitle}</h2>
-                                                         <p>${post.postContent}</p>
-                                                     </c:if>
-                                                 </div>
-                                             </div>
-                                             <div class="post_info">
-                                                 <div class="post_info_left"><img src="${path}/img/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
-                                                 <div class="post_info_right">
-                                                     <img src="${path}/img/Like.png" alt="like"><span>${post.likeCount}</span>
-                                                 </div>
-                                             </div>
-                                              <c:if test="${post.category != '꿀팁'}">
-                                                  <div class="post_bottom">
-                                                  ${post.postContent}
+                                                       <c:if test="${post.category == '꿀팁'}">
+                                                          <h2>${post.postTitle}</h2>
+                                                          <p>${post.postContent}</p>
+                                                      </c:if>
                                                   </div>
+                                              </div>
+                                            </a>
+                                              <div class="post_info">
+                                                  <div class="post_info_left"><img src="${path}/upload/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                                                  <div class="post_info_right">
 
-                                              </c:if>
-                                         </div>
+                                                       <c:set var="found" value="false" />
+
+                                                       <!-- likePostIdsArray에서 해당 post.postId가 있는지 확인 -->
+                                                       <c:forEach var="likePostId" items="${myLike}">
+                                                           <c:if test="${likePostId == post.postId}">
+                                                               <c:set var="found" value="true" />
+                                                               <!-- 좋아요를 누른 경우 -->
+                                                               <img class="like-img" src="${path}/img/Likefull.png" data-post-id="${post.postId}" alt="like"><span>${post.likeCount}</span>
+                                                           </c:if>
+                                                       </c:forEach>
+
+                                                       <!-- likePostIdsArray에 해당 post.postId가 없으면 기본 이미지 출력 -->
+                                                       <c:if test="${not found}">
+                                                           <img class="like-img" src="${path}/img/Like.png" data-post-id="${post.postId}" alt="like"><span>${post.likeCount}</span>
+                                                       </c:if>
+                                                  </div>
+                                              </div>
+                                               <c:if test="${post.category != '꿀팁'}">
+                                                   <div class="post_bottom">
+                                                   ${post.postContent}
+                                                   </div>
+
+                                               </c:if>
+                                          </div>
                </c:if>
            </c:forEach>
        </div>
@@ -201,36 +243,53 @@
            <c:forEach var="post" items="${postList}" varStatus="status">
                <c:if test="${status.index % 4 == 2}">
                    <!-- 세 번째 컬럼에 해당하는 게시글 -->
-                     <div class="post">
-                                            <div class="post_relative">
-                                                <img class="post_img" src="${path}/img/${post.imageUrl}" alt="">
-                                                 <c:if test="${post.category == '꿀팁'}">
-                                                     <div class="honeytip">
-                                                        💡Tip
-                                                     </div>
-                                                 </c:if>
+                   <div class="post">
+                                        <a href="${path}/post/${post.postId}">
+                                          <div class="post_relative">
+                                              <img class="post_img" src="${path}/upload/${post.imageUrl}" alt="">
+                                               <c:if test="${post.category == '꿀팁'}">
+                                                   <div class="honeytip">
+                                                      💡Tip
+                                                   </div>
+                                               </c:if>
 
-                                                <div class="post_content">
+                                              <div class="post_content">
 
-                                                     <c:if test="${post.category == '꿀팁'}">
-                                                        <h2>${post.postTitle}</h2>
-                                                        <p>${post.postContent}</p>
-                                                    </c:if>
-                                                </div>
-                                            </div>
-                                            <div class="post_info">
-                                                <div class="post_info_left"><img src="${path}/img/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
-                                                <div class="post_info_right">
-                                                    <img src="${path}/img/Like.png" alt="like"><span>${post.likeCount}</span>
-                                                </div>
-                                            </div>
-                                             <c:if test="${post.category != '꿀팁'}">
-                                                 <div class="post_bottom">
-                                                 ${post.postContent}
-                                                 </div>
+                                                   <c:if test="${post.category == '꿀팁'}">
+                                                      <h2>${post.postTitle}</h2>
+                                                      <p>${post.postContent}</p>
+                                                  </c:if>
+                                              </div>
+                                          </div>
+                                        </a>
+                                          <div class="post_info">
+                                              <div class="post_info_left"><img src="${path}/img/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                                              <div class="post_info_right">
 
-                                             </c:if>
-                                        </div>
+                                                   <c:set var="found" value="false" />
+
+                                                   <!-- likePostIdsArray에서 해당 post.postId가 있는지 확인 -->
+                                                   <c:forEach var="likePostId" items="${myLike}">
+                                                       <c:if test="${likePostId == post.postId}">
+                                                           <c:set var="found" value="true" />
+                                                           <!-- 좋아요를 누른 경우 -->
+                                                           <img class="like-img" src="${path}/img/Likefull.png" data-post-id="${post.postId}" alt="like"><span>${post.likeCount}</span>
+                                                       </c:if>
+                                                   </c:forEach>
+
+                                                   <!-- likePostIdsArray에 해당 post.postId가 없으면 기본 이미지 출력 -->
+                                                   <c:if test="${not found}">
+                                                       <img class="like-img" src="${path}/img/Like.png" data-post-id="${post.postId}" alt="like"><span>${post.likeCount}</span>
+                                                   </c:if>
+                                              </div>
+                                          </div>
+                                           <c:if test="${post.category != '꿀팁'}">
+                                               <div class="post_bottom">
+                                               ${post.postContent}
+                                               </div>
+
+                                           </c:if>
+                                      </div>
                </c:if>
            </c:forEach>
        </div>
@@ -239,36 +298,53 @@
            <c:forEach var="post" items="${postList}" varStatus="status">
                <c:if test="${status.index % 4 == 3}">
                    <!-- 네 번째 컬럼에 해당하는 게시글 -->
-                     <div class="post">
-                                            <div class="post_relative">
-                                                <img class="post_img" src="${path}/img/${post.imageUrl}" alt="">
-                                                 <c:if test="${post.category == '꿀팁'}">
-                                                     <div class="honeytip">
-                                                        💡Tip
-                                                     </div>
-                                                 </c:if>
+                   <div class="post">
+                                        <a href="${path}/post/${post.postId}">
+                                          <div class="post_relative">
+                                              <img class="post_img" src="${path}/upload/${post.imageUrl}" alt="">
+                                               <c:if test="${post.category == '꿀팁'}">
+                                                   <div class="honeytip">
+                                                      💡Tip
+                                                   </div>
+                                               </c:if>
 
-                                                <div class="post_content">
+                                              <div class="post_content">
 
-                                                     <c:if test="${post.category == '꿀팁'}">
-                                                        <h2>${post.postTitle}</h2>
-                                                        <p>${post.postContent}</p>
-                                                    </c:if>
-                                                </div>
-                                            </div>
-                                            <div class="post_info">
-                                                <div class="post_info_left"><img src="${path}/img/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
-                                                <div class="post_info_right">
-                                                    <img src="${path}/img/Like.png" alt="like"><span>${post.likeCount}</span>
-                                                </div>
-                                            </div>
-                                             <c:if test="${post.category != '꿀팁'}">
-                                                 <div class="post_bottom">
-                                                 ${post.postContent}
-                                                 </div>
+                                                   <c:if test="${post.category == '꿀팁'}">
+                                                      <h2>${post.postTitle}</h2>
+                                                      <p>${post.postContent}</p>
+                                                  </c:if>
+                                              </div>
+                                          </div>
+                                        </a>
+                                          <div class="post_info">
+                                              <div class="post_info_left"><img src="${path}/img/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                                              <div class="post_info_right">
 
-                                             </c:if>
-                                        </div>
+                                                   <c:set var="found" value="false" />
+
+                                                   <!-- likePostIdsArray에서 해당 post.postId가 있는지 확인 -->
+                                                   <c:forEach var="likePostId" items="${myLike}">
+                                                       <c:if test="${likePostId == post.postId}">
+                                                           <c:set var="found" value="true" />
+                                                           <!-- 좋아요를 누른 경우 -->
+                                                           <img class="like-img" src="${path}/img/Likefull.png" data-post-id="${post.postId}" alt="like"><span>${post.likeCount}</span>
+                                                       </c:if>
+                                                   </c:forEach>
+
+                                                   <!-- likePostIdsArray에 해당 post.postId가 없으면 기본 이미지 출력 -->
+                                                   <c:if test="${not found}">
+                                                       <img class="like-img" src="${path}/img/Like.png" data-post-id="${post.postId}" alt="like"><span>${post.likeCount}</span>
+                                                   </c:if>
+                                              </div>
+                                          </div>
+                                           <c:if test="${post.category != '꿀팁'}">
+                                               <div class="post_bottom">
+                                               ${post.postContent}
+                                               </div>
+
+                                           </c:if>
+                                      </div>
                </c:if>
            </c:forEach>
        </div>
@@ -279,7 +355,13 @@
   </body>
 
   <script>
+
  document.addEventListener('DOMContentLoaded', () => {
+ console.log("${myLike}")
+ console.log("${plans}")
+
+
+
    const writeButton = document.querySelector(".post_write");
    const modal = document.getElementById("post_write_modal");
    writeButton.addEventListener("click", function () {
@@ -297,7 +379,37 @@
     const fileInput = document.getElementById('fileInput');
     let postFormData = new FormData(); // FormData 객체 생성
 
+    $(document).on("click", ".like-img", function() {
+        const postId = $(this).data("post-id");  // 클릭한 게시글의 postId 가져오기
+        const imgElement = $(this);
+        const likeCountElement = imgElement.siblings("span");  // 해당 게시글의 like count 표시 요소
+        let currentLikeCount = parseInt(likeCountElement.text());  // 현재 좋아요 수
 
+        $.ajax({
+            url: `${path}/post/like`,
+            type: "POST",
+            data: {
+                postId: postId,
+            },
+            success: function(response) {
+                // 좋아요 클릭 후 처리 (이미지 변경 등)
+                console.log("success : ", response)
+                console.log($(this))
+                 console.log(currentLikeCount)
+                if (imgElement.attr("src") === `${path}/img/Likefull.png`) {
+                        imgElement.attr("src", `${path}/img/Like.png`);
+                         currentLikeCount--;
+                    } else {  // 그렇지 않으면 'Likefull.png'로 변경
+                        imgElement.attr("src", `${path}/img/Likefull.png`);
+                        currentLikeCount++;
+                    }
+                 likeCountElement.text(currentLikeCount);
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    });
 
     const otherInput = document.getElementById('otherInput'); // 다른 입력값을 위한 input 요소
 

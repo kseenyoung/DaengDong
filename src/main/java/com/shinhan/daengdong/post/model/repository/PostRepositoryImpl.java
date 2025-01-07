@@ -28,12 +28,17 @@ public class PostRepositoryImpl implements PostRepositoryInterface {
         log.info(result.toString());
         return result;
     }
-    public List<LikeVO> getMyLike() {
-        List<LikeVO> result = sqlSession.selectList(namespace + "getMyLike");
+    public List<LikeVO> getMyLike(String memberEmail) {
+        List<LikeVO> result = sqlSession.selectList(namespace + "getMyLikes", memberEmail);
         log.info(result.toString());
         return result;
     }
-    @Override
+
+    public List<PostVO> findByCategoryOrderByDateDesc(String category){
+        List<PostVO> result = sqlSession.selectList(namespace + "getPostsByCategory", category);
+        log.info(result.toString());
+        return result;
+    }    @Override
     public void deletePost(int postId) {
         sqlSession.delete(namespace + "deletePost", postId);
     }
@@ -50,5 +55,29 @@ public class PostRepositoryImpl implements PostRepositoryInterface {
             sqlSession.insert(namespace + "createPostImages", paramMap); // 한 번에 삽입
         }
 
+    }
+
+    @Override
+    public void addLike(Long postId, String memberEmail) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("postId", postId);
+        params.put("memberEmail", memberEmail);
+        sqlSession.insert("com.shinhan.post.addLike", params);
+    }
+
+    @Override
+    public void deleteLike(Long postId, String memberEmail) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("postId", postId);
+        params.put("memberEmail", memberEmail);
+        sqlSession.delete(namespace + "deleteLike", params);
+    }
+
+    @Override
+    public int checkLike(Long postId, String memberEmail) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("postId", postId);
+        params.put("memberEmail", memberEmail);
+        return sqlSession.selectOne(namespace + "checkLike", params);
     }
 }

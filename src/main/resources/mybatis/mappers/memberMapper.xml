@@ -14,7 +14,7 @@
     <!--회원가입-->
     <insert id="signUp" parameterType="memberDTO">
         insert into members(member_email, member_name, member_nickname, member_profile_photo)
-        values(#{memberEmail}, #{memberName}, #{memberNickname}, #{memberProfilePhoto})
+        values(#{member_email}, #{member_name}, #{member_nickname}, #{member_profile_photo})
     </insert>
 
     <!-- 로그인 이메일 중복검사 -->

@@ -15,7 +15,6 @@
          <result property="imageUrl" column="image_url"/>
     </resultMap>
     <select id="viewPost" resultMap="postResultMap">
-
         SELECT
         p.post_id,
         p.post_title,
@@ -23,8 +22,8 @@
         p.post_content,
         m.member_nickname,
         m.member_profile_photo,
-        COUNT(l.post_id) AS like_count,
-        MIN(pi.image_url)
+        COUNT(DISTINCT l.post_id) AS like_count,  -- 중복된 좋아요를 제외
+        pi.image_url AS first_image_url          -- 첫 번째 이미지
         FROM
         posts p
         LEFT JOIN
@@ -32,23 +31,66 @@
         LEFT JOIN
         members m ON p.member_email = m.member_email
         LEFT JOIN
-        post_images pi ON p.post_id = pi.post_id
+        (
+        SELECT
+        post_id,
+        MIN(image_url) AS image_url       -- 첫 번째 이미지를 선택
+        FROM
+        post_images
+        GROUP BY
+        post_id
+        ) pi ON p.post_id = pi.post_id
         GROUP BY
         p.post_id, pi.image_url
         ORDER BY
-        like_count DESC
+        like_count DESC;
+
+    </select>
+    <select id="getPostsByCategory" parameterType="String" resultMap="postResultMap">
+        SELECT
+        p.post_id,
+        p.post_title,
+        p.category_id,
+        p.post_content,
+        m.member_nickname,
+        m.member_profile_photo,
+        COUNT(DISTINCT l.post_id) AS like_count,  -- 중복된 좋아요를 제외
+        pi.image_url AS first_image_url          -- 첫 번째 이미지
+        FROM
+        posts p
+        LEFT JOIN
+        likes l ON p.post_id = l.post_id
+        LEFT JOIN
+        members m ON p.member_email = m.member_email
+        LEFT JOIN
+        (
+        SELECT
+        post_id,
+        MIN(image_url) AS image_url       -- 첫 번째 이미지를 선택
+        FROM
+        post_images
+        GROUP BY
+        post_id
+        ) pi ON p.post_id = pi.post_id
+        WHERE category_id = #{category}
+        GROUP BY
+        p.post_id, pi.image_url
+        ORDER BY post_id DESC
+
+
+
 
     </select>
 
-<!--    <select id="getMyLike" parameterType="LikeVO">-->
+    <select id="getMyLikes" parameterType="String" resultType="LikeVO">
 
-<!--        SELECT-->
-<!--            *-->
-<!--        FROM-->
-<!--            likes-->
-
-
-<!--    </select>-->
+        SELECT
+            post_id AS postId
+        FROM
+            likes
+        WHERE
+            member_email = #{memberEmail}
+    </select>
     <delete id="deletePost" parameterType="int">
         delete
         from posts
@@ -65,5 +107,20 @@
         (#{postId}, #{imageUrl})
         </foreach>
     </insert>
+    <insert id="addLike" parameterType="map">
+        INSERT INTO likes (post_id, member_email)
+        VALUES (#{postId}, #{memberEmail})
+    </insert>
+    <!-- 좋아요 삭제 -->
+    <delete id="deleteLike" parameterType="map">
+        DELETE FROM likes
+        WHERE post_id = #{postId} AND member_email = #{memberEmail}
+    </delete>
 
+    <!-- 좋아요 존재 여부 확인 -->
+    <select id="checkLike" resultType="int" parameterType="map">
+        SELECT COUNT(*)
+        FROM likes
+        WHERE post_id = #{postId} AND member_email = #{memberEmail}
+    </select>
 </mapper>

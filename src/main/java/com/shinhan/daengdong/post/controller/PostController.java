@@ -1,6 +1,8 @@
 package com.shinhan.daengdong.post.controller;
 
 import com.shinhan.daengdong.member.dto.MemberDTO;
+import com.shinhan.daengdong.plan.dto.PlanDTO;
+import com.shinhan.daengdong.plan.model.service.PlanServiceInterface;
 import com.shinhan.daengdong.post.vo.LikeVO;
 import com.shinhan.daengdong.post.dto.PostDTO;
 import com.shinhan.daengdong.post.vo.PostVO;
@@ -21,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -30,13 +33,44 @@ public class PostController {
 
     @Autowired
     private PostServiceInterface postService;
+    @Autowired
+    private PlanServiceInterface planService;
 
     // 게시글 메인 페이지 조회
     @GetMapping("/posts")
-    public String viewMainPage(Model model) {
+    public String viewMainPage(@RequestParam(value="category", required = false) String category, Model model,HttpServletRequest request) {
         // 게시글 목록 조회
-        List<PostVO> postList = postService.getTopPosts();
+        HttpSession session = request.getSession(false);
+        if (session == null){
+            // session 없음 = 로그인 시도한 적 없음
+            log.info("세션이 존재하지 않음");
+            return null;
+        }
+
+        // TODO oauth 로그인 할 때 session 안에 MemberDTO 타입의 'member' 등록 되어 있어야 함
+        MemberDTO member = (MemberDTO) session.getAttribute("member");
+        System.out.println("member.getMember_email() : " +  member.getMember_email());
+
+
+
+
+        List<PostVO> postList;
+        if (category != null && !category.isEmpty()) {
+            postList = postService.getPostsByCategory(category); // 카테고리에 맞는 게시물 조회
+        } else {
+            postList = postService.getTopPosts(); // 카테고리가 없으면 최신 게시물 조회
+        }
+
+        List<LikeVO> myLike = postService.getMyLike(member.getMember_email());
 //        List<LikeVO> likeList = postService.getMyLike();
+        List<PlanDTO> userPlans = planService.getPlansByEmail(member.getMember_email());
+
+        model.addAttribute("plans", userPlans);
+        String likePostIdsString = myLike.stream()
+                .map(like -> like.getPostId().toString())
+                .collect(Collectors.joining(","));
+        model.addAttribute("myLike", likePostIdsString);
+
         model.addAttribute("postList", postList);
         return "post/post"; // mainPage.jsp 또는 mainPage.html로 전달
     }
@@ -46,6 +80,7 @@ public class PostController {
             @RequestParam("files[]") List<MultipartFile> files,
             @RequestParam(value="title", required=true) String title,
             @RequestParam(value="category", required=true) String category, // 'category' 필드 받기
+            @RequestParam(value="planId", required=true) long planId, // 'category' 필드 받기
             @RequestParam("content") String content, // 'content' 필드 받기
 
             HttpServletRequest request) {
@@ -63,7 +98,7 @@ public class PostController {
             }
 
             // 게시글 및 이미지 생성
-            PostDTO postDTO = new PostDTO(1, title, content, category, "user1@example.com");
+            PostDTO postDTO = new PostDTO(planId, title, content, category, "user1@example.com");
             postService.createPost(postDTO, imageUrls);
 
 //            return ResponseEntity.ok("게시글 생성 성공");
@@ -75,36 +110,10 @@ public class PostController {
         }
 
 
-
-
-//        HttpSession session = request.getSession();
-//        if (session == null){
-//            // session 없음 = 로그인 시도한 적 없음
-//            log.info("세션이 존재하지 않음");
-//            return null;
-//        }
-//
-//        // TODO oauth 로그인 할 때 session 안에 MemberDTO 타입의 'member' 등록 되어 있어야 함
-//        MemberDTO member = (MemberDTO) session.getAttribute("member");
-
-//        try {
-//            int result = postService.createPost(postDTO); // DTO를 직접 전달
-//            if (result > 0) {
-//                log.info("게시글 생성 성공: " + postDTO.toString());
-//                return "redirect:/post/posts";
-//            } else {
-//                model.addAttribute("error", "게시글 생성 중 문제가 발생했습니다.");
-//                return "redirect:/post/posts";
-//            }
-//        } catch (Exception e) {
-//            log.error("예외 발생: ", e);
-//            model.addAttribute("error", "서버 오류로 게시글을 생성할 수 없습니다.");
-//            return "redirect:/post/posts";
-//        }
     }
 
     private String saveImageFile(MultipartFile file) throws IOException {
-        String uploadDir = "C:\\Users\\User\\Desktop\\shinhan\\daeng\\DaengDong\\upload\\";
+        String uploadDir = "C:\\Users\\User\\Desktop\\shinhan\\daeng\\DaengDong\\src\\main\\webapp\\upload\\";
 
         // 디렉토리 존재 여부 확인, 없다면 생성
         File dir = new File(uploadDir);
@@ -117,11 +126,19 @@ public class PostController {
         log.info("파일 크기: " + file.getSize());
         log.info("파일 타입: " + file.getContentType());
 
-        // 파일 이름 추출
+        // 기존 파일 이름 추출
         String fileName = file.getOriginalFilename();
 
+        // 확장자 추출
+        String extension = fileName.substring(fileName.lastIndexOf("."));
+
+        // 기존 파일 이름과 현재 시간 합쳐서 고유한 파일 이름 생성
+        String uniqueFileName = fileName.substring(0, fileName.lastIndexOf("."))
+                + "_" + System.currentTimeMillis()
+                + extension;
+
         // 파일 경로 설정
-        String filePath = uploadDir + fileName;
+        String filePath = uploadDir + uniqueFileName;
 
         // 파일 저장
         try {
@@ -132,6 +149,25 @@ public class PostController {
             throw new IOException("파일 저장에 실패했습니다.");
         }
 
-        return fileName; // DB에는 파일 이름만 저장
+        return uniqueFileName; // DB에는 파일 이름만 저장
     }
+
+
+    @PostMapping("/like")
+    public ResponseEntity<?> addLike(@RequestParam Long postId, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+
+        MemberDTO member = (MemberDTO) session.getAttribute("member");
+        if (member == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 정보가 없습니다.");
+        }
+
+        String memberEmail = member.getMember_email();
+        postService.addLike(postId, memberEmail);
+        return ResponseEntity.ok().build();
+    }
+
 }

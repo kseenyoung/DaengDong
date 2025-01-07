@@ -10,6 +10,6 @@ import lombok.ToString;
 @ToString
 @Builder
 public class LikeVO {
-    private String memberEmail;
+    //private String memberEmail;
     private Long postId;
 }

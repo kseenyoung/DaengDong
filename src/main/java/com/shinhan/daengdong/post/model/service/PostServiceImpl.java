@@ -19,9 +19,16 @@ public class PostServiceImpl implements PostServiceInterface {
     public List<PostVO> getTopPosts() {
         return postRepository.getTopPosts();
     }
+
+    public List<PostVO> getPostsByCategory(String category) {
+        // 카테고리에 맞는 게시물 최신 순으로 조회
+        return postRepository.findByCategoryOrderByDateDesc(category);
+    }
+
+
     @Override
-    public List<LikeVO> getMyLike(){
-        return postRepository.getMyLike();
+    public List<LikeVO> getMyLike(String memberEmail){
+        return postRepository.getMyLike(memberEmail);
     }
     @Override
     public void createPost(PostDTO postDTO, List<String> imageUrls){
@@ -31,6 +38,20 @@ public class PostServiceImpl implements PostServiceInterface {
     @Override
     public void deletePost(int postId) {
         postRepository.deletePost(postId);
+    }
+
+
+
+    public void addLike(Long postId, String memberEmail) {
+        int likeCount = postRepository.checkLike(postId, memberEmail);
+        System.out.println("likeCount : " + likeCount);
+        if (likeCount > 0) {
+            // 좋아요가 있으면 삭제
+            postRepository.deleteLike(postId, memberEmail);
+        } else {
+            // 좋아요가 없으면 추가
+            postRepository.addLike(postId, memberEmail);
+        }
     }
 }
 
