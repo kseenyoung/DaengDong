@@ -20,6 +20,10 @@ public class ChatParticipant {
         return member.getMember_nickname();
     }
 
+    public String getName() {
+        return member.getMember_name();
+    }
+
     public void sendMessage(String message) throws IOException {
         if (session.isOpen()) {
             session.sendMessage(new TextMessage(message));

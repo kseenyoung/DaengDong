@@ -41,6 +41,7 @@ public class OauthController {
 
         // session 등록
         session = request.getSession();
+        log.info("kakaoMember: " + kakaoMember);
         session.setAttribute("member", kakaoMember);
 
         if (member == null) {
