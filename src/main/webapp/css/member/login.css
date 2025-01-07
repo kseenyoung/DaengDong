@@ -1,0 +1,89 @@
+body {
+  font-family: 'Arial', sans-serif;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9;
+}
+
+.login-container {
+  display: flex;
+  max-width: 900px;
+  width: 100%;
+  height: 600px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-form {
+  flex: 1;
+  background-color: #ffffff;
+  padding: 40px;
+  align-content: center;
+}
+
+.login-form h1 {
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.login-form .form-control {
+  border-radius: 10px;
+  height: 45px;
+  margin-bottom: 15px;
+}
+
+.login-form .social-login img {
+  width: 30px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.login-form .btn-start {
+  width: 100%;
+  background-color: #2d6a4f;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  height: 45px;
+}
+
+.login-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* 이미지가 범위를 넘어가면 숨김 */
+  border-radius: 15px; /* 원하는 경우 둥근 테두리 추가 */
+}
+
+.responsive-image {
+  width: 100%; /* 부모 요소의 너비에 맞춤 */
+  height: 100%; /* 부모 요소의 높이에 맞춤 */
+  object-fit: cover; /* 비율 유지하며 요소에 꽉 차게 */
+  object-position: center; /* 이미지를 중앙 정렬 */
+}
+
+.overlay {
+  position: absolute;
+  top: 60%;
+  left: 15%;
+  color: #fff;
+}
+
+.overlay .location {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.overlay .distance {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}

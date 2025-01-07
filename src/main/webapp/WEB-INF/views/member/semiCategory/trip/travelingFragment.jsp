@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="path" value="${pageContext.servletContext.contextPath}"/>
+<%--todo: css수정할 것--%>
 <link rel="stylesheet" href="${path}/css/member/reviews.css">
 <c:forEach var="travelingPlan" items="${travelingPlan}">
     <div class="announcement">
