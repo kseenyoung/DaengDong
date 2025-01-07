@@ -14,8 +14,6 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.util.Map;
-
 @Slf4j
 @Component
 public class ChatWebSocketHandler extends TextWebSocketHandler {
@@ -56,8 +54,14 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         log.info("afterConnectionEstablished connected.");
-        int planId = 1;
+        int planId = Integer.parseInt(session.getUri().getQuery().split("=")[1]); // planId 추출
         MemberDTO member = (MemberDTO) session.getAttributes().get("member");
+
+        if (member != null) {
+            log.info("User '{}' joined chat room {}", member.getMember_email(), planId);
+        } else {
+            log.warn("Unidentified user tried to join chat room {}", planId);
+        }
 
         log.info("member: " + member);
         ChatParticipant participant = new ChatParticipant(member, session);
