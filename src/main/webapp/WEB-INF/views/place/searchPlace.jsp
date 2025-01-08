@@ -1034,6 +1034,9 @@
 
             var titleEl = document.createElement("h4");
             titleEl.textContent = place.place_name || "정보 없음";
+
+            titleEl.setAttribute("data-place-x", place.x);
+            titleEl.setAttribute("data-place-y", place.y);
             itemEl.appendChild(titleEl);
 
             var addressEl = document.createElement("p");
@@ -1052,11 +1055,8 @@
         button.setAttribute("data-place-y", place.y);
 
             itemEl.appendChild(button);
-
-            // 검색 결과 항목을 fragment에 추가
             fragment.appendChild(itemEl);
 
-            // 지도 영역 확장
             bounds.extend(placePosition);
 
         // 마커 이벤트 설정
@@ -1070,7 +1070,6 @@
         })(marker, place.place_name);
     }
 
-    // 검색 결과를 목록에 추가
     listEl.appendChild(fragment);
     menuEl.scrollTop = 0;
     map.setBounds(bounds);
@@ -1079,9 +1078,7 @@
     map.setBounds(bounds);
 
     document.querySelectorAll('.add-btn').forEach(button => {
-        console.log("버튼 클릭 이벤트 등록 중...");
         button.addEventListener('click', function(){
-            console.log("버튼 클릭 이벤트 실행됨");
             const placeName = this.getAttribute('data-place-name');
             const placeAddress = this.getAttribute('data-place-address');
             const placeX = parseFloat(this.getAttribute('data-place-x'));
@@ -1132,28 +1129,41 @@ document.getElementById("placesList").addEventListener("click", function (event)
         return el;
     }
 
+var customMarkers = [];
+
 function addCustomMarker(position, title) {
-    var imageSrc = './img/red_marker.png'; // 마커 이미지 경로
+    var imageSrc = '<%= request.getContextPath() %>/img/red_marker.png';
+
     var imageSize = new kakao.maps.Size(24, 35); // 마커 이미지 크기
     var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
     // 마커 생성
-    var marker = new kakao.maps.Marker({
+    var customMarker = new kakao.maps.Marker({
         position: position,
-        image: markerImage
+        image: markerImage,
+        map: map
     });
 
-    marker.setMap(map); // 지도에 마커 추가
+    customMarkers.push({ customMarker, title });
 
     // 마커에 제목 저장
-    kakao.maps.event.addListener(marker, 'mouseover', function () {
-        displayInfowindow(marker, title);
+    kakao.maps.event.addListener(customMarker, 'mouseover', function () {
+        displayInfowindow(customMarker, title);
     });
-    kakao.maps.event.addListener(marker, 'mouseout', function () {
+    kakao.maps.event.addListener(customMarker, 'mouseout', function () {
         infowindow.close();
     });
 
-    return marker;
+    return customMarker;
+}
+function removeCustomMarker(title) {
+    for (var i = 0; i < customMarkers.length; i++) {
+        if (customMarkers[i].title === title) {
+            customMarkers[i].customMarker.setMap(null); // 지도에서 마커 삭제
+            customMarkers.splice(i, 1); // 배열에서 마커 제거
+            break;
+        }
+    }
 }
 
     function addMarker(position, idx, title, place) {
@@ -1240,8 +1250,15 @@ function addCustomMarker(position, title) {
             addPlanBtn.addEventListener("click", function () {
                 const placeTitle = document.getElementById("place-title").textContent;
                 const placeAddress = document.getElementById("place-address_name").textContent;
+                const placeX = parseFloat(document.getElementById("place-title").getAttribute("data-place-x"));
+                const placeY = parseFloat(document.getElementById("place-title").getAttribute("data-place-y"));
 
+                var placePosition = new kakao.maps.LatLng(placeY, placeX);
+                addCustomMarker(placePosition, placeTitle);
+
+                // 일정에 추가
                 addPlaceToPlan(placeTitle, placeAddress);
+
             });
 
             // 닫기 버튼 이벤트 등록
@@ -1280,6 +1297,8 @@ function addCustomMarker(position, title) {
             deleteButton.addEventListener("click", function () {
                 newItem.remove();
                 dayPlans[day] = dayPlans[day].filter(item => item.title !== title);
+                removeCustomMarker(title);
+
                 console.log(`${title} 삭제됨`);
             });
 
@@ -1306,8 +1325,6 @@ function addCustomMarker(position, title) {
     }
 
 
-
-    // 지도 위에 표시되고 있는 마커를 모두 제거합니다
     function removeMarker() {
         for ( var i = 0; i < markers.length; i++ ) {
             markers[i].setMap(null);
