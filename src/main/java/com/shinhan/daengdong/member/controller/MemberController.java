@@ -100,13 +100,13 @@ public class MemberController {
     @GetMapping("getProfileFragment.do")
     public String getProfileFragment(HttpSession session, Model model) {
         MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
+
         MemberDTO selectMember = memberService.selectMember(memberDTO.getMember_email());
         List<PetDTO> petList = memberService.selectPet(memberDTO.getMember_email());
-        log.info("memberDTO.getMember_email(): " + memberDTO.getMember_email());
+
+
         model.addAttribute("selectMember", selectMember);
         model.addAttribute("petList", petList);
-        log.info("petList: " + petList);
-        //log.info("selectMember : " + selectMember);
         return "member/profileFragment";
     }
 
