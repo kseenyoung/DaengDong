@@ -56,6 +56,7 @@ public class PlanRepositoryImpl implements PlanRepositoryInterface {
         return sqlSessionTemplate.selectList("com.shinhan.plan.getCompanionsByPlanId", planId);
     }
 
+
     @Override
     public boolean isCompanionExists(Long planId, String memberEmail) {
         Map<String, Object> params = new HashMap<>();

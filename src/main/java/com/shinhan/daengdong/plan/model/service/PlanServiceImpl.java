@@ -62,6 +62,7 @@ public class PlanServiceImpl implements PlanServiceInterface {
         return planRepository.isCompanionExists(planId, memberEmail);
     }
 
+
     // 우리 회원인지 확인
     @Override
     public boolean isMemberExists(String email) {

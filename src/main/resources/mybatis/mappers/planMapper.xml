@@ -60,6 +60,7 @@
         where plan_id = #{planId}
     </select>
 
+
     <!--우리 회원만 동행자 추가(회원 테이블에서 조회)-->
     <select id="checkMemberExists" parameterType="string" resultType="int">
         select count(*)
