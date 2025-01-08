@@ -50,4 +50,29 @@ public class PlanRepositoryImpl implements PlanRepositoryInterface {
     public void saveMemberPlan(MemberPlanDTO memberPlanDTO) {
         sqlSessionTemplate.insert("saveMemberPlan", memberPlanDTO);
     }
+
+    @Override
+    public List<MemberPlanDTO> getCompanionsByPlanId(Long planId) {
+        return sqlSessionTemplate.selectList("com.shinhan.plan.getCompanionsByPlanId", planId);
+    }
+
+    @Override
+    public boolean isCompanionExists(Long planId, String memberEmail) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("planId", planId);
+        params.put("memberEmail", memberEmail);
+        Integer count = sqlSessionTemplate.selectOne("com.shinhan.plan.countCompanion", params);
+        return count != null && count > 0;
+    }
+
+    @Override
+    public boolean isMemberExists(String email) {
+        Integer count = sqlSessionTemplate.selectOne("com.shinhan.plan.checkMemberExists", email);
+        return count != null && count > 0;
+    }
+
+    @Override
+    public void deleteCompanion(MemberPlanDTO memberPlanDTO) {
+        sqlSessionTemplate.delete("com.shinhan.plan.deleteCompanion", memberPlanDTO);
+    }
 }

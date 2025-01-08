@@ -150,11 +150,26 @@ public class PlanController {
 
     @GetMapping("/place")
     public String searchPlaceForm(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession(false);
+
+        Long currentPlanId = (Long) session.getAttribute("currentPlanId");
+        String currentMemberEmail = (String) session.getAttribute("currentMemberEmail");
+
+        // 로그인한 사용자의 이메일을 자동으로 추가
+        if (currentPlanId != null && currentMemberEmail != null) {
+            if (!planService.isCompanionExists(currentPlanId, currentMemberEmail)) {
+                MemberPlanDTO currentUserPlan = new MemberPlanDTO();
+                currentUserPlan.setPlanId(currentPlanId);
+                currentUserPlan.setMemberEmail(currentMemberEmail);
+                planService.addCompanionToPlan(currentUserPlan);
+                log.info("로그인한 사용자가 자동으로 추가되었습니다: {}", currentMemberEmail);
+            }
+        }
 
         return "place/searchPlace"; // searchPlace.jsp
     }
 
-    @PostMapping("addCompanion")
+    @PostMapping("/addCompanion")
     public ResponseEntity<?> addCompanion(@RequestBody String companionEmail, HttpSession session) {
 
         // 세션에서 planId와 memberEmail 가져오기
@@ -165,27 +180,30 @@ public class PlanController {
         log.info("currentPlanId: {}", currentPlanId);
         log.info("currentMemberEmail: {}", currentMemberEmail);
 
-        // 첫 번째 저장: 현재 사용자의 이메일
-        MemberPlanDTO currentUserPlan = new MemberPlanDTO();
-        currentUserPlan.setPlanId(currentPlanId);
-        currentUserPlan.setMemberEmail(currentMemberEmail);
-        planService.addCompanionToPlan(currentUserPlan);
+        if (!planService.isCompanionExists(currentPlanId, currentMemberEmail)) {
+            MemberPlanDTO currentUserPlan = new MemberPlanDTO();
+            currentUserPlan.setPlanId(currentPlanId);
+            currentUserPlan.setMemberEmail(currentMemberEmail);
+            planService.addCompanionToPlan(currentUserPlan);
+        }
 
         // 쉼표로 구분된 동행자 이메일 문자열을 리스트로 변환
         List<String> companionEmailList = Arrays.asList(companionEmail.split(","));
 
         // 동행자 추가 처리
-        for (String email : companionEmailList) { // 변수 이름을 email로 변경
-            String trimmedEmail = email.trim(); // 공백 제거
-            if (!trimmedEmail.isEmpty()) { // 유효성 검사
-                MemberPlanDTO companionPlan = new MemberPlanDTO();
-                companionPlan.setPlanId(currentPlanId);
-                companionPlan.setMemberEmail(trimmedEmail); // 이메일 설정
+        for (String email : companionEmailList) {
+            String trimmedEmail = email.trim();
 
-                planService.addCompanionToPlan(companionPlan); // 동행자 추가
-                log.info("추가된 동행자 이메일: {}", trimmedEmail); // 로그 출력
-            } else {
-                log.warn("빈 이메일이 발견되었습니다. 처리하지 않습니다."); // 로그 경고
+            if (!trimmedEmail.isEmpty() && !trimmedEmail.equals(currentMemberEmail)) {
+                if(planService.isMemberExists(trimmedEmail)) {
+                    if (!planService.isCompanionExists(currentPlanId, trimmedEmail)) {
+                        MemberPlanDTO companionPlan = new MemberPlanDTO();
+                        companionPlan.setPlanId(currentPlanId);
+                        companionPlan.setMemberEmail(trimmedEmail);
+                        planService.addCompanionToPlan(companionPlan);
+                        log.info("추가된 동행자 이메일: {}", trimmedEmail);
+                    }
+                }
             }
         }
 
@@ -193,5 +211,43 @@ public class PlanController {
         PlanWebSocketHandler.sendMessageToUsers(currentPlanId.toString(), message);
 
         return ResponseEntity.ok("동행자가 성공적으로 추가되었습니다.");
+    }
+
+    // 동행자 리스트 조회
+    @GetMapping("/companions")
+    @ResponseBody
+    public ResponseEntity<?> getCompanions(HttpSession session) {
+        Long currentPlanId = (Long) session.getAttribute("currentPlanId"); // 수정됨
+        if (currentPlanId == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("플랜 정보가 세션에 존재하지 않습니다.");
+        }
+
+        List<MemberPlanDTO> companions = planService.getCompanionsByPlanId(currentPlanId);
+        return ResponseEntity.ok(companions);
+    }
+
+    // 동행자 삭제
+    @GetMapping("/companionsDelete")
+    @ResponseBody
+    public ResponseEntity<?> deleteCompanion(@RequestParam String memberEmail, HttpSession session) {
+        Long currentPlanId = (Long) session.getAttribute("currentPlanId");
+
+        if (memberEmail == null || memberEmail.trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유효하지 않은 이메일입니다.");
+        }
+
+        String currentMemberEmail = (String) session.getAttribute("currentMemberEmail");
+        if (currentMemberEmail.equals(memberEmail)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("현재 사용자는 삭제할 수 없습니다.");
+        }
+
+        MemberPlanDTO memberPlanDTO = new MemberPlanDTO();
+        memberPlanDTO.setPlanId(currentPlanId);
+        memberPlanDTO.setMemberEmail(memberEmail.trim());
+
+        // DTO 전달
+        planService.deleteCompanionFromPlan(memberPlanDTO);
+
+        return ResponseEntity.ok("동행자가 성공적으로 삭제되었습니다.");
     }
 }

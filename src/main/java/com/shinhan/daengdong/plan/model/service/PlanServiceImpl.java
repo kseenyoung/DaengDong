@@ -51,4 +51,29 @@ public class PlanServiceImpl implements PlanServiceInterface {
         planRepository.saveMemberPlan(memberPlanDTO);
     }
 
+    @Override
+    public List<MemberPlanDTO> getCompanionsByPlanId(Long planId) {
+        return planRepository.getCompanionsByPlanId(planId);
+    }
+
+    // 동행자가 중복으로 저장되는지 확인
+    @Override
+    public boolean isCompanionExists(Long planId, String memberEmail) {
+        return planRepository.isCompanionExists(planId, memberEmail);
+    }
+
+    // 우리 회원인지 확인
+    @Override
+    public boolean isMemberExists(String email) {
+        log.info("!!!!!!!!이메일 존재 여부 확인: {}", email);
+        boolean exists = planRepository.isMemberExists(email);
+        log.info("!!!!!!!!존재 여부 결과: {}", exists);
+        return exists;
+    }
+
+    // 동행자 삭제
+    @Override
+    public void deleteCompanionFromPlan(MemberPlanDTO memberPlanDTO) {
+        planRepository.deleteCompanion(memberPlanDTO);
+    }
 }
