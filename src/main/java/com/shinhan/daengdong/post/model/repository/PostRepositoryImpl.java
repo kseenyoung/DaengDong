@@ -28,6 +28,12 @@ public class PostRepositoryImpl implements PostRepositoryInterface {
         log.info(result.toString());
         return result;
     }
+    @Override
+    public PostVO findPostById(long postId) {
+        PostVO result = sqlSession.selectOne(namespace + "findPostById", postId);
+        log.info(result.toString());
+        return result;
+    }
     public List<LikeVO> getMyLike(String memberEmail) {
         List<LikeVO> result = sqlSession.selectList(namespace + "getMyLikes", memberEmail);
         log.info(result.toString());

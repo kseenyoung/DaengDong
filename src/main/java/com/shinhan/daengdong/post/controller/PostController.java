@@ -36,6 +36,26 @@ public class PostController {
     @Autowired
     private PlanServiceInterface planService;
 
+    @GetMapping("/{postId}")
+    public String viewPostDetail(@PathVariable("postId") Long postId, Model model, HttpServletRequest request) {
+        // 세션 확인
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("member") == null) {
+            log.info("세션이 존재하지 않음 또는 로그인이 필요합니다.");
+            return "redirect:/login"; // 로그인 페이지로 리다이렉트
+        }
+
+        // 게시글 상세 정보 조회
+        PostVO post = postService.getPostDetail(postId);
+        if (post == null) {
+            return "error/404"; // 게시글이 없는 경우 에러 페이지
+        }
+
+        model.addAttribute("post", post);
+        return "post/postDetail"; // postDetail.html 또는 postDetail.jsp
+    }
+
+
     // 게시글 메인 페이지 조회
     @GetMapping("/posts")
     public String viewMainPage(@RequestParam(value="category", required = false) String category, Model model,HttpServletRequest request) {
@@ -62,7 +82,6 @@ public class PostController {
         }
 
         List<LikeVO> myLike = postService.getMyLike(member.getMember_email());
-//        List<LikeVO> likeList = postService.getMyLike();
         List<PlanDTO> userPlans = planService.getPlansByEmail(member.getMember_email());
 
         model.addAttribute("plans", userPlans);
@@ -148,7 +167,6 @@ public class PostController {
             log.error("파일 저장 실패: " + e.getMessage());
             throw new IOException("파일 저장에 실패했습니다.");
         }
-
         return uniqueFileName; // DB에는 파일 이름만 저장
     }
 

@@ -53,6 +53,11 @@ public class PostServiceImpl implements PostServiceInterface {
             postRepository.addLike(postId, memberEmail);
         }
     }
+
+
+    public PostVO getPostDetail(Long postId) {
+        return postRepository.findPostById(postId);
+    }
 }
 
 

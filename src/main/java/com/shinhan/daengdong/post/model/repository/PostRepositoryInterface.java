@@ -9,7 +9,7 @@ import java.util.List;
 public interface PostRepositoryInterface {
 
     List<PostVO> getTopPosts();  // 상위 게시글 조회
-
+    PostVO findPostById(long postId);
     List<LikeVO> getMyLike(String memberEmail);
     List<PostVO> findByCategoryOrderByDateDesc(String category);
     void deletePost(int postId);

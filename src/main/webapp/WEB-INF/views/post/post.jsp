@@ -20,7 +20,7 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
 
     <title>Document</title>
     <link
@@ -559,5 +559,29 @@
         altText.textContent = img.alt;
     }
     });
+
+       const urlParams = new URLSearchParams(window.location.search);
+              const category = urlParams.get('category'); // ?category=여행중 부분에서 '여행중' 값을 가져옴
+
+              // 모든 버튼 요소를 선택
+              const buttons = document.querySelectorAll('#categoryList button');
+
+              // 카테고리 값이 없다면 '인기글' 버튼에 'select_category' 클래스 추가
+              if (!category) {
+                  // 기본값으로 '인기글' 버튼에 클래스 추가
+                  const defaultButton = Array.from(buttons).find(button => button.textContent.trim() === '인기글');
+                  if (defaultButton) {
+                      defaultButton.classList.add('select_category');
+                  }
+              } else {
+                  // 카테고리 값과 일치하는 버튼에 'select_category' 클래스 추가
+                  buttons.forEach(button => {
+                      if (button.textContent.trim() === category) {
+                          button.classList.add('select_category');
+                      } else {
+                          button.classList.remove('select_category');
+                      }
+                  });
+              }
   </script>
 </html>

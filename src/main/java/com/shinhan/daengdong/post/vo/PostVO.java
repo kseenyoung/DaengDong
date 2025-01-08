@@ -19,22 +19,27 @@ public class PostVO {
     private String memberProfilePhoto;
     private Long likeCount;  // 게시글에 대한 좋아요 수
     private String imageUrl;
+    private List<String> imageUrls;
 
+    public PostVO(Long postId, String postTitle, String category, String postContent, String memberNickName, String memberProfilePhoto, Long likeCount, String imageUrl) {
+        this.postId = postId;
+        this.postTitle = postTitle;
+        this.category = category;
+        this.postContent = postContent;
+        this.memberNickName = memberNickName;
+        this.memberProfilePhoto = memberProfilePhoto;
+        this.likeCount = likeCount;
+        this.imageUrl = imageUrl;
+    }
 
-
-//    public PostVO(Long postId, String postTitle, String postContent, String category, String memberNickName, Long likeCount, List<String> imageUrl) {
-//        this.postId = postId;
-//        this.postTitle = postTitle;
-//        this.postContent = postContent;
-//        this.category = category;
-//        this.memberNickName = memberNickName;
-//        this.likeCount = likeCount;
-//        // 이미지 URL을 단일 값으로 할당하거나, 목록으로 다룰 수 있도록 로직을 추가
-//        this.imageUrls = imageUrls;
-////        this.imageUrls = new ArrayList<>();
-////        if (imageUrl != null) {
-////            this.imageUrls.addAll(imageUrl);  // imageUrl에 있는 모든 값을 imageUrls에 추가
-////        }
-//
-//    }
+    public PostVO(Long postId, String postTitle, String category, String postContent, String memberNickName, String memberProfilePhoto, Long likeCount, List<String> imageUrls) {
+        this.postId = postId;
+        this.postTitle = postTitle;
+        this.category = category;
+        this.postContent = postContent;
+        this.memberNickName = memberNickName;
+        this.memberProfilePhoto = memberProfilePhoto;
+        this.likeCount = likeCount;
+        this.imageUrls = imageUrls;
+    }
 }
