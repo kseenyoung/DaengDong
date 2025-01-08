@@ -1077,7 +1077,6 @@ function getListItem(index, places) {
     return el;
 }
 
-
 function addMarker(position, idx, title, place) {
     var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png',
         imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
