@@ -3,11 +3,13 @@ package com.shinhan.daengdong.chat.model;
 import com.shinhan.daengdong.member.dto.MemberDTO;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
 
+@Slf4j
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatParticipant {
@@ -18,18 +20,24 @@ public class ChatParticipant {
         return member.getMember_nickname();
     }
 
+    public String getName() {
+        return member.getMember_name();
+    }
+
     public void sendMessage(String message) throws IOException {
-        session.sendMessage(new TextMessage(message));
+        if (session.isOpen()) {
+            session.sendMessage(new TextMessage(message));
+        } else {
+            log.info("세션이 닫혀 있어 메세지를 보낼 수 없습니다. : " + session.getId());
+        }
+
     }
 
     public String receiveMessage(int planId, String message) throws IOException {
         StringBuilder sb = new StringBuilder();
-        String receiveMessage = sb.append("[com.shinhan.daengdong.chat.model.ChatRoom ").append(planId).append("] ")
-                .append(member.getMember_nickname())
-                .append(" received>> ")
-                .append(message)
-                .append("\n")
-                .toString();
+        log.info("[com.shinhan.daengdong.chat.model.ChatRoom " + planId + "] "
+                + member.getMember_nickname() + " received>> " + message);
+        String receiveMessage = sb.append(message).toString();
         return receiveMessage;
     }
 }

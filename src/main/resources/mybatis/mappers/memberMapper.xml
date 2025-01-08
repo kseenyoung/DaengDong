@@ -8,7 +8,7 @@
     <select id="login" parameterType="String" resultType="memberDTO">
         select *
         from members
-        where member_email= #{memberEmail}
+        where member_email= #{member_email}
     </select>
 
     <!--회원가입-->
@@ -21,14 +21,14 @@
     <select id="findMemberByEmail" parameterType="String" resultType="memberDTO">
        select *
        from member
-       where member_email = #{email}
+       where member_email = #{member_email}
     </select>
 
-    <!--&lt;!&ndash;반려동물 회원가입&ndash;&gt;-->
-    <!--<insert id="insertPet" parameterType="petDTO">-->
-    <!--    insert into pets(member_email, pet_name, pet_gender, pet_birthday, pet_blood_type, pet_profile_photo, pet_species)-->
-    <!--    values (#{memberEmail},#{petName},#{petGender},#{petBirthday},#{petBloodType},#{petProfilePhoto},#{petSpecies})-->
-    <!--</insert>-->
+    <!--반려동물 회원가입-->
+<!--    <insert id="insertPet" parameterType="petDTO">-->
+<!--        insert into pets(member_email, pet_name, pet_gender, pet_birthday, pet_blood_type, pet_profile_photo, pet_species)-->
+<!--        values (#{member_email},#{pet_name},#{pet_gender},#{pet_birthday},#{pet_blood_type},#{pet_profile_photo},#{pet_species})-->
+<!--    </insert>-->
 
     <!--&lt;!&ndash;member18 반려동물 프로필 변경!!&ndash;&gt;-->
     <!--<update id="updatepetProfile" parameterType="String">-->
@@ -58,19 +58,25 @@
     <!--    where sender_email = #{sender_email}-->
     <!--</delete>-->
 
-    <!--&lt;!&ndash;member8 닉네임 변경하기 &ndash;&gt;-->
-    <!--<update id="modifyNickname" parameterType="memberDTO">-->
-    <!--    update members-->
-    <!--    set member_nickname = #{memberNickname}-->
-    <!--    where member_email = #{memberEmail}-->
-    <!--</update>-->
+    <!--member8 닉네임 변경하기 -->
+<!--    <update id="modifyNickname" parameterType="memberDTO">-->
+<!--        update members-->
+<!--        set member_nickname = #{member_nickname}-->
+<!--        where member_email = #{member_email}-->
+<!--    </update>-->
 
-    <!--&lt;!&ndash;member11 여행 기록 보기&ndash;&gt;-->
-    <!--<select id="viewTravelList" parameterType="String" resultType="travelListVO">-->
-    <!--    select plans.plan_id, plans.plan_name,plans.start_date ,plans.end_date, plans.plan_state, planPlaces.kakao_place_id-->
-    <!--    from plans join planPlaces using(plan_id)-->
-    <!--    where plans.member_email = #{memberEmail}-->
-    <!--</select>-->
+    <!--member11 여행 기록 보기-->
+<!--    <select id="viewTravelList" parameterType="String" resultType="travelListVO">-->
+<!--        select plans.plan_id,-->
+<!--               plans.plan_name,-->
+<!--               plans.start_date,-->
+<!--               plans.end_date,-->
+<!--               plans.plan_state,-->
+<!--               planPlaces.kakao_place_id-->
+<!--        from plans-->
+<!--                 join planPlaces using (plan_id)-->
+<!--        where plans.member_email = #{member_email}-->
+<!--    </select>-->
 
     <!--&lt;!&ndash;여행 기록 별 같이 간 여행자 보기&ndash;&gt;-->
     <!--<select id="personWithTravelList" parameterType="int" resultType="personWithTravelVO">-->

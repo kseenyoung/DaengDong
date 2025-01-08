@@ -23,7 +23,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My page</title>
-    <script src="${path}/js/mypage.js"></script>
+    <script src="${path}/js/member/mypage.js"></script>
 </head>
 <body>
 <%@ include file="header.jsp" %>

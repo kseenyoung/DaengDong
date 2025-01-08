@@ -8,27 +8,25 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="path" value="${pageContext.servletContext.contextPath}"/>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const path = "${pageContext.servletContext.contextPath}";
+  const memberEmail = "${sessionScope.member.member_email}";
+  const memberName = "${sessionScope.member.member_name}";
+  const memberNickname = "${sessionScope.member.member_nickname}";
+  const profilePhoto = "${sessionScope.member.member_profile_photo}";
+</script>
 <link rel="stylesheet" href="${path}/css/chat/chat.css"/>
-<script src="${path}/js/Chat.js"></script>
+<script src="${path}/js/chat.js"></script>
 <div class="chat-container">
     <!-- 메시지 표시 영역 -->
     <div class="chat-messages" id="chatMessages">
-        <!-- 예제 메시지: 내가 보낸 메시지 (오른쪽 정렬) -->
-        <div class="message sent">
-            <div class="message-content">
-                <p class="message-detail">얘들아 여기 어때?</p>
-            </div>
-        </div>
-        <span class="timestamp" hidden="hidden">10:30 AM</span>
 
-        <!-- 예제 메시지: 받은 메시지 (왼쪽 정렬) -->
-        <div class="message received">
-            <img src="${path}/img/kseenyoungProfile.jpeg" alt="User">
-            <div class="message-content">
-                <p class="message-detail">와 우리 댕댕이도 데려가고싶다!!</p>
-            </div>
-        </div>
-        <span class="timestamp" hidden="hidden">10:31 AM</span>
     </div>
 
     <!-- 입력란 -->

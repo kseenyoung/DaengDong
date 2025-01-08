@@ -30,7 +30,7 @@
         <label class="form-check-label" for="planState">공개</label>
       </div>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">플랜 생성</button>
   </form>
 </div>
 

@@ -2,6 +2,8 @@ package com.shinhan.daengdong.member.controller;
 
 import com.shinhan.daengdong.member.dto.*;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
+import com.shinhan.daengdong.plan.dto.PlanDTO;
+import com.shinhan.daengdong.plan.model.service.PlanServiceInterface;
 import com.shinhan.daengdong.post.dto.PostDTO;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -24,6 +29,9 @@ public class MemberController {
 
     @Autowired
     MemberServiceInterface memberService;
+
+    @Autowired
+    PlanServiceInterface planService;
 
     @Value("${kakao.login.rest_api_key}")
     String rest_api_key;
@@ -39,13 +47,14 @@ public class MemberController {
         return "member/login";
     }
 
-    // 회원가입 페이지
+    // 회원가입 보기
     @GetMapping("signUp.do")
     public String signUp(){
         log.info("회원가입 페이지 요청");
         return "member/signUp";
     }
 
+    // 회원가입 실행
     @PostMapping("signUp.do")
     @ResponseBody
     public SignUpDTO signUp(@RequestBody SignUpDTO signUpDTO, HttpServletRequest request){
@@ -78,12 +87,7 @@ public class MemberController {
         return signUpDTO;
     }
 
-    @GetMapping("reviews.do")
-    public String viewReview () {
-        return "member/reviews";
-    }
-
-    //마이페이지 전환
+    //마이페이지 보기
     @GetMapping("viewMypage.do")
     public String viewMypage() {
         return "member/mypage";
@@ -107,32 +111,121 @@ public class MemberController {
         //log.info("modifyNickname: {}  " + memberDTO);
     }
 
+    //'내 여행' > 세미 카테고리
+    @GetMapping("getSemiTripCategory.do")
+    public String getSemiTripCategory() {
+        return "member/semiCategory/trip";
+    }
+
+    //'내 포토카드' > 세미 카테고리
+    @GetMapping("getSemiPhotoCardCategory.do")
+    public String getSemiPhotoCardCategory() {
+        return "member/semiCategory/photoCard";
+    }
+
     //'내 저장' > 세미 카테고리
     @GetMapping("getSemiSaveCategory.do")
     public String getSemiSaveCategory() {
-        return "member/semiSaveCategory";
+        return "member/semiCategory/save";
     }
 
-    //'내 저장' > 세미 카테고리 > 즐겨찾기(장소) 컨텐츠
+    //'내 여행' > 여행계획중
+    @GetMapping("getMyPlanning.do")
+    public String getMyPlanningList(HttpSession session, Model model) {
+//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = MemberDTO.builder().member_email("user1@example.com").build();
+        List<PlanDTO> myPlans = planService.getPlansByEmail(memberDTO.getMember_email());
+        List<PlanDTO> planningPlan = new ArrayList<>();
+
+        Date currentDate = new Date();
+
+        for (PlanDTO eachPlan : myPlans) {
+            if (eachPlan.getStartDate() != null && eachPlan.getStartDate().after(currentDate) ) {
+                planningPlan.add(eachPlan);
+            }
+        }
+
+        model.addAttribute("planningPlan", planningPlan);
+        return "member/semiCategory/trip/planningFragment";
+    }
+
+    //'내 여행' > 여행중
+    @GetMapping("getMyTraveling.do")
+    public String getMyTravelingList(HttpSession session, Model model) {
+//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = MemberDTO.builder().member_email("user1@example.com").build();
+        List<PlanDTO> myPlans = planService.getPlansByEmail(memberDTO.getMember_email());
+        List<PlanDTO> travelingPlan = new ArrayList<>();
+
+        Date currentDate = new Date();
+
+        for (PlanDTO eachPlan : myPlans) {
+            if (nowTraveling(eachPlan.getStartDate(), eachPlan.getEndDate(), currentDate)) {
+                travelingPlan.add(eachPlan);
+            }
+        }
+
+        model.addAttribute("travelingPlan", travelingPlan);
+        return "member/semiCategory/trip/travelingFragment";
+    }
+
+    //현재 여행 중인지 판별 (서버날짜와 여행시작,종료 날짜 비교)
+    private static boolean nowTraveling(Date startDate, Date endDate, Date currentDate) {
+        if (startDate == null || endDate == null) {
+            return false;
+        }
+
+        // 날짜 부분만 비교
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String current = sdf.format(currentDate);
+        String start = sdf.format(startDate);
+        String end = sdf.format(endDate);
+
+        return current.equals(start) || current.equals(end) ||
+                (current.compareTo(start) > 0 && current.compareTo(end) < 0);
+    }
+
+    //'내 여행' > 여행완료
+    @GetMapping("getMyTravelComplete.do")
+    public String getMyTravelComplete(HttpSession session, Model model) {
+        //        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = MemberDTO.builder().member_email("user1@example.com").build();
+        List<PlanDTO> myPlans = planService.getPlansByEmail(memberDTO.getMember_email());
+        List<PlanDTO> completePlan = new ArrayList<>();
+
+        Date currentDate = new Date();
+
+        for (PlanDTO eachPlan : myPlans) {
+            if (eachPlan.getEndDate() != null && currentDate.after(eachPlan.getEndDate()) ) {
+                completePlan.add(eachPlan);
+            }
+        }
+
+        model.addAttribute("completePlan", completePlan);
+        return "member/semiCategory/trip/completeTravelFragment";
+    }
+
+    //'내 저장' > 즐겨찾기(장소) 컨텐츠
     @GetMapping("getFavoritePlace.do")
     public String getFavoritePlaceList(HttpSession session, Model model) {
 //        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
         MemberDTO memberDTO = MemberDTO.builder().member_email("user1@example.com").build();
         List<FavoritePlaceDTO> favoritePlaceList = memberService.getFavoritePlaceList(memberDTO.getMember_email());
         model.addAttribute("favoritePlaceList", favoritePlaceList);
-        return "member/favoritePlaceFragment";
+        return "member/semiCategory/save/favoritePlaceFragment";
     }
 
-    //'내 저장' > 세미 카테고리 > 내가 쓴 리뷰(장소) 컨텐츠
+    //'내 저장' > 내가 쓴 리뷰(장소) 컨텐츠
     @GetMapping("getReviewFragment.do")
     public String getReviewList(HttpSession session, Model model) {
 //        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
         MemberDTO memberDTO = MemberDTO.builder().member_email("user1@example.com").build();
         List<ReviewDTO> reviewList = memberService.getReviewList(memberDTO.getMember_email());
         model.addAttribute("reviewList", reviewList);
-        return "member/reviewFragment";
+        return "member/semiCategory/save/reviewFragment";
     }
 
+    //'내 저장' > 내가 쓴 리뷰(장소) 모달
     @GetMapping("getReviewModal.do")
     public String getReviewModal(@RequestParam int reviewId,
                                  @RequestParam String reviewContent,
@@ -145,20 +238,20 @@ public class MemberController {
         model.addAttribute("reviewRating", reviewRating);
         model.addAttribute("kakaoPlaceName", kakaoPlaceName);
         model.addAttribute("imageUrl", imageUrl);
-        return "member/reviewUpdateModal";
+        return "member/semiCategory/save/reviewUpdateModal";
     }
 
-    //'내 저장' > 세미 카테고리 > 내가 좋아요 한(게시글) 컨텐츠
+    //'내 저장' > 내가 좋아요 한(게시글) 컨텐츠
     @GetMapping("getLikePostsFragment.do")
     public String getLikePosts(HttpSession session, Model model) {
 //        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
         MemberDTO memberDTO = MemberDTO.builder().member_email("user1@example.com").build();
         List<LikePostsDTO> likePostsList = memberService.getLikePosts(memberDTO.getMember_email());
         model.addAttribute("likePostsList", likePostsList);
-        return "member/likePostsFragment";
+        return "member/semiCategory/save/likePostsFragment";
     }
 
-    //'내 저장' > 세미 카테고리 > 내 게시글 컨텐츠
+    //'내 저장' > 내 게시글 컨텐츠
     @GetMapping("getMyPosts.do")
     public String getMyPosts(HttpSession session, Model model) {
 //        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
@@ -166,7 +259,7 @@ public class MemberController {
         List<PostDTO> postsList = memberService.getMyPosts(memberDTO.getMember_email());
         log.info("postsList: " + postsList);
         model.addAttribute("postsList", postsList);
-        return "member/myPostsFragment";
+        return "member/semiCategory/save/myPostsFragment";
     }
 
     //팔로잉 보기

@@ -12,43 +12,87 @@ $(document).ready(function () {
   });
 
   function initializeEventHandlers() {
-    $(document).off("click", "#myTripFragment")
+    $(document)
+      //semiCategory
+      .off("click", "#myTripFragment")
       .off("click", "#mySaveFragment")
-      .off("click", "#semiCategories .action-item")
+      .off("click", "#myPhotoCardFragment")
+      .off("click", ".semiCategories .action-item")
+
+      //follow
       .off("click", "#following")
       .off("click", "#follower")
       .off("click", ".delete-following")
       .off("click", ".insert-follower")
+
+      //trip
+      .off("click", ".delete-plan")
+
+      //save_review
       .off("click", ".delete-review")
       .off("click", ".update-review")
       .off("click", "#confirm-update")
+      //save_likePost
       .off("click", ".delete-likePosts")
-      .off("click", "");
+      //save_post
+      .off("click", ".delete-post-btn")
+      //save_favorite_place
+      .off("click", ".delete-favoritePlace");
 
-    $(document).on("click", "#myTripFragment", moveToMyTrip);
+    //semiCategory
+    $(document).on("click", "#myTripFragment", getSemiTripCategory);
+    $(document).on("click", "#myPhotoCardFragment", getSemiPhotoCardCategory);
     $(document).on("click", "#mySaveFragment", getSemiSaveCategory);
-    $(document).on("click", "#semiCategories .action-item", injectAction);
+    $(document).on("click", ".semiCategories .action-item", injectAction);
+
+    //follow
     $(document).on("click", "#following", viewFollowingModal);
     $(document).on("click", "#follower", viewFollowerModal);
     $(document).on("click", ".delete-following", deleteFollowing);
     $(document).on("click", ".insert-follower", addFollowing);
+
+    //trip
+    $(document).on("click", ".delete-plan", deletePlan);
+
+    //save_review
     $(document).on("click", ".delete-review", deleteReview);
     $(document).on("click", ".update-review", updateReview);
     $(document).on("click", "#confirm-update", confirmUpdate);
+    //save_likePost
     $(document).on("click", ".delete-likePosts", deleteLikePosts)
+    //save_post
     $(document).on("click", ".delete-post-btn", deletePost)
+    //save_favorite_place
     $(document).on("click", ".delete-favoritePlace", deleteFavoritePlace)
 
   }
 
-  function moveToMyTrip() {
+  function getSemiTripCategory() {
     $.ajax({
-      url: `${path}/auth/getSemiSaveCategory.do`,
+      url: `${path}/auth/getSemiTripCategory.do`,
       type: "get",
       success: function (response) {
-        $("#mySaveFragment").removeClass("active");
-        $("#myPhotoCardFragment").removeClass("active");
         $("#myTripFragment").addClass("active"); // '내 여행' 활성화
+        $("#myPhotoCardFragment").removeClass("active");
+        $("#mySaveFragment").removeClass("active");
+        $("#announcement-box").empty();
+        $("#semiCategories").html(response);
+      },
+      error: function (err) {
+        console.log(err);
+      }
+    });
+  }
+
+  function getSemiPhotoCardCategory() {
+    $.ajax({
+      url: `${path}/auth/getSemiPhotoCardCategory.do`,
+      type: "get",
+      success: function (response) {
+        $("#myTripFragment").removeClass("active");
+        $("#myPhotoCardFragment").addClass("active"); // '포토카드' 활성화
+        $("#mySaveFragment").removeClass("active");
+        $("#announcement-box").empty();
         $("#semiCategories").html(response);
       },
       error: function (err) {
@@ -64,7 +108,8 @@ $(document).ready(function () {
       success: function (response) {
         $("#myTripFragment").removeClass("active");
         $("#myPhotoCardFragment").removeClass("active");
-        $("#mySaveFragment").addClass("active"); // '내 여행' 활성화
+        $("#mySaveFragment").addClass("active"); // '내 저장' 활성화
+        $("#announcement-box").empty();
         $("#semiCategories").html(response);
       },
       error: function (err) {
@@ -77,6 +122,29 @@ $(document).ready(function () {
     let eventId = $(eventName.target).attr("id");
 
     switch (eventId) {
+      //trip
+      case "my-planning":
+        getMyPlanning();
+        break;
+
+      case "my-traveling":
+        getMyTraveling();
+        break;
+
+      case "my-travel-complete":
+        getMyTravelComplete();
+        break;
+
+      //photo_card
+      case "locked-card":
+        getMyLockedCard();
+        break;
+
+      case "unlocked-card":
+        getMyUnLockedCard();
+        break;
+
+      //save
       case "myFavoritePlace":
         getFavoritePlace();
         break;
@@ -90,6 +158,57 @@ $(document).ready(function () {
         getPosts();
         break;
     }
+  }
+
+  function getMyPlanning() {
+    $.ajax({
+      url: `${path}/auth/getMyPlanning.do`,
+      type: "get",
+      success: function (response) {
+        $("#my-planning").css("color", "#0AB75B")
+        $("#my-traveling").css("color", "#8a8a8a")
+        $("#my-travel-complete").css("color", "#8a8a8a")
+        $("#announcement-box").html(response);
+      },
+      error: function (err) {
+        console.log(err);
+        $(this).closest('.announcement').remove();
+      }
+    });
+  }
+
+  function getMyTraveling() {
+    $.ajax({
+      url: `${path}/auth/getMyTraveling.do`,
+      type: "get",
+      success: function (response) {
+        $("#my-planning").css("color", "#8a8a8a")
+        $("#my-traveling").css("color", "#0AB75B")
+        $("#my-travel-complete").css("color", "#8a8a8a")
+        $("#announcement-box").html(response);
+      },
+      error: function (err) {
+        console.log(err);
+        $(this).closest('.announcement').remove();
+      }
+    });
+  }
+
+  function getMyTravelComplete() {
+    $.ajax({
+      url: `${path}/auth/getMyTravelComplete.do`,
+      type: "get",
+      success: function (response) {
+        $("#my-planning").css("color", "#8a8a8a")
+        $("#my-traveling").css("color", "#8a8a8a")
+        $("#my-travel-complete").css("color", "#0AB75B")
+        $("#announcement-box").html(response);
+      },
+      error: function (err) {
+        console.log(err);
+        $(this).closest('.announcement').remove();
+      }
+    });
   }
 
   function getFavoritePlace() {
@@ -168,6 +287,24 @@ $(document).ready(function () {
     });
   }
 
+  function deletePlan() {
+    let plan_id = $(this).data("plan-id");
+    let element = $(this).closest('.announcement'); // 삭제할 요소를 미리 저장
+
+    $.ajax({
+      url: `${path}/MyPlan/${plan_id}`,
+      type: 'get',
+      contentType: 'application/json',
+      success: function () {
+        // 페이지 새로고침 대신 해당 요소만 제거
+        element.remove();
+      },
+      error: function (err) {
+        console.log(err);
+      }
+    });
+  }
+
   function deleteFavoritePlace() {
     let star_id = $(this).data("star-id");
     let element = $(this).closest('.announcement'); // 삭제할 요소를 미리 저장
@@ -239,6 +376,12 @@ $(document).ready(function () {
         if (modalElement) {
           const modalInstance = new bootstrap.Modal(modalElement); // 모달 초기화
           modalInstance.show(); // 모달 표시
+
+          $(modalElement).on('hidden.bs.modal', function () {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $(this).remove();
+          });
         } else {
           console.error("Modal element not found!");
         }
@@ -323,6 +466,12 @@ $(document).ready(function () {
         if (modalElement) {
           const modalInstance = new bootstrap.Modal(modalElement); // 모달 초기화
           modalInstance.show(); // 모달 표시
+
+          $(modalElement).on('hidden.bs.modal', function () {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $(this).remove();
+          });
         } else {
           console.error("Modal element not found!");
         }
@@ -340,6 +489,12 @@ $(document).ready(function () {
         if (modalElement) {
           const modalInstance = new bootstrap.Modal(modalElement); // 모달 초기화
           modalInstance.show(); // 모달 표시
+
+          $(modalElement).on('hidden.bs.modal', function () {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+            $(this).remove();
+          });
         } else {
           console.error("Modal element not found!");
         }
