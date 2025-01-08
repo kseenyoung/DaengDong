@@ -2,6 +2,7 @@ package com.shinhan.daengdong.member.controller;
 
 import com.shinhan.daengdong.member.dto.FollowDTO;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
+import com.shinhan.daengdong.plan.model.service.PlanServiceInterface;
 import com.shinhan.daengdong.post.model.service.PostServiceInterface;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -59,5 +60,10 @@ public class MemberRestController {
                 .to_email(toEmail)
                 .build();
         memberService.addFollowing(followDTO);
+    }
+
+    @GetMapping("/MyPlan/{plan_id}")
+    public void deletePlan(@PathVariable("plan_id") long planId) {
+        memberService.deletePlan(planId);
     }
 }

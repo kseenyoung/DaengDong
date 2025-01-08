@@ -41,4 +41,6 @@ public interface MemberServiceInterface {
     void addFollowing(FollowDTO followDTO);
 
     List<PostDTO> getMyPosts(String memberEmail);
+
+    void deletePlan(long planId);
 }

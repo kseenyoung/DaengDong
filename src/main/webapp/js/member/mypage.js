@@ -25,6 +25,9 @@ $(document).ready(function () {
       .off("click", ".delete-following")
       .off("click", ".insert-follower")
 
+      //trip
+      .off("click", ".delete-plan")
+
       //save_review
       .off("click", ".delete-review")
       .off("click", ".update-review")
@@ -48,8 +51,8 @@ $(document).ready(function () {
     $(document).on("click", ".delete-following", deleteFollowing);
     $(document).on("click", ".insert-follower", addFollowing);
 
-    //trip_planning
-
+    //trip
+    $(document).on("click", ".delete-plan", deletePlan);
 
     //save_review
     $(document).on("click", ".delete-review", deleteReview);
@@ -280,6 +283,24 @@ $(document).ready(function () {
       error: function (err) {
         console.log(err);
         $(this).closest('.announcement').remove();
+      }
+    });
+  }
+
+  function deletePlan() {
+    let plan_id = $(this).data("plan-id");
+    let element = $(this).closest('.announcement'); // 삭제할 요소를 미리 저장
+
+    $.ajax({
+      url: `${path}/MyPlan/${plan_id}`,
+      type: 'get',
+      contentType: 'application/json',
+      success: function () {
+        // 페이지 새로고침 대신 해당 요소만 제거
+        element.remove();
+      },
+      error: function (err) {
+        console.log(err);
       }
     });
   }

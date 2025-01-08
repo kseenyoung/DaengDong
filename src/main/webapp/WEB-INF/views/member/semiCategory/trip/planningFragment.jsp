@@ -8,8 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="path" value="${pageContext.servletContext.contextPath}"/>
-<%--todo: css수정할 것--%>
-<link rel="stylesheet" href="${path}/css/member/reviews.css">
+<link rel="stylesheet" href="${path}/css/member/myPlan.css">
+<%--todo: 전체를 버튼으로 반들어 누르면  해당 플랜으로 넘어가게 수정할 것--%>
 <c:forEach var="planningPlan" items="${planningPlan}">
     <div class="announcement">
         <img id="placeImg" src="" alt="placeImg">
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="button-container">
-            <button class="delete-review" data-review-id="${planningPlan.planId}">삭제</button>
+            <button class="delete-plan" data-plan-id="${planningPlan.planId}">삭제</button>
         </div>
     </div>
 </c:forEach>

@@ -43,4 +43,7 @@ public interface MemberRepositoryInterface {
     void addFollowing(FollowDTO followDTO);
 
     List<PostDTO> getMyPosts(String memberEmail);
+
+    void deletePlan(long planId);
+
 }
