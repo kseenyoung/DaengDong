@@ -92,7 +92,11 @@ public class MemberController {
 
     //마이페이지 보기
     @GetMapping("viewMypage.do")
-    public String viewMypage() {
+    public String viewMypage(HttpSession session) {
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
+        if (memberDTO == null) {
+            return "redirect:/auth/login.do";
+        }
         return "member/mypage";
     }
 
@@ -103,10 +107,13 @@ public class MemberController {
 
         MemberDTO selectMember = memberService.selectMember(memberDTO.getMember_email());
         List<PetDTO> petList = memberService.selectPet(memberDTO.getMember_email());
-
+        int countFollowing = memberService.getFollowingList(memberDTO.getMember_email()).size();
+        int countFollower = memberService.getFollowerList(memberDTO.getMember_email()).size();
 
         model.addAttribute("selectMember", selectMember);
         model.addAttribute("petList", petList);
+        model.addAttribute("countFollowing", countFollowing);
+        model.addAttribute("countFollower", countFollower);
         return "member/profileFragment";
     }
 
@@ -273,8 +280,7 @@ public class MemberController {
     //팔로잉 보기
     @GetMapping("viewFollowingModal.do")
     public String viewFollowingModal(HttpSession session, Model model) {
-//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-        MemberDTO memberDTO = MemberDTO.builder().member_email("user1@example.com").build();
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
         List<RelationshipsDTO> followingList = memberService.getFollowingList(memberDTO.getMember_email());
         model.addAttribute("followingList", followingList);
         return "member/followingModal";
@@ -283,8 +289,7 @@ public class MemberController {
     //팔로워 보기
     @GetMapping("viewFollowerModal.do")
     public String viewFollowerModal(HttpSession session, Model model) {
-//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-        MemberDTO memberDTO = MemberDTO.builder().member_email("user1@example.com").build();
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
         List<RelationshipsDTO> followerList = memberService.getFollowerList(memberDTO.getMember_email());
         model.addAttribute("followerList", followerList);
         return "member/followerModal";

@@ -37,6 +37,8 @@ body {
 .profile-image {
   width: 200px;
   height: 200px;
+  object-fit: cover; /* 비율을 유지하며 컨테이너를 채우기 */
+  object-position: center; /* 중앙을 기준으로 정렬 */
   border-radius: 50%;
 }
 
@@ -96,6 +98,8 @@ body {
   height: 80px;
   padding: 5px;
   margin: 5px;
+  object-fit: cover; /* 비율을 유지하며 컨테이너를 채우기 */
+  object-position: center; /* 중앙을 기준으로 정렬 */
   border-radius: 50%;
 }
 
@@ -128,11 +132,13 @@ body {
 
 .profile-pet {
   position: relative;
+  padding-bottom: 100px;
 }
 
 .popover {
   display: none; /* 기본적으로 숨김 */
   position: absolute;
+  bottom: 45px;
   left: 50%;
   transform: translateX(-50%);
   background-color: #fff;

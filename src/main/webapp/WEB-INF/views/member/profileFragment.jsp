@@ -72,7 +72,7 @@
 
 <%--팔로우 팔로워 기능--%>
 <div class="profile-follow-info">
-    <span id="follower">34 followers</span> · <span id="following">49 following</span>
+    <span id="follower">${countFollower} followers</span> · <span id="following">${countFollowing} following</span>
 </div>
 
 <%--저장될 반려동물 이미지 정보등--%>
