@@ -190,6 +190,7 @@ public class PlanController {
         // 쉼표로 구분된 동행자 이메일 문자열을 리스트로 변환
         List<String> companionEmailList = Arrays.asList(companionEmail.split(","));
 
+
         // 동행자 추가 처리
         for (String email : companionEmailList) {
             String trimmedEmail = email.trim();
