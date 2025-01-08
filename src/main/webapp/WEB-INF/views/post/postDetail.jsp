@@ -68,7 +68,7 @@
           <section id="post_detail">
             <div class="post_top">
               <div class="post_top_left">
-                <img src="${path}/img/${post.memberProfilePhoto}" alt="" />
+                <img src="${post.memberProfilePhoto}" alt="" />
                 <div>
                   <p>${post.memberNickName}</p>
                   <p>${post.postTitle}</p>
@@ -79,6 +79,9 @@
                 <img src="${path}/img/more.png" alt="" />
               </div>
             </div>
+             <div class="PostCategory">
+              <div>${post.category}</div>
+            </div>
             <div class="single-item">
                <c:forEach var="postURL" items="${post.imageUrls}">
                   <img class="like-img" src="${path}/upload/${postURL}" data-post-id="${post.postId}" alt="like">
@@ -88,7 +91,7 @@
               <div class="post_bottom_top">
                 <div>
                   <img src="${path}/img/Like.png" alt="하트" width="25" />
-                  <span>20</span>
+                  <span>${post.likeCount}</span>
                 </div>
                 <img id="commentToggle" src="${path}/img/comment.png" alt="댓글" width="30" />
               </div>

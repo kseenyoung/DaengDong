@@ -155,6 +155,8 @@
 .post .post_bottom {
     font-size: var(--font-size0-7);
     margin: 10px 0;
+    word-wrap: break-word; /* 긴 단어가 넘을 때 줄 바꿈 */
+        overflow-wrap: break-word; /* 긴 단어가 넘을 때 줄 바꿈 (새로운 표준) */
 }
 #post_write_modal {
     position: fixed;

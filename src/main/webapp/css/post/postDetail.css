@@ -4,7 +4,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        font-size:20px;
+        font-size:15px;
       }
       .single-item {
          width: 700px;
@@ -54,10 +54,11 @@
       .post_top .post_top_left {
         display: flex;
         align-items:center;
+        height:40px;
       }
       .post_top .post_top_left img {
-        width: 45px;
-        height: 45px;
+        width: 40px;
+        height: 40px;
         border-radius: 50px;
         margin-right: 10px;
       }
@@ -66,14 +67,16 @@
       }
       .post_top .post_top_right {
         display: flex;
+        align-items: center;
       }
       .post_top .post_top_right button {
         background: #000;
         color: #fff;
         border-radius: 5px;
         font-weight: 600;
-        padding: 0 5px;
+        padding: 5px 10px;
         margin-right: 3px;
+        font-size: 15px;
       }
       .post_top .post_top_right img {
         width: 30px;
@@ -137,3 +140,28 @@
         word-break: break-all;
         color: #000;
       }
+
+    .PostCategory {
+          width: 700px;
+   position: absolute;
+        top: 146px;
+        z-index: 10;
+
+    }
+    .PostCategory div {
+      width: 100px;
+      height: 30px;
+      color:#fff;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0 0 10px 0;
+    }
+      .post_top .post_top_left div {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+                    height:40px;
+                    padding: 3px 0;
+          }
