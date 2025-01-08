@@ -103,10 +103,18 @@ public class PostController {
             @RequestParam("content") String content, // 'content' 필드 받기
 
             HttpServletRequest request) {
-        log.info(title);
-        log.info(category);
-        log.info(content);
-        log.info(files.toString());
+
+
+        HttpSession session = request.getSession(false);
+        if (session == null){
+            // session 없음 = 로그인 시도한 적 없음
+            log.info("세션이 존재하지 않음");
+            return null;
+        }
+
+        // TODO oauth 로그인 할 때 session 안에 MemberDTO 타입의 'member' 등록 되어 있어야 함
+        MemberDTO member = (MemberDTO) session.getAttribute("member");
+        System.out.println("member.getMember_email() : " +  member.getMember_email());
 
         try {
             // 이미지 저장 및 URL 생성
@@ -117,7 +125,7 @@ public class PostController {
             }
 
             // 게시글 및 이미지 생성
-            PostDTO postDTO = new PostDTO(planId, title, content, category, "user1@example.com");
+            PostDTO postDTO = new PostDTO(planId, title, content, category, member.getMember_email());
             postService.createPost(postDTO, imageUrls);
 
 //            return ResponseEntity.ok("게시글 생성 성공");

@@ -152,7 +152,7 @@
                        </div>
                      </a>
                        <div class="post_info">
-                           <div class="post_info_left"><img src="${path}/upload/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                           <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
                            <div class="post_info_right">
 
                                 <c:set var="found" value="false" />
@@ -208,7 +208,7 @@
                                               </div>
                                             </a>
                                               <div class="post_info">
-                                                  <div class="post_info_left"><img src="${path}/upload/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                                                  <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
                                                   <div class="post_info_right">
 
                                                        <c:set var="found" value="false" />
@@ -263,7 +263,7 @@
                                           </div>
                                         </a>
                                           <div class="post_info">
-                                              <div class="post_info_left"><img src="${path}/img/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                                              <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
                                               <div class="post_info_right">
 
                                                    <c:set var="found" value="false" />
@@ -318,7 +318,7 @@
                                           </div>
                                         </a>
                                           <div class="post_info">
-                                              <div class="post_info_left"><img src="${path}/img/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                                              <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
                                               <div class="post_info_right">
 
                                                    <c:set var="found" value="false" />
