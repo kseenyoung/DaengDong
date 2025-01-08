@@ -9,6 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -43,25 +44,7 @@
     <!--  div는 위치나 형태?를 나타낸다. 선택자는 최대 2개, 태그만 있는 경우는
     무조건 앞에 선택자 써주기  -->
     <div id="container">
-      <header id="header">
-        <div id="header_box">
-          <h1 id="Slogo">댕동</h1>
-          <div id="header_right">
-            <a href="">
-              <img src="./images/community.png" alt="커뮤니티" width="30" height="30" />
-              <span class="alt-text"></span>
-            </a>
-            <a href="">
-              <img src="./images/plan.png" alt="플랜" width="30" height="30" />
-              <span class="alt-text"></span>
-            </a>
-            <a href="">
-              <img src="./images/user.png" alt="사용자" width="30" height="30" />
-              <span class="alt-text"></span>
-            </a>
-          </div>
-        </div>
-      </header>
+ <%@include file="../member/header.jsp" %>
       <div id="post_write_modal">
         <div id="post_write_block">
             <h2>새 게시물 만들기</h2>
@@ -152,7 +135,7 @@
                        </div>
                      </a>
                        <div class="post_info">
-                           <div class="post_info_left"><img src="${path}/upload/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                           <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
                            <div class="post_info_right">
 
                                 <c:set var="found" value="false" />
@@ -207,7 +190,7 @@
                                         </div>
                                       </a>
                                         <div class="post_info">
-                                            <div class="post_info_left"><img src="${path}/upload/${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                                            <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
                                             <div class="post_info_right">
 
                                                  <c:set var="found" value="false" />

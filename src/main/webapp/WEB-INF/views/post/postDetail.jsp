@@ -49,22 +49,23 @@
     ></script>
 	</head> 
 	  <div id="container">
-          <header id="header">
-            <div id="header_box">
-              <h1 id="logo">댕동</h1>
-              <div id="header_right">
-                <a href=""
-                  ><img src="./images/community.png" alt="" width="30" height="30"
-                /></a>
-                <a href=""
-                  ><img src="./images/plan.png" alt="" width="30" height="30"
-                /></a>
-                <a href=""
-                  ><img src="./images/user.png" alt="" width="30" height="30"
-                /></a>
-              </div>
-            </div>
-          </header>
+          <div id="header_box">
+                 <h1 id="logo">댕동</h1>
+                 <div id="header_right">
+                     <a href="">
+                         <img src="${path}/images/community.png" alt="커뮤니티" width="30" height="30"/>
+                         <span class="alt-text"></span>
+                     </a>
+                     <a href="">
+                         <img src="${path}/images/plan.png" alt="플랜" width="30" height="30"/>
+                         <span class="alt-text"></span>
+                     </a>
+                     <a href="${path}/auth/viewMypage.do">
+                         <img src="${path}/images/user.png" alt="사용자" width="30" height="30"/>
+                         <span class="alt-text"></span>
+                     </a>
+                 </div>
+             </div>
           <section id="post_detail">
             <div class="post_top">
               <div class="post_top_left">
