@@ -127,7 +127,7 @@
       }
      .comment input {
              background-color: transparent;
-            /* border: 2px solid #f0efef;*/
+             border: 2px solid #f0efef;
              caret-color: #222;
              color: transparent;
              border-radius: 20px;
