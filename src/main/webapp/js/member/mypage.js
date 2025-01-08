@@ -1,6 +1,7 @@
 $(document).ready(function () {
   initializeEventHandlers();
   callProfileFragment();
+  viewMyPetDetail();
 
   function callProfileFragment() {
     $.ajax({
@@ -102,6 +103,24 @@ $(document).ready(function () {
       $("#currentPhoto").attr("src", ev.target.result);
     };
     reader.readAsDataURL(file);
+  }
+
+  function viewMyPetDetail() {
+    document.addEventListener('DOMContentLoaded', () => {
+      const petDetails = document.querySelectorAll('.pet-detail');
+
+      petDetails.forEach(detail => {
+        detail.addEventListener('mouseover', (event) => {
+          const popover = detail.querySelector('.popover');
+          popover.style.display = 'block'; // 팝오버 표시
+        });
+
+        detail.addEventListener('mouseout', (event) => {
+          const popover = detail.querySelector('.popover');
+          popover.style.display = 'none'; // 팝오버 숨김
+        });
+      });
+    });
   }
 
   function initializeEventHandlers() {
