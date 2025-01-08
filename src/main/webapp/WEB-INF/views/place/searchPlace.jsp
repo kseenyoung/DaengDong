@@ -1823,6 +1823,8 @@
         dots = [];
     }
 
+
+
     document.addEventListener("DOMContentLoaded", function () {
         let places = JSON.parse(localStorage.getItem("places")) || [];
         const placeList = document.getElementById("placeList");
