@@ -25,6 +25,11 @@
         <appender-ref ref="dailyFileAppender" />
     </logger>
 
+    <!--multiPart-->
+    <logger name="org.springframework.web.multipart">
+        <level value="DEBUG" />
+        <appender-ref ref="console" />
+    </logger>
 
     <!-- Application Loggers -->
     <logger name="com.shinhan.daengdong">

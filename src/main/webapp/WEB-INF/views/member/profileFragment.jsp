@@ -26,11 +26,18 @@
                 <h5 class="modal-title" id="editNicknameModalLabel">닉네임 수정</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="editNicknameForm">
+<%--            todo: imgae업로드 해결할 것--%>
+            <form id="editNicknameForm" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="currentNickname" class="form-label">현재 닉네임</label>
-                        <input type="text" class="form-control" id="currentNickname" value="${selectMember.member_nickname}" readonly>
+                        <label for="currentPhoto" class="form-label">현재 프로필 이미지</label>
+                        <div id="currentPhotoContainer">
+                            <img id="currentPhoto" src="${selectMember.member_profile_photo}" alt="Current Profile Image" class="img-thumbnail">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="newPhoto" class="form-label">프로필 이미지 변경</label>
+                        <input type="file" id="newPhoto" class="form-control-file" accept="image/*">
                     </div>
                     <div class="mb-3">
                         <label for="newNickname" class="form-label">새로운 닉네임</label>
@@ -38,7 +45,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">저장</button>
+                    <button type="submit" id="confirm-update-profile" class="btn btn-primary">저장</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                 </div>
             </form>
@@ -47,7 +54,7 @@
 </div>
 
 <div class="profile-header">
-    <img class="profile-image" src="${path}/img/kseenyoungProfile.jpeg" alt="Profile Image" onclick="showModal(this)">
+    <img class="profile-image" src="${selectMember.member_profile_photo}" alt="Profile Image">
     <h1 class="profile-username">${selectMember.member_nickname}</h1>
     <p class="profile-id">${selectMember.member_name}</p>
     <input type="hidden" id="memberEmail" name="member_email" value="${selectMember.member_email}"/>
@@ -82,68 +89,68 @@
 </div>
 
 <%--모달이미지 등 닉네임 수정할 scirpt--%>
-<script>
-  // 이미지 확대
-  function showModal(imgElement) {
-    const modal = document.getElementById("imageModal");
-    const modalImg = document.getElementById("modalImage");
-    modalImg.src = imgElement.src;
-    modal.style.display = "flex";
-  }
+<%--<script>--%>
+<%--  // 이미지 확대--%>
+<%--  function showModal(imgElement) {--%>
+<%--    const modal = document.getElementById("imageModal");--%>
+<%--    const modalImg = document.getElementById("modalImage");--%>
+<%--    modalImg.src = imgElement.src;--%>
+<%--    modal.style.display = "flex";--%>
+<%--  }--%>
 
-  //확대된 이미지 닫기 모달 버튼모양
-  function closeModal() {
-    const modal = document.getElementById("imageModal");
-    modal.style.display = "none";
-  }
+<%--  //확대된 이미지 닫기 모달 버튼모양--%>
+<%--  function closeModal() {--%>
+<%--    const modal = document.getElementById("imageModal");--%>
+<%--    modal.style.display = "none";--%>
+<%--  }--%>
 
-  //닉네임 수정하는 ajax
-  $(document).ready(function () {
-    // 닉네임 수정 폼 제출 처리
-    $("#editNicknameForm").off("submit").on("submit", function (event) {
-      event.preventDefault();
+<%--  //닉네임 수정하는 ajax--%>
+<%--  $(document).ready(function () {--%>
+<%--    // 닉네임 수정 폼 제출 처리--%>
+<%--    $("#editNicknameForm").off("submit").on("submit", function (event) {--%>
+<%--      event.preventDefault();--%>
 
-      const newNickname = $("#newNickname").val();
-      const memberEmail = $("#memberEmail").val();
+<%--      const newNickname = $("#newNickname").val();--%>
+<%--      const memberEmail = $("#memberEmail").val();--%>
 
-      if (newNickname.trim() === "") {
-        alert("닉네임을 입력해주세요.");
-        return;
-      }
+<%--      if (newNickname.trim() === "") {--%>
+<%--        alert("닉네임을 입력해주세요.");--%>
+<%--        return;--%>
+<%--      }--%>
 
-      // AJAX 요청
-      $.ajax({
-        url: `${path}/auth/modifyNickname.do`,
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify({
-          member_email: memberEmail,
-          member_nickname: newNickname
-        }),
-        success: function (response) {
-          alert("닉네임이 성공적으로 변경되었습니다!");
-          $(".profile-username").text(newNickname);
+<%--      // AJAX 요청--%>
+<%--      $.ajax({--%>
+<%--        url: `${path}/auth/modifyNickname.do`,--%>
+<%--        type: "POST",--%>
+<%--        contentType: "application/json",--%>
+<%--        data: JSON.stringify({--%>
+<%--          member_email: memberEmail,--%>
+<%--          member_nickname: newNickname--%>
+<%--        }),--%>
+<%--        success: function (response) {--%>
+<%--          alert("닉네임이 성공적으로 변경되었습니다!");--%>
+<%--          $(".profile-username").text(newNickname);--%>
 
-          // 모달 닫기
-          const modal = bootstrap.Modal.getInstance(document.getElementById('editNicknameModal'));
-          if (modal) {
-            modal.hide();
+<%--          // 모달 닫기--%>
+<%--          const modal = bootstrap.Modal.getInstance(document.getElementById('editNicknameModal'));--%>
+<%--          if (modal) {--%>
+<%--            modal.hide();--%>
 
-            // backdrop 제거는 모달이 완전히 닫힌 후에 실행
-            $('#editNicknameModal').one('hidden.bs.modal', function () {
-              $('.modal-backdrop').remove();
-              $('body').removeClass('modal-open');
-            });
-          }
-        },
-        error: function (err) {
-          console.error("닉네임 변경 중 오류가 발생했습니다.", err);
-          alert("닉네임 변경 중 오류가 발생했습니다.");
-        }
-      });
-    });
-    $('#editNicknameModal').on('shown.bs.modal', function () {
-      $('#newNickname').val('').focus();
-    });
-  });
-</script>
+<%--            // backdrop 제거는 모달이 완전히 닫힌 후에 실행--%>
+<%--            $('#editNicknameModal').one('hidden.bs.modal', function () {--%>
+<%--              $('.modal-backdrop').remove();--%>
+<%--              $('body').removeClass('modal-open');--%>
+<%--            });--%>
+<%--          }--%>
+<%--        },--%>
+<%--        error: function (err) {--%>
+<%--          console.error("닉네임 변경 중 오류가 발생했습니다.", err);--%>
+<%--          alert("닉네임 변경 중 오류가 발생했습니다.");--%>
+<%--        }--%>
+<%--      });--%>
+<%--    });--%>
+<%--    $('#editNicknameModal').on('shown.bs.modal', function () {--%>
+<%--      $('#newNickname').val('').focus();--%>
+<%--    });--%>
+<%--  });--%>
+<%--</script>--%>
