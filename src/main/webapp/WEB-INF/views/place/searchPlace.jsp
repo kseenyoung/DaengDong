@@ -181,7 +181,7 @@
     #pagination .on {font-weight: bold; cursor: default;color:#777;}
 
     /* 카테고리 */
-    #category {position:absolute;top:10px;left:10px;border-radius: 5px; border:1px solid #909090;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);background: #fff;overflow: hidden;z-index: 2;}
+    #category {position:absolute;top:13%;left:10px;border-radius: 5px; border:1px solid #909090;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);background: #fff;overflow: hidden;z-index: 2;}
     #category li {float:left;list-style: none;width:50px;border-right:1px solid #acacac;padding:6px 0;text-align: center; cursor: pointer;}
     #category li.on {background: #eee;}
     #category li:hover {background: #ffe6e6;border-left:1px solid #acacac;margin-left: -1px;}
@@ -1009,6 +1009,8 @@ function displayPlaces(places) {
         // `data-*` 속성에 장소 이름과 주소 저장
         button.setAttribute("data-place-name", place.place_name);
         button.setAttribute("data-place-address", place.address_name);
+        button.setAttribute("data-place-x", place.x);
+        button.setAttribute("data-place-y", place.y);
 
         itemEl.appendChild(button);
 
@@ -1032,9 +1034,28 @@ function displayPlaces(places) {
     // 검색 결과를 목록에 추가
     listEl.appendChild(fragment);
     menuEl.scrollTop = 0;
+    map.setBounds(bounds);
 
     // 지도 범위 재설정
     map.setBounds(bounds);
+
+    document.querySelectorAll('.add-btn').forEach(button => {
+        console.log("버튼 클릭 이벤트 등록 중...");
+        button.addEventListener('click', function(){
+            console.log("버튼 클릭 이벤트 실행됨");
+            const placeName = this.getAttribute('data-place-name');
+            const placeAddress = this.getAttribute('data-place-address');
+            const placeX = parseFloat(this.getAttribute('data-place-x'));
+            const placeY = parseFloat(this.getAttribute('data-place-y'));
+
+            console.log(`데이터: ${placeName}, ${placeAddress}, ${placeX}, ${placeY}`);
+
+            var placePosition = new kakao.maps.LatLng(placeY, placeX);
+            addCustomMarker(placePosition, placeName);
+
+            console.log(`${placeName} (${placeAddress}) 위치에 커스텀 마커 추가 완료.`);
+        });
+    });
 }
 document.getElementById("placesList").addEventListener("click", function (event) {
     if (event.target && event.target.classList.contains("add-btn")) {
@@ -1070,6 +1091,30 @@ function getListItem(index, places) {
     el.className = 'item';
 
     return el;
+}
+
+function addCustomMarker(position, title) {
+    var imageSrc = './img/red_marker.png'; // 마커 이미지 경로
+    var imageSize = new kakao.maps.Size(24, 35); // 마커 이미지 크기
+    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+    // 마커 생성
+    var marker = new kakao.maps.Marker({
+        position: position,
+        image: markerImage
+    });
+
+    marker.setMap(map); // 지도에 마커 추가
+
+    // 마커에 제목 저장
+    kakao.maps.event.addListener(marker, 'mouseover', function () {
+        displayInfowindow(marker, title);
+    });
+    kakao.maps.event.addListener(marker, 'mouseout', function () {
+        infowindow.close();
+    });
+
+    return marker;
 }
 
 function addMarker(position, idx, title, place) {
@@ -1888,6 +1933,7 @@ function addMarker(position, idx, title, place) {
   });
 
   const dayPlans = {};
+  const markersDay = {};
 
   // n일차 버튼
   function createDayButtons(dateDifference){
@@ -1953,6 +1999,6 @@ function addMarker(position, idx, title, place) {
 
 <script src="<%= request.getContextPath() %>/js/addPlan.js"></script>
 <script src="/daengdong/js/addCompanion.js"></script>
-<script src="/daengdong/js/websocket.js"></script>
+
 </body>
 </html>
