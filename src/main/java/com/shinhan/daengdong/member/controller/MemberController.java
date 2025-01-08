@@ -2,6 +2,7 @@ package com.shinhan.daengdong.member.controller;
 
 import com.shinhan.daengdong.member.dto.*;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
+import com.shinhan.daengdong.pet.dto.PetDTO;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
 import com.shinhan.daengdong.plan.model.service.PlanServiceInterface;
 import com.shinhan.daengdong.post.dto.PostDTO;
@@ -99,9 +100,12 @@ public class MemberController {
     @GetMapping("getProfileFragment.do")
     public String getProfileFragment(HttpSession session, Model model) {
         MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
-//        MemberDTO memberDTO = MemberDTO.builder().member_email("user2@example.com").build();
         MemberDTO selectMember = memberService.selectMember(memberDTO.getMember_email());
+        List<PetDTO> petList = memberService.selectPet(memberDTO.getMember_email());
+        log.info("memberDTO.getMember_email(): " + memberDTO.getMember_email());
         model.addAttribute("selectMember", selectMember);
+        model.addAttribute("petList", petList);
+        log.info("petList: " + petList);
         //log.info("selectMember : " + selectMember);
         return "member/profileFragment";
     }

@@ -33,7 +33,7 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     @Override
     public PetDTO insertPet(List<PetDTO> pets, String memberEmail) {
         for(PetDTO pet: pets){
-            pet.setMemberEmail(memberEmail);
+            pet.setMember_email(memberEmail);
             int result = sqlSession.insert(namespace+"insertPet", pet);
         }
         return null;
@@ -122,5 +122,13 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     @Override
     public void deletePlan(long planId) {
         sqlSession.delete(namespace + "deletePlan", planId);
+    }
+
+    @Override
+    public List<PetDTO> selectPet(String memberEmail) {
+        List<PetDTO> petList = sqlSession.selectList(namespace + "selectMyPet", memberEmail);
+        log.info("memberEmail: " + memberEmail);
+        log.info("petList123: " + petList);
+        return petList;
     }
 }

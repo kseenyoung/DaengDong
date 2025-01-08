@@ -1,6 +1,7 @@
 package com.shinhan.daengdong.member.model.service;
 
 import com.shinhan.daengdong.member.dto.*;
+import com.shinhan.daengdong.pet.dto.PetDTO;
 import com.shinhan.daengdong.place.model.service.PlaceServiceInterface;
 import com.shinhan.daengdong.post.dto.PostDTO;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
@@ -131,5 +132,11 @@ public class MemberServiceImpl implements MemberServiceInterface{
     @Override
     public void deletePlan(long planId) {
         memberRepository.deletePlan(planId);
+    }
+
+    @Override
+    public List<PetDTO> selectPet(String memberEmail) {
+        List<PetDTO> petList = memberRepository.selectPet(memberEmail);
+        return petList;
     }
 }

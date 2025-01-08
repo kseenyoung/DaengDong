@@ -30,6 +30,21 @@
 <!--        values (#{member_email},#{pet_name},#{pet_gender},#{pet_birthday},#{pet_blood_type},#{pet_profile_photo},#{pet_species})-->
 <!--    </insert>-->
 
+    <!--반려동물 조회-->
+    <select id="selectMyPet" parameterType="String" resultType="petDTO">
+        select pet_id,
+                member_email,
+                pet_name,
+                pet_gender,
+                pet_birthday,
+                pet_blood_type,
+                pet_profile_photo,
+                pet_species
+        from pets
+        where member_email = #{member_email}
+    </select>
+
+
     <!--&lt;!&ndash;member18 반려동물 프로필 변경!!&ndash;&gt;-->
     <!--<update id="updatepetProfile" parameterType="String">-->
     <!--    update pets-->

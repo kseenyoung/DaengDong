@@ -77,16 +77,15 @@
 
 <%--저장될 반려동물 이미지 정보등--%>
 <span id="my-pet">나의 반려동물</span>
+<c:forEach items="${petList}" var="petList">
 <div class="profile-pet">
     <div class="pet-detail">
-        <img class="pet-image" src="${path}/img/daengdong_dog.jpeg" alt="Pet Picture">
-        <span>쪼꼬미</span>
-    </div>
-    <div class="pet-detail">
-        <img class="pet-image" src="${path}/img/daengdong_dog.jpeg" alt="Pet Picture">
-        <span>쪼꼬미</span>
+        <img class="pet-image" src="${path}/img/${petList.pet_profile_photo}" alt="Pet Picture">
+        <span>${petList.pet_name}</span>
+        <div class="popover">반려동물 이름: ${petList.pet_name}<br>나이: 3살<br>종: ${petList.pet_species}</div>
     </div>
 </div>
+</c:forEach>
 
 <%--모달이미지 등 닉네임 수정할 scirpt--%>
 <%--<script>--%>
