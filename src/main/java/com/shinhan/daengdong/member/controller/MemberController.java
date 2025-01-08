@@ -9,10 +9,12 @@ import com.shinhan.daengdong.review.dto.ReviewDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -28,10 +30,10 @@ import java.util.List;
 public class MemberController {
 
     @Autowired
-    MemberServiceInterface memberService;
+    private MemberServiceInterface memberService;
 
     @Autowired
-    PlanServiceInterface planService;
+    private PlanServiceInterface planService;
 
     @Value("${kakao.login.rest_api_key}")
     String rest_api_key;
@@ -96,24 +98,26 @@ public class MemberController {
     //마이페이지 > 유저 정보
     @GetMapping("getProfileFragment.do")
     public String getProfileFragment(HttpSession session, Model model) {
-        //MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-        MemberDTO memberDTO = MemberDTO.builder().member_email("user2@example.com").build();
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
+//        MemberDTO memberDTO = MemberDTO.builder().member_email("user2@example.com").build();
         MemberDTO selectMember = memberService.selectMember(memberDTO.getMember_email());
         model.addAttribute("selectMember", selectMember);
         //log.info("selectMember : " + selectMember);
         return "member/profileFragment";
     }
-    @PostMapping("modifyNickname.do")
-    @ResponseBody
-    public void modifyNickname(@RequestBody MemberDTO memberDTO) {
-        //log.info("modifyNickname: {}  " + memberDTO);
-        memberService.modifyNickname(memberDTO);
-        //log.info("modifyNickname: {}  " + memberDTO);
-    }
+
+//    @PostMapping("modifyNickname.do")
+//    @ResponseBody
+//    public void modifyNickname(@RequestBody MemberDTO memberDTO) {
+//        //log.info("modifyNickname: {}  " + memberDTO);
+//        memberService.modifyNickname(memberDTO);
+//        //log.info("modifyNickname: {}  " + memberDTO);
+//    }
 
     //'내 여행' > 세미 카테고리
     @GetMapping("getSemiTripCategory.do")
     public String getSemiTripCategory() {
+
         return "member/semiCategory/trip";
     }
 
