@@ -4,9 +4,160 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shinhan.post">
 
+    <resultMap id="postResultMap" type="PostVO">
+        <id property="postId" column="post_id"/>
+        <result property="postTitle" column="post_title"/>
+        <result property="category" column="category_id"/>
+        <result property="postContent" column="post_content"/>
+        <result property="memberNickName" column="member_nickname"/>
+        <result property="memberProfilePhoto" column="member_profile_photo"/>
+         <result property="likeCount" column="like_count"/>
+         <result property="imageUrl" column="first_image_url"/>
+    </resultMap>
+    <select id="viewPost" resultMap="postResultMap">
+        SELECT
+        p.post_id,
+        p.post_title,
+        p.category_id,
+        p.post_content,
+        m.member_nickname,
+        m.member_profile_photo,
+        COUNT(DISTINCT l.post_id) AS like_count,  -- 중복된 좋아요를 제외
+        pi.image_url AS first_image_url          -- 첫 번째 이미지
+        FROM
+        posts p
+        LEFT JOIN
+        likes l ON p.post_id = l.post_id
+        LEFT JOIN
+        members m ON p.member_email = m.member_email
+        LEFT JOIN
+        (
+        SELECT
+        post_id,
+        MIN(image_url) AS image_url       -- 첫 번째 이미지를 선택
+        FROM
+        post_images
+        GROUP BY
+        post_id
+        ) pi ON p.post_id = pi.post_id
+        GROUP BY
+        p.post_id, pi.image_url
+        ORDER BY
+        like_count DESC;
+
+    </select>
+    <select id="getPostsByCategory" parameterType="String" resultMap="postResultMap">
+        SELECT
+        p.post_id,
+        p.post_title,
+        p.category_id,
+        p.post_content,
+        m.member_nickname,
+        m.member_profile_photo,
+        COUNT(DISTINCT l.post_id) AS like_count,  -- 중복된 좋아요를 제외
+        pi.image_url AS first_image_url          -- 첫 번째 이미지
+        FROM
+        posts p
+        LEFT JOIN
+        likes l ON p.post_id = l.post_id
+        LEFT JOIN
+        members m ON p.member_email = m.member_email
+        LEFT JOIN
+        (
+        SELECT
+        post_id,
+        MIN(image_url) AS image_url       -- 첫 번째 이미지를 선택
+        FROM
+        post_images
+        GROUP BY
+        post_id
+        ) pi ON p.post_id = pi.post_id
+        WHERE category_id = #{category}
+        GROUP BY
+        p.post_id, pi.image_url
+        ORDER BY post_id DESC
+
+
+
+
+    </select>
+
+    <resultMap id="PostVOResultMap" type="PostVO">
+        <id property="postId" column="post_id" />
+        <result property="postTitle" column="post_title" />
+        <result property="category" column="category_id" />
+        <result property="postContent" column="post_content" />
+        <result property="memberNickName" column="member_nickname" />
+        <result property="memberProfilePhoto" column="member_profile_photo" />
+        <result property="likeCount" column="like_count" />
+        <collection property="imageUrls" ofType="String">
+            <result column="image_url" />
+        </collection>
+    </resultMap>
+    <select id="findPostById" parameterType="Long" resultMap="PostVOResultMap">
+        SELECT
+        p.post_id,
+        p.post_title,
+        p.category_id,
+        p.post_content,
+        m.member_nickname,
+        m.member_profile_photo,
+        l.like_count,
+        pi.image_url
+        FROM
+        posts p
+        LEFT JOIN
+        (SELECT post_id, COUNT(*) AS like_count
+        FROM likes
+        GROUP BY post_id) l ON p.post_id = l.post_id
+        LEFT JOIN
+        members m ON p.member_email = m.member_email
+        LEFT JOIN
+        post_images pi ON p.post_id = pi.post_id
+        WHERE
+        p.post_id = #{postId}
+        ORDER BY
+        pi.image_url ASC;
+    </select>
+    <select id="getMyLikes" parameterType="String" resultType="LikeVO">
+
+        SELECT
+            post_id AS postId
+        FROM
+            likes
+        WHERE
+            member_email = #{memberEmail}
+    </select>
     <delete id="deletePost" parameterType="int">
         delete
         from posts
         where post_id = #{post_id}
     </delete>
+    <insert id="createPost" parameterType="PostDTO" useGeneratedKeys="true" keyProperty="postId">
+        INSERT INTO posts (plan_id, post_title, post_content, category_id, member_email)
+        VALUES (#{planId}, #{postTitle}, #{postContent}, #{category}, #{memberEmail});
+    </insert>
+    <insert id="createPostImages" parameterType="map">
+        INSERT INTO post_images (post_id, image_url)
+        VALUES
+        <foreach collection="imageUrls" item="imageUrl" index="index" separator=",">
+        (#{postId}, #{imageUrl})
+        </foreach>
+    </insert>
+    <insert id="addLike" parameterType="map">
+        INSERT INTO likes (post_id, member_email)
+        VALUES (#{postId}, #{memberEmail})
+    </insert>
+    <!-- 좋아요 삭제 -->
+    <delete id="deleteLike" parameterType="map">
+        DELETE FROM likes
+        WHERE post_id = #{postId} AND member_email = #{memberEmail}
+    </delete>
+
+    <!-- 좋아요 존재 여부 확인 -->
+    <select id="checkLike" resultType="int" parameterType="map">
+        SELECT COUNT(*)
+        FROM likes
+        WHERE post_id = #{postId} AND member_email = #{memberEmail}
+    </select>
 </mapper>
