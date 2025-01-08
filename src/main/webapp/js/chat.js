@@ -9,11 +9,11 @@ $(document).ready(function () {
   let ws;
   connectWebSocket(planId)
 
-  function connectWebSocket(planID) {
-    const wsUrl = `ws://localhost:5555/daengdong/chat-ws?planId=${planID}`;
+  function connectWebSocket(planId) {
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const host = window.location.host;
+    const wsUrl = `${protocol}//${host}/daengdong/chat-ws?planId=${planId}`
 
-    // const wsUrl = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}
-    // //${window.location.host}/daengdong/chat-ws?planId=${planID}`;
     ws = new WebSocket(wsUrl);
 
     ws.onopen = function () {
@@ -27,7 +27,7 @@ $(document).ready(function () {
       if (message.sender === currentUser) {
         return;
       }
-      displayReceivedMessage(message.content, message.sender);
+      displayReceivedMessage(message.content, message.sender, message.profilePhoto);
     };
 
     ws.onclose = function () {
@@ -58,7 +58,8 @@ $(document).ready(function () {
     const message = {
       type: "CHAT",
       sender: memberNickname || memberName || "Anonymous",
-      content: messageInput.val().trim()
+      content: messageInput.val().trim(),
+      profilePhoto: profilePhoto
     };
 
     if (message.content) {
@@ -82,12 +83,12 @@ $(document).ready(function () {
     scrollToBottom(chatMassages[0]);
   }
 
-  function displayReceivedMessage(message, sender) {
+  function displayReceivedMessage(message, sender, photo) {
     const chatMessage = $("#chatMessages");
 
     const messageElement = `
       <div class="message received">
-        <img src="${profilePhoto}" alt="user"/>
+        <img src="${photo || `${path}/img/kseenyoungProfile.jpeg`}" alt="user"/>
         <div class="message-wrapper">
           <span class="sender-name">${sender}</span>
           <span class="message-content">${message}</span>

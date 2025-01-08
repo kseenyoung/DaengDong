@@ -127,4 +127,9 @@ public class MemberServiceImpl implements MemberServiceInterface{
     public List<PostDTO> getMyPosts(String memberEmail) {
         return memberRepository.getMyPosts(memberEmail);
     }
+
+    @Override
+    public void deletePlan(long planId) {
+        memberRepository.deletePlan(planId);
+    }
 }

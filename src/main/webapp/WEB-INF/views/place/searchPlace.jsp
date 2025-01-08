@@ -1,184 +1,184 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-  <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-  <meta charset="utf-8">
-  <title>장소검색</title>
+    <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+    <meta charset="utf-8">
+    <title>장소검색</title>
 
-  <!-- CSS파일 -->
-  <link rel="stylesheet" href="/daengdong/css/header.css">
+    <!-- CSS파일 -->
+    <link rel="stylesheet" href="/daengdong/css/header.css">
 
-  <!-- JavaScript 라이브러리 -->
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- JavaScript 라이브러리 -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-  <!-- 외부 JSP 파일 -->
-  <%@ include file="/WEB-INF/views/member/header.jsp" %>
+    <!-- 외부 JSP 파일 -->
+    <%@ include file="/WEB-INF/views/member/header.jsp" %>
 
-  <!-- 외부 style -->
-  <link rel="stylesheet" href="addCompanion.css">
+    <!-- 외부 style -->
+    <link rel="stylesheet" href="addCompanion.css">
 
-  <style>
-    .map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
-    .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
-    .map_wrap {position:relative;width:100%;height:930px;}
-    #menu_wrap {
-      position: fixed;
-      max-height: 100%;
-      overflow-y: auto;
-      top: 0;
-      left: 10%;
-      transform: translate(0, 0);
-      display: none;
-      bottom: 0;
-      width: 80%;
-      margin: 10px 0 30px 10px;
-      padding: 15px;
-      overflow: visible;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
-      z-index: 1000;
-      font-size: 13px;
-      border-radius: 15px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      border: 1px solid #ddd;
-    }
-    #menu_wrap.show {
-      display: block;
-    }
+    <style>
+        .map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
+        .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
+        .map_wrap {position:relative;width:100%;height:930px;}
+        #menu_wrap {
+            position: fixed;
+            max-height: 100%;
+            overflow-y: auto;
+            top: 0;
+            left: 10%;
+            transform: translate(0, 0);
+            display: none;
+            bottom: 0;
+            width: 80%;
+            margin: 10px 0 30px 10px;
+            padding: 15px;
+            overflow: visible;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
+            z-index: 1000;
+            font-size: 13px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid #ddd;
+        }
+        #menu_wrap.show {
+            display: block;
+        }
 
-    #menu_wrap.hidden {
-      display: none;
-    }
+        #menu_wrap.hidden {
+            display: none;
+        }
 
-    #modalOverlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 999;
-      display: none;
-    }
+        #modalOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
 
-    #modalOverlay.show {
-      display: block;
-    }
+        #modalOverlay.show {
+            display: block;
+        }
 
-    .bg_white {
-      background: #ffffff;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+        .bg_white {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-    #menu_wrap hr {
-      display: block;
-      height: 1px;
-      border: 0;
-      border-top: 2px solid #5F5F5F;
-      margin: 10px 0;
-    }
+        #menu_wrap hr {
+            display: block;
+            height: 1px;
+            border: 0;
+            border-top: 2px solid #5F5F5F;
+            margin: 10px 0;
+        }
 
-    #menu_wrap .option {
-      text-align: center;
-    }
+        #menu_wrap .option {
+            text-align: center;
+        }
 
-    #menu_wrap .option p {
-      margin: 10px 0;
-      font-size: 14px;
-      color: #333;
-    }
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: transparent;
-      border: none;
-      font-size: 40px;
-      font-weight: bold;
-      color: #333;
-      cursor: pointer;
-      z-index: 1001;
-      transition: color 0.3s ease, transform 0.2s ease;
-    }
+        #menu_wrap .option p {
+            margin: 10px 0;
+            font-size: 14px;
+            color: #333;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            border: none;
+            font-size: 40px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            z-index: 1001;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
 
-    .close-btn:hover {
-      color: #ff5252;
-      transform: scale(1.2);
-    }
+        .close-btn:hover {
+            color: #ff5252;
+            transform: scale(1.2);
+        }
 
-    .close-btn:focus {
-      outline: none;
-    }
+        .close-btn:focus {
+            outline: none;
+        }
 
-    #pinbutton {
-      position: absolute;
-      padding: 0.8vw 1.8vw;
-      font-size: 1.5vw;
-      top: 10px;
-      left: 450px;
-      z-index: 100;
-      margin-left: 5px;
-      font-weight: bold;
-      color: #fff;
-      background-color: #4CAF50;
-      border: 2px solid #000;
-      border-radius: 5px;
-      cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-    #pinbutton:hover {
-      background-color: #45A049;
-    }
+        #pinbutton {
+            position: absolute;
+            padding: 0.8vw 1.8vw;
+            font-size: 1.5vw;
+            top: 10px;
+            left: 450px;
+            z-index: 100;
+            margin-left: 5px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #4CAF50;
+            border: 2px solid #000;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        #pinbutton:hover {
+            background-color: #45A049;
+        }
 
-    #menu_wrap .option button {
-      margin: 5px;
-      padding: 10px 20px;
-      font-size: 14px;
-      font-weight: bold;
-      color: #fff;
-      background-color: #4CAF50;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
+        #menu_wrap .option button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
 
-    #menu_wrap .option button:hover {
-      background-color: #45A049;
-      transform: translateY(-2px);
-    }
+        #menu_wrap .option button:hover {
+            background-color: #45A049;
+            transform: translateY(-2px);
+        }
 
-    #placesList li {list-style: none;}
-    #placesList .item {position:relative;border-bottom:1px solid #888;overflow: hidden;cursor: pointer;min-height: 65px;}
-    #placesList .item span {display: block;margin-top:4px;}
-    #placesList .item h5, #placesList .item .info {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-    #placesList .item .info{padding:10px 0 10px 55px;}
-    #placesList .info .gray {color:#8a8a8a;}
-    #placesList .info .jibun {padding-left:26px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;}
-    #placesList .info .tel {color:#009900;}
-    #placesList .item .markerbg {float:left;position:absolute;width:36px; height:37px;margin:10px 0 0 10px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;}
-    #placesList .item .marker_1 {background-position: 0 -10px;}
-    #placesList .item .marker_2 {background-position: 0 -56px;}
-    #placesList .item .marker_3 {background-position: 0 -102px}
-    #placesList .item .marker_4 {background-position: 0 -148px;}
-    #placesList .item .marker_5 {background-position: 0 -194px;}
-    #placesList .item .marker_6 {background-position: 0 -240px;}
-    #placesList .item .marker_7 {background-position: 0 -286px;}
-    #placesList .item .marker_8 {background-position: 0 -332px;}
-    #placesList .item .marker_9 {background-position: 0 -378px;}
-    #placesList .item .marker_10 {background-position: 0 -423px;}
-    #placesList .item .marker_11 {background-position: 0 -470px;}
-    #placesList .item .marker_12 {background-position: 0 -516px;}
-    #placesList .item .marker_13 {background-position: 0 -562px;}
-    #placesList .item .marker_14 {background-position: 0 -608px;}
-    #placesList .item .marker_15 {background-position: 0 -654px;}
-    #pagination {margin:10px auto;text-align: center;}
-    #pagination a {display:inline-block;margin-right:10px;}
-    #pagination .on {font-weight: bold; cursor: default;color:#777;}
+        #placesList li {list-style: none;}
+        #placesList .item {position:relative;border-bottom:1px solid #888;overflow: hidden;cursor: pointer;min-height: 65px;}
+        #placesList .item span {display: block;margin-top:4px;}
+        #placesList .item h5, #placesList .item .info {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+        #placesList .item .info{padding:10px 0 10px 55px;}
+        #placesList .info .gray {color:#8a8a8a;}
+        #placesList .info .jibun {padding-left:26px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;}
+        #placesList .info .tel {color:#009900;}
+        #placesList .item .markerbg {float:left;position:absolute;width:36px; height:37px;margin:10px 0 0 10px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;}
+        #placesList .item .marker_1 {background-position: 0 -10px;}
+        #placesList .item .marker_2 {background-position: 0 -56px;}
+        #placesList .item .marker_3 {background-position: 0 -102px}
+        #placesList .item .marker_4 {background-position: 0 -148px;}
+        #placesList .item .marker_5 {background-position: 0 -194px;}
+        #placesList .item .marker_6 {background-position: 0 -240px;}
+        #placesList .item .marker_7 {background-position: 0 -286px;}
+        #placesList .item .marker_8 {background-position: 0 -332px;}
+        #placesList .item .marker_9 {background-position: 0 -378px;}
+        #placesList .item .marker_10 {background-position: 0 -423px;}
+        #placesList .item .marker_11 {background-position: 0 -470px;}
+        #placesList .item .marker_12 {background-position: 0 -516px;}
+        #placesList .item .marker_13 {background-position: 0 -562px;}
+        #placesList .item .marker_14 {background-position: 0 -608px;}
+        #placesList .item .marker_15 {background-position: 0 -654px;}
+        #pagination {margin:10px auto;text-align: center;}
+        #pagination a {display:inline-block;margin-right:10px;}
+        #pagination .on {font-weight: bold; cursor: default;color:#777;}
 
     /* 카테고리 */
     #category {position:absolute;top:13%;left:10px;border-radius: 5px; border:1px solid #909090;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);background: #fff;overflow: hidden;z-index: 2;}
@@ -212,571 +212,591 @@
       width: 100%;
     }
 
-    #category-container {
-      width: 100%;
-      margin-bottom: 40px;
-    }
+        #category-container {
+            width: 100%;
+            margin-bottom: 40px;
+        }
 
-    #category {
-      display: flex;
-      justify-content: center;
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+        #category {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-    #category li {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 200px;
-      margin: 0px;
-      cursor: pointer;
-    }
+        #category li {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 200px;
+            margin: 0px;
+            cursor: pointer;
+        }
 
-    #placesList {
-      width: 90%;
-      max-height: 400px;
-      overflow-y: auto;
-      padding: 20px;
-      background: linear-gradient(to bottom right, #ffffff, #e3f2fd);
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-      list-style: none;
-    }
+        #placesList {
+            width: 90%;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            background: linear-gradient(to bottom right, #ffffff, #e3f2fd);
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            list-style: none;
+        }
 
-    #placesList li {
-      display: flex;
-      align-items: center;
-      height: 50px;
-      padding: 10px;
-      margin-bottom: 10px;
-      background: #ffffff;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      cursor: pointer;
-    }
+        #placesList li {
+            display: flex;
+            align-items: center;
+            height: 50px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            cursor: pointer;
+        }
 
-    #placesList li:hover {
-      background: #e3f2fd;
-      transform: translateY(-3px);
-    }
+        #placesList li:hover {
+            background: #e3f2fd;
+            transform: translateY(-3px);
+        }
 
-    #placesList li h5 {
-      font-size: 16px;
-      font-weight: bold;
-      margin: 0;
-      color: #333;
-    }
+        #placesList li h5 {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0;
+            color: #333;
+        }
 
-    #placesList li p {
-      font-size: 14px;
-      color: #555;
-      margin: 5px 0 0;
-    }
+        #placesList li p {
+            font-size: 14px;
+            color: #555;
+            margin: 5px 0 0;
+        }
 
-    /* 사이드바 */
-    body, h4, p, button, a {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Arial', sans-serif;
-    }
+        /* 사이드바 */
+        body, h4, p, button, a {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
 
-    #sidebar {
-      display: none;
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 350px;
-      background: linear-gradient(to bottom right, #ffffff, #e3f2fd);
-      border-radius: 10px;
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-      padding: 20px;
-      overflow: hidden;
-      z-index: 500;
-    }
+        #sidebar {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 350px;
+            background: linear-gradient(to bottom right, #ffffff, #e3f2fd);
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            overflow: hidden;
+            z-index: 500;
+        }
 
-    #sidebar .close-btn {
-      display: block;
-      background: #ff6b6b;
-      color: white;
-      border: none;
-      font-size: 16px;
-      font-weight: bold;
-      padding: 10px 15px;
-      border-radius: 50%;
-      cursor: pointer;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-      transition: transform 0.2s ease, background-color 0.3s ease;
-    }
+        #sidebar .close-btn {
+            display: block;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
 
-    #sidebar .close-btn:hover {
-      background-color: #e53935;
-      transform: scale(1.1);
-    }
+        #sidebar .close-btn:hover {
+            background-color: #e53935;
+            transform: scale(1.1);
+        }
 
-    #sidebar .sidebar-title {
-      font-size: 20px;
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 20px;
-      text-align: center;
-    }
+        #sidebar .sidebar-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
 
-    #sidebar .sidebar-info {
-      font-size: 14px;
-      color: #666;
-      margin: 10px 0;
-      line-height: 1.6;
-      border-bottom: 1px dashed #ddd;
-      padding-bottom: 5px;
-    }
+        #sidebar .sidebar-info {
+            font-size: 14px;
+            color: #666;
+            margin: 10px 0;
+            line-height: 1.6;
+            border-bottom: 1px dashed #ddd;
+            padding-bottom: 5px;
+        }
 
-    #sidebar .add-btn {
-      background: #4caf50;
-      border: none;
-      margin: 20px 0;
-      cursor: pointer;
-    }
+        #sidebar .add-btn {
+            background: #4caf50;
+            border: none;
+            margin: 20px 0;
+            cursor: pointer;
+        }
 
-    #sidebar .map-link {
-      background: #2196f3;
-      text-decoration: none;
-      margin-top: 30px;
-    }
+        #sidebar .map-link {
+            background: #2196f3;
+            text-decoration: none;
+            margin-top: 30px;
+        }
 
-    #sidebar .button {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      text-align: center;
-      border-radius: 8px;
-      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
+        #sidebar .button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
 
-    #sidebar .add-btn:hover {
-      background-color: #388e3c;
-      transform: translateY(-2px);
-    }
+        #sidebar .add-btn:hover {
+            background-color: #388e3c;
+            transform: translateY(-2px);
+        }
 
-    #sidebar .map-link:hover {
-      background-color: #1e88e5;
-      transform: translateY(-2px);
-    }
-    /* 자세히보기 장소 모달 */
-    #planModal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      animation: fadeIn 0.3s ease-in-out;
-    }
+        #sidebar .map-link:hover {
+            background-color: #1e88e5;
+            transform: translateY(-2px);
+        }
+        /* 자세히보기 장소 모달 */
+        #planModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
 
-    .modal-content {
-      position: fixed;
-      background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-      padding: 20px;
-      width: 400px;
-      border-radius: 15px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-      text-align: center;
-      z-index: 1000;
-      animation: scaleIn 0.3s ease-in-out;
-      justify-content: center;
-      align-items: center;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
+        .modal-content {
+            position: fixed;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            padding: 20px;
+            width: 400px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            z-index: 1000;
+            animation: scaleIn 0.3s ease-in-out;
+            justify-content: center;
+            align-items: center;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
 
-    .modal-content h3 {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 15px;
-      color: #0d47a1; /* 메인 텍스트 색상 */
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* 텍스트 그림자 */
-    }
+        .modal-content h3 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #0d47a1; /* 메인 텍스트 색상 */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* 텍스트 그림자 */
+        }
 
-    #planList {
-      max-height: 200px;
-      overflow-y: auto;
-      margin-bottom: 15px;
-      padding: 10px;
-      background: #ffffff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* 안쪽 그림자 */
-    }
+        #planList {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* 안쪽 그림자 */
+        }
 
-    #selectPlanBtn, #closeModalBtn {
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 5px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 버튼 그림자 */
-      transition: background-color 0.3s ease, transform 0.2s ease; /* 호버 효과 */
-    }
+        #selectPlanBtn, #closeModalBtn {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 버튼 그림자 */
+            transition: background-color 0.3s ease, transform 0.2s ease; /* 호버 효과 */
+        }
 
-    #selectPlanBtn {
-      background: #4caf50;
-      color: white;
-    }
+        #selectPlanBtn {
+            background: #4caf50;
+            color: white;
+        }
 
-    #selectPlanBtn:hover {
-      background: #45a049;
-      transform: scale(1.05); /* 약간 확대 */
-    }
+        #selectPlanBtn:hover {
+            background: #45a049;
+            transform: scale(1.05); /* 약간 확대 */
+        }
 
-    #closeModalBtn {
-      background: #f44336;
-      color: white;
-    }
+        #closeModalBtn {
+            background: #f44336;
+            color: white;
+        }
 
-    #closeModalBtn:hover {
-      background: #e53935;
-      transform: scale(1.05); /* 약간 확대 */
-    }
+        #closeModalBtn:hover {
+            background: #e53935;
+            transform: scale(1.05); /* 약간 확대 */
+        }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
 
-    @keyframes scaleIn {
-      from {
-        transform: scale(0.9);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
 
-    /* 선과 거리 */
-    .dot {overflow:hidden;float:left;width:12px;height:12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/mini_circle.png');}
-    .dotOverlay {position:relative;bottom:10px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;font-size:12px;padding:5px;background:#fff;}
-    .dotOverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
-    .number {font-weight:bold;color:#ee6152;}
-    .dotOverlay:after {content:'';position:absolute;margin-left:-6px;left:50%;bottom:-8px;width:11px;height:8px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white_small.png')}
-    .distanceInfo {position:relative;top:5px;left:5px;list-style:none;margin:0;}
-    .distanceInfo .label {display:inline-block;width:50px;}
-    .distanceInfo:after {content:none;}
+        /* 선과 거리 */
+        .dot {overflow:hidden;float:left;width:12px;height:12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/mini_circle.png');}
+        .dotOverlay {position:relative;bottom:10px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;font-size:12px;padding:5px;background:#fff;}
+        .dotOverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+        .number {font-weight:bold;color:#ee6152;}
+        .dotOverlay:after {content:'';position:absolute;margin-left:-6px;left:50%;bottom:-8px;width:11px;height:8px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white_small.png')}
+        .distanceInfo {position:relative;top:5px;left:5px;list-style:none;margin:0;}
+        .distanceInfo .label {display:inline-block;width:50px;}
+        .distanceInfo:after {content:none;}
 
-    /* 장소추가 */
-    #addPlace{
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 400px;
-      margin: 10px 0 30px 10px;
-      padding: 15px;
-      overflow-y: auto;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
-      z-index: 1;
-      font-size: 13px;
-      border-radius: 15px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      border: 1px solid #ddd;
-    }
+        /* 장소추가 */
+        #addPlace{
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 400px;
+            margin: 10px 0 30px 10px;
+            padding: 15px;
+            overflow-y: auto;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
+            z-index: 1;
+            font-size: 13px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid #ddd;
+        }
 
-    .button{
-      display: flex;
-      flex-direction: column;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Arial', sans-serif;
-    }
-    .line {
-      border: 0;
-      border-bottom: 1px solid #ddd;
-      margin: 0px 0;
-    }
+        .button{
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        .line {
+            border: 0;
+            border-bottom: 1px solid #ddd;
+            margin: 0px 0;
+        }
 
-    /* 모달 */
+        /* 모달 */
 
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-    }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
 
-    .modal-content {
-      top : 20%;
-      background-color: #fff;
-      margin: 15% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      border-radius: 10px;
-      width: 80%;
-      max-width: 1200px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
+        .modal-content {
+            top : 20%;
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 1200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
 
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
-    }
-
-
-
-    #list_wrap {
-      position: absolute;
-      top: 50px;
-      left: 0;
-      bottom: 0;
-      width: 400px;
-      margin: 10px 0 30px 10px;
-      padding: 15px;
-      overflow-y: auto;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
-      z-index: 500;
-      font-size: 13px;
-      border-radius: 15px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      border: 1px solid #ddd;
-      overflow: visible;
-      flex-direction: column;
-    }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
 
 
-    #addPlaceBtn {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 5px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      z-index : 1050;
-      position: absolute;
-      right: 15px;
-    }
 
-    #addPlaceBtn:hover, .delete-btn:hover {
-      background-color: #45a049;
-    }
-
-    .search-input {
-      width: 80%;
-      max-width: 600px;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      outline: none;
-      transition: box-shadow 0.2s ease;
-    }
-
-    .search-input:focus {
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      border-color: #007BFF;
-    }
-
-    #placeList{
-      list-style:none;
-      padding:0;
-      margin:0;
-      margin-top: 50px;
-    }
+        #list_wrap {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            bottom: 0;
+            width: 400px;
+            margin: 10px 0 30px 10px;
+            padding: 15px;
+            overflow-y: auto;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
+            z-index: 500;
+            font-size: 13px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid #ddd;
+            overflow: visible;
+            flex-direction: column;
+        }
 
 
-    .place-item {
-      margin-bottom: 10px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      background-color: #f9f9f9;
-      color: black;
-      font-size: 16px;
-      font-family: Arial, sans-serif;
-      z-index: 1050;
-      position: relative
-    }
-    .delete-btn {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 5px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      z-index : 1050;
-      position: absolute;
-      right: 10px;
-      top: 40%;
-      transform: translateY(-50%);
-    }
+        #addPlaceBtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            z-index : 1050;
+            position: absolute;
+            right: 15px;
+        }
+
+        #addPlaceBtn:hover, .delete-btn:hover {
+            background-color: #45a049;
+        }
+
+        .search-input {
+            width: 80%;
+            max-width: 600px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            outline: none;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .search-input:focus {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-color: #007BFF;
+        }
+
+        #placeList{
+            list-style:none;
+            padding:0;
+            margin:0;
+            margin-top: 50px;
+        }
 
 
-    #day {
-      display: flex; /* 버튼을 한 줄에 배치 */
-      gap: 10px; /* 버튼 간격 */
-      overflow-x: auto; /* 가로 스크롤 활성화 */
-      white-space: nowrap; /* 버튼 줄 바꿈 방지 */
-      padding: 10px; /* 내부 여백 */
-    }
+        .place-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            color: black;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            z-index: 1050;
+            position: relative
+        }
+        .delete-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            z-index : 1050;
+            position: absolute;
+            right: 10px;
+            top: 40%;
+            transform: translateY(-50%);
+        }
 
-    .day-btn {
-      display: inline-block;
-      background-color: #4CAF50;
-      color: white;
-      border: 1px solid gray;
-      padding: 10px 15px;
-      font-size: 16px;
-      text-align: center;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    #together {
-      display: flex;
-      align-items: center;
-      gap: 10px; /* 버튼과 입력 필드 간 간격 */
-      margin: 20px 0;
-    }
 
-    #addCompanionBtn {
-      background-color: #007BFF; /* 버튼 색상 */
-      color: white; /* 텍스트 색상 */
-      border: none; /* 테두리 제거 */
-      border-radius: 5px; /* 버튼 모서리 둥글게 */
-      padding: 10px 15px; /* 버튼 크기 조정 */
-      cursor: pointer; /* 커서 모양 변경 */
-      font-size: 14px; /* 텍스트 크기 */
-      transition: background-color 0.3s; /* 호버 애니메이션 */
-    }
+        #day {
+            display: flex; /* 버튼을 한 줄에 배치 */
+            gap: 10px; /* 버튼 간격 */
+            overflow-x: auto; /* 가로 스크롤 활성화 */
+            white-space: nowrap; /* 버튼 줄 바꿈 방지 */
+            padding: 10px; /* 내부 여백 */
+        }
 
-    #addCompanionBtn:hover {
-      background-color: #0056b3; /* 호버 시 버튼 색상 */
-    }
+        .day-btn {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            border: 1px solid gray;
+            padding: 10px 15px;
+            font-size: 16px;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #together {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* 버튼과 입력 필드 간 간격 */
+            margin: 20px 0;
+        }
 
-    #companionEmailInput {
-      flex-grow: 1; /* 입력 필드가 가능한 공간을 채우도록 설정 */
-      padding: 10px; /* 내부 여백 */
-      border: 1px solid #ccc; /* 테두리 색상 */
-      border-radius: 5px; /* 모서리 둥글게 */
-      font-size: 14px; /* 텍스트 크기 */
-      box-sizing: border-box; /* 박스 모델 설정 */
-    }
+        #addCompanionBtn {
+            background-color: #007BFF; /* 버튼 색상 */
+            color: white; /* 텍스트 색상 */
+            border: none; /* 테두리 제거 */
+            border-radius: 5px; /* 버튼 모서리 둥글게 */
+            padding: 10px 15px; /* 버튼 크기 조정 */
+            cursor: pointer; /* 커서 모양 변경 */
+            font-size: 14px; /* 텍스트 크기 */
+            transition: background-color 0.3s; /* 호버 애니메이션 */
+        }
 
-    #companionEmailInput:focus {
-      border-color: #007BFF; /* 포커스 시 테두리 색상 변경 */
-      outline: none; /* 기본 아웃라인 제거 */
-    }
+        #addCompanionBtn:hover {
+            background-color: #0056b3; /* 호버 시 버튼 색상 */
+        }
 
-    #companionSection,
-    #daysSection {
-      height: 80%;
-      margin-top: 20px;
-      padding: 10px;
-    }
-    /* 제목과 버튼을 감싸는 컨테이너 */
-    #mainControls {
-      display: flex;
-      flex-direction: column; /* 세로 방향으로 정렬 */
-      align-items: center; /* 중앙 정렬 */
-      margin: 20px; /* 외부 여백 */
-    }
+        #companionEmailInput {
+            flex-grow: 1; /* 입력 필드가 가능한 공간을 채우도록 설정 */
+            padding: 10px; /* 내부 여백 */
+            border: 1px solid #ccc; /* 테두리 색상 */
+            border-radius: 5px; /* 모서리 둥글게 */
+            font-size: 14px; /* 텍스트 크기 */
+            box-sizing: border-box; /* 박스 모델 설정 */
+        }
 
-    /* 플랜 제목 스타일 */
-    #planTitle {
-      font-size: 24px; /* 제목 글자 크기 */
-      font-weight: bold; /* 굵은 텍스트 */
-      margin-bottom: 20px; /* 제목과 버튼 사이 여백 */
-    }
+        #companionEmailInput:focus {
+            border-color: #007BFF; /* 포커스 시 테두리 색상 변경 */
+            outline: none; /* 기본 아웃라인 제거 */
+        }
 
-    /* 버튼 그룹 */
-    #mainControls {
-      flex-direction: row; /* 가로 방향으로 정렬 */
-      justify-content: center; /* 가운데 정렬 */
-      display: flex;
-      gap: 20px; /* 버튼 간 간격 */
-    }
+        #companionSection,
+        #daysSection {
+            height: 80%;
+            margin-top: 20px;
+            padding: 10px;
+        }
+        /* 제목과 버튼을 감싸는 컨테이너 */
+        #mainControls {
+            display: flex;
+            flex-direction: column; /* 세로 방향으로 정렬 */
+            align-items: center; /* 중앙 정렬 */
+            margin: 20px; /* 외부 여백 */
+        }
 
-    /* 버튼 스타일 */
-    #mainControls button {
-      background-color: #007BFF; /* 버튼 배경색 */
-      color: white; /* 버튼 텍스트 색상 */
-      border: none; /* 테두리 제거 */
-      border-radius: 5px; /* 모서리 둥글게 */
-      padding: 5px 50px; /* 버튼 크기 */
-      font-size: 12px; /* 글자 크기 */
-      cursor: pointer; /* 마우스 커서 */
-      transition: background-color 0.3s; /* 호버 애니메이션 */
-    }
+        /* 플랜 제목 스타일 */
+        #planTitle {
+            font-size: 24px; /* 제목 글자 크기 */
+            font-weight: bold; /* 굵은 텍스트 */
+            margin-bottom: 20px; /* 제목과 버튼 사이 여백 */
+        }
+
+        /* 버튼 그룹 */
+        #mainControls {
+            flex-direction: row; /* 가로 방향으로 정렬 */
+            justify-content: center; /* 가운데 정렬 */
+            display: flex;
+            gap: 20px; /* 버튼 간 간격 */
+        }
+
+        /* 버튼 스타일 */
+        #mainControls button {
+            background-color: #007BFF; /* 버튼 배경색 */
+            color: white; /* 버튼 텍스트 색상 */
+            border: none; /* 테두리 제거 */
+            border-radius: 5px; /* 모서리 둥글게 */
+            padding: 5px 50px; /* 버튼 크기 */
+            font-size: 12px; /* 글자 크기 */
+            cursor: pointer; /* 마우스 커서 */
+            transition: background-color 0.3s; /* 호버 애니메이션 */
+        }
 
     /* 버튼 호버 효과 */
     #mainControls button:hover {
       background-color: #0056b3; /* 호버 시 색상 */
+    }
+
+    /* 채팅방 접속하기 버튼 CSS */
+    #btnChat {
+      position: absolute;
+      bottom: 20px; /* 맵 하단에서 20px 위 */
+      right: 20px; /* 맵 오른쪽에서 20px 왼쪽 */
+      z-index: 10; /* 맵 위에 표시되도록 z-index 설정 */
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    #btnChat:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
 
 <div id="myModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <iframe id="modalIframe" style="width: 100%; height: 80vh; border: none;"></iframe>
-  </div>
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <iframe id="modalIframe" style="width: 100%; height: 80vh; border: none;"></iframe>
+    </div>
 </div>
 
 <div id="planModal">
-  <div class="modal-content">
-    <h3>Plan 선택</h3>
-    <div id="planList">
+    <div class="modal-content">
+        <h3>Plan 선택</h3>
+        <div id="planList">
+        </div>
+        <button id="selectPlanBtn">확인</button>
+        <button id="closeModalBtn">닫기</button>
     </div>
-    <button id="selectPlanBtn">확인</button>
-    <button id="closeModalBtn">닫기</button>
-  </div>
 </div>
 
 <div id="sidebar" style="
@@ -798,18 +818,20 @@
 </div>
 
 <div id="sidebar-template" style="display: none;">
-  <button id="closeSidebar" class="close-btn">✖</button>
-  <h4 id="place-title" class="sidebar-title"></h4>
-  <p class="sidebar-info"><strong>카테고리:</strong> <span id="place-category_name"></span></p>
-  <p class="sidebar-info"><strong>도로명주소:</strong> <span id="place-road_address_name"></span></p>
-  <p class="sidebar-info"><strong>주소:</strong> <span id="place-address_name"></span></p>
-  <p class="sidebar-info"><strong>전화번호:</strong> <span id="place-phone"></span></p>
-  <button id = "addPlanBtn" class="add-btn button">+ 내 일정에 추가</button>
-  <a id="map-link" href="#" target="_blank" class="map-link button">자세히 보기</a>
+    <button id="closeSidebar" class="close-btn">✖</button>
+    <h4 id="place-title" class="sidebar-title"></h4>
+    <p class="sidebar-info"><strong>카테고리:</strong> <span id="place-category_name"></span></p>
+    <p class="sidebar-info"><strong>도로명주소:</strong> <span id="place-road_address_name"></span></p>
+    <p class="sidebar-info"><strong>주소:</strong> <span id="place-address_name"></span></p>
+    <p class="sidebar-info"><strong>전화번호:</strong> <span id="place-phone"></span></p>
+    <button id = "addPlanBtn" class="add-btn button">+ 내 일정에 추가</button>
+    <a id="map-link" href="#" target="_blank" class="map-link button">자세히 보기</a>
 </div>
 
 <div class="map_wrap">
     <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
+    <!-- 채팅방 접속하기 버튼 -->
+    <button id="btnChat">채팅방 접속하기</button>
     <button id = "pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
     <div id="menu_wrap" class="bg_white">
     <button id="closeMenu" class="close-btn">✖</button>
@@ -857,154 +879,171 @@
     </div>
 </div>
 
-
 <div id="list_wrap">
-  <div id="planTitle"></div>
-  <div id="mainControls">
-    <button id="showDays">일정</button>
-    <button id="showCompanion">동행자</button>
-  </div>
-
-  <!-- 동행자 섹션 -->
-  <div id="companionSection">
-    <h2>동행자 관리</h2>
-    <div id="together">
-      <!-- "+" 버튼 (모달 열기) -->
-      <button id="openCompanionModalBtn">+</button>
+    <div id="planTitle"></div>
+    <div id="mainControls">
+        <button id="showDays">일정</button>
+        <button id="showCompanion">동행자</button>
     </div>
+
+    <!-- 동행자 섹션 -->
+    <div id="companionSection">
+        <h2>동행자 관리</h2>
+        <div id="together">
+            <!-- "+" 버튼 (모달 열기) -->
+            <button id="openCompanionModalBtn">+</button>
+        </div>
+
+    <%-- 화면공유 --%>
+     <div id="shareMapContainer" style="position: relative;">
+       <div id="shareMap" style="width: 100%; height: 400px;"></div>
+       <button id="shareScreenBtn" style="position: absolute; bottom: 10px; right: 10px; z-index: 1000;">
+         화면 공유
+       </button>
+     </div>
 
     <!-- 동행자 리스트 -->
     <ul id="companionList"></ul>
 
-  </div>
-
-  <!-- 동행자 추가 모달 -->
-  <div id="companionModal" class="modal">
-    <div class="modal-content">
-      <!-- 모달 닫기 버튼 -->
-      <span id="closeCompanionModalBtn" class="close">&times;</span>
-
-      <h3>동행자 추가</h3>
-
-      <!-- 동행자 추가 폼 -->
-      <form id="companionForm">
-        <label for="companionEmail">동행자 이메일:</label>
-        <input type="email" id="companionEmail" name="companionEmail" placeholder="example@domain.com" required>
-        <button type="submit" id="addCompanionBtn">추가</button>
-      </form>
-
-      <!-- 동행자 제출 버튼 -->
-      <button id="submitCompanionsBtn">동행자 제출</button>
     </div>
-  </div>
 
-  <div id="daysSection">
-    <div id="day">
+    <!-- 동행자 추가 모달 -->
+    <div id="companionModal" class="modal">
+        <div class="modal-content">
+            <!-- 모달 닫기 버튼 -->
+            <span id="closeCompanionModalBtn" class="close">&times;</span>
+
+            <h3>동행자 추가</h3>
+
+            <!-- 동행자 추가 폼 -->
+            <form id="companionForm">
+                <label for="companionEmail">동행자 이메일:</label>
+                <input type="email" id="companionEmail" name="companionEmail" placeholder="example@domain.com" required>
+                <button type="submit" id="addCompanionBtn">추가</button>
+            </form>
+
+            <!-- 동행자 제출 버튼 -->
+            <button id="submitCompanionsBtn">동행자 제출</button>
+        </div>
     </div>
-    <div class="button">
-      <button id="addPlaceBtn">장소 추가</button>
-      <div class="line"></div>
+
+    <div id="daysSection">
+        <div id="day">
+        </div>
+        <div class="button">
+            <button id="addPlaceBtn">장소 추가</button>
+            <div class="line"></div>
+        </div>
+        <ul id="placeList"></ul>
     </div>
-    <ul id="placeList"></ul>
-  </div>
 </div>
+
+<script>
+  const planId = "<%= session.getAttribute("planId") %>";
+  console.log("planId : ", planId);
+  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+  const host = window.location.host;
+  const webSocketUrl = protocol + '//' + host + '/daengdong/shareMap-ws?planId=' + planId;
+
+  const webSocket = new WebSocket(webSocketUrl);
+</script>
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62bd6cc1e013b8a659ae61760dc9fd7f&libraries=services"></script>
 <script>
-// 마커를 담을 배열입니다
-var markers = [];
+    // 마커를 담을 배열입니다
+    var markers = [];
 
 
-var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-    mapOption = {
-        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+            level: 3 // 지도의 확대 레벨
+        };
 
-// 지도를 생성합니다
-var map = new kakao.maps.Map(mapContainer, mapOption);
+    // 지도를 생성합니다
+    var map = new kakao.maps.Map(mapContainer, mapOption);
 
-// 장소 검색 객체를 생성합니다
-var ps = new kakao.maps.services.Places();
+    // 장소 검색 객체를 생성합니다
+    var ps = new kakao.maps.services.Places();
 
-// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
-var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+    // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 
-// 키워드로 장소를 검색합니다
-searchPlaces();
+    // 키워드로 장소를 검색합니다
+    searchPlaces();
 
-var drawingFlag = false; // 선이 그려지고 있는 상태를 가지고 있을 변수입니다
-var moveLine; // 선이 그려지고 있을때 마우스 움직임에 따라 그려질 선 객체 입니다
-var clickLine // 마우스로 클릭한 좌표로 그려질 선 객체입니다
-var distanceOverlay; // 선의 거리정보를 표시할 커스텀오버레이 입니다
-var dots = {};
+    var drawingFlag = false; // 선이 그려지고 있는 상태를 가지고 있을 변수입니다
+    var moveLine; // 선이 그려지고 있을때 마우스 움직임에 따라 그려질 선 객체 입니다
+    var clickLine // 마우스로 클릭한 좌표로 그려질 선 객체입니다
+    var distanceOverlay; // 선의 거리정보를 표시할 커스텀오버레이 입니다
+    var dots = {};
 
 
 
-// 키워드 검색을 요청하는 함수입니다
-function searchPlaces() {
+    // 키워드 검색을 요청하는 함수입니다
+    function searchPlaces() {
 
-    var keyword = document.getElementById('keyword').value;
+        var keyword = document.getElementById('keyword').value;
 
-    // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-    ps.keywordSearch( keyword, placesSearchCB);
-}
-
-// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
-function placesSearchCB(data, status, pagination) {
-    if (status === kakao.maps.services.Status.OK) {
-
-        // 정상적으로 검색이 완료됐으면
-        // 검색 목록과 마커를 표출합니다
-        displayPlaces(data);
-
-        // 페이지 번호를 표출합니다
-        displayPagination(pagination);
-
-    } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-
-        alert('검색 결과가 존재하지 않습니다.');
-        return;
-
-    } else if (status === kakao.maps.services.Status.ERROR) {
-
-        alert('검색 결과 중 오류가 발생했습니다.');
-        return;
-
+        // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+        ps.keywordSearch( keyword, placesSearchCB);
     }
-}
 
-// 검색 결과 목록과 마커를 표출하는 함수입니다
-function displayPlaces(places) {
-    var listEl = document.getElementById('placesList'),
-        menuEl = document.getElementById('menu_wrap'),
-        fragment = document.createDocumentFragment(),
-        bounds = new kakao.maps.LatLngBounds();
+    // 장소검색이 완료됐을 때 호출되는 콜백함수
+    function placesSearchCB(data, status, pagination) {
+        if (status === kakao.maps.services.Status.OK) {
 
-    // 검색 결과 목록 초기화
-    removeAllChildNods(listEl);
+            // 정상적으로 검색이 완료됐으면
+            // 검색 목록과 마커를 표출합니다
+            displayPlaces(data);
 
-    for (var i = 0; i < places.length; i++) {
-        var place = places[i];
+            // 페이지 번호를 표출합니다
+            displayPagination(pagination);
 
-        var placePosition = new kakao.maps.LatLng(place.y, place.x),
-            marker = addMarker(placePosition, i, place.place_name, place);
+        } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
 
-        var itemEl = document.createElement("li");
-        itemEl.classList.add("place-item");
+            alert('검색 결과가 존재하지 않습니다.');
+            return;
 
-        var titleEl = document.createElement("h4");
-        titleEl.textContent = place.place_name || "정보 없음";
-        itemEl.appendChild(titleEl);
+        } else if (status === kakao.maps.services.Status.ERROR) {
 
-        var addressEl = document.createElement("p");
-        addressEl.textContent = place.address_name || "주소 없음";
-        itemEl.appendChild(addressEl);
+            alert('검색 결과 중 오류가 발생했습니다.');
+            return;
 
-        // 버튼 생성 및 추가
-        var button = document.createElement("button");
-        button.className = "add-btn";
-        button.textContent = "+ 내 일정에 추가";
+        }
+    }
+
+    // 검색 결과 목록과 마커를 표출하는 함수입니다
+    function displayPlaces(places) {
+        var listEl = document.getElementById('placesList'),
+            menuEl = document.getElementById('menu_wrap'),
+            fragment = document.createDocumentFragment(),
+            bounds = new kakao.maps.LatLngBounds();
+
+        // 검색 결과 목록 초기화
+        removeAllChildNods(listEl);
+
+        for (var i = 0; i < places.length; i++) {
+            var place = places[i];
+
+            var placePosition = new kakao.maps.LatLng(place.y, place.x),
+                marker = addMarker(placePosition, i, place.place_name, place);
+
+            var itemEl = document.createElement("li");
+            itemEl.classList.add("place-item");
+
+            var titleEl = document.createElement("h4");
+            titleEl.textContent = place.place_name || "정보 없음";
+            itemEl.appendChild(titleEl);
+
+            var addressEl = document.createElement("p");
+            addressEl.textContent = place.address_name || "주소 없음";
+            itemEl.appendChild(addressEl);
+
+            // 버튼 생성 및 추가
+            var button = document.createElement("button");
+            button.className = "add-btn";
+            button.textContent = "+ 내 일정에 추가";
 
         // `data-*` 속성에 장소 이름과 주소 저장
         button.setAttribute("data-place-name", place.place_name);
@@ -1012,13 +1051,13 @@ function displayPlaces(places) {
         button.setAttribute("data-place-x", place.x);
         button.setAttribute("data-place-y", place.y);
 
-        itemEl.appendChild(button);
+            itemEl.appendChild(button);
 
-        // 검색 결과 항목을 fragment에 추가
-        fragment.appendChild(itemEl);
+            // 검색 결과 항목을 fragment에 추가
+            fragment.appendChild(itemEl);
 
-        // 지도 영역 확장
-        bounds.extend(placePosition);
+            // 지도 영역 확장
+            bounds.extend(placePosition);
 
         // 마커 이벤트 설정
         (function(marker, title) {
@@ -1062,36 +1101,36 @@ document.getElementById("placesList").addEventListener("click", function (event)
         const placeName = event.target.getAttribute("data-place-name");
         const placeAddress = event.target.getAttribute("data-place-address");
 
-        addPlaceToPlan(placeName, placeAddress);
-    }
-});
+            addPlaceToPlan(placeName, placeAddress);
+        }
+    });
 
 
 
 
-// 검색결과 항목을 Element로 반환하는 함수입니다
-function getListItem(index, places) {
+    // 검색결과 항목을 Element로 반환하는 함수입니다
+    function getListItem(index, places) {
 
-    var el = document.createElement('li'),
-    itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
+        var el = document.createElement('li'),
+            itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
                 '<div class="info">' +
                 '   <h5>' + places.place_name + '</h5>';
 
-    if (places.road_address_name) {
-        itemStr += '    <span>' + places.road_address_name + '</span>' +
-                    '   <span class="jibun gray">' +  places.address_name  + '</span>';
-    } else {
-        itemStr += '    <span>' +  places.address_name  + '</span>';
+        if (places.road_address_name) {
+            itemStr += '    <span>' + places.road_address_name + '</span>' +
+                '   <span class="jibun gray">' +  places.address_name  + '</span>';
+        } else {
+            itemStr += '    <span>' +  places.address_name  + '</span>';
+        }
+
+        itemStr += '  <span class="tel">' + places.phone  + '</span>' +
+            '</div>';
+
+        el.innerHTML = itemStr;
+        el.className = 'item';
+
+        return el;
     }
-
-      itemStr += '  <span class="tel">' + places.phone  + '</span>' +
-                '</div>';
-
-    el.innerHTML = itemStr;
-    el.className = 'item';
-
-    return el;
-}
 
 function addCustomMarker(position, title) {
     var imageSrc = './img/red_marker.png'; // 마커 이미지 경로
@@ -1117,80 +1156,80 @@ function addCustomMarker(position, title) {
     return marker;
 }
 
-function addMarker(position, idx, title, place) {
-    var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png',
-        imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
-        imgOptions =  {
-            spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
-            spriteOrigin : new kakao.maps.Point(0, (idx * 46) + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
-            offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
-        },
-        markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
-        marker = new kakao.maps.Marker({
-            position: position, // 마커의 위치
-            image: markerImage
-        });
-
-    marker.setMap(map);
-    markers.push(marker);
-
-    // 마커에 클릭 이벤트 등록
-    kakao.maps.event.addListener(marker, 'click', function () {
-        const sidebar = document.getElementById("sidebar");
-        const template = document.getElementById("sidebar-template");
-
-        // 템플릿 내용을 복사하여 삽입
-        sidebar.innerHTML = template.innerHTML;
-
-        console.log(place);
-
-        // 템플릿 내부 요소에 데이터 삽입
-        sidebar.querySelector("#place-title").textContent = place.place_name || "정보 없음";
-        sidebar.querySelector("#place-category_name").textContent = place.category_name || "정보 없음";
-        sidebar.querySelector("#place-road_address_name").textContent = place.road_address_name || "도로명 주소 없음";
-        sidebar.querySelector("#place-address_name").textContent = place.address_name || "주소 없음";
-        sidebar.querySelector("#place-phone").textContent = place.phone || "전화번호 없음";
-
-
-
-        // 링크 업데이트 및 모달로 URL 표시
-        let mapLink = sidebar.querySelector("#map-link");
-        let placeUrl = place && place.place_url; // 안전한 참조
-
-        // 모달 DOM 요소 가져오기
-        const modal = document.getElementById("myModal");
-        const modalIframe = document.getElementById("modalIframe");
-        const closeModalBtn = document.querySelector(".close");
-
-        if (placeUrl) {
-            // 링크 클릭 시 모달 열기
-            mapLink.href = "#"; // 기존 링크 기능 제거
-            mapLink.addEventListener("click", function (e) {
-                e.preventDefault(); // 기본 링크 동작 방지
-
-                // 모달에 URL 로드
-                modalIframe.src = placeUrl;
-
-                // 모달 열기
-                modal.style.display = "block";
+    function addMarker(position, idx, title, place) {
+        var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png',
+            imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
+            imgOptions =  {
+                spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+                spriteOrigin : new kakao.maps.Point(0, (idx * 46) + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+                offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+            },
+            markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+            marker = new kakao.maps.Marker({
+                position: position, // 마커의 위치
+                image: markerImage
             });
-        } else {
-            mapLink.style.display = "none"; // 유효한 URL이 없으면 링크 숨기기
-        }
 
-        // 모달 닫기 버튼 이벤트 등록
-        closeModalBtn.addEventListener("click", function () {
-            modal.style.display = "none";
-            modalIframe.src = ""; // 모달 닫힐 때 iframe 초기화
-        });
+        marker.setMap(map);
+        markers.push(marker);
 
-        // 모달 외부 클릭 시 닫기
-        window.addEventListener("click", function (event) {
-            if (event.target === modal) {
+        // 마커에 클릭 이벤트 등록
+        kakao.maps.event.addListener(marker, 'click', function () {
+            const sidebar = document.getElementById("sidebar");
+            const template = document.getElementById("sidebar-template");
+
+            // 템플릿 내용을 복사하여 삽입
+            sidebar.innerHTML = template.innerHTML;
+
+            console.log(place);
+
+            // 템플릿 내부 요소에 데이터 삽입
+            sidebar.querySelector("#place-title").textContent = place.place_name || "정보 없음";
+            sidebar.querySelector("#place-category_name").textContent = place.category_name || "정보 없음";
+            sidebar.querySelector("#place-road_address_name").textContent = place.road_address_name || "도로명 주소 없음";
+            sidebar.querySelector("#place-address_name").textContent = place.address_name || "주소 없음";
+            sidebar.querySelector("#place-phone").textContent = place.phone || "전화번호 없음";
+
+
+
+            // 링크 업데이트 및 모달로 URL 표시
+            let mapLink = sidebar.querySelector("#map-link");
+            let placeUrl = place && place.place_url; // 안전한 참조
+
+            // 모달 DOM 요소 가져오기
+            const modal = document.getElementById("myModal");
+            const modalIframe = document.getElementById("modalIframe");
+            const closeModalBtn = document.querySelector(".close");
+
+            if (placeUrl) {
+                // 링크 클릭 시 모달 열기
+                mapLink.href = "#"; // 기존 링크 기능 제거
+                mapLink.addEventListener("click", function (e) {
+                    e.preventDefault(); // 기본 링크 동작 방지
+
+                    // 모달에 URL 로드
+                    modalIframe.src = placeUrl;
+
+                    // 모달 열기
+                    modal.style.display = "block";
+                });
+            } else {
+                mapLink.style.display = "none"; // 유효한 URL이 없으면 링크 숨기기
+            }
+
+            // 모달 닫기 버튼 이벤트 등록
+            closeModalBtn.addEventListener("click", function () {
                 modal.style.display = "none";
                 modalIframe.src = ""; // 모달 닫힐 때 iframe 초기화
-            }
-        });
+            });
+
+            // 모달 외부 클릭 시 닫기
+            window.addEventListener("click", function (event) {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                    modalIframe.src = ""; // 모달 닫힐 때 iframe 초기화
+                }
+            });
 
             // 사이드바 표시
             sidebar.style.display = "block";
@@ -1251,20 +1290,20 @@ function addMarker(position, idx, title, place) {
         });
     }
 
-  // 기존 addPlaceToPlan 수정
-  function addPlaceToPlan(placeTitle, placeAddress) {
-    const selectedDay = document.querySelector(".day-btn.selected")?.getAttribute("data-day");
-    if (!selectedDay) {
-      alert("일차를 선택해주세요!");
-      return;
+    // 기존 addPlaceToPlan 수정
+    function addPlaceToPlan(placeTitle, placeAddress) {
+        const selectedDay = document.querySelector(".day-btn.selected")?.getAttribute("data-day");
+        if (!selectedDay) {
+            alert("일차를 선택해주세요!");
+            return;
+        }
+
+        // 선택된 일차에 장소 추가
+        dayPlans[selectedDay].push({ title: placeTitle, address: placeAddress });
+        displayDayPlan(selectedDay); // 업데이트된 리스트 표시
+
+        console.log("새로운 일정 추가됨:", placeTitle, placeAddress, "on Day", selectedDay);
     }
-
-    // 선택된 일차에 장소 추가
-    dayPlans[selectedDay].push({ title: placeTitle, address: placeAddress });
-    displayDayPlan(selectedDay); // 업데이트된 리스트 표시
-
-    console.log("새로운 일정 추가됨:", placeTitle, placeAddress, "on Day", selectedDay);
-  }
 
 
 
@@ -1904,101 +1943,100 @@ function addMarker(position, idx, title, place) {
 
 
 
-  document.addEventListener("DOMContentLoaded", function () {
-    const menuWrap = document.getElementById("menu_wrap");
-    const modalOverlay = document.createElement("div");
-    modalOverlay.id = "modalOverlay";
-    document.body.appendChild(modalOverlay);
+    document.addEventListener("DOMContentLoaded", function () {
+        const menuWrap = document.getElementById("menu_wrap");
+        const modalOverlay = document.createElement("div");
+        modalOverlay.id = "modalOverlay";
+        document.body.appendChild(modalOverlay);
 
-    const openMenuBtn = document.getElementById("addPlaceBtn");
-    const closeMenuBtn = document.getElementById("closeMenu");
+        const openMenuBtn = document.getElementById("addPlaceBtn");
+        const closeMenuBtn = document.getElementById("closeMenu");
 
-    // 모달 열기
-    openMenuBtn.addEventListener("click", function () {
-      menuWrap.classList.add("show");
-      modalOverlay.classList.add("show");
+        // 모달 열기
+        openMenuBtn.addEventListener("click", function () {
+            menuWrap.classList.add("show");
+            modalOverlay.classList.add("show");
+        });
+
+        // 모달 닫기
+        closeMenuBtn.addEventListener("click", function () {
+            menuWrap.classList.remove("show");
+            modalOverlay.classList.remove("show");
+        });
+
+        // 배경 클릭 시 모달 닫기
+        modalOverlay.addEventListener("click", function () {
+            menuWrap.classList.remove("show");
+            modalOverlay.classList.remove("show");
+        });
     });
 
-    // 모달 닫기
-    closeMenuBtn.addEventListener("click", function () {
-      menuWrap.classList.remove("show");
-      modalOverlay.classList.remove("show");
-    });
+    const dayPlans = {};
 
-    // 배경 클릭 시 모달 닫기
-    modalOverlay.addEventListener("click", function () {
-      menuWrap.classList.remove("show");
-      modalOverlay.classList.remove("show");
-    });
-  });
+    // n일차 버튼
+    function createDayButtons(dateDifference){
+        const dayContainer = document.getElementById("day");
 
-  const dayPlans = {};
-  const markersDay = {};
+        dayContainer.innerHTML="";
 
-  // n일차 버튼
-  function createDayButtons(dateDifference){
-    const dayContainer = document.getElementById("day");
+        for (let i = 1; i <= dateDifference; i++) {
+            const dayBtn = document.createElement("button");
+            dayBtn.textContent = i + "일차"
+            dayBtn.classList.add("day-btn");
+            dayBtn.setAttribute("data-day", i);
 
-    dayContainer.innerHTML="";
+            dayContainer.appendChild(dayBtn);
 
-    for (let i = 1; i <= dateDifference; i++) {
-      const dayBtn = document.createElement("button");
-      dayBtn.textContent = i + "일차"
-      dayBtn.classList.add("day-btn");
-      dayBtn.setAttribute("data-day", i);
+            if (!dayPlans[i]){
+                dayPlans[i] = [];
+            }
+        }
 
-      dayContainer.appendChild(dayBtn);
-
-      if (!dayPlans[i]){
-        dayPlans[i] = [];
-      }
     }
+    document.getElementById("day").addEventListener("click", function (event) {
+        if (event.target && event.target.classList.contains("day-btn")) {
+            const previousSelected = document.querySelector(".day-btn.selected");
+            if (previousSelected) {
+                previousSelected.classList.remove("selected");
+            }
 
-  }
-  document.getElementById("day").addEventListener("click", function (event) {
-    if (event.target && event.target.classList.contains("day-btn")) {
-      const previousSelected = document.querySelector(".day-btn.selected");
-      if (previousSelected) {
-        previousSelected.classList.remove("selected");
-      }
+            event.target.classList.add("selected");
 
-      event.target.classList.add("selected");
+            const selectedDay = event.target.getAttribute("data-day");
+            displayDayPlan(selectedDay);
+        }
+    });
 
-      const selectedDay = event.target.getAttribute("data-day");
-      displayDayPlan(selectedDay);
-    }
-  });
+    // 예제 실행 (DB에서 받아온 날짜 차이)
+    // const dateDifference = 6; // DB에서 가져온 데이터
+    createDayButtons(dateDifference);
 
-  // 예제 실행 (DB에서 받아온 날짜 차이)
-  // const dateDifference = 6; // DB에서 가져온 데이터
-  createDayButtons(dateDifference);
+    // 버튼 누르는거에 따른 동행자, 일정 보여주기
+    const showCompanionBtn = document.getElementById("showCompanion");
+    const showDaysBtn = document.getElementById("showDays");
 
-  // 버튼 누르는거에 따른 동행자, 일정 보여주기
-  const showCompanionBtn = document.getElementById("showCompanion");
-  const showDaysBtn = document.getElementById("showDays");
+    const companionSection = document.getElementById("companionSection");
+    const daysSection = document.getElementById("daysSection");
 
-  const companionSection = document.getElementById("companionSection");
-  const daysSection = document.getElementById("daysSection");
+    showCompanionBtn.addEventListener("click", () => {
+        companionSection.style.display = "block"; // 동행자 섹션 보이기
+        daysSection.style.display = "none"; // 일정 섹션 숨기기
+    });
 
-  showCompanionBtn.addEventListener("click", () => {
-    companionSection.style.display = "block"; // 동행자 섹션 보이기
-    daysSection.style.display = "none"; // 일정 섹션 숨기기
-  });
+    // 일정 버튼 클릭 시
+    showDaysBtn.addEventListener("click", () => {
+        companionSection.style.display = "none"; // 동행자 섹션 숨기기
+        daysSection.style.display = "block"; // 일정 섹션 보이기
+    });
 
-  // 일정 버튼 클릭 시
-  showDaysBtn.addEventListener("click", () => {
-    companionSection.style.display = "none"; // 동행자 섹션 숨기기
-    daysSection.style.display = "block"; // 일정 섹션 보이기
-  });
+    const planTitleFromDB = "내 인생 첫 여행";
 
-  const planTitleFromDB = "내 인생 첫 여행";
-
-  document.getElementById("planTitle").textContent = planTitleFromDB;
+    document.getElementById("planTitle").textContent = planTitleFromDB;
 
 </script>
 
 <script src="<%= request.getContextPath() %>/js/addPlan.js"></script>
 <script src="/daengdong/js/addCompanion.js"></script>
-
+<script src="/daengdong/js/websocket.js"></script>
 </body>
 </html>
