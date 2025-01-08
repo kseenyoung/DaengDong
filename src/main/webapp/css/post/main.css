@@ -81,13 +81,13 @@
 
 }
 body {
-  font-family: "Dongle", "Rubik Gemstones";
+/*  font-family: "Dongle", "Rubik Gemstones";*/
   font-weight: 700;
 }
 button {
   cursor: pointer;
   border: 0;
-  font-family: "Dongle";
+/*  font-family: "Dongle";*/
   font-size: var(--font-size4);
   background-color: var(--color-white);
 
@@ -111,7 +111,7 @@ ol {
   display: flex;
   justify-content: center;
   z-index: 1;
-
+  font-family: "Dongle";
 }
 #header_box {
   width: 100%;
