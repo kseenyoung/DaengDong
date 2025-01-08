@@ -118,4 +118,9 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
         List<PostDTO> myPostList = sqlSession.selectList(namespace + "selectMyPosts", memberEmail);
         return myPostList;
     }
+
+    @Override
+    public void deletePlan(long planId) {
+        sqlSession.delete(namespace + "deletePlan", planId);
+    }
 }

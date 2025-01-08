@@ -8,8 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="path" value="${pageContext.servletContext.contextPath}"/>
-<%--todo: css수정할 것--%>
-<link rel="stylesheet" href="${path}/css/member/reviews.css">
+<link rel="stylesheet" href="${path}/css/member/myPlan.css">
 <c:forEach var="completePlan" items="${completePlan}">
     <div class="announcement">
         <img id="placeImg" src="" alt="placeImg">
@@ -28,7 +27,7 @@
             </div>
         </div>
         <div class="button-container">
-            <button class="delete-review" data-review-id="${completePlan.planId}">삭제</button>
+            <button class="delete-plan" data-plan-id="${completePlan.planId}">삭제</button>
         </div>
     </div>
 </c:forEach>
