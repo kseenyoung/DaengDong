@@ -84,7 +84,7 @@
 
                         <textarea name="content" id="content" placeholder="내용 : "></textarea>
 
-                        // <input type="file" id="fileInput" style="display: none;" name="files[]"   multiple />
+                        <input type="file" id="fileInput" style="display: none;" name="files[]"   multiple />
                         <button type="submit">만들기</button>
                     </form>
                 </div>
@@ -455,8 +455,6 @@
     }
 
         for (let file of files) {
-            // 파일을 postFormData에 추가
-            // postFormData.append("files[]", file); // 서버로 전송할 파일 추가
 
                const newFileList = new DataTransfer();
 
@@ -473,10 +471,10 @@
             const reader = new FileReader();
             reader.onload = (e) => {
                 images.push(e.target.result); // 이미지 URL 배열에 추가
-                 //console.log('Uploaded image:', e.target.result); // 콘솔에 업로드된 이미지 출력
-                //console.log('File Name:', file.name); // 파일 이름
-                // console.log('File Size:', file.size); // 파일 크기 (bytes)
-                // console.log('File Type:', file.type); // 파일 타입 (MIME type)
+                 console.log('Uploaded image:', e.target.result); // 콘솔에 업로드된 이미지 출력
+                console.log('File Name:', file.name); // 파일 이름
+                 console.log('File Size:', file.size); // 파일 크기 (bytes)
+                console.log('File Type:', file.type); // 파일 타입 (MIME type)
                 currentIndex = 0; // 새로 업로드된 이미지가 첫 번째 이미지가 되도록 설정
                 updateDropZoneBackground();
             };
