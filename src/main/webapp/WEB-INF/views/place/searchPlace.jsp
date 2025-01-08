@@ -861,14 +861,40 @@ height: 80%;
         <button id="showDays">일정</button>
         <button id="showCompanion">동행자</button>
     </div>
-    <div id="companionSection" style="display: none;">
-        <div id = "together">
-            <!-- 동행자 추가 버튼 -->
-            <input type="text" id="companionEmailInput" placeholder="동행자 이메일 입력">
-            <button id="addCompanionBtn">추가</button>
+
+    <!-- 동행자 섹션 -->
+    <div id="companionSection">
+        <h2>동행자 관리</h2>
+        <div id="together">
+            <!-- "+" 버튼 (모달 열기) -->
+            <button id="openCompanionModalBtn">+</button>
         </div>
-        <ul id = "companionList"></ul>
+
+        <!-- 동행자 리스트 -->
+        <ul id="companionList"></ul>
+
     </div>
+
+    <!-- 동행자 추가 모달 -->
+    <div id="companionModal" class="modal">
+        <div class="modal-content">
+            <!-- 모달 닫기 버튼 -->
+            <span id="closeCompanionModalBtn" class="close">&times;</span>
+
+            <h3>동행자 추가</h3>
+
+            <!-- 동행자 추가 폼 -->
+            <form id="companionForm">
+                <label for="companionEmail">동행자 이메일:</label>
+                <input type="email" id="companionEmail" name="companionEmail" placeholder="example@domain.com" required>
+                <button type="submit" id="addCompanionBtn">추가</button>
+            </form>
+
+            <!-- 동행자 제출 버튼 -->
+            <button id="submitCompanionsBtn">동행자 제출</button>
+        </div>
+    </div>
+
     <div id="daysSection">
         <div id="day">
         </div>
@@ -878,41 +904,6 @@ height: 80%;
         </div>
         <ul id="placeList"></ul>
     </div>
-        <!-- 동행자 추가 모달 -->
-        <div id="companionModal" style="display: none;">
-            <form id="companionForm">
-                <label for="companionEmail">동행자 이메일:</label>
-                <input type="email" id="companionEmail" name="companionEmail" required>
-                <button type="submit">추가</button>
-            </form>
-        </div>
-
-        <script>
-            // 모달창 열기
-            document.getElementById("addCompanionBtn").addEventListener('click', function() {
-                const companionEmail = document.getElementById("companionEmailInput").value;
-
-                if (!companionEmail) {
-                    alert("동행자 이메일을 입력해주세요.");
-                    return;
-                }
-
-                fetch('/daengdong/plan/addCompanion', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: companionEmail
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            alert("동행자가 성공적으로 추가되었습니다!");
-                            location.reload(); // 페이지 새로고침
-                        } else {
-                            alert("동행자 추가에 실패했습니다.");
-                        }
-                    })
-                    .catch(error => console.error("동행자 추가 요청 실패:", error));
-            });
-        </script>
 </div>
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62bd6cc1e013b8a659ae61760dc9fd7f&libraries=services"></script>
@@ -1952,7 +1943,7 @@ function updateMapMarkers(day) {
 
 
 // 예제 실행 (DB에서 받아온 날짜 차이)
-const dateDifference = 6; // DB에서 가져온 데이터
+//const dateDifference = 6; // DB에서 가져온 데이터
 createDayButtons(dateDifference);
 
 // 버튼 누르는거에 따른 동행자, 일정 보여주기
@@ -1981,6 +1972,6 @@ document.getElementById("planTitle").textContent = planTitleFromDB;
 
 <script src="<%= request.getContextPath() %>/js/addPlan.js"></script>
 <script src="/daengdong/js/addCompanion.js"></script>
-<script src="/daengdong/js/websocket.js"></script>
+
 </body>
 </html>
