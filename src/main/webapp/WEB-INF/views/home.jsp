@@ -20,5 +20,6 @@
 <p>${member.member_name}</p>
 <p>${member.member_nickname}</p>
 <img src="${member.member_profile_photo}" alt="memberImage"/>
+<a href="${path}/auth/viewMypage.do">마이페이지 보러 가기</a>
 </body>
 </html>

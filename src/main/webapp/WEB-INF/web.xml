@@ -25,6 +25,12 @@
       <param-value>/WEB-INF/servlet-context.xml</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
+    <!-- 파일 업로드 관련 설정 추가 -->
+    <multipart-config>
+      <max-file-size>10485760</max-file-size> <!-- 10MB -->
+      <max-request-size>20971520</max-request-size> <!-- 20MB -->
+      <file-size-threshold>0</file-size-threshold>
+    </multipart-config>
   </servlet>
   <servlet-mapping>
     <servlet-name>appServlet</servlet-name>

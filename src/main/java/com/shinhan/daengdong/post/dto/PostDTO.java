@@ -3,22 +3,25 @@ package com.shinhan.daengdong.post.dto;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ToString
 public class PostDTO {
-    private int post_id;
-    private String member_email;
-    private int plan_id;
-    private String category_id;
-    private String post_title;
-    private String post_content;
-    private int photo_id;
-    private String image_url;
-    private String member_nickname;
-    private int total_likes;
+    private long postId;
+    private long planId;
+    private String postTitle;
+    private String postContent;
+    private String category;
+    private String memberEmail;
+    public PostDTO(long planId, String postTitle, String postContent, String category, String memberEmail) {
+        this.planId = planId;
+        this.postTitle = postTitle;
+        this.postContent = postContent;
+        this.category = category;
+        this.memberEmail = memberEmail;
+    }
 }
