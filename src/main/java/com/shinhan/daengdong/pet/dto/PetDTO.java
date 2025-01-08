@@ -22,4 +22,5 @@ public class PetDTO {
     private String pet_blood_type;
     private String pet_profile_photo;
     private String pet_species;
+    private int pet_age;
 }

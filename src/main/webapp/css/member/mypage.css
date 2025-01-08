@@ -133,7 +133,6 @@ body {
 .popover {
   display: none; /* 기본적으로 숨김 */
   position: absolute;
-  top: -50px; /* 팝오버가 이미지 위로 올라오게 */
   left: 50%;
   transform: translateX(-50%);
   background-color: #fff;
@@ -142,7 +141,6 @@ body {
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   white-space: nowrap;
-  z-index: 100;
 }
 
 .pet-detail:hover .popover {

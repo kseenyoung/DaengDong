@@ -82,7 +82,7 @@
     <div class="pet-detail">
         <img class="pet-image" src="${path}/img/${petList.pet_profile_photo}" alt="Pet Picture">
         <span>${petList.pet_name}</span>
-        <div class="popover">반려동물 이름: ${petList.pet_name}<br>나이: 3살<br>종: ${petList.pet_species}</div>
+        <div class="popover">이름: ${petList.pet_name}<br>나이: ${petList.pet_age}살<br>견종: ${petList.pet_species}</div>
     </div>
 </div>
 </c:forEach>
