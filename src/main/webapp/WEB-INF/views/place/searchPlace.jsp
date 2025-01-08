@@ -758,6 +758,26 @@
     #mainControls button:hover {
       background-color: #0056b3; /* 호버 시 색상 */
     }
+
+    /* 채팅방 접속하기 버튼 CSS */
+    #btnChat {
+      position: absolute;
+      bottom: 20px; /* 맵 하단에서 20px 위 */
+      right: 20px; /* 맵 오른쪽에서 20px 왼쪽 */
+      z-index: 10; /* 맵 위에 표시되도록 z-index 설정 */
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    #btnChat:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 <body>
@@ -810,6 +830,8 @@
 
 <div class="map_wrap">
   <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
+  <!-- 채팅방 접속하기 버튼 -->
+  <button id="btnChat">채팅방 접속하기</button>
   <button id = "pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
   <div id="menu_wrap" class="bg_white">
     <button id="closeMenu" class="close-btn">✖</button>
@@ -852,17 +874,13 @@
         </ul>
       </div>
 
-      <%-- 카카오 API를 활용한 장소 검색 --%>
-      <div>
-        <input type="text" id="searchInput" placeholder="검색어를 입력하세요"/>
-        <button id="saerchButton">검색</button>
-      </div>
-      <ul id="searchResults"></ul>
+
 
       <ul id="placesList"></ul>
       <div id="pagination"></div>
     </div>
   </div>
+
 </div>
 
 
@@ -880,6 +898,14 @@
       <!-- "+" 버튼 (모달 열기) -->
       <button id="openCompanionModalBtn">+</button>
     </div>
+
+    <%-- 화면공유 --%>
+     <div id="shareMapContainer" style="position: relative;">
+       <div id="shareMap" style="width: 100%; height: 400px;"></div>
+       <button id="shareScreenBtn" style="position: absolute; bottom: 10px; right: 10px; z-index: 1000;">
+         화면 공유
+       </button>
+     </div>
 
     <!-- 동행자 리스트 -->
     <ul id="companionList"></ul>
@@ -916,6 +942,16 @@
     <ul id="placeList"></ul>
   </div>
 </div>
+
+<script>
+  const planId = "<%= session.getAttribute("planId") %>";
+  console.log("planId : ", planId);
+  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+  const host = window.location.host;
+  const webSocketUrl = protocol + '//' + host + '/daengdong/shareMap-ws?planId=' + planId;
+
+  const webSocket = new WebSocket(webSocketUrl);
+</script>
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62bd6cc1e013b8a659ae61760dc9fd7f&libraries=services"></script>
 <script>

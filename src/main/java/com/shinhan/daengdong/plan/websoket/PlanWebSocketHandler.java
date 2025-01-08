@@ -1,5 +1,6 @@
 package com.shinhan.daengdong.plan.websoket;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -21,13 +22,30 @@ public class PlanWebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         String planId = getPlanIdFromSession(session);
         sessions.computeIfAbsent(planId, k -> new CopyOnWriteArrayList<>()).add(session);
-        //log.info("Plan {}에 세션 추가: {} | 총 세션 수: {}", planId, session.getId(), sessions.size());
+        log.info("Plan {}에 세션 추가: {}", planId, session.getId());
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String planId = getPlanIdFromSession(session);
-        broadcast(planId, message);
+        Map<String, Object> messageMap = new ObjectMapper().readValue(message.getPayload(), Map.class);
+
+        String type = (String) messageMap.get("type");
+
+        if ("chat".equals(type)) {
+            broadcast(planId, message);
+        } else if ("shareMap".equals(type)) {
+            // 화면 공유 데이터 처리
+            //Map<String, Object> mapData = (Map<String, Object>) messageMap.get("data");
+
+            for (WebSocketSession userSession : sessions.get(planId)) {
+                if (userSession.isOpen() && !userSession.equals(session)) {
+                    userSession.sendMessage(new TextMessage(message.getPayload()));
+                }
+            }
+        } else {
+            log.warn("알 수 없는 메시지 타입: {}", type);
+        }
     }
 
     @Override
@@ -40,7 +58,8 @@ public class PlanWebSocketHandler extends TextWebSocketHandler {
                 sessions.remove(planId);
             }
         }
-        //log.info("Plan {}에서 세션 제거: {} | 총 세션 수: {}", planId, session.getId(), sessions.size());
+        log.info("Plan {} 화면 공유 / getUri: {}", planId, session.getUri());
+        log.info("Plan {}에서 세션 제거: {}", planId, session.getId());
     }
 
     public static void sendMessageToUsers(String planId, String message) {
@@ -72,8 +91,16 @@ public class PlanWebSocketHandler extends TextWebSocketHandler {
         }
     }
 
+    // private String getPlanIdFromSession(WebSocketSession session) {
+    //     String uri = session.getUri().toString();
+    //     return uri.substring(uri.lastIndexOf("/") + 1);
+    // }
     private String getPlanIdFromSession(WebSocketSession session) {
-        String uri = session.getUri().toString();
-        return uri.substring(uri.lastIndexOf("/") + 1);
+        String query = session.getUri().getQuery();  // planId=91
+        if (query != null && query.startsWith("planId=")) {
+            return query.substring("planId=".length());
+        }
+        return "defaultPlanId";  // 혹은 에러 처리
     }
+
 }

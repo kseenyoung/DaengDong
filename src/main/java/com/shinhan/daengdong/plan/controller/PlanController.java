@@ -149,8 +149,18 @@ public class PlanController {
     }
 
     @GetMapping("/place")
-    public String searchPlaceForm(HttpServletRequest request, Model model) {
+    public String searchPlaceForm(
+        @RequestParam(value = "planId", required = false) Long planId,
+        HttpServletRequest request,
+        Model model
+    ) {
         HttpSession session = request.getSession(false);
+
+        // URL 파라미터로 전달받은 planId가 있으면 세션에 저장
+        if (planId != null) {
+            session.setAttribute("currentPlanId", planId);
+            log.info("URL 파라미터로 전달된 planId={} 을 세션에 저장했습니다.", planId);
+        }
 
         Long currentPlanId = (Long) session.getAttribute("currentPlanId");
         String currentMemberEmail = (String) session.getAttribute("currentMemberEmail");
