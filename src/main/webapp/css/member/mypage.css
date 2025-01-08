@@ -106,6 +106,26 @@ body {
   color: blue;
 }
 
+.drop-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  cursor: pointer;
+  z-index: 1100;
+}
+
+#newPhoto {
+  position: absolute;
+  opacity: 0;
+  z-index: 2000;
+}
+
+.drop-area.dragover {
+  background-color: #f0f8ff;
+  border: 2px dashed #007bff;
+}
+
 /* Right Section - Main Content */
 .right-section {
   width: 100%;

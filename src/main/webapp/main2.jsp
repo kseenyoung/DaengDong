@@ -30,11 +30,11 @@
         <div id="header_box">
             <h1 id="logo">댕동</h1>
             <div id="header_right">
-                <a href="">
+                <a href="${path}/post/posts">
                     <img src="./images/community.png" alt="커뮤니티" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
-                <a href="">
+                <a href="${path}/plan/create">
                     <img src="./images/plan.png" alt="플랜" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>

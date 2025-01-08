@@ -149,8 +149,19 @@ public class PlanController {
     }
 
     @GetMapping("/place")
-    public String searchPlaceForm(HttpServletRequest request, Model model) {
+    public String searchPlaceForm(
+        @RequestParam(value = "planId", required = false) Long planId,
+        HttpServletRequest request,
+        Model model
+    ) {
         HttpSession session = request.getSession(false);
+
+        if (planId != null) {
+            session.setAttribute("planId", planId);
+            log.info("URL 파라미터로 전달된 planId={} 을 세션에 저장했습니다.", planId);
+        } else {
+            log.warn("URL 파라미터로 planId가 전달되지 않았습니다.");
+        }
 
         Long currentPlanId = (Long) session.getAttribute("currentPlanId");
         String currentMemberEmail = (String) session.getAttribute("currentMemberEmail");
@@ -190,16 +201,20 @@ public class PlanController {
         // 쉼표로 구분된 동행자 이메일 문자열을 리스트로 변환
         List<String> companionEmailList = Arrays.asList(companionEmail.split(","));
 
+
         // 동행자 추가 처리
         for (String email : companionEmailList) {
-            String trimmedEmail = email.trim(); // 공백 제거
+            String trimmedEmail = email.trim();
+
             if (!trimmedEmail.isEmpty() && !trimmedEmail.equals(currentMemberEmail)) {
-                if (!planService.isCompanionExists(currentPlanId, trimmedEmail)) {
-                    MemberPlanDTO companionPlan = new MemberPlanDTO();
-                    companionPlan.setPlanId(currentPlanId);
-                    companionPlan.setMemberEmail(trimmedEmail);
-                    planService.addCompanionToPlan(companionPlan);
-                    log.info("추가된 동행자 이메일: {}", trimmedEmail);
+                if(planService.isMemberExists(trimmedEmail)) {
+                    if (!planService.isCompanionExists(currentPlanId, trimmedEmail)) {
+                        MemberPlanDTO companionPlan = new MemberPlanDTO();
+                        companionPlan.setPlanId(currentPlanId);
+                        companionPlan.setMemberEmail(trimmedEmail);
+                        planService.addCompanionToPlan(companionPlan);
+                        log.info("추가된 동행자 이메일: {}", trimmedEmail);
+                    }
                 }
             }
         }

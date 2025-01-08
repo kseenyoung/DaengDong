@@ -14,5 +14,7 @@ public interface PlanRepositoryInterface {
     void saveMemberPlan(MemberPlanDTO memberPlanDTO);
     List<MemberPlanDTO> getCompanionsByPlanId(Long PlanId);
     boolean isCompanionExists(Long planId, String memberEmail);
+    public boolean isMemberExists(String email);
     void deleteCompanion(MemberPlanDTO memberPlanDTO);
+
 }

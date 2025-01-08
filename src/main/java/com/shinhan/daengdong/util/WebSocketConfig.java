@@ -20,7 +20,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
         this.chatWebSocketHandler = chatWebSocketHandler;
     }
 
-
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         //for Chatting
@@ -29,8 +28,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
                 .setAllowedOrigins("*");
 
         //for Plan
-        registry.addHandler(new PlanWebSocketHandler(), "/plan/screen")
-                .setAllowedOrigins("*");
+        registry.addHandler(new PlanWebSocketHandler(), "/shareMap-ws")
+            .setAllowedOrigins("*");
     }
 
 }

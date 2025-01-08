@@ -6,6 +6,7 @@ import com.shinhan.daengdong.plan.dto.PlanDTO;
 import java.lang.reflect.Member;
 import java.util.List;
 
+
 public interface PlanServiceInterface {
 
     Long savePlan(PlanDTO planDTO);
@@ -16,5 +17,6 @@ public interface PlanServiceInterface {
     void addCompanionToPlan(MemberPlanDTO memberPlanDTO);
     List<MemberPlanDTO> getCompanionsByPlanId(Long planId);
     boolean isCompanionExists(Long planId, String memberEmail);
+    boolean isMemberExists(String email);
     void deleteCompanionFromPlan(MemberPlanDTO memberPlanDTO);
 }
