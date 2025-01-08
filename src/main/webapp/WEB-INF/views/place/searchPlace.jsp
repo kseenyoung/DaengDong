@@ -854,6 +854,7 @@ height: 80%;
     </div>
 </div>
 
+
 <div id="list_wrap">
     <div id="planTitle"></div>
     <div id="mainControls">
