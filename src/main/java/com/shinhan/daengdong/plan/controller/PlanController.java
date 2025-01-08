@@ -156,10 +156,11 @@ public class PlanController {
     ) {
         HttpSession session = request.getSession(false);
 
-        // URL 파라미터로 전달받은 planId가 있으면 세션에 저장
         if (planId != null) {
-            session.setAttribute("currentPlanId", planId);
+            session.setAttribute("planId", planId);
             log.info("URL 파라미터로 전달된 planId={} 을 세션에 저장했습니다.", planId);
+        } else {
+            log.warn("URL 파라미터로 planId가 전달되지 않았습니다.");
         }
 
         Long currentPlanId = (Long) session.getAttribute("currentPlanId");

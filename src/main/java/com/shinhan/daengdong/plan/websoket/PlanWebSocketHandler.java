@@ -100,6 +100,7 @@ public class PlanWebSocketHandler extends TextWebSocketHandler {
         if (query != null && query.startsWith("planId=")) {
             return query.substring("planId=".length());
         }
+        log.warn("Plan ID가 전달되지 않았습니다. URI: {}", session.getUri());
         return "defaultPlanId";  // 혹은 에러 처리
     }
 

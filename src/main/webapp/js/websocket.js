@@ -3,7 +3,7 @@
 // const host = window.location.host;
 // const webSocketUrl = `${protocol}//${host}/daengdong/shareMap-ws?planId=${planId}`;
 //
-// const webSocket = new WebSocket(webSocketUrl);
+// const webplanId :  nullSocket = new WebSocket(webSocketUrl);
 
 webSocket.onopen = function () {
     console.log("WebSocket 연결 성공");
