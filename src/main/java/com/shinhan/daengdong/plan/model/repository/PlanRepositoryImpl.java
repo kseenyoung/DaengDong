@@ -66,6 +66,12 @@ public class PlanRepositoryImpl implements PlanRepositoryInterface {
     }
 
     @Override
+    public boolean isMemberExists(String email) {
+        Integer count = sqlSessionTemplate.selectOne("com.shinhan.plan.checkMemberExists", email);
+        return count != null && count > 0;
+    }
+
+    @Override
     public void deleteCompanion(MemberPlanDTO memberPlanDTO) {
         sqlSessionTemplate.delete("com.shinhan.plan.deleteCompanion", memberPlanDTO);
     }

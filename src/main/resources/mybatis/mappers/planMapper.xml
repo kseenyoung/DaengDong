@@ -6,7 +6,7 @@
 
     <insert id="save" parameterType="PlanDTO" useGeneratedKeys="true" keyProperty="planId">
         INSERT INTO plans (member_email, plan_name, start_date, end_date, plan_state)
-        VALUES (#{memberEmail}, #{planName}, #{startDate}, #{endDate}, #{planState});
+        VALUES (#{memberEmail}, #{planName}, #{startDate}, #{endDate}, #{planState})
     </insert>
 
     <select id="planList" resultType="planDTO">
@@ -23,7 +23,7 @@
     <update id="planName" parameterType="planDTO">
         update plans
         set plan_name = #{planName}
-        where plan_id = #{planId};
+        where plan_id = #{planId}
     </update>
 
     <update id="planDate" parameterType="planDTO">
@@ -31,18 +31,18 @@
         set
             start_date = #{startDate},
             end_date = #{endDate}
-        where plan_id = #{planId};
+        where plan_id = #{planId}
     </update>
 
     <update id="planState" parameterType="planDTO">
         update plans
         set plan_state = #{planState}
-        where plan_id = #{planId};
+        where plan_id = #{planId}
     </update>
 
     <insert id="saveMemberPlan" parameterType="memberPlanDTO">
         insert into member_plans (member_email, plan_id)
-        values (#{memberEmail}, #{planId});
+        values (#{memberEmail}, #{planId})
     </insert>
 
     <!-- Companion(동행자) 존재 여부 확인 -->
@@ -60,8 +60,15 @@
         where plan_id = #{planId}
     </select>
 
+    <!--우리 회원만 동행자 추가(회원 테이블에서 조회)-->
+    <select id="checkMemberExists" parameterType="string" resultType="int">
+        select count(*)
+        from members
+        where member_email = #{memberEmail}
+    </select>
+
     <delete id="deleteCompanion" parameterType="memberPlanDTO">
         delete from member_plans
-        where plan_id = #{planId} and member_email = #{memberEmail};
+        where plan_id = #{planId} and member_email = #{memberEmail}
     </delete>
 </mapper>

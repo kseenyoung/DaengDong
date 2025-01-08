@@ -192,14 +192,17 @@ public class PlanController {
 
         // 동행자 추가 처리
         for (String email : companionEmailList) {
-            String trimmedEmail = email.trim(); // 공백 제거
+            String trimmedEmail = email.trim();
+
             if (!trimmedEmail.isEmpty() && !trimmedEmail.equals(currentMemberEmail)) {
-                if (!planService.isCompanionExists(currentPlanId, trimmedEmail)) {
-                    MemberPlanDTO companionPlan = new MemberPlanDTO();
-                    companionPlan.setPlanId(currentPlanId);
-                    companionPlan.setMemberEmail(trimmedEmail);
-                    planService.addCompanionToPlan(companionPlan);
-                    log.info("추가된 동행자 이메일: {}", trimmedEmail);
+                if(planService.isMemberExists(trimmedEmail)) {
+                    if (!planService.isCompanionExists(currentPlanId, trimmedEmail)) {
+                        MemberPlanDTO companionPlan = new MemberPlanDTO();
+                        companionPlan.setPlanId(currentPlanId);
+                        companionPlan.setMemberEmail(trimmedEmail);
+                        planService.addCompanionToPlan(companionPlan);
+                        log.info("추가된 동행자 이메일: {}", trimmedEmail);
+                    }
                 }
             }
         }
