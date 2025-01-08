@@ -16,4 +16,5 @@ public interface PlanRepositoryInterface {
     boolean isCompanionExists(Long planId, String memberEmail);
     public boolean isMemberExists(String email);
     void deleteCompanion(MemberPlanDTO memberPlanDTO);
+
 }
