@@ -2,4 +2,16 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--빈 이름은 무조건  multipartResolver -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-"/>
+        <property name="maxUploadSize"   value="10000000"/>
+        <property name="maxInMemorySize" value="10000000"/>
+        <property name="uploadTempDir"   value="uploadTempDir"/>
+    </bean>
+
+    <bean id="uploadTempDir" class="org.springframework.core.io.FileSystemResource">
+        <constructor-arg value="c:/temp/"/>
+    </bean>
 </beans>

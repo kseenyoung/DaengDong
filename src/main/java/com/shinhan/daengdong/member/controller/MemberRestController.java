@@ -3,7 +3,6 @@ package com.shinhan.daengdong.member.controller;
 import com.shinhan.daengdong.member.dto.FollowDTO;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
-import com.shinhan.daengdong.util.awsS3.S3Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +20,7 @@ public class MemberRestController {
     @Autowired
     MemberServiceInterface memberService;
 
-    @Autowired
-    private S3Service s3Service;
+
 
     //todo: 업로드 시 null값이 들어오는 문제 해결할 것.
     @PostMapping("/myProfile")
@@ -89,13 +87,5 @@ public class MemberRestController {
         memberService.deletePlan(planId);
     }
 
-    //마이페이지 > 프로필이미지 변경
-    @PostMapping("/uploadProfilePhoto")
-    public String uploadProfilePhoto(@RequestParam("file") MultipartFile file) {
-        try {
-            return s3Service.uploadFile(file);
-        } catch (IOException e) {
-            throw new RuntimeException("이미지 업로드 중 오류 발생", e);
-        }
-    }
+
 }
