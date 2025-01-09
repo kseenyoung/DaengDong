@@ -24,7 +24,7 @@
                     <c:forEach var="followingList" items="${followingList}">
                         <div class="d-flex justify-content-between align-items-center mb-2 following-list">
                             <div>
-                                <img src="${path}/img/${followingList.member_profile_photo}"
+                                <img src="${followingList.member_profile_photo}"
                                      alt="${followingList.member_profile_photo}" class="rounded-circle" width="40"
                                      height="40">
                                 <span class="ml-2">${followingList.member_nickname}</span>

@@ -39,10 +39,10 @@
                         <label for="newPhoto" class="form-label">프로필 이미지 변경</label>
                         <input type="file" id="newPhoto" class="form-control-file" accept="image/*">
                     </div>
-                    <div class="mb-3">
-                        <label for="newNickname" class="form-label">새로운 닉네임</label>
-                        <input type="text" class="form-control" id="newNickname" placeholder="새 닉네임 입력" required>
-                    </div>
+<%--                    <div class="mb-3">--%>
+<%--                        <label for="newNickname" class="form-label">새로운 닉네임</label>--%>
+<%--                        <input type="text" class="form-control" id="newNickname" placeholder="새 닉네임 입력" required>--%>
+<%--                    </div>--%>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" id="confirm-update-profile" class="btn btn-primary">저장</button>
@@ -72,21 +72,20 @@
 
 <%--팔로우 팔로워 기능--%>
 <div class="profile-follow-info">
-    <span id="follower">34 followers</span> · <span id="following">49 following</span>
+    <span id="follower">${countFollower} followers</span> · <span id="following">${countFollowing} following</span>
 </div>
 
 <%--저장될 반려동물 이미지 정보등--%>
 <span id="my-pet">나의 반려동물</span>
+<c:forEach items="${petList}" var="petList">
 <div class="profile-pet">
     <div class="pet-detail">
-        <img class="pet-image" src="${path}/img/daengdong_dog.jpeg" alt="Pet Picture">
-        <span>쪼꼬미</span>
-    </div>
-    <div class="pet-detail">
-        <img class="pet-image" src="${path}/img/daengdong_dog.jpeg" alt="Pet Picture">
-        <span>쪼꼬미</span>
+        <img class="pet-image" src="${path}/img/${petList.pet_profile_photo}" alt="Pet Picture">
+        <span>${petList.pet_name}</span>
+        <div class="popover">이름: ${petList.pet_name}<br>나이: ${petList.pet_age}살<br>견종: ${petList.pet_species}</div>
     </div>
 </div>
+</c:forEach>
 
 <%--모달이미지 등 닉네임 수정할 scirpt--%>
 <%--<script>--%>

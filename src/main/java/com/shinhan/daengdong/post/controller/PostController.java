@@ -96,12 +96,11 @@ public class PostController {
 
     @PostMapping("/po")
     public String createPost(
-            @RequestParam("files[]") List<MultipartFile> files,
             @RequestParam(value="title", required=true) String title,
             @RequestParam(value="category", required=true) String category, // 'category' 필드 받기
             @RequestParam(value="planId", required=true) long planId, // 'category' 필드 받기
             @RequestParam("content") String content, // 'content' 필드 받기
-
+            @RequestParam(value="files[]", required=true) List<MultipartFile> files,
             HttpServletRequest request) {
 
 

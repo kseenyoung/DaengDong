@@ -1,6 +1,7 @@
 $(document).ready(function () {
   initializeEventHandlers();
   callProfileFragment();
+  viewMyPetDetail();
 
   function callProfileFragment() {
     $.ajax({
@@ -18,26 +19,28 @@ $(document).ready(function () {
   }
 
   function imageSubmitHandler() {
-    const fileInput = $("#newPhoto");
+    const fileInput = document.getElementById("newPhoto");
 
-    fileInput.on("change", function () {
+    $(fileInput).on("change", function() {
       if (this.files && this.files[0]) {
         previewImage(this.files[0]);
       }
     });
 
-    $("#editNicknameForm").on("submit", function (e) {
+    $("#editNicknameForm").on("submit", function(e) {
       e.preventDefault();
 
-      const formData = new FormData();
-      const file = fileInput[0].files[0];
-      // const newNickname = $("#newNickname").val();
-
-      if (file) {
-        formData.append("newPhoto", file);
+      if (!fileInput.files || !fileInput.files[0]) {
+        alert("파일을 선택해주세요.");
+        return;
       }
-      // formData.append("newNickname", newNickname);
-      console.log([...formData.entries()]);
+
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append("newPhoto", file);
+
+      console.log("전송할 파일:", file);
+      console.log("FormData 내용:", [...formData.entries()]);
 
       $.ajax({
         url: `${path}/myProfile`,
@@ -45,12 +48,17 @@ $(document).ready(function () {
         data: formData,
         processData: false,
         contentType: false,
-        success: function (response) {
+        success: function(response) {
+          console.log("서버 응답:", response);
           alert("프로필이 성공적으로 업데이트되었습니다.");
-          console.log(formData);
+          location.reload();  // 페이지 새로고침하여 변경된 이미지 표시
         },
-        error: function (err) {
-          console.error(err);
+        error: function(xhr, status, error) {
+          console.error("에러 상세정보:", {
+            status: status,
+            error: error,
+            response: xhr.responseText
+          });
           alert("프로필 업데이트 중 오류가 발생했습니다.");
         }
       });
@@ -102,6 +110,24 @@ $(document).ready(function () {
       $("#currentPhoto").attr("src", ev.target.result);
     };
     reader.readAsDataURL(file);
+  }
+
+  function viewMyPetDetail() {
+    document.addEventListener('DOMContentLoaded', () => {
+      const petDetails = document.querySelectorAll('.pet-detail');
+
+      petDetails.forEach(detail => {
+        detail.addEventListener('mouseover', (event) => {
+          const popover = detail.querySelector('.popover');
+          popover.style.display = 'block'; // 팝오버 표시
+        });
+
+        detail.addEventListener('mouseout', (event) => {
+          const popover = detail.querySelector('.popover');
+          popover.style.display = 'none'; // 팝오버 숨김
+        });
+      });
+    });
   }
 
   function initializeEventHandlers() {

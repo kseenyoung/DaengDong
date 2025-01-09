@@ -16,56 +16,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
 
-    <title>Document</title>
-    <link
-      href="
-    https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css
-    "
-      rel="stylesheet"
-    />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Dongle:wght@400;700&family=Rubik+Bubbles&family=Rubik+Gemstones&family=Song+Myung&family=Sunflower:wght@300&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Dongle:wght@400;700&family=Rubik+Bubbles&family=Rubik+Gemstones&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="${path}/css/post/main.css" />
+
+       <link rel="stylesheet" href="${path}/css/post/main.css" />
     <link rel="stylesheet" href="${path}/css/post/post.css" />
     <link rel="stylesheet" href="${path}/css/post/postDetail.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
-    />
 
-    <script
-      type="text/javascript"
-      src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"
-    ></script>
-	</head> 
+	</head>
 	  <div id="container">
-          <div id="header_box">
-                 <h1 id="logo">댕동</h1>
-                 <div id="header_right">
-                     <a href="">
-                         <img src="${path}/images/community.png" alt="커뮤니티" width="30" height="30"/>
-                         <span class="alt-text"></span>
-                     </a>
-                     <a href="">
-                         <img src="${path}/images/plan.png" alt="플랜" width="30" height="30"/>
-                         <span class="alt-text"></span>
-                     </a>
-                     <a href="${path}/auth/viewMypage.do">
-                         <img src="${path}/images/user.png" alt="사용자" width="30" height="30"/>
-                         <span class="alt-text"></span>
-                     </a>
-                 </div>
-             </div>
+          <%@include file="../member/header.jsp" %>
           <section id="post_detail">
             <div class="post_top">
               <div class="post_top_left">
@@ -107,7 +67,16 @@
           </section>
         </div>
       </body>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
+    />
 
+    <script
+      type="text/javascript"
+      src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"
+    ></script>
       <script type="text/javascript">
       console.log(`${post}`)
         $(".single-item").slick({
