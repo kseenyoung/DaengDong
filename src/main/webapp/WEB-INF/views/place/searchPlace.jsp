@@ -182,6 +182,9 @@
   </div>
 </div>
 
+<div>
+  <button id="finalizePlanBtn">최종 완료</button>
+</div>
 <%-- <script> --%>
 <%--   const planId = "<%= session.getAttribute("planId") %>"; --%>
 <%--   console.log("planId : ", planId); --%>
@@ -328,7 +331,6 @@
     map.setBounds(bounds);
   }
 
-  const imMemoryPlaces = []; // 임시 메모리 배열로 초기화
   document.getElementById("placesList").addEventListener("click", function (event) {
     if (event.target && event.target.classList.contains("add-btn")) {
       const placeName = event.target.getAttribute("data-place-name");
@@ -338,6 +340,7 @@
       const yValue = event.target.getAttribute("data-y"); // y 좌표
       const placeURL = event.target.getAttribute("data-place-url");
       const id = event.target.getAttribute("data-id");
+      const selectedDay = document.querySelector(".day-btn.selected")?.getAttribute("data-day");
 
       // 장소 데이터
       const regionId = placeAddress.split(" ")[0]; // '서울', '경기' 등 추출
@@ -353,6 +356,16 @@
         kakaoPlaceId: id,
         regionId: regionId
       };
+
+      const final_place = {
+        planId: planId,
+        kakaoPlaceId: id,
+        day: selectedDay
+      };
+
+      tempMemoryPlaces.push(final_place);
+
+      console.log("tempMemoryPlaces: ", tempMemoryPlaces);
 
       fetch('/daengdong/place/savePlace', {
         method: "POST",
@@ -554,6 +567,7 @@
   // 기존 addPlaceToPlan 수정
   function addPlaceToPlan(placeTitle, placeAddress) {
     const selectedDay = document.querySelector(".day-btn.selected")?.getAttribute("data-day");
+    console.log("일자 선택 (나의 번호는?) : ", selectedDay); // 콘솔 찍어봐라 숫자 1,2,3 나오나 그 후에 finalSend 수정해야한다.
     if (!selectedDay) {
       alert("일차를 선택해주세요!");
       return;
@@ -1301,6 +1315,7 @@
 <%-- <script src="<%= request.getContextPath() %>/js/addPlan.js"></script> --%>
 <script src="/daengdong/js/addCompanion.js"></script>
 <script src="/daengdong/js/websocket.js"></script>
+<script src="/daengdong/js/finalSend.js"></script>
 <script>
   // 서버에서 전달받은 planId를 전역 변수로 설정
   planId = '<%= session.getAttribute("planId") %>';
