@@ -40,6 +40,11 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     }
 
     @Override
+    public void modifyProfilePhoto(MemberDTO member) {
+        sqlSession.update(namespace + "modifyProfilePhoto", member);
+    }
+
+    @Override
     public MemberDTO selectMember(String memberEmail){
         MemberDTO selectMember = sqlSession.selectOne(namespace+ "selectMember", memberEmail);
         return selectMember;
