@@ -37,10 +37,11 @@ public class OauthController {
         MemberDTO kakaoMember = kakaoOauthService.getUser(access_Token);
         log.info("kakaoEmail : " + kakaoMember);
 
-        MemberDTO member = memberService.login(kakaoMember.getMemberEmail());
+        MemberDTO member = memberService.login(kakaoMember.getMember_email());
 
         // session 등록
         session = request.getSession();
+        log.info("kakaoMember: " + kakaoMember);
         session.setAttribute("member", kakaoMember);
 
         if (member == null) {
@@ -48,6 +49,6 @@ public class OauthController {
             return "redirect:/auth/signUp.do";
         }
 
-        return "redirect:/home";
+        return "redirect:/";
     }
 }

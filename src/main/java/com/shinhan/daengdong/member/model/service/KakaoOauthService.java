@@ -121,9 +121,9 @@ public class KakaoOauthService {
             br.close();
 
             return MemberDTO.builder()
-                    .memberEmail(email)
-                    .memberName(nickname)
-                    .memberProfilePhoto(imageURL)
+                    .member_email(email)
+                    .member_name(nickname)
+                    .member_profile_photo(imageURL)
                     .build();
 
         } catch (IOException e) {

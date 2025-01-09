@@ -1,0 +1,311 @@
+#postMain {
+    width: 100%;
+    max-width: var(--max-width);
+    padding: var(--side-padding);
+    margin-top: 8vh;
+    font-family: 'Pretendard Variable';
+}
+#community {
+    text-align: center;
+    font-size: var(--font-size4);
+}
+
+#kewordAndwrite {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+#kewordAndwrite button.post_write {
+    background:   var(--color-blue);;
+    border-radius: 5px;
+    font-size: var(--font-size1);
+    padding: 10px 15px;
+    color: var(--color-white);
+    font-family: 'Pretendard Variable';
+
+}
+#categoryList {
+    display: flex;
+    gap: 20px;
+
+    align-items: center;
+}
+#categoryList button {
+    background: var(--color-brightGray);
+    border-radius: 10px;
+    padding: 0 10px;
+    font-size: var(--font-size1);
+    padding: 10px 15px;
+    padding: 10px 15px;
+    font-family: 'Pretendard Variable';
+
+}
+#categoryList button.select_category {
+    background: #000;
+    color: #fff;
+}
+#postMain .filter {
+    text-align: right;
+    margin: 10px 0;
+    font-size: 15px;
+    font-weight: 300;
+}
+#postMain #search {
+    width: 300px;
+    height: 30px;
+    border: 2px solid var(--color-brightGray);
+    border-radius: 5px;
+    margin-top: 30px;
+}
+#postList {
+    display: flex;
+    /* gap: 20px; */
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+#postList .postCol {
+    /* flex: 0 0 20%; */
+    box-sizing: border-box;
+    /* width: 25%; */
+    width: 24%
+    /* margin: 0 10px; */
+}
+#postList .post {
+  width: 100%;
+  margin-bottom: 30px;
+  position: relative;
+  font-family: 'Pretendard Variable';
+  font-weight: 400;
+
+}
+.post_relative {
+    position: relative;
+}
+.honeytip {
+    position: absolute;
+    top: 0;
+    margin: 15px;
+    background: #000;
+    color: #fff;
+    border-radius: 5px;
+    font-size: var(--font-size0-7);
+    font-weight: 500;
+    padding: 5px 7px;
+}
+#postList .post .post_img {
+    width: 100%;
+    border-radius: 10px;
+    min-height: 200px;
+    max-height: 350px;
+
+}
+
+.post .post_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 15px;
+    position: absolute;
+    bottom: 1px;
+    width: 100%;
+    height: 50%;
+    /* transform: translateY(-50%); */
+    border-radius:  0 0 10px 10px;
+    /* background: #0000007f; */
+    background: linear-gradient(190deg, rgb(67 56 56 / 0%) 31%, rgb(0 0 0 / 75%) 75%);
+    color: var(--color-white);
+}
+.post .post_content h2 {
+    font-size: var(--font-size3);
+    padding: 10px 0;
+}
+.post .post_content p {
+    font-size: var(--font-size0-5);
+}
+.post_info {
+    display: flex;
+    justify-content: space-between;
+}
+.post_info .post_info_left {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.post_info_left img {
+    width: 25px;
+    height: 25px;
+    border-radius: 30px;
+}
+.post_info_left span {
+    font-size: var(--font-size1);
+}
+.post_info .post_info_right {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.post_info .post_info_right img {
+    width: 20px;
+    height: 20px;
+}
+.post_info .post_info_right span {}
+.post .post_bottom {
+    font-size: var(--font-size0-7);
+    margin: 10px 0;
+    word-wrap: break-word; /* 긴 단어가 넘을 때 줄 바꿈 */
+        overflow-wrap: break-word; /* 긴 단어가 넘을 때 줄 바꿈 (새로운 표준) */
+}
+#post_write_modal {
+    position: fixed;
+    top: 0;
+    /* transform: translateY(-50%); */
+    background: #000000c7;
+    width: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    z-index: 1;
+
+}
+#post_write_block {
+    background: #fff;
+    width: 600px;
+    height: 60vh;
+    padding: 20px;
+    border-radius: 15px;
+}
+#post_write_block h2 {
+    text-align: center;
+    font-size: var(--font-size3);
+}
+#post_write_block div {
+    /* text-align: center; */
+}
+#dropZone {
+    width: 100%;
+    height: 350px;
+    border: 2px dashed #ccc;
+    /* border-radius: 10px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    color: #666;
+    cursor: pointer;
+    /* overflow: hidden; */
+    margin: 20px 0;
+    transition: transform 0.3s ease-in-out;
+    /* position: relative; */
+    padding: 15px;
+}
+#dropZone.dragover {
+    border-color: blue;
+}
+#fileButton {
+    background: var(--color-blue);;
+    padding: 2px;
+    font-size: var(--font-size2);
+    border-radius: 5px;
+    margin: 15px 0;
+    color: #fff;
+}
+.modal_relative {
+    height: 500px;
+}
+#post_form_box {
+    display: flex;
+}
+#post_form {
+    display: none;
+    /* flex-direction: column; */
+    margin: 20px 0;
+    border: 1px dashed #ccc;
+    padding: 5px;
+    font-family: 'Pretendard Variable';
+    position: relative;
+}
+#post_form input {
+    border: 0px solid #000;
+    padding: 10px 0;
+    width: 100%;
+}
+#post_form textarea {
+    /* height: 200px; */
+    height: 50%;
+    margin: 10px 0;
+    width: 100%;
+    border: 0px solid #000;
+    padding: 5px 0  100px 0;
+}
+#post_form button {
+    font-family: 'Pretendard Variable';
+    font-size: var(--font-size1);
+    background:   var(--color-blue);;
+    padding: 5px;
+    border-radius: 4px;
+    position: absolute;
+    bottom: 10px;
+    right: 50%;
+    transform: translateX(50%);
+    color: white;
+}
+#buttons {
+    width: 100%;
+    /* display: flex; */
+    justify-content: space-between;
+    display: none;
+}
+#buttons button {
+    padding: 0;
+
+}
+
+
+#category,#myplan {
+    width: 150px;           /* 선택 박스 너비 */
+    padding: 2px 20px;         /* 내부 여백 */           /* 글씨 크기 */
+    font-family: 'Arial', sans-serif; /* 폰트 스타일 */
+    border: 1px solid #ccc;     /* 테두리 */
+    border-radius: 5px;         /* 둥근 모서리 */
+    background-color: #f9f9f9;  /* 배경색 */
+
+    outline: none;              /* 포커스 시 테두리 제거 */
+    transition: all 0.3s ease;  /* 부드러운 전환 효과 */
+    margin-bottom: 10px;
+    text-align: center;
+    position: relative;
+}
+
+/* 드롭다운 열렸을 때 */
+#category:focus,#myplan:focus {
+    border-color: #4CAF50;      /* 포커스 시 테두리 색 변경 */
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* 포커스 시 그림자 */
+
+}
+
+
+
+/* 드롭다운에 있는 옵션 스타일 */
+#category option, #myplan option {
+    padding: 10px;              /* 옵션 항목 간 여백 */
+    background-color: white;    /* 옵션 배경색 */
+        /* 옵션 글씨 크기 */
+    color: #333;                /* 옵션 글씨 색 */
+    margin: 0 auto;
+    text-align: center;
+
+}
+
+/* 옵션 hover 스타일 */
+#category option:hover {
+    background-color: #e0e0e0;  /* 마우스를 올렸을 때 배경색 */
+}
+.postLabel {
+    display: inline-block;
+    width: 120px;
+}
