@@ -1,6 +1,7 @@
 package com.shinhan.daengdong.place.model.service;
 
 import com.shinhan.daengdong.place.dto.PlaceDTO;
+import com.shinhan.daengdong.place.dto.PlanPlaceDTO;
 import com.shinhan.daengdong.place.model.repository.PlaceRepositoryImpl;
 import com.shinhan.daengdong.place.model.repository.PlaceRepositoryInterface;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +31,16 @@ public class PlaceServiceImpl implements PlaceServiceInterface {
         }
     }
 
+    // 장소 저장
     @Override
     public void savePlace(PlaceDTO placeDTO) {
         placeRepository.savePlace(placeDTO);
     }
+
+    // 최종 장소 저장
+    @Override
+    public void savePlanPlace(PlanPlaceDTO planPlaceDTO) {
+        placeRepository.savePlanPlace(planPlaceDTO);
+    }
+
 }
