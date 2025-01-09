@@ -1,5 +1,7 @@
 package com.shinhan.daengdong.post.model.repository;
 
+import com.shinhan.daengdong.post.dto.CommentDTO;
+import com.shinhan.daengdong.post.dto.CommentVO;
 import com.shinhan.daengdong.post.dto.PostDTO;
 import com.shinhan.daengdong.post.dto.PostIMGDTO;
 import com.shinhan.daengdong.post.vo.LikeVO;
@@ -44,7 +46,9 @@ public class PostRepositoryImpl implements PostRepositoryInterface {
         List<PostVO> result = sqlSession.selectList(namespace + "getPostsByCategory", category);
         log.info(result.toString());
         return result;
-    }    @Override
+    }
+
+    @Override
     public void deletePost(int postId) {
         sqlSession.delete(namespace + "deletePost", postId);
     }
@@ -85,5 +89,24 @@ public class PostRepositoryImpl implements PostRepositoryInterface {
         params.put("postId", postId);
         params.put("memberEmail", memberEmail);
         return sqlSession.selectOne(namespace + "checkLike", params);
+    }
+
+    // 댓글 저장
+
+    @Override
+    public CommentDTO saveComment(CommentDTO commentDTO) {
+        // 삽입 실행
+        sqlSession.insert(namespace + "insertComment", commentDTO);
+
+        // 삽입된 commentDTO 객체를 다시 조회하여 반환
+        return commentDTO; // 또는 필요시 id 값을 갱신할 수 있음
+    }
+
+    @Override
+    public List<CommentVO> findCommentById(long postId) {
+        // 삽입 실행
+        List<CommentVO> result = sqlSession.selectList(namespace + "getComment", postId);
+        log.info(result.toString());
+        return result;
     }
 }

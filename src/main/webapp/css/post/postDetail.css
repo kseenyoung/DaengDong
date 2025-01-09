@@ -5,11 +5,12 @@
         flex-direction: column;
         align-items: center;
         font-size:15px;
+        margin-bottom: 200px;
       }
       .single-item {
          width: 700px;
         height: 500px;
-        background: #a74949;
+
       }
       .single-item img {
         width: 700px;
@@ -83,17 +84,19 @@
         height: 30px;
       }
       .post_bottom {
-        margin: 10px 0;
+
         width: 700px;
       }
       .post_bottom_top {
         display: flex;
-
+        padding: 5px 10px;
         justify-content: space-between;
+        background: #fff;
       }
       .post_bottom_top div {
         display: flex;
         align-items: center;
+        background-color: rgb(255, 255, 255);
       }
       .post_bottom_top div img {
         margin-right: 5px
@@ -104,11 +107,13 @@
         border-top: 2px solid #f0efef;
         overflow: scroll;
         scrollbar-width: 0px;
+         padding: 10px;
+         background-color: rgb(255, 255, 255);
       }
       .comment_list::-webkit-scrollbar {
     display: none; /* 웹킷 브라우저에서 스크롤바 숨김 */
   }
-      .comment {
+      .commentForm {
         display: flex;
         justify-content: center;
         align-items:center;
@@ -116,16 +121,16 @@
         border-top: 2px solid #f0efef;
         border-bottom: 2px solid #f0efef;
         padding: 10px 20px;
-
+background-color: rgb(255, 255, 255);
       }
-      .comment img {
+      .commentForm img {
         width: 40px;
         height: 40px;
       }
-      .comment form {
+      .commentForm form {
         width: 100%;
       }
-     .comment input {
+     .commentForm input {
              background-color: transparent;
              border: 2px solid #f0efef;
              caret-color: #222;
@@ -144,7 +149,7 @@
     .PostCategory {
           width: 700px;
    position: absolute;
-        top: 146px;
+        top: 145px;
         z-index: 10;
 
     }
@@ -158,10 +163,49 @@
       justify-content: center;
       border-radius: 0 0 10px 0;
     }
-      .post_top .post_top_left div {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-                    height:40px;
-                    padding: 3px 0;
-          }
+  .post_top .post_top_left div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+            height:40px;
+            padding: 3px 0;
+  }
+   .post_content {
+        margin: 10px 0  30px 0;
+        font-weight: 550;
+      }
+        .comment_box {
+          display: flex;
+          font-size: 14px;
+          margin: 12px 0;
+
+        }
+        .comment_box img {
+          width: 30px;
+          height: 30px;
+          margin-right: 10px;
+        }
+        .comment_box2 {
+
+        }
+        .comment {
+          display: flex;
+
+        }
+        .comment span{
+          font-weight: 600;
+          margin-right: 10px;
+        }
+        .comment p{
+          width: 400px;
+          word-wrap: break-word; /* 긴 단어가 넘을 때 줄 바꿈 */
+          overflow-wrap: break-word; /* 긴 단어가 넘을 때 줄 바꿈 (새로운 표준) */
+        }
+        .comment_date {
+          font-size: 12px;
+          color: rgba(34, 34, 34, .5);
+          margin-top: 7px;
+        }
+        div, form, p {
+          transition: all 0.3s ease;
+        }

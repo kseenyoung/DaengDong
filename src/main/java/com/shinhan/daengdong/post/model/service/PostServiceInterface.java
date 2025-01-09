@@ -1,6 +1,8 @@
 
 package com.shinhan.daengdong.post.model.service;
 
+import com.shinhan.daengdong.post.dto.CommentDTO;
+import com.shinhan.daengdong.post.dto.CommentVO;
 import com.shinhan.daengdong.post.dto.PostDTO;
 import com.shinhan.daengdong.post.vo.LikeVO;
 import com.shinhan.daengdong.post.vo.PostVO;
@@ -16,4 +18,6 @@ public interface PostServiceInterface {
     void deletePost(int postId);
     void createPost(PostDTO postDTO, List<String> imageUrls);
     void addLike(Long postId, String memberEmail);
+    CommentDTO addComment(CommentDTO commentDTO);
+    List<CommentVO> getCommentList(Long postId);
 }
