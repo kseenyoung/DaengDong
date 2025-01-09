@@ -1,5 +1,5 @@
 $(function () {
-    const socket = new WebSocket("ws://localhost:5555/daengdong/plan/screen");
+    const socket = new WebSocket("ws://localhost:5555/daengdong/place-ws");
 
     // 사용자 이벤트 추적 및 전송
     function trackEvents() {

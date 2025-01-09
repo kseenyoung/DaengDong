@@ -14,10 +14,12 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 public class WebSocketConfig implements WebSocketConfigurer {
 
     private final ChatWebSocketHandler chatWebSocketHandler;
+    private final PlanWebSocketHandler planWebSocketHandler;
 
     @Autowired
-    public WebSocketConfig(ChatWebSocketHandler chatWebSocketHandler) {
+    public WebSocketConfig(ChatWebSocketHandler chatWebSocketHandler, PlanWebSocketHandler planWebSocketHandler) {
         this.chatWebSocketHandler = chatWebSocketHandler;
+        this.planWebSocketHandler = planWebSocketHandler;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
                 .setAllowedOrigins("*");
 
         //for Plan
-        registry.addHandler(new PlanWebSocketHandler(), "/shareMap-ws")
+        registry.addHandler(planWebSocketHandler, "/shareMap-ws")
             .setAllowedOrigins("*");
     }
 
