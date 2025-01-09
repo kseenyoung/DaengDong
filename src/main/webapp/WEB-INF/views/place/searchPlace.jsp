@@ -7,778 +7,17 @@
   <meta charset="utf-8">
   <title>장소검색</title>
 
-  <!-- CSS파일 -->
-  <link rel="stylesheet" href="/daengdong/css/header.css">
-
   <!-- JavaScript 라이브러리 -->
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+  <!-- CSS파일 -->
+  <link rel="stylesheet" href="/daengdong/css/header.css">
+  <link rel="stylesheet" href="/daengdong/css/plan/addCompanion.css">
+  <link rel="stylesheet" href="/daengdong/css/plan/searchPlace.css">
 
   <!-- 외부 JSP 파일 -->
   <%@ include file="/WEB-INF/views/member/header.jsp" %>
 
-  <!-- 외부 style -->
-  <link rel="stylesheet" href="addCompanion.css">
-
-  <style>
-    .map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
-    .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
-    .map_wrap {position:relative;width:100%;height:930px;}
-    #menu_wrap {
-      position: fixed;
-      max-height: 100%;
-      overflow-y: auto;
-      top: 0;
-      left: 10%;
-      transform: translate(0, 0);
-      display: none;
-      bottom: 0;
-      width: 80%;
-      margin: 10px 0 30px 10px;
-      padding: 15px;
-      overflow: visible;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
-      z-index: 1000;
-      font-size: 13px;
-      border-radius: 15px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      border: 1px solid #ddd;
-    }
-    #menu_wrap.show {
-      display: block;
-    }
-
-    #menu_wrap.hidden {
-      display: none;
-    }
-
-    #modalOverlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 999;
-      display: none;
-    }
-
-    #modalOverlay.show {
-      display: block;
-    }
-
-    .bg_white {
-      background: #ffffff;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    #menu_wrap hr {
-      display: block;
-      height: 1px;
-      border: 0;
-      border-top: 2px solid #5F5F5F;
-      margin: 10px 0;
-    }
-
-    #menu_wrap .option {
-      text-align: center;
-    }
-
-    #menu_wrap .option p {
-      margin: 10px 0;
-      font-size: 14px;
-      color: #333;
-    }
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: transparent;
-      border: none;
-      font-size: 40px;
-      font-weight: bold;
-      color: #333;
-      cursor: pointer;
-      z-index: 1001;
-      transition: color 0.3s ease, transform 0.2s ease;
-    }
-
-    .close-btn:hover {
-      color: #ff5252;
-      transform: scale(1.2);
-    }
-
-    .close-btn:focus {
-      outline: none;
-    }
-
-    #pinbutton {
-      position: absolute;
-      padding: 0.8vw 1.8vw;
-      font-size: 1.5vw;
-      top: 10px;
-      left: 450px;
-      z-index: 100;
-      margin-left: 5px;
-      font-weight: bold;
-      color: #fff;
-      background-color: #4CAF50;
-      border: 2px solid #000;
-      border-radius: 5px;
-      cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-    #pinbutton:hover {
-      background-color: #45A049;
-    }
-
-    #menu_wrap .option button {
-      margin: 5px;
-      padding: 10px 20px;
-      font-size: 14px;
-      font-weight: bold;
-      color: #fff;
-      background-color: #4CAF50;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    #menu_wrap .option button:hover {
-      background-color: #45A049;
-      transform: translateY(-2px);
-    }
-
-    #placesList li {list-style: none;}
-    #placesList .item {position:relative;border-bottom:1px solid #888;overflow: hidden;cursor: pointer;min-height: 65px;}
-    #placesList .item span {display: block;margin-top:4px;}
-    #placesList .item h5, #placesList .item .info {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-    #placesList .item .info{padding:10px 0 10px 55px;}
-    #placesList .info .gray {color:#8a8a8a;}
-    #placesList .info .jibun {padding-left:26px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;}
-    #placesList .info .tel {color:#009900;}
-    #placesList .item .markerbg {float:left;position:absolute;width:36px; height:37px;margin:10px 0 0 10px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;}
-    #placesList .item .marker_1 {background-position: 0 -10px;}
-    #placesList .item .marker_2 {background-position: 0 -56px;}
-    #placesList .item .marker_3 {background-position: 0 -102px}
-    #placesList .item .marker_4 {background-position: 0 -148px;}
-    #placesList .item .marker_5 {background-position: 0 -194px;}
-    #placesList .item .marker_6 {background-position: 0 -240px;}
-    #placesList .item .marker_7 {background-position: 0 -286px;}
-    #placesList .item .marker_8 {background-position: 0 -332px;}
-    #placesList .item .marker_9 {background-position: 0 -378px;}
-    #placesList .item .marker_10 {background-position: 0 -423px;}
-    #placesList .item .marker_11 {background-position: 0 -470px;}
-    #placesList .item .marker_12 {background-position: 0 -516px;}
-    #placesList .item .marker_13 {background-position: 0 -562px;}
-    #placesList .item .marker_14 {background-position: 0 -608px;}
-    #placesList .item .marker_15 {background-position: 0 -654px;}
-    #pagination {margin:10px auto;text-align: center;}
-    #pagination a {display:inline-block;margin-right:10px;}
-    #pagination .on {font-weight: bold; cursor: default;color:#777;}
-
-    /* 카테고리 */
-    #category {position:absolute;top:10px;left:10px;border-radius: 5px; border:1px solid #909090;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);background: #fff;overflow: hidden;z-index: 2;}
-    #category li {float:left;list-style: none;width:50px;border-right:1px solid #acacac;padding:6px 0;text-align: center; cursor: pointer;}
-    #category li.on {background: #eee;}
-    #category li:hover {background: #ffe6e6;border-left:1px solid #acacac;margin-left: -1px;}
-    #category li:last-child{margin-right:0;border-right:0;}
-    #category li span {display: block;margin:0 auto 3px;width:27px;height: 28px;}
-    #category li .category_bg {background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png) no-repeat;}
-    #category li .bank {background-position: -10px 0;}
-    #category li .mart {background-position: -10px -36px;}
-    #category li .pharmacy {background-position: -10px -72px;}
-    #category li .oil {background-position: -10px -108px;}
-    #category li .cafe {background-position: -10px -144px;}
-    #category li .store {background-position: -10px -180px;}
-    #category li.on .category_bg {background-position-x:-46px;}
-    .placeinfo_wrap {position:absolute;bottom:28px;left:-150px;width:300px;}
-    .placeinfo {position:relative;width:100%;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;padding-bottom: 10px;background: #fff;}
-    .placeinfo:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
-    .placeinfo_wrap .after {content:'';position:relative;margin-left:-12px;left:50%;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
-    .placeinfo a, .placeinfo a:hover, .placeinfo a:active{color:#fff;text-decoration: none;}
-    .placeinfo a, .placeinfo span {display: block;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-    .placeinfo span {margin:5px 5px 0 5px;cursor: default;font-size:13px;}
-    .placeinfo .title {font-weight: bold; font-size:14px;border-radius: 6px 6px 0 0;margin: -1px -1px 0 -1px;padding:10px; color: #fff;background: #d95050;background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
-    .placeinfo .tel {color:#0f7833;}
-    .placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-    }
-
-    #category-container {
-      width: 100%;
-      margin-bottom: 40px;
-    }
-
-    #category {
-      display: flex;
-      justify-content: center;
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    #category li {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 200px;
-      margin: 0px;
-      cursor: pointer;
-    }
-
-    #placesList {
-      width: 90%;
-      max-height: 400px;
-      overflow-y: auto;
-      padding: 20px;
-      background: linear-gradient(to bottom right, #ffffff, #e3f2fd);
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-      list-style: none;
-    }
-
-    #placesList li {
-      display: flex;
-      align-items: center;
-      height: 50px;
-      padding: 10px;
-      margin-bottom: 10px;
-      background: #ffffff;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      cursor: pointer;
-    }
-
-    #placesList li:hover {
-      background: #e3f2fd;
-      transform: translateY(-3px);
-    }
-
-    #placesList li h5 {
-      font-size: 16px;
-      font-weight: bold;
-      margin: 0;
-      color: #333;
-    }
-
-    #placesList li p {
-      font-size: 14px;
-      color: #555;
-      margin: 5px 0 0;
-    }
-
-    /* 사이드바 */
-    body, h4, p, button, a {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Arial', sans-serif;
-    }
-
-    #sidebar {
-      display: none;
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 350px;
-      background: linear-gradient(to bottom right, #ffffff, #e3f2fd);
-      border-radius: 10px;
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-      padding: 20px;
-      overflow: hidden;
-      z-index: 500;
-    }
-
-    #sidebar .close-btn {
-      display: block;
-      background: #ff6b6b;
-      color: white;
-      border: none;
-      font-size: 16px;
-      font-weight: bold;
-      padding: 10px 15px;
-      border-radius: 50%;
-      cursor: pointer;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-      transition: transform 0.2s ease, background-color 0.3s ease;
-    }
-
-    #sidebar .close-btn:hover {
-      background-color: #e53935;
-      transform: scale(1.1);
-    }
-
-    #sidebar .sidebar-title {
-      font-size: 20px;
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    #sidebar .sidebar-info {
-      font-size: 14px;
-      color: #666;
-      margin: 10px 0;
-      line-height: 1.6;
-      border-bottom: 1px dashed #ddd;
-      padding-bottom: 5px;
-    }
-
-    #sidebar .add-btn {
-      background: #4caf50;
-      border: none;
-      margin: 20px 0;
-      cursor: pointer;
-    }
-
-    #sidebar .map-link {
-      background: #2196f3;
-      text-decoration: none;
-      margin-top: 30px;
-    }
-
-    #sidebar .button {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      text-align: center;
-      border-radius: 8px;
-      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    #sidebar .add-btn:hover {
-      background-color: #388e3c;
-      transform: translateY(-2px);
-    }
-
-    #sidebar .map-link:hover {
-      background-color: #1e88e5;
-      transform: translateY(-2px);
-    }
-    /* 자세히보기 장소 모달 */
-    #planModal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      animation: fadeIn 0.3s ease-in-out;
-    }
-
-    .modal-content {
-      position: fixed;
-      background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-      padding: 20px;
-      width: 400px;
-      border-radius: 15px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-      text-align: center;
-      z-index: 1000;
-      animation: scaleIn 0.3s ease-in-out;
-      justify-content: center;
-      align-items: center;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    .modal-content h3 {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 15px;
-      color: #0d47a1; /* 메인 텍스트 색상 */
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* 텍스트 그림자 */
-    }
-
-    #planList {
-      max-height: 200px;
-      overflow-y: auto;
-      margin-bottom: 15px;
-      padding: 10px;
-      background: #ffffff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* 안쪽 그림자 */
-    }
-
-    #selectPlanBtn, #closeModalBtn {
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 5px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 버튼 그림자 */
-      transition: background-color 0.3s ease, transform 0.2s ease; /* 호버 효과 */
-    }
-
-    #selectPlanBtn {
-      background: #4caf50;
-      color: white;
-    }
-
-    #selectPlanBtn:hover {
-      background: #45a049;
-      transform: scale(1.05); /* 약간 확대 */
-    }
-
-    #closeModalBtn {
-      background: #f44336;
-      color: white;
-    }
-
-    #closeModalBtn:hover {
-      background: #e53935;
-      transform: scale(1.05); /* 약간 확대 */
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-
-    @keyframes scaleIn {
-      from {
-        transform: scale(0.9);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    /* 선과 거리 */
-    .dot {overflow:hidden;float:left;width:12px;height:12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/mini_circle.png');}
-    .dotOverlay {position:relative;bottom:10px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;font-size:12px;padding:5px;background:#fff;}
-    .dotOverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
-    .number {font-weight:bold;color:#ee6152;}
-    .dotOverlay:after {content:'';position:absolute;margin-left:-6px;left:50%;bottom:-8px;width:11px;height:8px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white_small.png')}
-    .distanceInfo {position:relative;top:5px;left:5px;list-style:none;margin:0;}
-    .distanceInfo .label {display:inline-block;width:50px;}
-    .distanceInfo:after {content:none;}
-
-    /* 장소추가 */
-    #addPlace{
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 400px;
-      margin: 10px 0 30px 10px;
-      padding: 15px;
-      overflow-y: auto;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
-      z-index: 1;
-      font-size: 13px;
-      border-radius: 15px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      border: 1px solid #ddd;
-    }
-
-    .button{
-      display: flex;
-      flex-direction: column;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Arial', sans-serif;
-    }
-    .line {
-      border: 0;
-      border-bottom: 1px solid #ddd;
-      margin: 0px 0;
-    }
-
-    /* 모달 */
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-
-    .modal-content {
-      top : 20%;
-      background-color: #fff;
-      margin: 15% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      border-radius: 10px;
-      width: 80%;
-      max-width: 1200px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
-    }
-
-
-
-    #list_wrap {
-      position: absolute;
-      top: 50px;
-      left: 0;
-      bottom: 0;
-      width: 400px;
-      margin: 10px 0 30px 10px;
-      padding: 15px;
-      overflow-y: auto;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
-      z-index: 500;
-      font-size: 13px;
-      border-radius: 15px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      border: 1px solid #ddd;
-      overflow: visible;
-      flex-direction: column;
-    }
-
-
-    #addPlaceBtn {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 5px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      z-index : 1050;
-      position: absolute;
-      right: 15px;
-    }
-
-    #addPlaceBtn:hover, .delete-btn:hover {
-      background-color: #45a049;
-    }
-
-    .search-input {
-      width: 80%;
-      max-width: 600px;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      outline: none;
-      transition: box-shadow 0.2s ease;
-    }
-
-    .search-input:focus {
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      border-color: #007BFF;
-    }
-
-    #placeList{
-      list-style:none;
-      padding:0;
-      margin:0;
-      margin-top: 50px;
-    }
-
-
-    .place-item {
-      margin-bottom: 10px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      background-color: #f9f9f9;
-      color: black;
-      font-size: 16px;
-      font-family: Arial, sans-serif;
-      z-index: 1050;
-      position: relative
-    }
-    .delete-btn {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 5px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      z-index : 1050;
-      position: absolute;
-      right: 10px;
-      top: 40%;
-      transform: translateY(-50%);
-    }
-
-
-    #day {
-      display: flex; /* 버튼을 한 줄에 배치 */
-      gap: 10px; /* 버튼 간격 */
-      overflow-x: auto; /* 가로 스크롤 활성화 */
-      white-space: nowrap; /* 버튼 줄 바꿈 방지 */
-      padding: 10px; /* 내부 여백 */
-    }
-
-    .day-btn {
-      display: inline-block;
-      background-color: #4CAF50;
-      color: white;
-      border: 1px solid gray;
-      padding: 10px 15px;
-      font-size: 16px;
-      text-align: center;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    #together {
-      display: flex;
-      align-items: center;
-      gap: 10px; /* 버튼과 입력 필드 간 간격 */
-      margin: 20px 0;
-    }
-
-    #addCompanionBtn {
-      background-color: #007BFF; /* 버튼 색상 */
-      color: white; /* 텍스트 색상 */
-      border: none; /* 테두리 제거 */
-      border-radius: 5px; /* 버튼 모서리 둥글게 */
-      padding: 10px 15px; /* 버튼 크기 조정 */
-      cursor: pointer; /* 커서 모양 변경 */
-      font-size: 14px; /* 텍스트 크기 */
-      transition: background-color 0.3s; /* 호버 애니메이션 */
-    }
-
-    #addCompanionBtn:hover {
-      background-color: #0056b3; /* 호버 시 버튼 색상 */
-    }
-
-    #companionEmailInput {
-      flex-grow: 1; /* 입력 필드가 가능한 공간을 채우도록 설정 */
-      padding: 10px; /* 내부 여백 */
-      border: 1px solid #ccc; /* 테두리 색상 */
-      border-radius: 5px; /* 모서리 둥글게 */
-      font-size: 14px; /* 텍스트 크기 */
-      box-sizing: border-box; /* 박스 모델 설정 */
-    }
-
-    #companionEmailInput:focus {
-      border-color: #007BFF; /* 포커스 시 테두리 색상 변경 */
-      outline: none; /* 기본 아웃라인 제거 */
-    }
-
-    #companionSection,
-    #daysSection {
-      height: 80%;
-      margin-top: 20px;
-      padding: 10px;
-    }
-    /* 제목과 버튼을 감싸는 컨테이너 */
-    #mainControls {
-      display: flex;
-      flex-direction: column; /* 세로 방향으로 정렬 */
-      align-items: center; /* 중앙 정렬 */
-      margin: 20px; /* 외부 여백 */
-    }
-
-    /* 플랜 제목 스타일 */
-    #planTitle {
-      font-size: 24px; /* 제목 글자 크기 */
-      font-weight: bold; /* 굵은 텍스트 */
-      margin-bottom: 20px; /* 제목과 버튼 사이 여백 */
-    }
-
-    /* 버튼 그룹 */
-    #mainControls {
-      flex-direction: row; /* 가로 방향으로 정렬 */
-      justify-content: center; /* 가운데 정렬 */
-      display: flex;
-      gap: 20px; /* 버튼 간 간격 */
-    }
-
-    /* 버튼 스타일 */
-    #mainControls button {
-      background-color: #007BFF; /* 버튼 배경색 */
-      color: white; /* 버튼 텍스트 색상 */
-      border: none; /* 테두리 제거 */
-      border-radius: 5px; /* 모서리 둥글게 */
-      padding: 5px 50px; /* 버튼 크기 */
-      font-size: 12px; /* 글자 크기 */
-      cursor: pointer; /* 마우스 커서 */
-      transition: background-color 0.3s; /* 호버 애니메이션 */
-    }
-
-    /* 버튼 호버 효과 */
-    #mainControls button:hover {
-      background-color: #0056b3; /* 호버 시 색상 */
-    }
-
-    /* 채팅방 접속하기 버튼 CSS */
-    #btnChat {
-      position: absolute;
-      bottom: 20px; /* 맵 하단에서 20px 위 */
-      right: 20px; /* 맵 오른쪽에서 20px 왼쪽 */
-      z-index: 10; /* 맵 위에 표시되도록 z-index 설정 */
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 14px;
-      border-radius: 5px;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    }
-
-    #btnChat:hover {
-      background-color: #0056b3;
-    }
-  </style>
 </head>
 <body>
 
@@ -900,12 +139,12 @@
     </div>
 
     <%-- 화면공유 --%>
-     <div id="shareMapContainer" style="position: relative;">
-       <div id="shareMap" style="width: 100%; height: 400px;"></div>
-       <button id="shareScreenBtn" style="position: absolute; bottom: 10px; right: 10px; z-index: 1000;">
-         화면 공유
-       </button>
-     </div>
+    <%-- <div id="shareMapContainer" style="position: relative;">
+      <div id="shareMap" style="width: 100%; height: 400px;"></div>
+      <button id="shareScreenBtn" style="position: absolute; bottom: 10px; right: 10px; z-index: 1000;">
+        화면 공유
+      </button>
+    </div> --%>
 
     <!-- 동행자 리스트 -->
     <ul id="companionList"></ul>
@@ -943,15 +182,15 @@
   </div>
 </div>
 
-<script>
-  const planId = "<%= session.getAttribute("planId") %>";
-  console.log("planId : ", planId);
-  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-  const host = window.location.host;
-  const webSocketUrl = protocol + '//' + host + '/daengdong/shareMap-ws?planId=' + planId;
+<%-- <script> --%>
+<%--   const planId = "<%= session.getAttribute("planId") %>"; --%>
+<%--   console.log("planId : ", planId); --%>
+<%--   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'; --%>
+<%--   const host = window.location.host; --%>
+<%--   const webSocketUrl = protocol + '//' + host + '/daengdong/shareMap-ws?planId=' + planId; --%>
 
-  const webSocket = new WebSocket(webSocketUrl);
-</script>
+<%--   const webSocket = new WebSocket(webSocketUrl); --%>
+<%-- </script> --%>
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62bd6cc1e013b8a659ae61760dc9fd7f&libraries=services"></script>
 <script>
@@ -1084,6 +323,30 @@
     if (event.target && event.target.classList.contains("add-btn")) {
       const placeName = event.target.getAttribute("data-place-name");
       const placeAddress = event.target.getAttribute("data-place-address");
+      const x = event.target.getAttribute("data-place-x"); // x 좌표
+      const y = event.target.getAttribute("data-place-y"); // y 좌표
+
+      // 장소 데이터
+      const place = {
+        name: placeName,
+        address: placeAddress,
+        x: x,
+        y: y
+      };
+
+      // 웹소켓으로 전송
+      webSocket.send(JSON.stringify({
+        type: "shareMap",
+        data: place
+      }));
+
+      // WebSocket으로 장소 데이터 전송
+      //webSocket.send(JSON.stringify(place));
+      alert("장소가 공유되었습니다!");
+
+      // 로컬에서도 추가 및 화면 업데이트
+      // inMemoryPlaces.push(place);
+      // renderPlaceList();
 
       addPlaceToPlan(placeName, placeAddress);
     }
@@ -1535,7 +798,7 @@
   document.getElementById('selectPlanBtn').addEventListener('click', () => {
     const selectedPlan = document.querySelector('input[name="plan"]:checked');
     if (selectedPlan) {
-      const planId = selectedPlan.value;
+      planId = selectedPlan.value;
       alert(`선택된 Plan ID: ${planId}`);
       document.getElementById('planModal').style.display = 'none'; // 모달 닫기
     } else {
@@ -1913,6 +1176,8 @@
     const openMenuBtn = document.getElementById("addPlaceBtn");
     const closeMenuBtn = document.getElementById("closeMenu");
 
+    const placeListCoontainer = document.getElementById("placeListContainer");
+
     // 모달 열기
     openMenuBtn.addEventListener("click", function () {
       menuWrap.classList.add("show");
@@ -1996,8 +1261,25 @@
 
 </script>
 
-<script src="<%= request.getContextPath() %>/js/addPlan.js"></script>
+<%-- <script src="<%= request.getContextPath() %>/js/addPlan.js"></script> --%>
 <script src="/daengdong/js/addCompanion.js"></script>
 <script src="/daengdong/js/websocket.js"></script>
+<script>
+  // 서버에서 전달받은 planId를 전역 변수로 설정
+  planId = '<%= session.getAttribute("planId") %>';
+  console.log("JSP에서 전달된 planId:", planId);
+
+  <%--// WebSocket URL 생성--%>
+  <%--const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';--%>
+  <%--const host = window.location.host;--%>
+  <%--const webSocketUrl = `${protocol}//${host}/daengdong/shareMap-ws?planId=${planId}`;--%>
+
+  <%--// WebSocket 연결--%>
+  <%--const webSocket = new WebSocket(webSocketUrl);--%>
+
+  <%--webSocket.onopen = () => console.log("WebSocket 연결 성공:", webSocketUrl);--%>
+  <%--webSocket.onerror = (err) => console.error("WebSocket 오류:", err);--%>
+  <%--webSocket.onmessage = (event) => console.log("수신된 메시지:", event.data);--%>
+</script>
 </body>
 </html>

@@ -20,7 +20,9 @@ public class HttpSessionInterceptor implements HandshakeInterceptor {
             if (httpSession != null) {
                 // HttpSession에서 데이터를 WebSocketSession의 Attributes에 추가
                 attributes.put("member", httpSession.getAttribute("member"));
+                attributes.put("currentPlanId", httpSession.getAttribute("currentPlanId"));
                 log.info("beforeHandshake put member: " + attributes.get("member"));
+                log.info("WebSocket Attribute에 currentPlanId={} 추가", httpSession.getAttribute("currentPlanId"));
             }
         }
         return true;
