@@ -129,6 +129,7 @@
 .post_info {
     display: flex;
     justify-content: space-between;
+    margin-top: 5px;
 }
 .post_info .post_info_left {
     display: flex;
