@@ -1,5 +1,7 @@
 package com.shinhan.daengdong.post.model.repository;
 
+import com.shinhan.daengdong.post.dto.CommentDTO;
+import com.shinhan.daengdong.post.dto.CommentVO;
 import com.shinhan.daengdong.post.dto.PostDTO;
 import com.shinhan.daengdong.post.vo.LikeVO;
 import com.shinhan.daengdong.post.vo.PostVO;
@@ -18,4 +20,7 @@ public interface PostRepositoryInterface {
     void addLike(Long postId, String memberEmail);
     void deleteLike(Long postId, String memberEmail);
     int checkLike(Long postId, String memberEmail);
+
+    CommentDTO saveComment(CommentDTO commentDTO);
+    List<CommentVO> findCommentById(long postId);
 }

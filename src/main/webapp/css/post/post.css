@@ -124,6 +124,7 @@
 }
 .post .post_content p {
     font-size: var(--font-size0-5);
+    white-space: pre-line;
 }
 .post_info {
     display: flex;
