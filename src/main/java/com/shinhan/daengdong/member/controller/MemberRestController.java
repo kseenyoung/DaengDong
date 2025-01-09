@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Slf4j
 @RestController
+@MultipartConfig
 public class MemberRestController {
 
     @Autowired
@@ -22,6 +24,7 @@ public class MemberRestController {
     @Autowired
     private S3Service s3Service;
 
+    //todo: 업로드 시 null값이 들어오는 문제 해결할 것.
     @PostMapping("/myProfile")
     public void updateProfile(@RequestParam(value = "newPhoto", required = false) MultipartFile newPhoto) {
         log.info("newPhoto: " + newPhoto);

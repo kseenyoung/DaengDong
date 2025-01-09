@@ -39,10 +39,10 @@
                         <label for="newPhoto" class="form-label">프로필 이미지 변경</label>
                         <input type="file" id="newPhoto" class="form-control-file" accept="image/*">
                     </div>
-                    <div class="mb-3">
-                        <label for="newNickname" class="form-label">새로운 닉네임</label>
-                        <input type="text" class="form-control" id="newNickname" placeholder="새 닉네임 입력" required>
-                    </div>
+<%--                    <div class="mb-3">--%>
+<%--                        <label for="newNickname" class="form-label">새로운 닉네임</label>--%>
+<%--                        <input type="text" class="form-control" id="newNickname" placeholder="새 닉네임 입력" required>--%>
+<%--                    </div>--%>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" id="confirm-update-profile" class="btn btn-primary">저장</button>

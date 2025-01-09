@@ -15,13 +15,6 @@
   </properties>
   <dependencies>
 
-    <!--fileupload-->
-    <dependency>
-      <groupId>commons-fileupload</groupId>
-      <artifactId>commons-fileupload</artifactId>
-      <version>1.4</version>
-    </dependency>
-
     <!--AWS SDK-->
     <dependency>
       <groupId>com.amazonaws</groupId>
