@@ -58,6 +58,9 @@
     // 콘솔에 실질적으로 전송될 객체 출력
     console.log("전송 데이터:", requestData);
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const planId = urlParams.get("planId");
+
     // 서버로 전송
     fetch('/daengdong/plan/create', {
       method: 'POST',
@@ -66,8 +69,9 @@
     }).then(response => {
       if (response.ok) {
         alert("플랜이 성공적으로 생성되었습니다!");
-        location.href = "/daengdong/plan/place";
+        location.href = `/daengdong/plan/place?planId=${planId}`;
       } else {
+        location.href = "/daengdong/plan/place";
         alert("플랜 생성에 실패했습니다.");
       }
     }).catch(error => {
