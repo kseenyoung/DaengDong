@@ -117,6 +117,23 @@ public class MemberController {
         return "member/profileFragment";
     }
 
+    //마이페이지 > 유저 사진 변경
+    @PostMapping("modifyProfile.do")
+    public void updateProfile(@RequestBody ImageDTO image, HttpSession session) {
+        log.info("imageUrl: " + image);
+        MemberDTO member = (MemberDTO) session.getAttribute("member");
+        member.setMember_profile_photo(image.getImageUrl());
+        log.info("member: " + member);
+        memberService.modifyProfilePhoto(member);
+    }
+
+    //마이페이지 > 유저 닉네임 변경 페이지 보기
+    @GetMapping("viewNickNameEdit.do")
+    public String  viewNickNameEdit() {
+        return "member/editNickName";
+    }
+
+
 //    @PostMapping("modifyNickname.do")
 //    @ResponseBody
 //    public void modifyNickname(@RequestBody MemberDTO memberDTO) {

@@ -47,4 +47,6 @@ public interface MemberRepositoryInterface {
     void deletePlan(long planId);
 
     List<PetDTO> selectPet(String memberEmail);
+
+    void modifyProfilePhoto(MemberDTO member);
 }

@@ -161,6 +161,10 @@ public class MemberServiceImpl implements MemberServiceInterface{
             age--;
         }
         return age;
+    }
 
+    @Override
+    public void modifyProfilePhoto(MemberDTO member) {
+        memberRepository.modifyProfilePhoto(member);
     }
 }

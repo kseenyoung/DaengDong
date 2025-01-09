@@ -119,12 +119,12 @@
     <!--    where photo_card_id = #{photo_card_id}-->
     <!--</delete>-->
 
-    <!--&lt;!&ndash;프로필 사진 변경하기&ndash;&gt;-->
-    <!--<update id="updateprofilePhoto" parameterType="memberDTO">-->
-    <!--    update members-->
-    <!--    set member_profile_photo = #{memberprofilephoto}-->
-    <!--    where member_email = #{memberEmail}-->
-    <!--</update>-->
+    <!--프로필 사진 변경하기-->
+    <update id="modifyProfilePhoto" parameterType="memberDTO">
+        update members
+        set member_profile_photo = #{member_profile_photo}
+        where member_email = #{member_email}
+    </update>
 
     <!--&lt;!&ndash;프로필 사진 등록하기 -> 기존사용자가 사진만 없을때&ndash;&gt;-->
     <!--<update id="updateprofilePhoto" parameterType="memberDTO">-->

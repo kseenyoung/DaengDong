@@ -9,59 +9,10 @@ $(document).ready(function () {
       type: "get",
       success: function (response) {
         $("#left-section").html(response);
-        imageSubmitHandler();
       },
       error: function (err) {
         console.log(err)
       }
-    });
-
-  }
-
-  function imageSubmitHandler() {
-    const fileInput = document.getElementById("newPhoto");
-
-    $(fileInput).on("change", function() {
-      if (this.files && this.files[0]) {
-        previewImage(this.files[0]);
-      }
-    });
-
-    $("#editNicknameForm").on("submit", function(e) {
-      e.preventDefault();
-
-      if (!fileInput.files || !fileInput.files[0]) {
-        alert("파일을 선택해주세요.");
-        return;
-      }
-
-      const file = fileInput.files[0];
-      const formData = new FormData();
-      formData.append("newPhoto", file);
-
-      console.log("전송할 파일:", file);
-      console.log("FormData 내용:", [...formData.entries()]);
-
-      $.ajax({
-        url: `${path}/myProfile`,
-        type: "POST",
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-          console.log("서버 응답:", response);
-          alert("프로필이 성공적으로 업데이트되었습니다.");
-          location.reload();  // 페이지 새로고침하여 변경된 이미지 표시
-        },
-        error: function(xhr, status, error) {
-          console.error("에러 상세정보:", {
-            status: status,
-            error: error,
-            response: xhr.responseText
-          });
-          alert("프로필 업데이트 중 오류가 발생했습니다.");
-        }
-      });
     });
   }
 
@@ -145,7 +96,6 @@ $(document).ready(function () {
       .off("click", ".insert-follower")
 
       //myProfile
-      .off("click", "confirm-update-profile")
 
       //trip
       .off("click", ".delete-plan")
@@ -174,7 +124,7 @@ $(document).ready(function () {
     $(document).on("click", ".insert-follower", addFollowing);
 
     //myProfile
-    // $(document).on("click", "#confirm-update-profile", editProfile)
+    $(document).on("click", "#view-edit-nickname", viewEditNickname);
 
     //trip
     $(document).on("click", ".delete-plan", deletePlan);
@@ -443,6 +393,22 @@ $(document).ready(function () {
       success: function () {
         // 페이지 새로고침 대신 해당 요소만 제거
         element.remove();
+      },
+      error: function (err) {
+        console.log(err);
+      }
+    });
+  }
+
+  function viewEditNickname() {
+    let member_nickname = $(this).data("member-nickname");
+    console.log(member_nickname);
+
+    $.ajax({
+      url: `${path}/auth/viewNickNameEdit.do`,
+      type: 'get',
+      success: function (response) {
+        $(".username-container").html(response);
       },
       error: function (err) {
         console.log(err);

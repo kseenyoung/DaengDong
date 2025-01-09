@@ -23,6 +23,11 @@
 </head>
 
 <body>
+<form id="uploadForm" method="post" enctype="multipart/form-data">
+    <input type="file" id="file" name="file" />
+    <button type="button" onclick="uploadFile()">이미지 업로드</button>
+</form>
+
 <!--  div는 위치나 형태?를 나타낸다. 선택자는 최대 2개, 태그만 있는 경우는
 무조건 앞에 선택자 써주기  -->
 <div id="container">
@@ -30,16 +35,20 @@
         <div id="header_box">
             <h1 id="logo">댕동</h1>
             <div id="header_right">
+                <a href="">
+                    <img src="https://daengdong-bucket.s3.amazonaws.com/2ff2135a-b82b-4c3a-a483-b6f765d23aa0_bell.png" alt="알림" width="30" height="30"/>
+                    <span class="alt-text"></span>
+                </a>
                 <a href="${path}/post/posts">
-                    <img src="./images/community.png" alt="커뮤니티" width="30" height="30" />
+                    <img src="https://daengdong-bucket.s3.amazonaws.com/27910ecc-028d-457c-af07-0529c13d5d5b_heart.png" alt="커뮤니티" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
                 <a href="${path}/plan/create">
-                    <img src="./images/plan.png" alt="플랜" width="30" height="30" />
+                    <img src="https://daengdong-bucket.s3.amazonaws.com/2578b82d-fe9d-4304-8bbb-e365a4666a70_add.png" alt="플랜" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
                 <a href="${path}/auth/viewMypage.do">
-                    <img src="./images/user.png" alt="사용자" width="30" height="30" />
+                    <img src="https://daengdong-bucket.s3.amazonaws.com/b3eb7fe8-cbd7-4dc8-a4e2-fd88cd1ca577_single.png" alt="사용자" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
             </div>
@@ -133,6 +142,39 @@
     </main>
 </div>
 </body>
+
+<script>
+  function uploadFile() {
+    const formData = new FormData();
+    const fileInput = document.getElementById('file');
+
+    if (fileInput.files.length === 0) {
+      alert("파일을 선택해주세요!");
+      return;
+    }
+
+    formData.append("file", fileInput.files[0]);
+
+    fetch('${path}/api/s3/upload', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.text(); // 성공 시 서버에서 반환된 URL 가져오기
+        } else {
+          throw new Error("업로드 실패!");
+        }
+      })
+      .then(data => {
+        alert("업로드 성공: " + data);
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        alert("업로드 실패: " + error.message);
+      });
+  }
+</script>
 
 <script>
   // use a script tag or an external JS file
