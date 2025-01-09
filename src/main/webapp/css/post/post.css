@@ -210,8 +210,8 @@
 }
 #fileButton {
     background: var(--color-blue);;
-    padding: 2px;
-    font-size: var(--font-size2);
+    padding: 4px;
+    font-size: var(--font-size1);
     border-radius: 5px;
     margin: 15px 0;
     color: #fff;
