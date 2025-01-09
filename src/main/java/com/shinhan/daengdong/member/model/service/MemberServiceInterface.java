@@ -1,6 +1,7 @@
 package com.shinhan.daengdong.member.model.service;
 
 import com.shinhan.daengdong.member.dto.*;
+import com.shinhan.daengdong.pet.dto.PetDTO;
 import com.shinhan.daengdong.post.dto.PostDTO;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 
@@ -43,4 +44,8 @@ public interface MemberServiceInterface {
     List<PostDTO> getMyPosts(String memberEmail);
 
     void deletePlan(long planId);
+
+    List<PetDTO> selectPet(String memberEmail);
+
+    void modifyProfilePhoto(MemberDTO member);
 }

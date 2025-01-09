@@ -49,6 +49,6 @@ public class OauthController {
             return "redirect:/auth/signUp.do";
         }
 
-        return "redirect:/home";
+        return "redirect:/";
     }
 }

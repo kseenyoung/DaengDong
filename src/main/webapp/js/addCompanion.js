@@ -60,7 +60,7 @@ document.getElementById("companionForm").addEventListener("submit", function (e)
 
 // 동행자 추가 함수
 function addCompanion(email) {
-    fetch(`addCompanion`, {
+    fetch(` addCompanion`, {
         method: 'POST',
         headers: {'Content-Type': 'text/plain'},
         body: email

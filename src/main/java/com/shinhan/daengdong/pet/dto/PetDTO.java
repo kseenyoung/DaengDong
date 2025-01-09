@@ -14,13 +14,13 @@ public class PetDTO {
 
     private static final String datePattern = "yy/mm/dd";
 
-    private Integer petId;
-    private String memberEmail;
-    private String petName;
-    private String petGender;
-    @JsonFormat(pattern = datePattern)
-    private Date petBirthday;
-    private String petBloodType;
-    private Integer petProfilePhoto;
-    private String petSpecies;
+    private Integer pet_id;
+    private String member_email;
+    private String pet_name;
+    private String pet_gender;
+    private Date pet_birthday;
+    private String pet_blood_type;
+    private String pet_profile_photo;
+    private String pet_species;
+    private int pet_age;
 }
