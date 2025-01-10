@@ -1,9 +1,11 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="path" value="${pageContext.servletContext.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-  <%@ page contentType="text/html;charset=UTF-8" language="java" %>
   <meta charset="utf-8">
   <title>장소검색</title>
 
@@ -11,13 +13,17 @@
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
   <!-- CSS파일 -->
-  <link rel="stylesheet" href="/daengdong/css/header.css">
-  <link rel="stylesheet" href="/daengdong/css/plan/addCompanion.css">
-  <link rel="stylesheet" href="/daengdong/css/plan/searchPlaceImpl.css">
+  <link rel="stylesheet" href="${path}/css/header.css">
+  <link rel="stylesheet" href="${path}/css/plan/addCompanion.css">
+  <link rel="stylesheet" href="${path}/css/plan/searchPlace.css">
 
   <!-- 외부 JSP 파일 -->
   <%@ include file="/WEB-INF/views/member/header.jsp" %>
 
+  <script src="${path}/js/chat/planChat.js"></script>
+  <script>
+    const path = "${pageContext.servletContext.contextPath}";
+  </script>
 </head>
 <body>
 
@@ -66,11 +72,15 @@
   <button id = "addPlanBtn" class="add-btn button">+ 내 일정에 추가</button>
   <a id="map-link" href="#" target="_blank" class="map-link button">자세히 보기</a>
 </div>
-
 <div class="map_wrap">
   <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
   <!-- 채팅방 접속하기 버튼 -->
   <button id="btnChat">채팅방 접속하기</button>
+  <!-- 채팅 모달 -->
+  <div id="chatModal" class="chat-modal">
+    <div id="chatContent"></div>
+    <button id="closeChatModal" class="close-btn">✖</button>
+  </div>
   <button id = "pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
   <div id="menu_wrap" class="bg_white">
     <button id="closeMenu" class="close-btn">✖</button>
