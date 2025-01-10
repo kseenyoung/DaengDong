@@ -1,13 +1,43 @@
 $(document).ready(function () {
   $(document).off("click", "#sendButton")
-  $(document).off("keypress", "#messageInput")
+    .off("keypress", "#messageInput")
+    .off("click", "#closeChatModal");
 
   $(document).on("click", "#sendButton", sendMessage);
-  $(document).on("keypress", "#messageInput", pressEnter)
+  $(document).on("keypress", "#messageInput", pressEnter);
+  $(document).on("click", "#closeChatModal", closeChatModal);
 
-  const planId = 1;
+  const chatHistory = [];
+  const planId = currentPlanId;
+  console.log(planId);
   let ws;
   connectWebSocket(planId)
+
+  const chatModal = document.getElementById("chatModal");
+  const btnChat = document.getElementById("btnChat");
+  const chatContent = document.getElementById("chatContent");
+
+  // 채팅 모달 열기
+  btnChat.addEventListener("click", function () {
+    console.log("listener: " + planId);
+    // AJAX로 chatFragment.jsp를 로드
+    fetch(`${path}/chat/room/${planId}`)
+      .then(response => response.text())
+      .then(data => {
+        chatContent.innerHTML = data; // 로드된 콘텐츠 삽입
+        $("#chatModal").fadeIn(); // jQuery로 fadeIn 효과
+
+        setTimeout(() => {
+          loadChatHistory();
+          hideUnreadBadge();
+        }, 0);
+      })
+      .catch(error => console.error("Error loading chatFragment:", error));
+  });
+
+  function closeChatModal() {
+    $("#chatModal").fadeOut();
+  }
 
   function connectWebSocket(planId) {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -24,10 +54,17 @@ $(document).ready(function () {
       const message = JSON.parse(e.data);
       let currentUser = memberNickname || memberName || "Anonymous";
 
-      if (message.sender === currentUser) {
-        return;
+      if (message.sender === currentUser) return;
+
+      const chatModal = document.getElementById("chatModal");
+      if (chatModal.style.display === "none" || chatModal.style.display === "") {
+        showUnreadBadge();
       }
-      displayReceivedMessage(message.content, message.sender, message.profilePhoto);
+
+      // 채팅방이 열려 있으면 메시지 표시
+      if (chatModal.style.display === "block") {
+        displayReceivedMessage(message.content, message.sender, message.profilePhoto);
+      }
     };
 
     ws.onclose = function () {
@@ -44,6 +81,18 @@ $(document).ready(function () {
     };
   }
 
+  // 뱃지 표시 함수
+  function showUnreadBadge() {
+    const unreadBadge = document.getElementById("unreadBadge");
+    unreadBadge.style.display = "inline";
+  }
+
+// 뱃지 숨기기 함수 (채팅방 열릴 때 호출)
+  function hideUnreadBadge() {
+    const unreadBadge = document.getElementById("unreadBadge");
+    unreadBadge.style.display = "none";
+  }
+
   function sendMessage() {
     if (ws.readyState !== WebSocket.OPEN) {
       console.log("WebSocket이 연결되지 않았습니다.")
@@ -51,9 +100,6 @@ $(document).ready(function () {
     }
 
     const messageInput = $("#messageInput");
-    // let messageSender = memberNickname || memberName || "Anonymous";
-
-    // console.log("메세지 발신자>>sendMessage sender: " + messageSender)
 
     const message = {
       type: "CHAT",
@@ -63,6 +109,8 @@ $(document).ready(function () {
     };
 
     if (message.content) {
+      chatHistory.push(message);
+      console.log(chatHistory);
       ws.send(JSON.stringify(message));
       displaySentMessage(message.content);
       messageInput.val("");
@@ -112,4 +160,23 @@ $(document).ready(function () {
       sendMessage();
     }
   }
+
+  function loadChatHistory() {
+    const chatMessages = $("#chatMessages");
+    chatMessages.empty(); // 기존 DOM 초기화
+
+    // 이전 메시지 렌더링
+    chatHistory.forEach((message) => {
+      if (message.sender === (memberNickname || memberName || "Anonymous")) {
+        displaySentMessage(message.content);
+      } else {
+        displayReceivedMessage(message.content, message.sender, message.profilePhoto);
+      }
+    });
+  }
+
+  // 모달 닫기
+  $("#closeChatModal").on("click", function () {
+    $("#chatModal").fadeOut(); // 모달 닫기
+  });
 });

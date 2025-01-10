@@ -4,8 +4,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
   <meta charset="utf-8">
   <title>장소검색</title>
 
@@ -16,13 +14,19 @@
   <link rel="stylesheet" href="${path}/css/header.css">
   <link rel="stylesheet" href="${path}/css/plan/addCompanion.css">
   <link rel="stylesheet" href="${path}/css/plan/searchPlace.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
   <!-- 외부 JSP 파일 -->
   <%@ include file="/WEB-INF/views/member/header.jsp" %>
 
-  <script src="${path}/js/chat/planChat.js"></script>
+  <script src="${path}/js/chat/chat.js"></script>
   <script>
     const path = "${pageContext.servletContext.contextPath}";
+    const memberEmail = "${sessionScope.member.member_email}";
+    const memberName = "${sessionScope.member.member_name}";
+    const memberNickname = "${sessionScope.member.member_nickname}";
+    const profilePhoto = "${sessionScope.member.member_profile_photo}";
+    const currentPlanId = "${sessionScope.currentPlanId}"
   </script>
 </head>
 <body>
@@ -61,7 +65,12 @@
 <div class="map_wrap">
   <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
   <!-- 채팅방 접속하기 버튼 -->
-  <button id="btnChat">채팅방 접속하기</button>
+  <button id="btnChat" class="btn btn-primary position-relative">
+    <i id="chat-icon" class="bi bi-chat-fill"></i> <!-- 채워진 대화 아이콘 -->
+    <span id="unreadBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+    ●
+  </span>
+  </button>
   <!-- 채팅 모달 -->
   <div id="chatModal" class="chat-modal">
     <div id="chatContent"></div>
