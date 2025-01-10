@@ -397,29 +397,9 @@
       // inMemoryPlaces.push(place);
       // renderPlaceList();
 
-      addPlaceToPlan(placeName, placeAddress);
+      addPlaceToPlan(placeName, placeAddress, id);
     }
   });
-
-  // 일정 삭제 로직 추가
-  document.getElementById("placeList").addEventListener("click", function (event) {
-    if (event.target && event.target.classList.contains("delete-btn")) {
-      const placeTitle = event.target.parentNode.querySelector(".placeTitle").textContent;
-      const placeDay = document.querySelector(".day-btn.selected")?.getAttribute("data-day");
-
-      // tempMemoryPlaces에서 삭제
-      tempMemoryPlaces = tempMemoryPlaces.filter(
-          item => !(item.day === placeDay && item.kakaoPlaceName === placeTitle)
-      );
-
-      console.log("Updated tempMemoryPlaces: ", tempMemoryPlaces);
-
-      // UI 업데이트
-      event.target.parentNode.remove();
-    }
-  });
-
-
 
 
   // 검색결과 항목을 Element로 반환하는 함수입니다
@@ -551,7 +531,7 @@
     placeList.innerHTML = ""; // 기존 리스트 초기화
 
     // 선택된 일차에 해당하는 장소 표시
-    dayPlans[day].forEach(({ title, address }) => {
+    dayPlans[day].forEach(({ title, address, id }) => {
       const newItem = document.createElement("li");
       newItem.classList.add("place-item");
 
@@ -571,7 +551,14 @@
       deleteButton.addEventListener("click", function () {
         newItem.remove();
         dayPlans[day] = dayPlans[day].filter(item => item.title !== title);
+
+        // tempMemoryPlaces에서 해당 항목 삭제
+        tempMemoryPlaces = tempMemoryPlaces.filter(item => {
+          return !(String(item.day) === String(day) && item.kakaoPlaceId === id);
+        });
+
         console.log(`${title} 삭제됨`);
+        console.log("Updated tempMemoryPlaces:", tempMemoryPlaces);
       });
 
       newItem.appendChild(titleElement);
@@ -582,7 +569,7 @@
   }
 
   // 기존 addPlaceToPlan 수정
-  function addPlaceToPlan(placeTitle, placeAddress) {
+  function addPlaceToPlan(placeTitle, placeAddress, id) {
     const selectedDay = document.querySelector(".day-btn.selected")?.getAttribute("data-day");
     console.log("일자 선택 (나의 번호는?) : ", selectedDay); // 콘솔 찍어봐라 숫자 1,2,3 나오나 그 후에 finalSend 수정해야한다.
     if (!selectedDay) {
@@ -591,10 +578,10 @@
     }
 
     // 선택된 일차에 장소 추가
-    dayPlans[selectedDay].push({ title: placeTitle, address: placeAddress });
+    dayPlans[selectedDay].push({ title: placeTitle, address: placeAddress, id: id });
     displayDayPlan(selectedDay); // 업데이트된 리스트 표시
 
-    console.log("새로운 일정 추가됨:", placeTitle, placeAddress, "on Day", selectedDay);
+    console.log("새로운 일정 추가됨:", placeTitle, placeAddress, id, "on Day", selectedDay);
   }
 
 
