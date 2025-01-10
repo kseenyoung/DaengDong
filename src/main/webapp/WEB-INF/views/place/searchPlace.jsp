@@ -13,7 +13,7 @@
   <!-- CSS파일 -->
   <link rel="stylesheet" href="/daengdong/css/header.css">
   <link rel="stylesheet" href="/daengdong/css/plan/addCompanion.css">
-  <link rel="stylesheet" href="/daengdong/css/plan/searchPlaceImpl.css">
+  <link rel="stylesheet" href="/daengdong/css/plan/searchPlace.css">
 
   <!-- 외부 JSP 파일 -->
   <%@ include file="/WEB-INF/views/member/header.jsp" %>
@@ -339,7 +339,7 @@
             console.log(`${placeName} (${placeAddress}) 위치에 커스텀 마커 추가 완료.`);
         });
     });
-}
+
 
   document.getElementById("placesList").addEventListener("click", function (event) {
     if (event.target && event.target.classList.contains("add-btn")) {
@@ -495,24 +495,30 @@ function updatePolyline() {
     if (line) {
         line.setMap(null);
     }
-console.log("markerPositions:", markerPositions);
-console.log("line:", line);
-console.log("line.getLength():", line ? line.getLength() : "Line not defined");
 
-    // 새로운 Polyline 생성
+    if (markerPositions.length < 2){
+        console.error("Insufficient positions to create a polyline");
+        return;
+    }
+
+    // Polyline 생성
+    const polylinePath = markerPositions.map(pos => new kakao.maps.LatLng(pos.Ma, pos.La));
     line = new kakao.maps.Polyline({
         map: map,
-        path: markerPositions, // 마커 좌표 배열 사용
-        strokeWeight: 3, // 선 두께
-        strokeColor: '#db4040', // 선 색상
-        strokeOpacity: 1, // 선 투명도
-        strokeStyle: 'solid' // 선 스타일
+        path: polylinePath,
+        strokeWeight: 3,
+        strokeColor: '#db4040',
+        strokeOpacity: 1,
+        strokeStyle: 'solid'
     });
+    console.log("Polyline created with path:", line.getPath());
+    console.log("Polyline Length:", line.getLength());
 }
 function updateDistanceAndTime() {
     if (markerPositions.length < 2) {
         if (distanceOverlay) {
-            distanceOverlay.setMap(null);
+            distanceOverlay.setMap(null); // Overlay 숨김
+            distanceOverlay = null;
         }
         return;
     }
@@ -523,18 +529,16 @@ function updateDistanceAndTime() {
     var walkTime = Math.floor(totalDistance / 67); // 도보 시간 (67m/min)
     var bikeTime = Math.floor(totalDistance / 227); // 자전거 시간 (227m/min)
 
-    var content = `
-        <ul class="dotOverlay distanceInfo">
-            <li><span class="label">총거리</span><span class="number">${totalDistance}</span>m</li>
-            <li><span class="label">도보</span>${Math.floor(walkTime / 60)}시간 ${walkTime % 60}분</li>
-            <li><span class="label">자전거</span>${Math.floor(bikeTime / 60)}시간 ${bikeTime % 60}분</li>
-        </ul>
-    `;
+    var content =
+        '<ul class="dotOverlay distanceInfo">' +
+            '<li><span class="label">총거리</span><span class="number">' + totalDistance + '</span>m</li>' +
+            '<li><span class="label">도보</span>' + Math.floor(walkTime / 60) + '시간 ' + (walkTime % 60) + '분</li>' +
+            '<li><span class="label">자전거</span>' + Math.floor(bikeTime / 60) + '시간 ' + (bikeTime % 60) + '분</li>' +
+        '</ul>';
+
 
     // 거리 정보를 표시할 커스텀 오버레이 생성 또는 업데이트
-    if (distanceOverlay) {
-        distanceOverlay.setContent(content);
-    } else {
+    if (!distanceOverlay) {
         distanceOverlay = new kakao.maps.CustomOverlay({
             map: map,
             position: markerPositions[markerPositions.length - 1], // 마지막 마커 위치
@@ -543,9 +547,11 @@ function updateDistanceAndTime() {
             yAnchor: 0,
             zIndex: 3
         });
+    } else {
+        distanceOverlay.setContent(content);
+        distanceOverlay.setPosition(markerPositions[markerPositions.length - 1]); // 마지막 마커 위치로 이동
+        distanceOverlay.setMap(map);
     }
-
-    distanceOverlay.setPosition(markerPositions[markerPositions.length - 1]); // 마지막 마커 위치로 이동
 }
 function removeCustomMarker(title) {
     var markerIndex = customMarkers.findIndex(marker => marker.title === title);
