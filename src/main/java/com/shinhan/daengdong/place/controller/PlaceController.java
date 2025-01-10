@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Slf4j
@@ -23,8 +24,11 @@ public class PlaceController {
 
     @PostMapping("/savePlace")
     @ResponseBody
-    public ResponseEntity<String> savePlace(@RequestBody PlaceDTO placeDTO) {
+    public ResponseEntity<String> savePlace(@RequestBody PlaceDTO placeDTO, HttpSession session) {
+            Long planId = (Long) session.getAttribute("currentPlanId");
+            log.info("savePlace에서 planId={}", planId);
         try {
+
             // 장소 저장
             log.info("받은 place JSON 데이터: {}", placeDTO);
             placeService.savePlace(placeDTO);
@@ -37,7 +41,9 @@ public class PlaceController {
 
     @PostMapping("/finalPlanPlaces")
     @ResponseBody
-    public ResponseEntity<String> submitPlanPlaces(@RequestBody List<PlanPlaceDTO> planPlaceDTO) {
+    public ResponseEntity<String> submitPlanPlaces(@RequestBody List<PlanPlaceDTO> planPlaceDTO, HttpSession session) {
+        Long planId = (Long) session.getAttribute("currentPlanId");
+        log.info("PlanPlaces에서 planId={}", planId);
         try {
             log.info("받은 PlanPlace 데이터: {}", planPlaceDTO);
 

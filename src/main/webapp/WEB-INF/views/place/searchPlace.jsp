@@ -194,7 +194,6 @@
 
 <%--   const webSocket = new WebSocket(webSocketUrl); --%>
 <%-- </script> --%>
-
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62bd6cc1e013b8a659ae61760dc9fd7f&libraries=services"></script>
 <script>
   // 마커를 담을 배열입니다
@@ -1280,6 +1279,7 @@
       event.target.classList.add("selected");
 
       const selectedDay = event.target.getAttribute("data-day");
+      //console.log("선택된 일차:", selectedDay);
       displayDayPlan(selectedDay);
     }
   });
@@ -1318,8 +1318,9 @@
 <script src="/daengdong/js/finalSend.js"></script>
 <script>
   // 서버에서 전달받은 planId를 전역 변수로 설정
-  planId = '<%= session.getAttribute("planId") %>';
+  planId = '<%= session.getAttribute("currentPlanId") %>';
   console.log("JSP에서 전달된 planId:", planId);
+
 
   <%--// WebSocket URL 생성--%>
   <%--const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';--%>
