@@ -17,7 +17,7 @@ webSocket.onopen = function () {
 
 webSocket.onmessage = function (event) {
     const message = JSON.parse(event.data);
-    console.log("받은 데이터:", message);
+    //console.log("받은 데이터:", message);
 
     if (message.type === "shareMap") {
         const place = message.data;

@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 public class PlaceDTO {
     private Long kakaoPlaceId;             // kakao_place_id (PK)
-    private Integer regionId;             // region_id
+    private String regionId;             // region_id
     private String kakaoPlaceName;        // kakao_place_name
     private String kakaoRoadAddressName;  // kakao_road_address_name
     private String kakaoPhone;            // kakao_phone

@@ -44,13 +44,19 @@
         where member_email = #{member_email}
     </select>
 
+    <!--member18 반려동물 프로필 사진 변경!!-->
+    <update id="modifyPetProfile" parameterType="petDTO">
+        update pets
+        set pet_profile_photo = #{pet_profile_photo}
+        where pet_id = #{pet_id}
+    </update>
 
-    <!--&lt;!&ndash;member18 반려동물 프로필 변경!!&ndash;&gt;-->
-    <!--<update id="updatepetProfile" parameterType="String">-->
-    <!--    update pets-->
-    <!--    set pet_profile_photo = #{pet_profile_photo}-->
-    <!--    where member_id = #{member_id}-->
-    <!--</update>-->
+    <!--member18 반려동물 프로필 세부사항 변경!!-->
+    <update id="modifyPetDetailProfile" parameterType="petDTO">
+        update pets
+        set pet_name = #{pet_name}, pet_blood_type = #{pet_blood_type}
+        where pet_id = #{pet_id}
+    </update>
 
     <!--&lt;!&ndash;member18-1 반려동물 삭제!!!!&ndash;&gt;-->
     <!--<delete id="deletepetProfile" parameterType="int">-->
@@ -72,13 +78,6 @@
     <!--    from notification-->
     <!--    where sender_email = #{sender_email}-->
     <!--</delete>-->
-
-    <!--member8 닉네임 변경하기 -->
-<!--    <update id="modifyNickname" parameterType="memberDTO">-->
-<!--        update members-->
-<!--        set member_nickname = #{member_nickname}-->
-<!--        where member_email = #{member_email}-->
-<!--    </update>-->
 
     <!--&lt;!&ndash;여행 기록 별 같이 간 여행자 보기&ndash;&gt;-->
     <!--<select id="personWithTravelList" parameterType="int" resultType="personWithTravelVO">-->
@@ -141,13 +140,6 @@
     <!--    where member_profile_photo = #{memberprofilephoto}-->
     <!--</update>-->
 
-
-    <!--member18 반려동물 프로필 변경!!-->
-    <update id="updatepetProfile" parameterType="String">
-        update pets
-        set pet_profile_photo = #{petProfilePhoto}
-        where member_id = #{memberId}
-    </update>
 
     <!--member18-1 반려동물 삭제!!!!-->
     <delete id="deletepetProfile" parameterType="int">
@@ -350,20 +342,24 @@
 <!--    </insert>-->
 
     <!--유저 게시글 조회-->
-    <select id="selectMyPosts" parameterType="String" resultType="postsVO">
-        SELECT
-            p.post_id, p.member_email, p.plan_id, p.category_id, p.post_title, p.post_content,
-            members.member_nickname, MIN(img.photo_id) AS photo_id, MIN(img.image_url) AS image_url,
-            COALESCE(likes_count.total_likes, 0) AS total_likes
+    <select id="selectMyPosts" parameterType="String" resultType="memberPostsVO">
+        SELECT p.post_id,
+               p.member_email,
+               p.plan_id,
+               p.category_id,
+               p.post_title,
+               p.post_content,
+               members.member_nickname,
+               MIN(img.photo_id)                    AS photo_id,
+               MIN(img.image_url)                   AS image_url,
+               COALESCE(likes_count.total_likes, 0) AS total_likes
         FROM posts AS p
                  JOIN post_images AS img ON p.post_id = img.post_id
                  JOIN members AS members ON p.member_email = members.member_email
-                 LEFT JOIN (
-            SELECT
-                post_id, COUNT(*) AS total_likes
-            FROM likes
-            GROUP BY post_id
-        ) AS likes_count ON p.post_id = likes_count.post_id
+                 LEFT JOIN (SELECT post_id,
+                                   COUNT(*) AS total_likes
+                            FROM likes
+                            GROUP BY post_id) AS likes_count ON p.post_id = likes_count.post_id
         where p.member_email = #{member_email}
         GROUP BY p.post_id
     </select>

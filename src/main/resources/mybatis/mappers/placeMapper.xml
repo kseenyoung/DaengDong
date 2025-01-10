@@ -9,7 +9,20 @@
         where region_id = #{regionId}
     </select>
 
+    <!--장소 저장-->
+    <insert id="savePlace" parameterType="placeDTO">
+        insert into places (kakao_place_id, region_id, kakao_place_name, kakao_road_address_name,
+                            kakao_phone, kakao_x, kakao_y, kakao_place_url)
+        values (#{kakaoPlaceId}, #{regionId}, #{kakaoPlaceName}, #{kakaoRoadAddressName},
+                #{kakaoPhone}, #{kakaoX}, #{kakaoY}, #{kakaoPlaceUrl});
+    </insert>
+
     <!--장소 여러개 일괄 삽입-->
+    <insert id="savePlanPlace" parameterType="planPlaceDTO">
+        insert into plan_places (plan_id, kakao_place_id, day)
+        values (#{planId}, #{kakaoPlaceId}, #{day});
+    </insert>
+
 
     <!--특정 planId의 장소 목록 조회-->
 </mapper>

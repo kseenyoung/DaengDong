@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,33 +50,35 @@ public class PlanController {
     }
 
     @PostMapping("/create")
-    public String createPlan(@RequestBody PlanDTO planDTO, HttpServletRequest request) {
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> createPlan(@RequestBody PlanDTO planDTO, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
 
         MemberDTO member = (MemberDTO) session.getAttribute("member");
         planDTO.setMemberEmail(member.getMember_email()); // 세션 이메일 할당
 
-        // 시작일과 종료일 계산
         long days = ChronoUnit.DAYS.between(
-            planDTO.getStartDate().toLocalDate(),
-            planDTO.getEndDate().toLocalDate()
+                planDTO.getStartDate().toLocalDate(),
+                planDTO.getEndDate().toLocalDate()
         ) + 1;
 
         log.info("총 여행 일수: {}", days);
 
-        // DB에 플랜 저장 및 생성된 planId 반환
         Long planId = planService.savePlan(planDTO); // DB INSERT
-        log.info("PlanRepositoryImpl.save 실행됨: {}", planDTO);
         log.info("!생성된 plan_id: {}", planId);
 
-        // 반환된 planId를 세션에 저장
         session.setAttribute("currentPlanId", planId);
+        log.info("create에서 currentPlanId: {}", session.getAttribute("currentPlanId"));
         session.setAttribute("currentMemberEmail", member.getMember_email());
         session.setAttribute("travelDays", days);
-
         session.setAttribute("currentPlan", planDTO);
-        return "redirect:/plan/place?planId=" + planId;
+
+        // 리디렉션 URL을 JSON으로 반환
+        Map<String, String> response = new HashMap<>();
+        response.put("redirectUrl", "/daengdong/plan/place?planId=" + planId);
+        return ResponseEntity.ok(response);
     }
+
 
     @GetMapping("/myPlace")
     public String getMyPlace(HttpServletRequest request, Model model) {
@@ -96,7 +99,7 @@ public class PlanController {
         }
     }
 
-    @PostMapping ("/myPlace")
+    @PostMapping("/myPlace")
     public String postMyPlace(@RequestBody PlanDTO planDTO, Model model) {
 
         return "plan/myPlace";
@@ -149,18 +152,26 @@ public class PlanController {
 
     @GetMapping("/place")
     public String searchPlaceForm(
-        @RequestParam(value = "planId", required = false) Long planId,
-        HttpServletRequest request,
-        Model model
+            @RequestParam(value = "planId", required = false) Long planId,
+            HttpServletRequest request,
+            Model model
     ) {
         HttpSession session = request.getSession(false);
 
         if (planId != null) {
-            session.setAttribute("planId", planId);
+            session.setAttribute("currentPlanId", planId);
             log.info("URL 파라미터로 전달된 planId={} 을 세션에 저장했습니다.", planId);
+            log.info("###Plan ID가 세션에 저장되었습니다: {}", session.getAttribute("planId"));
         } else {
-            session.setAttribute("planId", session.getAttribute("currentPlanId"));
+            log.info("이게 나오면 안됨");
+            planId = (Long) session.getAttribute("currentPlanId");
+            log.info("이게 나오면 안됨: {}", planId);
+            if (planId == null) {
+                log.error("Plan ID가 세션과 URL 모두에서 확인되지 않았습니다.");
+                return "redirect:/plan/error"; // 적절한 에러 처리 페이지로 리디렉션
+            }
         }
+        log.info("최종 사용될 planId: {}", planId);
 
         Long currentPlanId = (Long) session.getAttribute("currentPlanId");
         String currentMemberEmail = (String) session.getAttribute("currentMemberEmail");
@@ -206,7 +217,7 @@ public class PlanController {
             String trimmedEmail = email.trim();
 
             if (!trimmedEmail.isEmpty() && !trimmedEmail.equals(currentMemberEmail)) {
-                if(planService.isMemberExists(trimmedEmail)) {
+                if (planService.isMemberExists(trimmedEmail)) {
                     if (!planService.isCompanionExists(currentPlanId, trimmedEmail)) {
                         MemberPlanDTO companionPlan = new MemberPlanDTO();
                         companionPlan.setPlanId(currentPlanId);
@@ -260,5 +271,10 @@ public class PlanController {
         planService.deleteCompanionFromPlan(memberPlanDTO);
 
         return ResponseEntity.ok("동행자가 성공적으로 삭제되었습니다.");
+    }
+
+    @GetMapping("viewChatRoom.do")
+    public String viewChatRoom() {
+        return "chat/chatFragment";
     }
 }

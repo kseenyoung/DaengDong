@@ -11,11 +11,11 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <div class="edit-nickname-container">
     <span class="edit-nickname-label"></span>
-    <input type="text" name="nickName" class="edit-nickname-input" placeholder="새 닉네임 입력" />
-    <button class="edit-nickname-success">
+    <input id="edit-nickname-input" type="text" name="nickName" class="edit-nickname-input" placeholder="새 닉네임 입력" />
+    <button id="edit-nickname-success" class="edit-nickname-success">
         <i class="fas fa-check"></i>
     </button>
-    <button class="edit-nickname-cancel">
+    <button id="edit-nickname-cancel" class="edit-nickname-cancel">
         <i class="fas fa-times"></i>
     </button>
 </div>
