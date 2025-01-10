@@ -26,7 +26,6 @@
 
 </head>
 <body>
-<a href="${path}/chat/room/1">바로입장하기</a>
 <div class="login-container">
     <!-- Left: Login Form -->
     <div class="login-form">
@@ -44,8 +43,8 @@
     <div class="login-image">
         <img src="${path}/img/login.png" alt="loginImg" class="responsive-image"/>
         <div class="overlay">
-            <p class="location">Eiffel tower<br>Paris France</p>
-            <p class="distance">1.2 km left to your accommodation</p>
+            <p class="location">한옥마을<br>전주</p>
+            <p class="distance">우리 강아지와 함께 새해 여행으로 전주 어떠신가요?</p>
         </div>
     </div>
 </div>

@@ -22,7 +22,7 @@
   const profilePhoto = "${sessionScope.member.member_profile_photo}";
 </script>
 <link rel="stylesheet" href="${path}/css/chat/chat.css"/>
-<script src="${path}/js/chat.js"></script>
+<script src="${path}/js/chat/chat.js"></script>
 <div class="chat-container">
     <!-- 메시지 표시 영역 -->
     <div class="chat-messages" id="chatMessages">

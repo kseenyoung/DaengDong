@@ -8,6 +8,7 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   overflow: hidden;
+  z-index: 3000;
 }
 
 /* 메시지 표시 영역 */
