@@ -1,6 +1,9 @@
 package com.shinhan.daengdong.plan.controller;
 
 import com.shinhan.daengdong.member.dto.MemberDTO;
+import com.shinhan.daengdong.place.dto.PlanPlaceDTO;
+import com.shinhan.daengdong.place.model.service.PlaceServiceImpl;
+import com.shinhan.daengdong.place.model.service.PlaceServiceInterface;
 import com.shinhan.daengdong.plan.dto.MemberPlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
 import com.shinhan.daengdong.plan.model.service.PlanServiceInterface;
@@ -33,6 +36,9 @@ public class PlanController {
 
     @Autowired
     private PlanServiceInterface planService;
+
+    @Autowired
+    private PlaceServiceInterface placeService;
 
     // 플랜 생성 페이지
     @GetMapping("/create")
@@ -186,6 +192,9 @@ public class PlanController {
                 log.info("로그인한 사용자가 자동으로 추가되었습니다: {}", currentMemberEmail);
             }
         }
+
+        /*List<PlanPlaceDTO> planPlaces = placeService.getPlacesByPlanId(planId);
+        model.addAttribute("planPlaces", planPlaces);*/
 
         return "place/searchPlace"; // searchPlace.jsp
     }
