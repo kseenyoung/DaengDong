@@ -38,22 +38,7 @@
   </div>
 </div>
 
-<div id="sidebar" style="
-    width: 320px;
-    height: 400px;
-    overflow-y: auto;
-    padding: 20px;
-    border-left: 1px solid #ccc;
-    display: none;
-    position: fixed;
-    right: 0;
-    top: 0;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-    z-index: 1000;
-    border-radius: 8px 0 0 8px;
-">
+<div id="sidebar">
 </div>
 
 <div id="sidebar-template" style="display: none;">
@@ -710,7 +695,6 @@ function removeCustomMarker(title) {
 
         console.log(`${title} 삭제됨`);
         console.log("Updated tempMemoryPlaces:", tempMemoryPlaces);
-      });
 
             newItem.addEventListener("click", function () {
                 const marker = customMarkers.find(item => item.title === title);

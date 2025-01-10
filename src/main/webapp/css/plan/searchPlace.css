@@ -266,7 +266,7 @@ body, h4, p, button, a {
 }
 
 #sidebar {
-    width: 65%; /* 화면 가로의 80%를 차지 */
+    width: 65%;
     max-width: 1200px; /* 최대 너비 제한 */
     height: 20%; /* 높이를 콘텐츠에 맞게 조정 */
     padding: 20px; /* 콘텐츠 내부 여백 */
