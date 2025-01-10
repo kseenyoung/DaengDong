@@ -167,7 +167,7 @@ public class MemberController {
     //'내 여행' > 여행계획중
     @GetMapping("getMyPlanning.do")
     public String getMyPlanningList(HttpSession session, Model model) {
-        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
         List<PlanDTO> myPlans = planService.getPlansByEmail(memberDTO.getMember_email());
         List<PlanDTO> planningPlan = new ArrayList<>();
 
@@ -180,13 +180,15 @@ public class MemberController {
         }
 
         model.addAttribute("planningPlan", planningPlan);
+        log.info("member: " + memberDTO);
+        log.info("planningPlan: " + planningPlan);
         return "member/semiCategory/trip/planningFragment";
     }
 
     //'내 여행' > 여행중
     @GetMapping("getMyTraveling.do")
     public String getMyTravelingList(HttpSession session, Model model) {
-        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
         List<PlanDTO> myPlans = planService.getPlansByEmail(memberDTO.getMember_email());
         List<PlanDTO> travelingPlan = new ArrayList<>();
 
@@ -221,7 +223,7 @@ public class MemberController {
     //'내 여행' > 여행완료
     @GetMapping("getMyTravelComplete.do")
     public String getMyTravelComplete(HttpSession session, Model model) {
-        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
         List<PlanDTO> myPlans = planService.getPlansByEmail(memberDTO.getMember_email());
         List<PlanDTO> completePlan = new ArrayList<>();
 
@@ -240,8 +242,7 @@ public class MemberController {
     //'내 저장' > 즐겨찾기(장소) 컨텐츠
     @GetMapping("getFavoritePlace.do")
     public String getFavoritePlaceList(HttpSession session, Model model) {
-//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-        MemberDTO memberDTO = MemberDTO.builder().member_email("user1@example.com").build();
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
         List<FavoritePlaceDTO> favoritePlaceList = memberService.getFavoritePlaceList(memberDTO.getMember_email());
         model.addAttribute("favoritePlaceList", favoritePlaceList);
         return "member/semiCategory/save/favoritePlaceFragment";
@@ -250,8 +251,7 @@ public class MemberController {
     //'내 저장' > 내가 쓴 리뷰(장소) 컨텐츠
     @GetMapping("getReviewFragment.do")
     public String getReviewList(HttpSession session, Model model) {
-//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-        MemberDTO memberDTO = MemberDTO.builder().member_email("user1@example.com").build();
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
         List<ReviewDTO> reviewList = memberService.getReviewList(memberDTO.getMember_email());
         model.addAttribute("reviewList", reviewList);
         return "member/semiCategory/save/reviewFragment";
@@ -276,7 +276,7 @@ public class MemberController {
     //'내 저장' > 내가 좋아요 한(게시글) 컨텐츠
     @GetMapping("getLikePostsFragment.do")
     public String getLikePosts(HttpSession session, Model model) {
-        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
         List<LikePostsDTO> likePostsList = memberService.getLikePosts(memberDTO.getMember_email());
         model.addAttribute("likePostsList", likePostsList);
         return "member/semiCategory/save/likePostsFragment";
@@ -285,7 +285,7 @@ public class MemberController {
     //'내 저장' > 내 게시글 컨텐츠
     @GetMapping("getMyPosts.do")
     public String getMyPosts(HttpSession session, Model model) {
-        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
         List<PostDTO> postsList = memberService.getMyPosts(memberDTO.getMember_email());
         log.info("postsList: " + postsList);
         model.addAttribute("postsList", postsList);
