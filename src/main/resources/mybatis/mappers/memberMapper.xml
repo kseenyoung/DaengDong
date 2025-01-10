@@ -342,20 +342,24 @@
 <!--    </insert>-->
 
     <!--유저 게시글 조회-->
-    <select id="selectMyPosts" parameterType="String" resultType="postsVO">
-        SELECT
-            p.post_id, p.member_email, p.plan_id, p.category_id, p.post_title, p.post_content,
-            members.member_nickname, MIN(img.photo_id) AS photo_id, MIN(img.image_url) AS image_url,
-            COALESCE(likes_count.total_likes, 0) AS total_likes
+    <select id="selectMyPosts" parameterType="String" resultType="memberPostsVO">
+        SELECT p.post_id,
+               p.member_email,
+               p.plan_id,
+               p.category_id,
+               p.post_title,
+               p.post_content,
+               members.member_nickname,
+               MIN(img.photo_id)                    AS photo_id,
+               MIN(img.image_url)                   AS image_url,
+               COALESCE(likes_count.total_likes, 0) AS total_likes
         FROM posts AS p
                  JOIN post_images AS img ON p.post_id = img.post_id
                  JOIN members AS members ON p.member_email = members.member_email
-                 LEFT JOIN (
-            SELECT
-                post_id, COUNT(*) AS total_likes
-            FROM likes
-            GROUP BY post_id
-        ) AS likes_count ON p.post_id = likes_count.post_id
+                 LEFT JOIN (SELECT post_id,
+                                   COUNT(*) AS total_likes
+                            FROM likes
+                            GROUP BY post_id) AS likes_count ON p.post_id = likes_count.post_id
         where p.member_email = #{member_email}
         GROUP BY p.post_id
     </select>
