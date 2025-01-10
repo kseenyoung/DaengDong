@@ -977,8 +977,8 @@
     var clickLine // 마우스로 클릭한 좌표로 그려질 선 객체입니다
     var distanceOverlay; // 선의 거리정보를 표시할 커스텀오버레이 입니다
     var dots = {};
-
-
+    var markerPositions = [];
+    var line;
 
     // 키워드 검색을 요청하는 함수입니다
     function searchPlaces() {
@@ -1049,10 +1049,10 @@
             button.textContent = "+ 내 일정에 추가";
 
         // `data-*` 속성에 장소 이름과 주소 저장
-        button.setAttribute("data-place-name", place.place_name);
-        button.setAttribute("data-place-address", place.address_name);
-        button.setAttribute("data-place-x", place.x);
-        button.setAttribute("data-place-y", place.y);
+            button.setAttribute("data-place-name", place.place_name);
+            button.setAttribute("data-place-address", place.address_name);
+            button.setAttribute("data-place-x", place.x);
+            button.setAttribute("data-place-y", place.y);
 
             itemEl.appendChild(button);
             fragment.appendChild(itemEl);
@@ -1153,16 +1153,99 @@ function addCustomMarker(position, title) {
     kakao.maps.event.addListener(customMarker, 'mouseout', function () {
         infowindow.close();
     });
+    // 좌표를 배열에 저장
+    markerPositions.push(position);
 
+    // 폴리라인 업데이트
+    updatePolyline();
+
+    // 거리와 시간 표시 업데이트
+    updateDistanceAndTime();
     return customMarker;
 }
 function removeCustomMarker(title) {
     for (var i = 0; i < customMarkers.length; i++) {
         if (customMarkers[i].title === title) {
-            customMarkers[i].customMarker.setMap(null); // 지도에서 마커 삭제
-            customMarkers.splice(i, 1); // 배열에서 마커 제거
+            customMarkers[i].customMarker.setMap(null);
+            customMarkers.splice(i, 1);
             break;
         }
+    }
+}
+
+markerPositions.forEach((position, index) => {
+    console.log(`Position ${index}:`, position);
+    if (!(position instanceof kakao.maps.LatLng)) {
+        console.error(`Position ${index} is not a valid LatLng object.`);
+    }
+});
+
+
+function updatePolyline() {
+    if (line) {
+        line.setMap(null);
+    }
+console.log("markerPositions:", markerPositions);
+console.log("line:", line);
+console.log("line.getLength():", line ? line.getLength() : "Line not defined");
+
+    // 새로운 Polyline 생성
+    line = new kakao.maps.Polyline({
+        map: map,
+        path: markerPositions, // 마커 좌표 배열 사용
+        strokeWeight: 3, // 선 두께
+        strokeColor: '#db4040', // 선 색상
+        strokeOpacity: 1, // 선 투명도
+        strokeStyle: 'solid' // 선 스타일
+    });
+}
+function updateDistanceAndTime() {
+    if (markerPositions.length < 2) {
+        if (distanceOverlay) {
+            distanceOverlay.setMap(null);
+        }
+        return;
+    }
+
+    var totalDistance = Math.round(line.getLength());
+
+    // 도보와 자전거 시간 계산
+    var walkTime = Math.floor(totalDistance / 67); // 도보 시간 (67m/min)
+    var bikeTime = Math.floor(totalDistance / 227); // 자전거 시간 (227m/min)
+
+    var content = `
+        <ul class="dotOverlay distanceInfo">
+            <li><span class="label">총거리</span><span class="number">${totalDistance}</span>m</li>
+            <li><span class="label">도보</span>${Math.floor(walkTime / 60)}시간 ${walkTime % 60}분</li>
+            <li><span class="label">자전거</span>${Math.floor(bikeTime / 60)}시간 ${bikeTime % 60}분</li>
+        </ul>
+    `;
+
+    // 거리 정보를 표시할 커스텀 오버레이 생성 또는 업데이트
+    if (distanceOverlay) {
+        distanceOverlay.setContent(content);
+    } else {
+        distanceOverlay = new kakao.maps.CustomOverlay({
+            map: map,
+            position: markerPositions[markerPositions.length - 1], // 마지막 마커 위치
+            content: content,
+            xAnchor: 0,
+            yAnchor: 0,
+            zIndex: 3
+        });
+    }
+
+    distanceOverlay.setPosition(markerPositions[markerPositions.length - 1]); // 마지막 마커 위치로 이동
+}
+function removeCustomMarker(title) {
+    var markerIndex = customMarkers.findIndex(marker => marker.title === title);
+    if (markerIndex !== -1) {
+        customMarkers[markerIndex].customMarker.setMap(null);
+        markerPositions.splice(markerIndex, 1);
+        customMarkers.splice(markerIndex, 1);
+
+        updatePolyline();
+        updateDistanceAndTime();
     }
 }
 
@@ -1250,8 +1333,8 @@ function removeCustomMarker(title) {
             addPlanBtn.addEventListener("click", function () {
                 const placeTitle = document.getElementById("place-title").textContent;
                 const placeAddress = document.getElementById("place-address_name").textContent;
-                const placeX = parseFloat(document.getElementById("place-title").getAttribute("data-place-x"));
-                const placeY = parseFloat(document.getElementById("place-title").getAttribute("data-place-y"));
+                const placeX = parseFloat(place.x);
+                const placeY = parseFloat(place.y);
 
                 var placePosition = new kakao.maps.LatLng(placeY, placeX);
                 addCustomMarker(placePosition, placeTitle);
@@ -1277,9 +1360,16 @@ function removeCustomMarker(title) {
         placeList.innerHTML = ""; // 기존 리스트 초기화
 
         // 선택된 일차에 해당하는 장소 표시
-        dayPlans[day].forEach(({ title, address }) => {
+        dayPlans[day].forEach(({ title, address, x, y }, index) => {
+        const markerPosition = new kakao.maps.LatLng(y, x);
+
             const newItem = document.createElement("li");
             newItem.classList.add("place-item");
+
+            // 번호 추가
+            const numberElement = document.createElement("span");
+            numberElement.classList.add("placeNumber");
+            numberElement.textContent = (index + 1) + ". "; // 번호 설정
 
             const titleElement = document.createElement("h4");
             titleElement.classList.add("placeTitle");
@@ -1295,19 +1385,51 @@ function removeCustomMarker(title) {
 
             // 삭제 버튼 클릭 이벤트
             deleteButton.addEventListener("click", function () {
-                newItem.remove();
-                dayPlans[day] = dayPlans[day].filter(item => item.title !== title);
+                newItem.remove(); // 리스트 항목 삭제
+                dayPlans[day] = dayPlans[day].filter(item => item.title !== title); // 데이터에서 제거
+
+                // 번호 다시 매기기
+                updatePlaceNumbers();
+
                 removeCustomMarker(title);
 
-                console.log(`${title} 삭제됨`);
             });
 
+            newItem.addEventListener("click", function () {
+                const marker = customMarkers.find(item => item.title === title);
+                if (marker) {
+                    const markerPosition = marker.customMarker.getPosition();
+                    map.setCenter(markerPosition);
+                    map.setLevel(2);
+                } else {
+                    console.error(`해당 마커를 찾을 수 없습니다`);
+                }
+            });
+
+            newItem.appendChild(numberElement);
             newItem.appendChild(titleElement);
             newItem.appendChild(addressElement);
             newItem.appendChild(deleteButton);
             placeList.appendChild(newItem);
         });
+
+        // 번호 다시 매기기 호출
+        updatePlaceNumbers();
     }
+
+
+    // 번호 다시 매기기 함수
+    function updatePlaceNumbers() {
+        const placeItems = document.querySelectorAll(".place-item");
+
+        placeItems.forEach((item, index) => {
+            const numberElement = item.querySelector(".placeNumber");
+            if (numberElement) {
+                numberElement.textContent = (index + 1) + ". "; // 번호 갱신
+            }
+        });
+    }
+
 
     // 기존 addPlaceToPlan 수정
     function addPlaceToPlan(placeTitle, placeAddress) {
@@ -1892,11 +2014,22 @@ function removeCustomMarker(title) {
 
     // "핀 일괄 삭제하기" 버튼을 클릭하면 호출되어 배열에 추가된 마커를 지도에서 삭제하는 함수입니다
     function deleteAllPins() {
+        // customMarkers 배열의 마커를 지도에서 제거
+        for (var i = 0; i < customMarkers.length; i++) {
+            customMarkers[i].customMarker.setMap(null); // 마커를 지도에서 제거
+        }
+
+        // customMarkers 배열 초기화
+        customMarkers = [];
+
+        // 기존 pins 배열 처리
         for (var i = 0; i < pins.length; i++) {
             pins[i].setMap(null);
         }
+
         pins = [];
         pinPositions = [];
+
         deleteClickLine();
 
         if (moveLine) {
@@ -1905,15 +2038,13 @@ function removeCustomMarker(title) {
         }
 
         deleteDistnce();
-
         deleteCircleDot();
 
-        // 전역 변수들 초기화
+        // 전역 변수 초기화
         drawingFlag = false;
-        pins = [];
-        pinPositions = [];
         dots = [];
     }
+
 
     document.addEventListener("DOMContentLoaded", function () {
         let places = JSON.parse(localStorage.getItem("places")) || [];
@@ -2024,8 +2155,6 @@ function removeCustomMarker(title) {
         }
     });
 
-    // 예제 실행 (DB에서 받아온 날짜 차이)
-    // const dateDifference = 6; // DB에서 가져온 데이터
     createDayButtons(dateDifference);
 
     // 버튼 누르는거에 따른 동행자, 일정 보여주기
@@ -2036,14 +2165,14 @@ function removeCustomMarker(title) {
     const daysSection = document.getElementById("daysSection");
 
     showCompanionBtn.addEventListener("click", () => {
-        companionSection.style.display = "block"; // 동행자 섹션 보이기
-        daysSection.style.display = "none"; // 일정 섹션 숨기기
+        companionSection.style.display = "block";
+        daysSection.style.display = "none";
     });
 
     // 일정 버튼 클릭 시
     showDaysBtn.addEventListener("click", () => {
-        companionSection.style.display = "none"; // 동행자 섹션 숨기기
-        daysSection.style.display = "block"; // 일정 섹션 보이기
+        companionSection.style.display = "none";
+        daysSection.style.display = "block";
     });
 
     const planTitleFromDB = "내 인생 첫 여행";
