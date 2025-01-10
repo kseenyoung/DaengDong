@@ -38,8 +38,7 @@
   </div>
 </div>
 
-<div id="sidebar">
-</div>
+<div id="sidebar"></div>
 
 <div id="sidebar-template" style="display: none;">
   <button id="closeSidebar" class="close-btn">✖</button>
@@ -276,7 +275,6 @@
 
       // 버튼 생성 및 추가
       var button = document.createElement("button");
-      button.id = "addPlanBtn";
       button.className = "add-btn";
       button.textContent = "+ 내 일정에 추가";
 
@@ -616,10 +614,6 @@ function removeCustomMarker(title) {
 
             // addPlaceToPlan 함수 호출
             addPlanBtn.addEventListener("click", function () {
-                const placeTitle = document.getElementById("place-title").textContent;
-                const placeAddress = document.getElementById("place-address_name").textContent;
-                const placeX = parseFloat(place.x);
-                const placeY = parseFloat(place.y);
 
               // `data-*` 속성에 장소 이름과 주소 저장
               addPlanBtn.setAttribute("data-place-name", place.place_name);
@@ -642,14 +636,14 @@ function removeCustomMarker(title) {
             sidebar.querySelector("#closeSidebar").addEventListener("click", function () {
                 sidebar.style.display = "none";
             });
-        });
-        return marker;
+      });
+      return marker;
     }
 
     const dateDifference = <%= session.getAttribute("travelDays") %>;
     console.log("총 여행 일수:", dateDifference);
 
-    function displayDayPlan(day) {
+    function displayDayPlan(day, place) {
         const placeList = document.getElementById("placeList");
         placeList.innerHTML = ""; // 기존 리스트 초기화
 
@@ -687,16 +681,27 @@ function removeCustomMarker(title) {
               return !(String(item.day) === String(day) && item.kakaoPlaceId === id);
             });
                 // 번호 다시 매기기
-                updatePlaceNumbers();
+            updatePlaceNumbers();
 
-                removeCustomMarker(title);
+            removeCustomMarker(title);
 
-            });
+        });
 
-        console.log(`${title} 삭제됨`);
-        console.log("Updated tempMemoryPlaces:", tempMemoryPlaces);
 
             newItem.addEventListener("click", function () {
+              const sidebar = document.getElementById("sidebar");
+              const template = document.getElementById("sidebar-template");
+
+              // 템플릿 내용을 복사하여 삽입
+              sidebar.innerHTML = template.innerHTML;
+
+
+              // 템플릿 내부 요소에 데이터 삽입
+              sidebar.querySelector("#place-title").textContent = place.place_name || "정보 없음";
+              sidebar.querySelector("#place-category_name").textContent = place.category_name || "정보 없음";
+              sidebar.querySelector("#place-road_address_name").textContent = place.road_address_name || "도로명 주소 없음";
+              sidebar.querySelector("#place-address_name").textContent = place.address_name || "주소 없음";
+              sidebar.querySelector("#place-phone").textContent = place.phone || "전화번호 없음";
                 const marker = customMarkers.find(item => item.title === title);
                 if (marker) {
                     const markerPosition = marker.customMarker.getPosition();
@@ -730,7 +735,6 @@ function removeCustomMarker(title) {
             }
         });
     }
-
 
   // 기존 addPlaceToPlan 수정
   function addPlaceToPlan(placeTitle, placeAddress, id) {
