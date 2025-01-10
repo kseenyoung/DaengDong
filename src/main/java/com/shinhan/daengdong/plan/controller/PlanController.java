@@ -58,8 +58,8 @@ public class PlanController {
         planDTO.setMemberEmail(member.getMember_email()); // 세션 이메일 할당
 
         long days = ChronoUnit.DAYS.between(
-            planDTO.getStartDate().toLocalDate(),
-            planDTO.getEndDate().toLocalDate()
+                planDTO.getStartDate().toLocalDate(),
+                planDTO.getEndDate().toLocalDate()
         ) + 1;
 
         log.info("총 여행 일수: {}", days);
@@ -99,7 +99,7 @@ public class PlanController {
         }
     }
 
-    @PostMapping ("/myPlace")
+    @PostMapping("/myPlace")
     public String postMyPlace(@RequestBody PlanDTO planDTO, Model model) {
 
         return "plan/myPlace";
@@ -152,9 +152,9 @@ public class PlanController {
 
     @GetMapping("/place")
     public String searchPlaceForm(
-        @RequestParam(value = "planId", required = false) Long planId,
-        HttpServletRequest request,
-        Model model
+            @RequestParam(value = "planId", required = false) Long planId,
+            HttpServletRequest request,
+            Model model
     ) {
         HttpSession session = request.getSession(false);
 
@@ -217,7 +217,7 @@ public class PlanController {
             String trimmedEmail = email.trim();
 
             if (!trimmedEmail.isEmpty() && !trimmedEmail.equals(currentMemberEmail)) {
-                if(planService.isMemberExists(trimmedEmail)) {
+                if (planService.isMemberExists(trimmedEmail)) {
                     if (!planService.isCompanionExists(currentPlanId, trimmedEmail)) {
                         MemberPlanDTO companionPlan = new MemberPlanDTO();
                         companionPlan.setPlanId(currentPlanId);
@@ -273,4 +273,8 @@ public class PlanController {
         return ResponseEntity.ok("동행자가 성공적으로 삭제되었습니다.");
     }
 
+    @GetMapping("viewChatRoom.do")
+    public String viewChatRoom() {
+        return "chat/chatFragment";
+    }
 }
