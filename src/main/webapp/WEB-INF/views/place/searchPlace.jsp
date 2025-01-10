@@ -13,7 +13,7 @@
   <!-- CSS파일 -->
   <link rel="stylesheet" href="/daengdong/css/header.css">
   <link rel="stylesheet" href="/daengdong/css/plan/addCompanion.css">
-  <link rel="stylesheet" href="/daengdong/css/plan/searchPlace.css">
+  <link rel="stylesheet" href="/daengdong/css/plan/searchPlaceImpl.css">
 
   <!-- 외부 JSP 파일 -->
   <%@ include file="/WEB-INF/views/member/header.jsp" %>
@@ -182,6 +182,9 @@
   </div>
 </div>
 
+<div>
+  <button id="finalizePlanBtn">최종 완료</button>
+</div>
 <%-- <script> --%>
 <%--   const planId = "<%= session.getAttribute("planId") %>"; --%>
 <%--   console.log("planId : ", planId); --%>
@@ -235,6 +238,7 @@
 
   // 장소검색이 완료됐을 때 호출되는 콜백함수
   function placesSearchCB(data, status, pagination) {
+    console.log("data: ", data);
     if (status === kakao.maps.services.Status.OK) {
 
       // 정상적으로 검색이 완료됐으면
@@ -292,6 +296,13 @@
       // `data-*` 속성에 장소 이름과 주소 저장
       button.setAttribute("data-place-name", place.place_name);
       button.setAttribute("data-place-address", place.address_name);
+      button.setAttribute("data-place-phone", place.phone);
+      button.setAttribute("data-x", place.x);
+      button.setAttribute("data-y", place.y);
+      button.setAttribute("data-place-url", place.place_url);
+      button.setAttribute("data-id", place.id);
+
+      //button.setA
 
       itemEl.appendChild(button);
 
@@ -319,20 +330,59 @@
     // 지도 범위 재설정
     map.setBounds(bounds);
   }
+
   document.getElementById("placesList").addEventListener("click", function (event) {
     if (event.target && event.target.classList.contains("add-btn")) {
       const placeName = event.target.getAttribute("data-place-name");
       const placeAddress = event.target.getAttribute("data-place-address");
-      const x = event.target.getAttribute("data-place-x"); // x 좌표
-      const y = event.target.getAttribute("data-place-y"); // y 좌표
+      const placePhone = event.target.getAttribute("data-place-phone");
+      const xValue = event.target.getAttribute("data-x"); // x 좌표
+      const yValue = event.target.getAttribute("data-y"); // y 좌표
+      const placeURL = event.target.getAttribute("data-place-url");
+      const id = event.target.getAttribute("data-id");
+      const selectedDay = document.querySelector(".day-btn.selected")?.getAttribute("data-day");
+
+      // 장소 데이터
+      const regionId = placeAddress.split(" ")[0]; // '서울', '경기' 등 추출
 
       // 장소 데이터
       const place = {
-        name: placeName,
-        address: placeAddress,
-        x: x,
-        y: y
+        kakaoPlaceName: placeName,
+        kakaoRoadAddressName: placeAddress,
+        kakaoPhone: placePhone,
+        kakaoX: xValue,
+        kakaoY: yValue,
+        kakaoPlaceUrl: placeURL,
+        kakaoPlaceId: id,
+        regionId: regionId
       };
+
+      const final_place = {
+        planId: planId,
+        kakaoPlaceId: id,
+        day: selectedDay
+      };
+
+      tempMemoryPlaces.push(final_place);
+
+      console.log("tempMemoryPlaces: ", tempMemoryPlaces);
+
+      fetch('/daengdong/place/savePlace', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(place)
+      })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error("Failed to save place");
+            }
+            return response.text();
+          })
+          .catch(error => {
+            console.error("Error:", error);
+          });
 
       // 웹소켓으로 전송
       webSocket.send(JSON.stringify({
@@ -517,6 +567,7 @@
   // 기존 addPlaceToPlan 수정
   function addPlaceToPlan(placeTitle, placeAddress) {
     const selectedDay = document.querySelector(".day-btn.selected")?.getAttribute("data-day");
+    console.log("일자 선택 (나의 번호는?) : ", selectedDay); // 콘솔 찍어봐라 숫자 1,2,3 나오나 그 후에 finalSend 수정해야한다.
     if (!selectedDay) {
       alert("일차를 선택해주세요!");
       return;
@@ -1264,6 +1315,7 @@
 <%-- <script src="<%= request.getContextPath() %>/js/addPlan.js"></script> --%>
 <script src="/daengdong/js/addCompanion.js"></script>
 <script src="/daengdong/js/websocket.js"></script>
+<script src="/daengdong/js/finalSend.js"></script>
 <script>
   // 서버에서 전달받은 planId를 전역 변수로 설정
   planId = '<%= session.getAttribute("planId") %>';
