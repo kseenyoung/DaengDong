@@ -256,7 +256,6 @@
     color: #555;
     margin: 5px 0 0;
 }
-
 /* 사이드바 */
 body, h4, p, button, a {
     margin: 0;
@@ -264,7 +263,6 @@ body, h4, p, button, a {
     box-sizing: border-box;
     font-family: 'Arial', sans-serif;
 }
-
 #sidebar {
     width: 65%;
     max-width: 1200px; /* 최대 너비 제한 */
