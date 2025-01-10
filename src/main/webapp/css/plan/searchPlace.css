@@ -8,7 +8,7 @@
     top: 0;
     left: 10%;
     transform: translate(0, 0);
-    display: block;
+    display: none;
     bottom: 0;
     width: 80%;
     margin: 10px 0 30px 10px;
@@ -159,7 +159,7 @@
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
 
 /* 카테고리 */
-#category {position:absolute;top:10px;left:10px;border-radius: 5px; border:1px solid #909090;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);background: #fff;overflow: hidden;z-index: 2;}
+#category {position:absolute;top:13%;left:5%;border-radius: 5px; border:1px solid #909090;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);background: #fff;overflow: hidden;z-index: 2;}
 #category li {float:left;list-style: none;width:50px;border-right:1px solid #acacac;padding:6px 0;text-align: center; cursor: pointer;}
 #category li.on {background: #eee;}
 #category li:hover {background: #ffe6e6;border-left:1px solid #acacac;margin-left: -1px;}
@@ -201,6 +201,7 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    width: 90%;
 }
 
 #category li {
@@ -255,7 +256,6 @@
     color: #555;
     margin: 5px 0 0;
 }
-
 /* 사이드바 */
 body, h4, p, button, a {
     margin: 0;
@@ -263,19 +263,26 @@ body, h4, p, button, a {
     box-sizing: border-box;
     font-family: 'Arial', sans-serif;
 }
-
 #sidebar {
-    display: none;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 350px;
-    background: linear-gradient(to bottom right, #ffffff, #e3f2fd);
-    border-radius: 10px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    overflow: hidden;
-    z-index: 500;
+    width: 65%;
+    max-width: 1200px; /* 최대 너비 제한 */
+    height: 20%; /* 높이를 콘텐츠에 맞게 조정 */
+    padding: 20px; /* 콘텐츠 내부 여백 */
+    border: 1px solid #ccc; /* 테두리 */
+    display: none; /* 기본적으로 숨김 */
+    position: fixed; /* 고정 위치 */
+    bottom: 20px; /* 화면 아래에서 약간 위로 띄움 */
+    left: 65%; /* 가로 중심 정렬 */
+    transform: translateX(-50%); /* 중심 이동 */
+    background-color: #ffffff; /* 배경색 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+    z-index: 1000; /* 다른 요소 위에 표시 */
+    border-radius: 12px; /* 전체 모서리를 둥글게 */
+    overflow-y: auto; /* 세로 스크롤 */
+    overflow-x: hidden; /* 가로 스크롤 숨김 */
+    display: none; /* 기본적으로 숨김 */
+    flex-direction: column; /* 세로 정렬 */
+    gap: 5px; /* 요소 간 간격 */
 }
 
 #sidebar .close-btn {
@@ -283,9 +290,9 @@ body, h4, p, button, a {
     background: #ff6b6b;
     color: white;
     border: none;
-    font-size: 16px;
+    font-size: 8px; /* 기존 16px → 8px */
     font-weight: bold;
-    padding: 10px 15px;
+    padding: 5px 8px; /* 기존 10px 15px → 5px 8px */
     border-radius: 50%;
     cursor: pointer;
     position: absolute;
@@ -301,56 +308,67 @@ body, h4, p, button, a {
 }
 
 #sidebar .sidebar-title {
-    font-size: 20px;
+    font-size: 12px; /* 글씨 크기 조정 */
     font-weight: bold;
     color: #333;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: center;
+    align-self: center;
+}
+
+#sidebar .content-container {
+    display: flex; /* 가로 정렬 */
+    flex-direction: row; /* 행 방향 */
+    justify-content: space-between; /* 좌우로 분리 */
+    gap: 20px
 }
 
 #sidebar .sidebar-info {
-    font-size: 14px;
+    flex: 3; /* 정보 영역이 더 넓게 */
+    font-size: 10px; /* 글씨 크기 */
     color: #666;
-    margin: 10px 0;
-    line-height: 1.6;
-    border-bottom: 1px dashed #ddd;
-    padding-bottom: 5px;
+    margin: 0; /* 여백 제거 */
+    line-height: 1.6; /* 줄 간격 */
 }
 
-#sidebar .add-btn {
-    background: #4caf50;
-    border: none;
-    margin: 20px 0;
+#sidebar .button-container {
+    display: flex; /* Flexbox 활성화 */
+    flex-direction: column; /* 버튼을 세로로 정렬 */
+    gap: 8px; /* 버튼 간 간격 추가 */
+    justify-content: flex-start; /* 버튼을 위쪽 정렬 */
+    align-items: stretch; /* 버튼 너비를 컨테이너 너비에 맞춤 */
+}
+
+#sidebar .add-btn,
+#sidebar .map-link {
+    display: block; /* 블록 요소로 설정 */
+    width: 10%; /* 버튼이 컨테이너 너비를 가득 채우도록 설정 */
+    padding: 8px; /* 버튼 내부 여백 */
+    font-size: 9px; /* 버튼 글씨 크기 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    color: white;
+    border-radius: 6px; /* 둥근 모서리 */
+    text-decoration: none;
+    font-weight: bold;
     cursor: pointer;
 }
 
+/* 각 버튼의 배경색 */
+#sidebar .add-btn {
+    background-color: #4caf50;
+}
+
 #sidebar .map-link {
-    background: #2196f3;
-    text-decoration: none;
-    margin-top: 30px;
+    background-color: #2196f3;
 }
 
-#sidebar .button {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    border-radius: 8px;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
+/* 버튼 호버 효과 */
 #sidebar .add-btn:hover {
     background-color: #388e3c;
-    transform: translateY(-2px);
 }
 
 #sidebar .map-link:hover {
     background-color: #1e88e5;
-    transform: translateY(-2px);
 }
 /* 자세히보기 장소 모달 */
 #planModal {
@@ -655,6 +673,12 @@ body, h4, p, button, a {
     border-radius: 5px;
     cursor: pointer;
 }
+.day-btn.selected {
+    background-color: #28A745; /* 선택된 버튼의 배경색 */
+    color: white;
+    font-weight: bold;
+}
+
 #together {
     display: flex;
     align-items: center;
