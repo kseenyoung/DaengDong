@@ -38,40 +38,27 @@
   </div>
 </div>
 
-<div id="sidebar" style="
-    width: 320px;
-    height: 400px;
-    overflow-y: auto;
-    padding: 20px;
-    border-left: 1px solid #ccc;
-    display: none;
-    position: fixed;
-    right: 0;
-    top: 0;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-    z-index: 1000;
-    border-radius: 8px 0 0 8px;
-">
+<div id="sidebar">
 </div>
 
 <div id="sidebar-template" style="display: none;">
   <button id="closeSidebar" class="close-btn">✖</button>
   <h4 id="place-title" class="sidebar-title"></h4>
-  <p class="sidebar-info"><strong>카테고리:</strong> <span id="place-category_name"></span></p>
-  <p class="sidebar-info"><strong>도로명주소:</strong> <span id="place-road_address_name"></span></p>
-  <p class="sidebar-info"><strong>주소:</strong> <span id="place-address_name"></span></p>
-  <p class="sidebar-info"><strong>전화번호:</strong> <span id="place-phone"></span></p>
+  <div class="content-container">
+  <p class="sidebar-info"><strong>카테고리</strong> <br> <span id="place-category_name"></span></p>
+  <p class="sidebar-info"><strong>도로명주소</strong> <br> <span id="place-road_address_name"></span></p>
+  <p class="sidebar-info"><strong>주소</strong> <br> <span id="place-address_name"></span></p>
+  <p class="sidebar-info"><strong>전화번호</strong> <br> <span id="place-phone"></span></p>
   <button id = "addPlanBtn" class="add-btn button">+ 내 일정에 추가</button>
   <a id="map-link" href="#" target="_blank" class="map-link button">자세히 보기</a>
+  </div>
 </div>
 
 <div class="map_wrap">
   <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
   <!-- 채팅방 접속하기 버튼 -->
   <button id="btnChat">채팅방 접속하기</button>
-  <button id = "pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
+  <!--<button id = "pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>-->
   <div id="menu_wrap" class="bg_white">
     <button id="closeMenu" class="close-btn">✖</button>
         <div class="option">
@@ -641,7 +628,7 @@ function removeCustomMarker(title) {
       });
 
       // 사이드바 표시
-      sidebar.style.display = "block";
+      sidebar.style.display = "flex";
 
       const addPlanBtn = document.getElementById("addPlanBtn");
 
@@ -1331,14 +1318,6 @@ function removeCustomMarker(title) {
 
     // "핀 일괄 삭제하기" 버튼을 클릭하면 호출되어 배열에 추가된 마커를 지도에서 삭제하는 함수입니다
     function deleteAllPins() {
-        // customMarkers 배열의 마커를 지도에서 제거
-        for (var i = 0; i < customMarkers.length; i++) {
-            customMarkers[i].customMarker.setMap(null); // 마커를 지도에서 제거
-        }
-
-        // customMarkers 배열 초기화
-        customMarkers = [];
-
         // 기존 pins 배열 처리
         for (var i = 0; i < pins.length; i++) {
             pins[i].setMap(null);
@@ -1452,6 +1431,10 @@ function removeCustomMarker(title) {
             dayBtn.classList.add("day-btn");
             dayBtn.setAttribute("data-day", i);
 
+            if (i===1){
+                dayBtn.classList.add("selected");
+            }
+
             dayContainer.appendChild(dayBtn);
 
             if (!dayPlans[i]){
@@ -1475,6 +1458,18 @@ function removeCustomMarker(title) {
     });
 
     createDayButtons(dateDifference);
+    // 초기 상태 설정 (1일차 고정)
+    document.addEventListener("DOMContentLoaded", () => {
+        // 기본적으로 일정(1일차)을 표시
+        companionSection.style.display = "none";
+        daysSection.style.display = "block";
+
+        // 1일차를 강조 표시
+        const firstDayBtn = document.querySelector(".day-btn[data-day='1']");
+        if (firstDayBtn) {
+            firstDayBtn.classList.add("selected");
+        }
+    });
 
     // 버튼 누르는거에 따른 동행자, 일정 보여주기
     const showCompanionBtn = document.getElementById("showCompanion");
