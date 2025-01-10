@@ -401,6 +401,24 @@
     }
   });
 
+  // 일정 삭제 로직 추가
+  document.getElementById("placeList").addEventListener("click", function (event) {
+    if (event.target && event.target.classList.contains("delete-btn")) {
+      const placeTitle = event.target.parentNode.querySelector(".placeTitle").textContent;
+      const placeDay = document.querySelector(".day-btn.selected")?.getAttribute("data-day");
+
+      // tempMemoryPlaces에서 삭제
+      tempMemoryPlaces = tempMemoryPlaces.filter(
+          item => !(item.day === placeDay && item.kakaoPlaceName === placeTitle)
+      );
+
+      console.log("Updated tempMemoryPlaces: ", tempMemoryPlaces);
+
+      // UI 업데이트
+      event.target.parentNode.remove();
+    }
+  });
+
 
 
 

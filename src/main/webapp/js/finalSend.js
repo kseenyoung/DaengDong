@@ -1,6 +1,6 @@
 planId = window.planId;
 
-const tempMemoryPlaces = []; // 임시 메모리 배열 초기화
+let tempMemoryPlaces = []; // 임시 메모리 배열 초기화
 
 document.getElementById("finalizePlanBtn").addEventListener("click", function () {
     const requestData = tempMemoryPlaces.map(place => ({
