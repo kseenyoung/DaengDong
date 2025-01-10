@@ -30,18 +30,32 @@
                 <img src="https://daengdong-bucket.s3.amazonaws.com/2ff2135a-b82b-4c3a-a483-b6f765d23aa0_bell.png" alt="알림" width="30" height="30"/>
                 <span class="alt-text">알림</span>
             </a>
-            <a href="">
-                <img src="${path}/images/community.png" alt="커뮤니티" width="30" height="30"/>
+             <a href="${path}/post/posts">
+                <img src="${path}/images/community.png" alt="커뮤니티" width="30" height="30" />
                 <span class="alt-text"></span>
             </a>
-            <a href="">
-                <img src="${path}/images/plan.png" alt="플랜" width="30" height="30"/>
+            <a href="${path}/plan/create">
+                <img src="${path}/images/plan.png" alt="플랜" width="30" height="30" />
                 <span class="alt-text"></span>
             </a>
             <a href="${path}/auth/viewMypage.do">
-                <img src="${path}/images/user.png" alt="사용자" width="30" height="30"/>
+                <img src="${path}/images/user.png" alt="사용자" width="30" height="30" />
                 <span class="alt-text"></span>
             </a>
         </div>
     </div>
 </header>
+
+<script>
+const links = document.querySelectorAll("#header_right a");
+
+  links.forEach(link => {
+    const img = link.querySelector("img");
+    const altText = link.querySelector(".alt-text");
+
+    // img 태그의 alt 속성값을 span의 텍스트로 설정
+    if (img && altText) {
+      altText.textContent = img.alt;
+    }
+  });
+</script>

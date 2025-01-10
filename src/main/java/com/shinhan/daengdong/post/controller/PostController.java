@@ -1,6 +1,7 @@
 package com.shinhan.daengdong.post.controller;
 
 import com.shinhan.daengdong.member.dto.MemberDTO;
+import com.shinhan.daengdong.member.dto.RelationshipsDTO;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
 import com.shinhan.daengdong.plan.model.service.PlanServiceInterface;
@@ -57,6 +58,9 @@ public class PostController {
                 .map(like -> like.getPostId().toString())
                 .collect(Collectors.joining(","));
         model.addAttribute("myLike", likePostIdsString);
+
+        List<RelationshipsDTO> followingList = memberService.getFollowingList(member.getMember_email());
+        model.addAttribute("followingList", followingList);
 
         // 게시글 상세 정보 조회
         PostVO post = postService.getPostDetail(postId);

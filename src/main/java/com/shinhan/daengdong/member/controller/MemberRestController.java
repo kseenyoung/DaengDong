@@ -47,9 +47,8 @@ public class MemberRestController {
 
     @GetMapping("/following/{to_email}")
     public void deleteFollowing(@PathVariable("to_email") String toEmail, HttpSession session) {
-//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-//        String fromEmail = memberDTO.getMemberEmail();
-        String fromEmail = "user1@example.com";
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
+        String fromEmail = memberDTO.getMember_email();
         FollowDTO followDTO = FollowDTO.builder()
                 .from_email(fromEmail)
                 .to_email(toEmail)
@@ -59,9 +58,8 @@ public class MemberRestController {
 
     @PostMapping("/following/{to_email}")
     public void addFollowing(@PathVariable("to_email") String toEmail, HttpSession session) {
-//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-//        String fromEmail = memberDTO.getMemberEmail();
-        String fromEmail = "user1@example.com";
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
+        String fromEmail = memberDTO.getMember_email();
         FollowDTO followDTO = FollowDTO.builder()
                 .from_email(fromEmail)
                 .to_email(toEmail)

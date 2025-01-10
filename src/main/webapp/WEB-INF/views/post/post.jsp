@@ -27,9 +27,8 @@
   </head>
 
   <body>
-    <!--  div는 위치나 형태?를 나타낸다. 선택자는 최대 2개, 태그만 있는 경우는
-    무조건 앞에 선택자 써주기  -->
-    <div id="container">
+
+    <div id="container" data-path="${path}">
     <%@include file="../member/header.jsp" %>
       <div id="post_write_modal">
         <div id="post_write_block">
@@ -41,8 +40,8 @@
 
                     <form id="dropZone">
                         <div id="buttons">
-                            <button id="prevButton" type="button">이전</button>
-                            <button id="nextButton" type="button">다음</button>
+                            <button id="prevButton" type="button"><img src="${path}/img/left-arrow.png" width="30"/></button>
+                            <button id="nextButton" type="button"><img src="${path}/img/right-arrow.png" width="30"/></button>
                         </div>
                         <img id="dropzoneImg" src="${path}/img/modal.png" alt="" width="250" height="250">
                         <span>여기에 파일을 드래그하세요</span>
@@ -321,10 +320,12 @@
 
     </div>
   </body>
-
+  <script src="${path}/js/post/like.js"></script>
   <script>
 
  document.addEventListener('DOMContentLoaded', () => {
+
+
  console.log("${myLike}")
  console.log("${postList}")
  console.log("${plans}")
@@ -333,10 +334,17 @@
 
    const writeButton = document.querySelector(".post_write");
    const modal = document.getElementById("post_write_modal");
+   const post_write_block = document.getElementById("post_write_block");
    writeButton.addEventListener("click", function () {
      console.log(1)
       modal.style.display = "flex";
    });
+  modal.addEventListener("click", function () {
+      modal.style.display = "none"; // 모달을 숨김
+  });
+  modal.querySelector("#post_write_block").addEventListener("click", function (event) {
+      event.stopPropagation(); // 클릭 이벤트 전파를 막음
+  });
 
     const dropZone = document.getElementById('dropZone');
     const dropzoneImg = document.getElementById('dropzoneImg');
@@ -348,37 +356,7 @@
     const fileInput = document.getElementById('fileInput');
     let postFormData = new FormData(); // FormData 객체 생성
 
-    $(document).on("click", ".like-img", function() {
-        const postId = $(this).data("post-id");  // 클릭한 게시글의 postId 가져오기
-        const imgElement = $(this);
-        const likeCountElement = imgElement.siblings("span");  // 해당 게시글의 like count 표시 요소
-        let currentLikeCount = parseInt(likeCountElement.text());  // 현재 좋아요 수
 
-        $.ajax({
-            url: `${path}/post/like`,
-            type: "POST",
-            data: {
-                postId: postId,
-            },
-            success: function(response) {
-                // 좋아요 클릭 후 처리 (이미지 변경 등)
-                console.log("success : ", response)
-                console.log($(this))
-                 console.log(currentLikeCount)
-                if (imgElement.attr("src") === `${path}/img/Likefull.png`) {
-                        imgElement.attr("src", `${path}/img/Like.png`);
-                         currentLikeCount--;
-                    } else {  // 그렇지 않으면 'Likefull.png'로 변경
-                        imgElement.attr("src", `${path}/img/Likefull.png`);
-                        currentLikeCount++;
-                    }
-                 likeCountElement.text(currentLikeCount);
-            },
-            error: function(err) {
-                console.log(err);
-            }
-        });
-    });
 
     const otherInput = document.getElementById('otherInput'); // 다른 입력값을 위한 input 요소
 
