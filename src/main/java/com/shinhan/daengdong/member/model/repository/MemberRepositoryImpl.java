@@ -132,8 +132,16 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     @Override
     public List<PetDTO> selectPet(String memberEmail) {
         List<PetDTO> petList = sqlSession.selectList(namespace + "selectMyPet", memberEmail);
-        log.info("memberEmail: " + memberEmail);
-        log.info("petList123: " + petList);
         return petList;
+    }
+
+    @Override
+    public void modifyPetProfilePhoto(PetDTO petDTO) {
+        sqlSession.update(namespace + "modifyPetProfile", petDTO);
+    }
+
+    @Override
+    public void modifyPetDetail(PetDTO petDTO) {
+        sqlSession.update(namespace + "modifyPetDetailProfile", petDTO);
     }
 }

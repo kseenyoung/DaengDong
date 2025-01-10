@@ -1,10 +1,10 @@
 /* 글래스모피즘 기본 스타일 */
-#followModal-dialog, #editNicknameModal-dialog {
+#followModal-dialog, #editNicknameModal-dialog, #editPetDetailModal-dialog {
   display: flex;
   justify-content: center;
 }
 
-#followModal-content, #editNicknameModal-modal-content {
+#followModal-content, #editNicknameModal-modal-content, #editPetDetailModal-content {
   background: rgba(255, 255, 255, 0.2); /* 투명도 */
   backdrop-filter: blur(10px); /* 흐림 효과 */
   -webkit-backdrop-filter: blur(10px); /* 사파리 지원 */
@@ -162,8 +162,16 @@
   display: none;
 }
 
-#confirm-update-profile {
+#confirm-update-profile, #confirm-update-petDetail {
   background-color: #0AB75B!important;
   border-color: #0AB75B!important;
   color: white!important;
+}
+
+#uploadButton, #profile-uploadButton {
+  background-color: #067a3e !important; /* 어둡고 차분한 초록색 */
+  border-color: #067a3e !important; /* 동일한 어두운 초록색 */
+  color: #d9d9d9 !important; /* 비활성화된 텍스트 느낌의 밝은 회색 */
+  cursor: not-allowed !important; /* 클릭 불가한 느낌을 주는 커서 */
+  opacity: 0.7; /* 살짝 투명도를 추가해 비활성화 느낌 */
 }

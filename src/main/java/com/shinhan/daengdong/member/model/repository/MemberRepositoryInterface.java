@@ -49,4 +49,8 @@ public interface MemberRepositoryInterface {
     List<PetDTO> selectPet(String memberEmail);
 
     void modifyProfilePhoto(MemberDTO member);
+
+    void modifyPetProfilePhoto(PetDTO petDTO);
+
+    void modifyPetDetail(PetDTO petDTO);
 }
