@@ -276,6 +276,7 @@
 
       // 버튼 생성 및 추가
       var button = document.createElement("button");
+      button.id = "addPlanBtn";
       button.className = "add-btn";
       button.textContent = "+ 내 일정에 추가";
 
@@ -311,96 +312,77 @@
     menuEl.scrollTop = 0;
     map.setBounds(bounds);
 }
-    document.querySelectorAll('.add-btn').forEach(button => {
-        button.addEventListener('click', function(){
-            const placeName = this.getAttribute('data-place-name');
-            const placeAddress = this.getAttribute('data-place-address');
-            const placeX = parseFloat(this.getAttribute('data-place-x'));
-            const placeY = parseFloat(this.getAttribute('data-place-y'));
+    function addPlaceAndSave(eventTarget) {
+        const placeName = eventTarget.getAttribute("data-place-name");
+        const placeAddress = eventTarget.getAttribute("data-place-address");
+        const placePhone = eventTarget.getAttribute("data-place-phone");
+        const xValue = parseFloat(eventTarget.getAttribute("data-place-x"));
+        const yValue = parseFloat(eventTarget.getAttribute("data-place-y"));
+        const placeURL = eventTarget.getAttribute("data-place-url");
+        const id = eventTarget.getAttribute("data-id");
+        const selectedDay = document.querySelector(".day-btn.selected")?.getAttribute("data-day");
 
-            console.log(`데이터: ${placeName}, ${placeAddress}, ${placeX}, ${placeY}`);
+        const regionId = placeAddress.split(" ")[0]; // '서울', '경기' 등 추출
+        const place = {
+            kakaoPlaceName: placeName,
+            kakaoRoadAddressName: placeAddress,
+            kakaoPhone: placePhone,
+            kakaoX: xValue,
+            kakaoY: yValue,
+            kakaoPlaceUrl: placeURL,
+            kakaoPlaceId: id,
+            regionId: regionId
+        };
 
-            var placePosition = new kakao.maps.LatLng(placeY, placeX);
-            addCustomMarker(placePosition, placeName);
+        const final_place = {
+            planId: planId,
+            kakaoPlaceId: id,
+            day: selectedDay
+        };
 
-            console.log(`${placeName} (${placeAddress}) 위치에 커스텀 마커 추가 완료.`);
-        });
-    });
+        // 로컬 메모리에 저장
+        tempMemoryPlaces.push(final_place);
+        console.log("tempMemoryPlaces: ", tempMemoryPlaces);
 
+        // 마커 생성
+        const placePosition = new kakao.maps.LatLng(yValue, xValue);
+        addCustomMarker(placePosition, placeName);
 
-  document.getElementById("placesList").addEventListener("click", function (event) {
-    if (event.target && event.target.classList.contains("add-btn")) {
-      const placeName = event.target.getAttribute("data-place-name");
-      const placeAddress = event.target.getAttribute("data-place-address");
-      const placePhone = event.target.getAttribute("data-place-phone");
-      const xValue = event.target.getAttribute("data-x"); // x 좌표
-      const yValue = event.target.getAttribute("data-y"); // y 좌표
-      const placeURL = event.target.getAttribute("data-place-url");
-      const id = event.target.getAttribute("data-id");
-      const selectedDay = document.querySelector(".day-btn.selected")?.getAttribute("data-day");
+        // 일정에 장소 추가
+        addPlaceToPlan(placeName, placeAddress);
 
-      // 장소 데이터
-      const regionId = placeAddress.split(" ")[0]; // '서울', '경기' 등 추출
+        // 서버에 장소 데이터 저장
+        fetch('/daengdong/place/savePlace', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(place)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to save place");
+                }
+                return response.text();
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
 
-      // 장소 데이터
-      const place = {
-        kakaoPlaceName: placeName,
-        kakaoRoadAddressName: placeAddress,
-        kakaoPhone: placePhone,
-        kakaoX: xValue,
-        kakaoY: yValue,
-        kakaoPlaceUrl: placeURL,
-        kakaoPlaceId: id,
-        regionId: regionId
-      };
+        // 웹소켓으로 데이터 전송
+        webSocket.send(JSON.stringify({
+            type: "shareMap",
+            data: place
+        }));
 
-      const final_place = {
-        planId: planId,
-        kakaoPlaceId: id,
-        day: selectedDay
-      };
-
-      tempMemoryPlaces.push(final_place);
-
-      console.log("tempMemoryPlaces: ", tempMemoryPlaces);
-
-      fetch('/daengdong/place/savePlace', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(place)
-      })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error("Failed to save place");
-            }
-            return response.text();
-          })
-          .catch(error => {
-            console.error("Error:", error);
-          });
-
-      // 웹소켓으로 전송
-      webSocket.send(JSON.stringify({
-        type: "shareMap",
-        data: place
-      }));
-
-      // WebSocket으로 장소 데이터 전송
-      //webSocket.send(JSON.stringify(place));
-      alert("장소가 공유되었습니다!");
-
-      // 로컬에서도 추가 및 화면 업데이트
-      // inMemoryPlaces.push(place);
-      // renderPlaceList();
-
-      addPlaceToPlan(placeName, placeAddress);
+        alert("장소가 공유되었습니다!");
     }
-  });
-
-
-
+// 동적으로 생성된 버튼
+document.addEventListener("click", function (event) {
+    if (event.target && event.target.classList.contains("add-btn")) {
+        addPlaceAndSave(event.target);
+    }
+});
 
   // 검색결과 항목을 Element로 반환하는 함수입니다
   function getListItem(index, places) {
@@ -638,6 +620,15 @@ function removeCustomMarker(title) {
                 const placeAddress = document.getElementById("place-address_name").textContent;
                 const placeX = parseFloat(place.x);
                 const placeY = parseFloat(place.y);
+
+              // `data-*` 속성에 장소 이름과 주소 저장
+              addPlanBtn.setAttribute("data-place-name", place.place_name);
+              addPlanBtn.setAttribute("data-place-address", place.address_name);
+              addPlanBtn.setAttribute("data-place-phone", place.phone);
+              addPlanBtn.setAttribute("data-place-x", place.x);
+              addPlanBtn.setAttribute("data-place-y", place.y);
+              addPlanBtn.setAttribute("data-place-url", place.place_url);
+              addPlanBtn.setAttribute("data-id", place.id);
 
                 var placePosition = new kakao.maps.LatLng(placeY, placeX);
                 addCustomMarker(placePosition, placeTitle);
