@@ -642,7 +642,7 @@ function removeCustomMarker(title) {
     const dateDifference = <%= session.getAttribute("travelDays") %>;
     console.log("총 여행 일수:", dateDifference);
 
-    function displayDayPlan(day, place) {
+    function displayDayPlan(day) {
         const placeList = document.getElementById("placeList");
         placeList.innerHTML = ""; // 기존 리스트 초기화
 
@@ -686,21 +686,7 @@ function removeCustomMarker(title) {
 
         });
 
-
             newItem.addEventListener("click", function () {
-              const sidebar = document.getElementById("sidebar");
-              const template = document.getElementById("sidebar-template");
-
-              // 템플릿 내용을 복사하여 삽입
-              sidebar.innerHTML = template.innerHTML;
-
-
-              // 템플릿 내부 요소에 데이터 삽입
-              sidebar.querySelector("#place-title").textContent = place.place_name || "정보 없음";
-              sidebar.querySelector("#place-category_name").textContent = place.category_name || "정보 없음";
-              sidebar.querySelector("#place-road_address_name").textContent = place.road_address_name || "도로명 주소 없음";
-              sidebar.querySelector("#place-address_name").textContent = place.address_name || "주소 없음";
-              sidebar.querySelector("#place-phone").textContent = place.phone || "전화번호 없음";
                 const marker = customMarkers.find(item => item.title === title);
                 if (marker) {
                     const markerPosition = marker.customMarker.getPosition();
