@@ -295,9 +295,9 @@
       // `data-*` 속성에 장소 이름과 주소 저장
       button.setAttribute("data-place-name", place.place_name);
       button.setAttribute("data-place-address", place.address_name);
+      button.setAttribute("data-place-phone", place.phone);
       button.setAttribute("data-place-x", place.x);
       button.setAttribute("data-place-y", place.y);
-      button.setAttribute("data-place-phone", place.phone);
       button.setAttribute("data-place-url", place.place_url);
       button.setAttribute("data-id", place.id);
 
