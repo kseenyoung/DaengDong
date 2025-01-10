@@ -52,6 +52,12 @@ public class PostController {
 
         MemberDTO member = (MemberDTO) session.getAttribute("member");
 
+        List<LikeVO> myLike = postService.getMyLike(member.getMember_email());
+        String likePostIdsString = myLike.stream()
+                .map(like -> like.getPostId().toString())
+                .collect(Collectors.joining(","));
+        model.addAttribute("myLike", likePostIdsString);
+
         // 게시글 상세 정보 조회
         PostVO post = postService.getPostDetail(postId);
         if (post == null) {
@@ -93,10 +99,11 @@ public class PostController {
             postList = postService.getTopPosts(); // 카테고리가 없으면 최신 게시물 조회
         }
 
-        List<LikeVO> myLike = postService.getMyLike(member.getMember_email());
-        List<PlanDTO> userPlans = planService.getPlansByEmail(member.getMember_email());
 
+        List<PlanDTO> userPlans = planService.getPlansByEmail(member.getMember_email());
         model.addAttribute("plans", userPlans);
+
+        List<LikeVO> myLike = postService.getMyLike(member.getMember_email());
         String likePostIdsString = myLike.stream()
                 .map(like -> like.getPostId().toString())
                 .collect(Collectors.joining(","));

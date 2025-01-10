@@ -56,8 +56,22 @@
             <div class="post_bottom">
               <div class="post_bottom_top">
                 <div>
-                  <img src="${path}/img/Like.png" alt="하트" width="25" />
-                  <span>${post.likeCount}</span>
+                   <c:set var="found" value="false" />
+
+                  <!-- likePostIdsArray에서 해당 post.postId가 있는지 확인 -->
+                  <c:forEach var="likePostId" items="${myLike}">
+                      <c:if test="${likePostId == post.postId}">
+                          <c:set var="found" value="true" />
+                          <!-- 좋아요를 누른 경우 -->
+                          <img width="25" class="like-img" src="${path}/img/Likefull.png" data-post-id="${post.postId}" alt="like"><span>${post.likeCount}</span>
+                      </c:if>
+                  </c:forEach>
+
+                  <!-- likePostIdsArray에 해당 post.postId가 없으면 기본 이미지 출력 -->
+                  <c:if test="${not found}">
+                      <img width="25" class="like-img" src="${path}/img/Like.png" data-post-id="${post.postId}" alt="like"><span>${post.likeCount}</span>
+                  </c:if>
+
                 </div>
                 <img id="commentToggle" src="${path}/img/comment.png" alt="댓글" width="30" />
               </div>

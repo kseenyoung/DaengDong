@@ -22,7 +22,7 @@
         p.post_content,
         m.member_nickname,
         m.member_profile_photo,
-        COUNT(DISTINCT l.post_id) AS like_count,  -- 중복된 좋아요를 제외
+        COUNT(l.post_id) AS like_count,
         pi.image_url AS first_image_url          -- 첫 번째 이미지
         FROM
         posts p
