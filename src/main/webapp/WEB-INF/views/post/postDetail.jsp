@@ -9,63 +9,28 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
+
+
+
   <c:set var="path" value="${pageContext.servletContext.contextPath}"/>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
 
-    <title>Document</title>
-    <link
-      href="
-    https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css
-    "
-      rel="stylesheet"
-    />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Dongle:wght@400;700&family=Rubik+Bubbles&family=Rubik+Gemstones&family=Song+Myung&family=Sunflower:wght@300&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Dongle:wght@400;700&family=Rubik+Bubbles&family=Rubik+Gemstones&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="${path}/css/post/main.css" />
+
+       <link rel="stylesheet" href="${path}/css/post/main.css" />
     <link rel="stylesheet" href="${path}/css/post/post.css" />
     <link rel="stylesheet" href="${path}/css/post/postDetail.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
-    />
 
-    <script
-      type="text/javascript"
-      src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"
-    ></script>
-	</head> 
+	</head>
 	  <div id="container">
-          <div id="header_box">
-                 <h1 id="logo">댕동</h1>
-                 <div id="header_right">
-                     <a href="">
-                         <img src="${path}/images/community.png" alt="커뮤니티" width="30" height="30"/>
-                         <span class="alt-text"></span>
-                     </a>
-                     <a href="">
-                         <img src="${path}/images/plan.png" alt="플랜" width="30" height="30"/>
-                         <span class="alt-text"></span>
-                     </a>
-                     <a href="${path}/auth/viewMypage.do">
-                         <img src="${path}/images/user.png" alt="사용자" width="30" height="30"/>
-                         <span class="alt-text"></span>
-                     </a>
-                 </div>
-             </div>
+          <%@include file="../member/header.jsp" %>
           <section id="post_detail">
             <div class="post_top">
               <div class="post_top_left">
@@ -96,20 +61,68 @@
                 </div>
                 <img id="commentToggle" src="${path}/img/comment.png" alt="댓글" width="30" />
               </div>
-              <div class="comment_list" style="display:none;"></div>
-              <div class="comment" style="display:none;">
+              <div class="comment_list" style="display:none;">
+                 <div class="post_content" style="white-space: pre-line;">🤓🩶🩵🩶🤎
+                  ${post.postContent}#라스트챌린지 #스타일컬렉터모집 #2025코디 #요즘코디 #신년선물 #선물추천 #KREAM #OVERDUEFLAIR #크림 #오버듀플레어 #가디건코디
+                 </div>
+                 <div class="comment_list2">
+                     <c:forEach var="comment" items="${comments}">
+
+
+                      <div class="comment_box">
+                          <img src="${comment.memberProfilePhoto}" alt="" width="30">
+
+                          <div class="comment_box2">
+                            <div class="comment">
+                              <span>${comment.memberNickName}</span>
+                              <p>${comment.comment}</p>
+                            </div>
+                            <div class="comment_date">
+
+                        <fmt:formatDate value="${comment.createAt}" pattern="yyyy-MM-dd" var="createAtDate" />
+                        <c:set var="today" value="<%= new java.text.SimpleDateFormat(\"yyyy-MM-dd\").format(new java.util.Date()) %>" />
+
+
+                                <c:if test="${createAtDate == today}">
+                                    오늘
+                                </c:if>
+                                <c:if test="${createAtDate != today}">
+                                    <fmt:formatDate value="${comment.createAt}" pattern="yyyy-MM-dd" />
+                                </c:if>
+                            </div>
+
+                          </div>
+                        </div>
+
+
+                   </c:forEach>
+
+                </div>
+              </div>
+              <div class="commentForm" style="display:none;">
                 <img src="${path}/images/user.png" alt="프로필" />
                 <form action="">
-                  <input type="text" placeholder="댓글을 남기세요." />
+                  <input id="commentInput" type="text" placeholder="댓글을 남기세요." />
                 </form>
               </div>
             </div>
           </section>
         </div>
       </body>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
+    />
 
+    <script
+      type="text/javascript"
+      src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"
+    ></script>
       <script type="text/javascript">
       console.log(`${post}`)
+      console.log(`${my}`)
+      console.log(`${comments}`)
         $(".single-item").slick({
           infinite: false, // 무한 스크롤 비활성화
           prevArrow: '<button type="button" class="slick-prev"></button>',
@@ -141,18 +154,78 @@
 
             // 댓글 목록을 감싸는 div
             const commentList = document.querySelector('.comment_list');
-            const comment = document.querySelector('.comment');
+            const commentForm = document.querySelector('.commentForm');
+            const container = document.querySelector('#container');
+            const post_bottom_top = document.querySelector('.post_bottom_top');
+            const comment_list = document.querySelector('.comment_list');
+
 
             // 댓글 이미지 클릭 시
             commentToggleButton.addEventListener('click', function () {
                 // 댓글 목록의 display 속성 토글
                 if (commentList.style.display === 'none' || commentList.style.display === '') {
                     commentList.style.display = 'block';  // 댓글 목록 보이기
-                    comment.style.display = 'flex';  // 댓글 목록 보이기
+                    commentForm.style.display = 'flex';  // 댓글 목록 보이기
+
+                    container.style.backgroundColor = '#000000af';  // 댓글 목록 보이기
+
                 } else {
                     commentList.style.display = 'none';  // 댓글 목록 숨기기
-                    comment.style.display = 'none';  // 댓글 목록 숨기기
+                    commentForm.style.display = 'none';  // 댓글 목록 숨기기
+                      container.style.backgroundColor = '';  // 댓글 목록 보이기
+
                 }
             });
+
+
+             const postId =  `${post.postId}`/* 서버로부터 받아온 postId */;
+
+                 // 댓글 추가 (엔터 키로)
+                 $(document).on('keydown', '#commentInput', function (e) {
+
+
+                     if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                         const content = $(this).val().trim();
+                         if (!content) {
+                             alert("댓글을 입력하세요.");
+                             return;
+                         }
+
+                         const requestData = {
+                             postId: parseInt(postId),
+                             comment: content
+                         };
+
+                         $.ajax({
+                             url: '${path}/post/comment',
+                             type: 'POST',
+                             contentType: 'application/json',
+                             data: JSON.stringify(requestData),
+                             success: function (response) {
+                                 // 성공 시 새로운 댓글 추가
+                                 console.log(response)
+                              const newComment =
+                                  '<div class="comment_box">' +
+                                  '<img src="http://img1.kakaocdn.net/thumb/R640x640.q70/?fname=http://t1.kakaocdn.net/account_images/default_profile.jpeg" alt="" width="30">' +
+                                  '<div class="comment_box2">' +
+                                  '<div class="comment">' +
+                                  '<span> sweet home</span>' +
+                                  '<p>' + response.comment + '</p>' +
+                                  '</div>' +
+                                  '<div class="comment_date">지금</div>' +
+                                  '</div>' +
+                                  '</div>';
+                                 $('.comment_list2').append(newComment);
+                                 $('#commentInput').val(''); // 입력 필드 초기화
+                             },
+                             error: function () {
+                                 alert("댓글 추가 중 오류가 발생했습니다.");
+                             }
+                         });
+                     }
+                 });
       </script>
 </html>

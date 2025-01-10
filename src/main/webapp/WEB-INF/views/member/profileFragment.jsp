@@ -8,7 +8,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="path" value="${pageContext.servletContext.contextPath}"/>
-
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 <%--<link rel="stylesheet" href="${path}/css/member/profileFragment.css"/>--%>
@@ -19,33 +18,32 @@
 <link rel="stylesheet" href="${path}/css/member/followModal.css"/>
 
 <!-- edit-profile버튼 클릭 -> 닉네임 수정 모달 -->
-<div class="modal fade" id="editNicknameModal" tabindex="-1" aria-labelledby="editNicknameModalLabel" aria-hidden="true">
+<div class="modal fade" id="editNicknameModal" tabindex="-1" aria-labelledby="editNicknameModalLabel"
+     aria-hidden="true">
     <div id="editNicknameModal-dialog" class="modal-dialog">
         <div id="editNicknameModal-modal-content" class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editNicknameModalLabel">닉네임 수정</h5>
+                <h5 class="modal-title" id="editNicknameModalLabel">프로필 사진 수정</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-<%--            todo: imgae업로드 해결할 것--%>
-            <form id="editNicknameForm" enctype="multipart/form-data">
+            <form id="editNicknameForm" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="currentPhoto" class="form-label">현재 프로필 이미지</label>
                         <div id="currentPhotoContainer">
-                            <img id="currentPhoto" src="${selectMember.member_profile_photo}" alt="Current Profile Image" class="img-thumbnail">
+                            <img id="currentPhoto" src="${selectMember.member_profile_photo}"
+                                 alt="Current Profile Image" class="img-thumbnail">
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="newPhoto" class="form-label">프로필 이미지 변경</label>
-                        <input type="file" id="newPhoto" class="form-control-file" accept="image/*">
-                    </div>
-                    <div class="mb-3">
-                        <label for="newNickname" class="form-label">새로운 닉네임</label>
-                        <input type="text" class="form-control" id="newNickname" placeholder="새 닉네임 입력" required>
+                    <div class="custom-profile-container">
+                        <label for="file" class="custom-profile-label">사진 선택하기</label>
+                        <input type="file" id="file" name="file" class="custom-profile-input"/>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" id="confirm-update-profile" class="btn btn-primary">저장</button>
+                    <button type="button" id="confirm-update-profile" class="btn btn-primary"
+                            onclick="uploadFile(`${path}`)">저장
+                    </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                 </div>
             </form>
@@ -54,8 +52,13 @@
 </div>
 
 <div class="profile-header">
-    <img class="profile-image" src="${selectMember.member_profile_photo}" alt="Profile Image">
-    <h1 class="profile-username">${selectMember.member_nickname}</h1>
+    <img id="my-image" class="profile-image" src="${selectMember.member_profile_photo}" alt="Profile Image">
+    <div class="username-container">
+        <h1 class="profile-username">${selectMember.member_nickname}</h1>
+        <img id="view-edit-nickname" class="edit-icon"
+             src="https://daengdong-bucket.s3.amazonaws.com/b3bb95b7-cc85-421c-9083-edcfa3855c75_edit.png"
+             alt="editNickName" data-member-nickname="${selectMember.member_nickname}"/>
+    </div>
     <p class="profile-id">${selectMember.member_name}</p>
     <input type="hidden" id="memberEmail" name="member_email" value="${selectMember.member_email}"/>
 </div>
@@ -72,21 +75,23 @@
 
 <%--팔로우 팔로워 기능--%>
 <div class="profile-follow-info">
-    <span id="follower">34 followers</span> · <span id="following">49 following</span>
+    <span id="follower">${countFollower} followers</span> · <span id="following">${countFollowing} following</span>
 </div>
 
 <%--저장될 반려동물 이미지 정보등--%>
 <span id="my-pet">나의 반려동물</span>
-<div class="profile-pet">
-    <div class="pet-detail">
-        <img class="pet-image" src="${path}/img/daengdong_dog.jpeg" alt="Pet Picture">
-        <span>쪼꼬미</span>
+<c:forEach items="${petList}" var="petList">
+    <div class="profile-pet">
+        <div class="pet-detail">
+            <img class="pet-image" src="${path}/img/${petList.pet_profile_photo}" alt="Pet Picture">
+            <span>${petList.pet_name}</span>
+            <div class="popover">이름: ${petList.pet_name}<br>나이: ${petList.pet_age}살<br>견종: ${petList.pet_species}</div>
+        </div>
     </div>
-    <div class="pet-detail">
-        <img class="pet-image" src="${path}/img/daengdong_dog.jpeg" alt="Pet Picture">
-        <span>쪼꼬미</span>
-    </div>
-</div>
+</c:forEach>
+
+<script src="${path}/js/uploadFile.js"></script>
+
 
 <%--모달이미지 등 닉네임 수정할 scirpt--%>
 <%--<script>--%>

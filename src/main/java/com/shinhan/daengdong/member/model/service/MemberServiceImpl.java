@@ -1,6 +1,7 @@
 package com.shinhan.daengdong.member.model.service;
 
 import com.shinhan.daengdong.member.dto.*;
+import com.shinhan.daengdong.pet.dto.PetDTO;
 import com.shinhan.daengdong.place.model.service.PlaceServiceInterface;
 import com.shinhan.daengdong.post.dto.PostDTO;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
@@ -11,6 +12,8 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 @Slf4j
@@ -131,5 +134,37 @@ public class MemberServiceImpl implements MemberServiceInterface{
     @Override
     public void deletePlan(long planId) {
         memberRepository.deletePlan(planId);
+    }
+
+    @Override
+    public List<PetDTO> selectPet(String memberEmail) {
+        List<PetDTO> petList = memberRepository.selectPet(memberEmail);
+        for (PetDTO pet : petList) {
+            pet.setPet_age(calculatAge(pet.getPet_birthday()));
+        }
+
+        return petList;
+    }
+
+    private int calculatAge(Date birthDate) {
+        if (birthDate == null) return 0; // 생년월일이 없을 경우 나이 0 반환
+
+        Calendar birthCalendar = Calendar.getInstance();
+        birthCalendar.setTime(birthDate);
+
+        Calendar today = Calendar.getInstance();
+        int age = today.get(Calendar.YEAR) - birthCalendar.get(Calendar.YEAR);
+
+        if (today.get(Calendar.MONTH) < birthCalendar.get(Calendar.MONTH) ||
+                (today.get(Calendar.MONTH) == birthCalendar.get(Calendar.MONTH) &&
+                        today.get(Calendar.DAY_OF_MONTH) < birthCalendar.get(Calendar.DAY_OF_MONTH))) {
+            age--;
+        }
+        return age;
+    }
+
+    @Override
+    public void modifyProfilePhoto(MemberDTO member) {
+        memberRepository.modifyProfilePhoto(member);
     }
 }

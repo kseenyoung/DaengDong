@@ -37,12 +37,105 @@ body {
 .profile-image {
   width: 200px;
   height: 200px;
+  object-fit: cover; /* 비율을 유지하며 컨테이너를 채우기 */
+  object-position: center; /* 중앙을 기준으로 정렬 */
   border-radius: 50%;
 }
 
 .profile-username {
   font-size: 22px;
   margin: 10px 0;
+}
+
+/* 닉네임과 아이콘 컨테이너 스타일 */
+.username-container {
+  display: flex; /* 가로로 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
+  justify-content: center;
+  gap: 10px; /* 닉네임과 아이콘 간격 */
+}
+
+/* 아이콘 스타일 */
+.edit-icon {
+  width: 18px; /* 닉네임보다 약간 작은 크기 */
+  height: 18px; /* 정사각형 크기 */
+  cursor: pointer; /* 마우스 포인터 추가 */
+  transition: transform 0.2s; /* 클릭 시 애니메이션 */
+}
+
+/* 닉네임 수정 컨테이너 */
+.edit-nickname-container {
+  display: flex;
+  align-items: center; /* 수직 가운데 정렬 */
+  justify-content: center; /* 수평 가운데 정렬 */
+  gap: 5px; /* 요소 간격 */
+  background-color: #f5f8fa; /* 배경색 */
+  padding: 10px 15px; /* 여백 */
+  border-radius: 8px; /* 둥근 모서리 */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  margin-left: 0;
+}
+
+/* 닉네임 수정 라벨 */
+.edit-nickname-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #1c1c1c;
+}
+
+/* 닉네임 입력 필드 */
+.edit-nickname-input {
+  flex-grow: 1; /* 가로로 확장 */
+  padding: 8px 12px; /* 입력 필드 안쪽 여백 */
+  font-size: 14px;
+  border: 1px solid #ccc; /* 테두리 */
+  border-radius: 6px; /* 둥근 모서리 */
+  background-color: #fff;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1); /* 입력 필드 그림자 */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* 부드러운 애니메이션 */
+  margin-left: 0;
+}
+
+.edit-nickname-input:focus {
+  border-color: #0ab75b; /* 포커스 시 초록색 테두리 */
+  box-shadow: 0px 0px 5px rgba(10, 183, 91, 0.3); /* 포커스 시 그림자 */
+  outline: none;
+}
+
+/* 공통 버튼 스타일 */
+.edit-nickname-success, .edit-nickname-cancel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-size: 18px;
+  color: white;
+  border: none;
+  border-radius: 50%; /* 동그랗게 만들기 */
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease; /* 부드러운 애니메이션 */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* 버튼 그림자 */
+}
+
+/* 저장 버튼 (초록색 배경) */
+.edit-nickname-success {
+  background-color: #0ab75b; /* 초록색 배경 */
+}
+
+.edit-nickname-success:hover {
+  background-color: #32a86e; /* 호버 시 색상 변화 */
+  transform: scale(1.1); /* 호버 시 확대 */
+}
+
+/* 취소 버튼 (빨간색 배경) */
+.edit-nickname-cancel {
+  background-color: #f44336; /* 빨간색 배경 */
+}
+
+.edit-nickname-cancel:hover {
+  background-color: #d32f2f; /* 호버 시 색상 변화 */
+  transform: scale(1.1); /* 호버 시 확대 */
 }
 
 .profile-id {
@@ -96,6 +189,8 @@ body {
   height: 80px;
   padding: 5px;
   margin: 5px;
+  object-fit: cover; /* 비율을 유지하며 컨테이너를 채우기 */
+  object-position: center; /* 중앙을 기준으로 정렬 */
   border-radius: 50%;
 }
 
@@ -124,6 +219,29 @@ body {
 .drop-area.dragover {
   background-color: #f0f8ff;
   border: 2px dashed #007bff;
+}
+
+.profile-pet {
+  position: relative;
+  padding-bottom: 100px;
+}
+
+.popover {
+  display: none; /* 기본적으로 숨김 */
+  position: absolute;
+  bottom: 45px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+}
+
+.pet-detail:hover .popover {
+  display: block; /* hover 시 표시 */
 }
 
 /* Right Section - Main Content */

@@ -1,6 +1,7 @@
 $(document).ready(function () {
   initializeEventHandlers();
   callProfileFragment();
+  viewMyPetDetail();
 
   function callProfileFragment() {
     $.ajax({
@@ -8,52 +9,10 @@ $(document).ready(function () {
       type: "get",
       success: function (response) {
         $("#left-section").html(response);
-        imageSubmitHandler();
       },
       error: function (err) {
         console.log(err)
       }
-    });
-
-  }
-
-  function imageSubmitHandler() {
-    const fileInput = $("#newPhoto");
-
-    fileInput.on("change", function () {
-      if (this.files && this.files[0]) {
-        previewImage(this.files[0]);
-      }
-    });
-
-    $("#editNicknameForm").on("submit", function (e) {
-      e.preventDefault();
-
-      const formData = new FormData();
-      const file = fileInput[0].files[0];
-      // const newNickname = $("#newNickname").val();
-
-      if (file) {
-        formData.append("newPhoto", file);
-      }
-      // formData.append("newNickname", newNickname);
-      console.log([...formData.entries()]);
-
-      $.ajax({
-        url: `${path}/myProfile`,
-        type: "POST",
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (response) {
-          alert("프로필이 성공적으로 업데이트되었습니다.");
-          console.log(formData);
-        },
-        error: function (err) {
-          console.error(err);
-          alert("프로필 업데이트 중 오류가 발생했습니다.");
-        }
-      });
     });
   }
 
@@ -104,6 +63,24 @@ $(document).ready(function () {
     reader.readAsDataURL(file);
   }
 
+  function viewMyPetDetail() {
+    document.addEventListener('DOMContentLoaded', () => {
+      const petDetails = document.querySelectorAll('.pet-detail');
+
+      petDetails.forEach(detail => {
+        detail.addEventListener('mouseover', (event) => {
+          const popover = detail.querySelector('.popover');
+          popover.style.display = 'block'; // 팝오버 표시
+        });
+
+        detail.addEventListener('mouseout', (event) => {
+          const popover = detail.querySelector('.popover');
+          popover.style.display = 'none'; // 팝오버 숨김
+        });
+      });
+    });
+  }
+
   function initializeEventHandlers() {
     $(document)
       //semiCategory
@@ -119,7 +96,6 @@ $(document).ready(function () {
       .off("click", ".insert-follower")
 
       //myProfile
-      .off("click", "confirm-update-profile")
 
       //trip
       .off("click", ".delete-plan")
@@ -148,7 +124,7 @@ $(document).ready(function () {
     $(document).on("click", ".insert-follower", addFollowing);
 
     //myProfile
-    // $(document).on("click", "#confirm-update-profile", editProfile)
+    $(document).on("click", "#view-edit-nickname", viewEditNickname);
 
     //trip
     $(document).on("click", ".delete-plan", deletePlan);
@@ -417,6 +393,22 @@ $(document).ready(function () {
       success: function () {
         // 페이지 새로고침 대신 해당 요소만 제거
         element.remove();
+      },
+      error: function (err) {
+        console.log(err);
+      }
+    });
+  }
+
+  function viewEditNickname() {
+    let member_nickname = $(this).data("member-nickname");
+    console.log(member_nickname);
+
+    $.ajax({
+      url: `${path}/auth/viewNickNameEdit.do`,
+      type: 'get',
+      success: function (response) {
+        $(".username-container").html(response);
       },
       error: function (err) {
         console.log(err);

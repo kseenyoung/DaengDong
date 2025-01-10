@@ -27,6 +27,10 @@
         <h1 id="logo">댕동</h1>
         <div id="header_right">
             <a href="">
+                <img src="https://daengdong-bucket.s3.amazonaws.com/2ff2135a-b82b-4c3a-a483-b6f765d23aa0_bell.png" alt="알림" width="30" height="30"/>
+                <span class="alt-text">알림</span>
+            </a>
+            <a href="">
                 <img src="${path}/images/community.png" alt="커뮤니티" width="30" height="30"/>
                 <span class="alt-text"></span>
             </a>

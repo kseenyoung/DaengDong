@@ -26,6 +26,7 @@ import java.util.Map;
 
 @Slf4j
 @Controller
+@CrossOrigin(origins = "*") // 모든 도메인 허용
 @RequestMapping("/plan")
 public class PlanController {
 
@@ -54,8 +55,6 @@ public class PlanController {
         MemberDTO member = (MemberDTO) session.getAttribute("member");
         planDTO.setMemberEmail(member.getMember_email()); // 세션 이메일 할당
 
-        log.info("생성된 plan_id: {}", planDTO.getPlanId());
-
         // 시작일과 종료일 계산
         long days = ChronoUnit.DAYS.between(
             planDTO.getStartDate().toLocalDate(),
@@ -67,7 +66,7 @@ public class PlanController {
         // DB에 플랜 저장 및 생성된 planId 반환
         Long planId = planService.savePlan(planDTO); // DB INSERT
         log.info("PlanRepositoryImpl.save 실행됨: {}", planDTO);
-        log.info("생성된 plan_id: {}", planId);
+        log.info("!생성된 plan_id: {}", planId);
 
         // 반환된 planId를 세션에 저장
         session.setAttribute("currentPlanId", planId);
@@ -75,7 +74,7 @@ public class PlanController {
         session.setAttribute("travelDays", days);
 
         session.setAttribute("currentPlan", planDTO);
-        return "redirect:/plan/place";
+        return "redirect:/plan/place?planId=" + planId;
     }
 
     @GetMapping("/myPlace")
@@ -160,7 +159,7 @@ public class PlanController {
             session.setAttribute("planId", planId);
             log.info("URL 파라미터로 전달된 planId={} 을 세션에 저장했습니다.", planId);
         } else {
-            log.warn("URL 파라미터로 planId가 전달되지 않았습니다.");
+            session.setAttribute("planId", session.getAttribute("currentPlanId"));
         }
 
         Long currentPlanId = (Long) session.getAttribute("currentPlanId");
@@ -220,7 +219,7 @@ public class PlanController {
         }
 
         String message = "동행자가 추가되었습니다.";
-        PlanWebSocketHandler.sendMessageToUsers(currentPlanId.toString(), message);
+        //PlanWebSocketHandler.sendMessageToUsers(currentPlanId.toString(), message);
 
         return ResponseEntity.ok("동행자가 성공적으로 추가되었습니다.");
     }
@@ -262,4 +261,5 @@ public class PlanController {
 
         return ResponseEntity.ok("동행자가 성공적으로 삭제되었습니다.");
     }
+
 }
