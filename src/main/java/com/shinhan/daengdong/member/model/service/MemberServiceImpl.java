@@ -167,4 +167,14 @@ public class MemberServiceImpl implements MemberServiceInterface{
     public void modifyProfilePhoto(MemberDTO member) {
         memberRepository.modifyProfilePhoto(member);
     }
+
+    @Override
+    public void modifyPetProfilePhoto(PetDTO petDTO) {
+        memberRepository.modifyPetProfilePhoto(petDTO);
+    }
+
+    @Override
+    public void modifyPetDetail(PetDTO petDTO) {
+        memberRepository.modifyPetDetail(petDTO);
+    }
 }

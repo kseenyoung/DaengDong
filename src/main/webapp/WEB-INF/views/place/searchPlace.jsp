@@ -38,7 +38,22 @@
   </div>
 </div>
 
-<div id="sidebar">
+<div id="sidebar" style="
+    width: 320px;
+    height: 400px;
+    overflow-y: auto;
+    padding: 20px;
+    border-left: 1px solid #ccc;
+    display: none;
+    position: fixed;
+    right: 0;
+    top: 0;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    z-index: 1000;
+    border-radius: 8px 0 0 8px;
+">
 </div>
 
 <div id="sidebar-template" style="display: none;">
@@ -654,7 +669,7 @@ function removeCustomMarker(title) {
         placeList.innerHTML = ""; // 기존 리스트 초기화
 
         // 선택된 일차에 해당하는 장소 표시
-        dayPlans[day].forEach(({ title, address, x, y }, index) => {
+        dayPlans[day].forEach(({ title, address, x, y , id}, index) => {
         const markerPosition = new kakao.maps.LatLng(y, x);
 
             const newItem = document.createElement("li");
@@ -682,12 +697,20 @@ function removeCustomMarker(title) {
                 newItem.remove(); // 리스트 항목 삭제
                 dayPlans[day] = dayPlans[day].filter(item => item.title !== title); // 데이터에서 제거
 
+            // tempMemoryPlaces에서 해당 항목 삭제
+            tempMemoryPlaces = tempMemoryPlaces.filter(item => {
+              return !(String(item.day) === String(day) && item.kakaoPlaceId === id);
+            });
                 // 번호 다시 매기기
                 updatePlaceNumbers();
 
                 removeCustomMarker(title);
 
             });
+
+        console.log(`${title} 삭제됨`);
+        console.log("Updated tempMemoryPlaces:", tempMemoryPlaces);
+      });
 
             newItem.addEventListener("click", function () {
                 const marker = customMarkers.find(item => item.title === title);
@@ -726,7 +749,7 @@ function removeCustomMarker(title) {
 
 
   // 기존 addPlaceToPlan 수정
-  function addPlaceToPlan(placeTitle, placeAddress) {
+  function addPlaceToPlan(placeTitle, placeAddress, id) {
     const selectedDay = document.querySelector(".day-btn.selected")?.getAttribute("data-day");
     console.log("일자 선택 (나의 번호는?) : ", selectedDay); // 콘솔 찍어봐라 숫자 1,2,3 나오나 그 후에 finalSend 수정해야한다.
     if (!selectedDay) {
@@ -734,12 +757,12 @@ function removeCustomMarker(title) {
       return;
     }
 
-        // 선택된 일차에 장소 추가
-        dayPlans[selectedDay].push({ title: placeTitle, address: placeAddress });
-        displayDayPlan(selectedDay); // 업데이트된 리스트 표시
+    // 선택된 일차에 장소 추가
+    dayPlans[selectedDay].push({ title: placeTitle, address: placeAddress, id: id });
+    displayDayPlan(selectedDay); // 업데이트된 리스트 표시
 
-        console.log("새로운 일정 추가됨:", placeTitle, placeAddress, "on Day", selectedDay);
-    }
+    console.log("새로운 일정 추가됨:", placeTitle, placeAddress, id, "on Day", selectedDay);
+  }
 
 
     function removeMarker() {
@@ -1307,22 +1330,19 @@ function removeCustomMarker(title) {
         pins.push(pin);
     }
 
-    // "핀 일괄 삭제하기" 버튼을 클릭하면 호출되어 배열에 추가된 마커를 지도에서 삭제하는 함수입니다
-    function deleteAllPins() {
-        // 기존 pins 배열 처리
-        for (var i = 0; i < pins.length; i++) {
-            pins[i].setMap(null);
-        }
+  // "핀 일괄 삭제하기" 버튼을 클릭하면 호출되어 배열에 추가된 마커를 지도에서 삭제하는 함수입니다
+  function deleteAllPins() {
+    for (var i = 0; i < pins.length; i++) {
+      pins[i].setMap(null);
+    }
+    pins = [];
+    pinPositions = [];
+    deleteClickLine();
 
-        pins = [];
-        pinPositions = [];
-
-        deleteClickLine();
-
-        if (moveLine) {
-            moveLine.setMap(null);
-            moveLine = null;
-        }
+    if (moveLine) {
+      moveLine.setMap(null);
+      moveLine = null;
+    }
 
         deleteDistnce();
         deleteCircleDot();
@@ -1332,60 +1352,59 @@ function removeCustomMarker(title) {
         dots = [];
     }
 
+  document.addEventListener("DOMContentLoaded", function () {
+    let places = JSON.parse(localStorage.getItem("places")) || [];
+    const placeList = document.getElementById("placeList");
 
-    document.addEventListener("DOMContentLoaded", function () {
-        let places = JSON.parse(localStorage.getItem("places")) || [];
-        const placeList = document.getElementById("placeList");
+    // 장소 목록 렌더링 함수
+    function renderPlaceList() {
+      const placeList = document.getElementById("placeList");
+      placeList.innerHTML = "";
 
-        // 장소 목록 렌더링 함수
-        function renderPlaceList() {
-            const placeList = document.getElementById("placeList");
-            placeList.innerHTML = "";
-
-            places.forEach((place, index) => {
-                const li = document.createElement("li");
-                li.className = "place-item";
-                li.id = `place-${index}`;
-                li.innerHTML = `
+      places.forEach((place, index) => {
+        const li = document.createElement("li");
+        li.className = "place-item";
+        li.id = `place-${index}`;
+        li.innerHTML = `
                 <span>${place.place_name} - ${place.address_name}</span>
                 <button class="delete-btn" data-index="${index}">삭제</button>
             `;
 
-                li.querySelector(".delete-btn").addEventListener("click", function () {
-                    deletePlace(index);
-                });
+        li.querySelector(".delete-btn").addEventListener("click", function () {
+          deletePlace(index);
+        });
 
-                placeList.appendChild(li);
-            });
-        }
-    });
-    // 장소 삭제 함수
-    function deletePlace(index) {
-        places.splice(index, 1);
-        localStorage.setItem("places", JSON.stringify(places));
-        renderPlaceList();
+        placeList.appendChild(li);
+      });
     }
+  });
+  // 장소 삭제 함수
+  function deletePlace(index) {
+    places.splice(index, 1);
+    localStorage.setItem("places", JSON.stringify(places));
+    renderPlaceList();
+  }
 
-    function deletePlace(index) {
-        const confirmed = confirm("정말 삭제하시겠습니까?");
-        if (confirmed) {
-            places.splice(index, 1); // 해당 항목 삭제
-            console.log(`place-${index} 삭제 완료`);
+  function deletePlace(index) {
+    const confirmed = confirm("정말 삭제하시겠습니까?");
+    if (confirmed) {
+      places.splice(index, 1); // 해당 항목 삭제
+      console.log(`place-${index} 삭제 완료`);
 
-            renderPlaceList(); // 목록 갱신
-        }
+      renderPlaceList(); // 목록 갱신
     }
+  }
 
 
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const menuWrap = document.getElementById("menu_wrap");
-        const modalOverlay = document.createElement("div");
-        modalOverlay.id = "modalOverlay";
-        document.body.appendChild(modalOverlay);
+  document.addEventListener("DOMContentLoaded", function () {
+    const menuWrap = document.getElementById("menu_wrap");
+    const modalOverlay = document.createElement("div");
+    modalOverlay.id = "modalOverlay";
+    document.body.appendChild(modalOverlay);
 
-        const openMenuBtn = document.getElementById("addPlaceBtn");
-        const closeMenuBtn = document.getElementById("closeMenu");
+    const openMenuBtn = document.getElementById("addPlaceBtn");
+    const closeMenuBtn = document.getElementById("closeMenu");
 
     const placeListCoontainer = document.getElementById("placeListContainer");
 
@@ -1395,32 +1414,32 @@ function removeCustomMarker(title) {
       modalOverlay.classList.add("show");
     });
 
-        // 모달 닫기
-        closeMenuBtn.addEventListener("click", function () {
-            menuWrap.classList.remove("show");
-            modalOverlay.classList.remove("show");
-        });
-
-        // 배경 클릭 시 모달 닫기
-        modalOverlay.addEventListener("click", function () {
-            menuWrap.classList.remove("show");
-            modalOverlay.classList.remove("show");
-        });
+    // 모달 닫기
+    closeMenuBtn.addEventListener("click", function () {
+      menuWrap.classList.remove("show");
+      modalOverlay.classList.remove("show");
     });
 
-    const dayPlans = {};
+    // 배경 클릭 시 모달 닫기
+    modalOverlay.addEventListener("click", function () {
+      menuWrap.classList.remove("show");
+      modalOverlay.classList.remove("show");
+    });
+  });
 
-    // n일차 버튼
-    function createDayButtons(dateDifference){
-        const dayContainer = document.getElementById("day");
+  const dayPlans = {};
 
-        dayContainer.innerHTML="";
+  // n일차 버튼
+  function createDayButtons(dateDifference){
+    const dayContainer = document.getElementById("day");
 
-        for (let i = 1; i <= dateDifference; i++) {
-            const dayBtn = document.createElement("button");
-            dayBtn.textContent = i + "일차"
-            dayBtn.classList.add("day-btn");
-            dayBtn.setAttribute("data-day", i);
+    dayContainer.innerHTML="";
+
+    for (let i = 1; i <= dateDifference; i++) {
+      const dayBtn = document.createElement("button");
+      dayBtn.textContent = i + "일차"
+      dayBtn.classList.add("day-btn");
+      dayBtn.setAttribute("data-day", i);
 
             if (i===1){
                 dayBtn.classList.add("selected");
@@ -1428,10 +1447,10 @@ function removeCustomMarker(title) {
 
             dayContainer.appendChild(dayBtn);
 
-            if (!dayPlans[i]){
-                dayPlans[i] = [];
-            }
-        }
+      if (!dayPlans[i]){
+        dayPlans[i] = [];
+      }
+    }
 
     }
     document.getElementById("day").addEventListener("click", function (event) {
@@ -1443,10 +1462,11 @@ function removeCustomMarker(title) {
 
             event.target.classList.add("selected");
 
-            const selectedDay = event.target.getAttribute("data-day");
-            displayDayPlan(selectedDay);
-        }
-    });
+      const selectedDay = event.target.getAttribute("data-day");
+      //console.log("선택된 일차:", selectedDay);
+      displayDayPlan(selectedDay);
+    }
+  });
 
     createDayButtons(dateDifference);
     // 초기 상태 설정 (1일차 고정)
@@ -1492,7 +1512,7 @@ function removeCustomMarker(title) {
 <script src="/daengdong/js/finalSend.js"></script>
 <script>
   // 서버에서 전달받은 planId를 전역 변수로 설정
-  planId = '<%= session.getAttribute("planId") %>';
+  planId = '<%= session.getAttribute("currentPlanId") %>';
   console.log("JSP에서 전달된 planId:", planId);
 
   <%--// WebSocket URL 생성--%>

@@ -69,10 +69,9 @@ body {
   align-items: center; /* 수직 가운데 정렬 */
   justify-content: center; /* 수평 가운데 정렬 */
   gap: 5px; /* 요소 간격 */
-  background-color: #f5f8fa; /* 배경색 */
+  background-color: rgba(255, 255, 255, 0); /* 배경색 */
   padding: 10px 15px; /* 여백 */
   border-radius: 8px; /* 둥근 모서리 */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
   margin-left: 0;
 }
 
@@ -185,6 +184,7 @@ body {
 }
 
 .pet-image {
+  cursor: pointer;
   width: 80px;
   height: 80px;
   padding: 5px;
