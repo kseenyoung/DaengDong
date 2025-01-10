@@ -28,18 +28,18 @@
         <div id="header_right">
             <a href="">
                 <img src="https://daengdong-bucket.s3.amazonaws.com/2ff2135a-b82b-4c3a-a483-b6f765d23aa0_bell.png" alt="알림" width="30" height="30"/>
-                <span class="alt-text">알림</span>
-            </a>
-            <a href="">
-                <img src="${path}/images/community.png" alt="커뮤니티" width="30" height="30"/>
                 <span class="alt-text"></span>
             </a>
-            <a href="">
-                <img src="${path}/images/plan.png" alt="플랜" width="30" height="30"/>
+            <a href="${path}/post/posts">
+                <img src="https://daengdong-bucket.s3.amazonaws.com/27910ecc-028d-457c-af07-0529c13d5d5b_heart.png" alt="커뮤니티" width="30" height="30" />
+                <span class="alt-text"></span>
+            </a>
+            <a href="${path}/plan/create">
+                <img src="https://daengdong-bucket.s3.amazonaws.com/2578b82d-fe9d-4304-8bbb-e365a4666a70_add.png" alt="플랜" width="30" height="30" />
                 <span class="alt-text"></span>
             </a>
             <a href="${path}/auth/viewMypage.do">
-                <img src="${path}/images/user.png" alt="사용자" width="30" height="30"/>
+                <img src="https://daengdong-bucket.s3.amazonaws.com/b3eb7fe8-cbd7-4dc8-a4e2-fd88cd1ca577_single.png" alt="사용자" width="30" height="30" />
                 <span class="alt-text"></span>
             </a>
         </div>
