@@ -170,7 +170,7 @@
       <form id="companionForm">
         <label for="companionEmail">동행자 이메일:</label>
         <input type="email" id="companionEmail" name="companionEmail" placeholder="example@domain.com" required>
-        <button type="submit" id="addCompanionBtn">추가</button>
+        <%-- <button type="submit" id="addCompanionBtn">추가</button> --%>
       </form>
 
       <!-- 동행자 제출 버튼 -->
