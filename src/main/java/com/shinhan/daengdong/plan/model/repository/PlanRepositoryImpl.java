@@ -2,6 +2,7 @@ package com.shinhan.daengdong.plan.model.repository;
 
 import com.shinhan.daengdong.plan.dto.MemberPlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
+import com.shinhan.daengdong.plan.dto.PlanDetailsDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,5 +76,19 @@ public class PlanRepositoryImpl implements PlanRepositoryInterface {
     @Override
     public void deleteCompanion(MemberPlanDTO memberPlanDTO) {
         sqlSessionTemplate.delete("com.shinhan.plan.deleteCompanion", memberPlanDTO);
+    }
+
+    @Override
+    public List<PlanDetailsDTO> getPlanDetails(String memberEmail) {
+        log.info("플랜 상세 정보 조회 시작 - 이메일: {}", memberEmail);
+        List<PlanDetailsDTO> planDetails = sqlSessionTemplate.selectList("com.shinhan.plan.getPlanDetails", memberEmail);
+
+        if (planDetails == null || planDetails.isEmpty()) {
+            log.info("조회된 플랜 상세 정보가 없습니다.");
+        } else {
+            log.info("조회된 플랜 상세 정보 개수: {}", planDetails.size());
+        }
+
+        return planDetails;
     }
 }

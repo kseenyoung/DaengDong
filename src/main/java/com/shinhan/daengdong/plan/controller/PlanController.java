@@ -6,6 +6,7 @@ import com.shinhan.daengdong.place.model.service.PlaceServiceImpl;
 import com.shinhan.daengdong.place.model.service.PlaceServiceInterface;
 import com.shinhan.daengdong.plan.dto.MemberPlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
+import com.shinhan.daengdong.plan.dto.PlanDetailsDTO;
 import com.shinhan.daengdong.plan.model.service.PlanServiceInterface;
 import com.shinhan.daengdong.plan.websoket.PlanWebSocketHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -280,4 +281,35 @@ public class PlanController {
     public String viewChatRoom() {
         return "chat/chatFragment";
     }
+
+    // 플랜 상세 조회 (플랜 및 장소 정보)
+    @GetMapping("/details")
+    @ResponseBody
+    public ResponseEntity<?> getPlanDetails(HttpServletRequest request) {
+        try {
+            HttpSession session = request.getSession(false);
+
+            MemberDTO member = (MemberDTO) session.getAttribute("member");
+            if (member == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+            }
+            String memberEmail = member.getMember_email();
+
+            List<PlanDetailsDTO> planDetails = planService.getPlanDetailsByEmail(memberEmail);
+            if (planDetails.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("조회된 플랜 정보가 없습니다.");
+            }
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", 200);
+            response.put("message", "Success");
+            response.put("data", planDetails);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.error("플랜 상세 조회 중 오류 발생: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("플랜 상세 조회 실패");
+        }
+    }
+
 }

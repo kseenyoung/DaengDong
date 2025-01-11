@@ -26,6 +26,7 @@
 		<!-- Plan 부분 -->
 		<typeAlias type="com.shinhan.daengdong.plan.dto.PlanDTO" alias="planDTO" />
 		<typeAlias type="com.shinhan.daengdong.plan.dto.MemberPlanDTO" alias="memberPlanDTO" />
+		<typeAlias type="com.shinhan.daengdong.plan.dto.PlanDetailsDTO" alias="planDetailsDTO" />
 
 		<!--place 부분-->
 		<typeAlias type="com.shinhan.daengdong.place.dto.PlaceDTO" alias="placeDTO" />

@@ -2,6 +2,7 @@ package com.shinhan.daengdong.plan.model.service;
 
 import com.shinhan.daengdong.plan.dto.MemberPlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
+import com.shinhan.daengdong.plan.dto.PlanDetailsDTO;
 import com.shinhan.daengdong.plan.model.repository.PlanRepositoryImpl;
 import com.shinhan.daengdong.plan.model.repository.PlanRepositoryInterface;
 import lombok.extern.slf4j.Slf4j;
@@ -76,5 +77,10 @@ public class PlanServiceImpl implements PlanServiceInterface {
     @Override
     public void deleteCompanionFromPlan(MemberPlanDTO memberPlanDTO) {
         planRepository.deleteCompanion(memberPlanDTO);
+    }
+
+    @Override
+    public List<PlanDetailsDTO> getPlanDetailsByEmail(String memberEmail) {
+        return planRepository.getPlanDetails(memberEmail);
     }
 }
