@@ -264,7 +264,13 @@
 }
 #buttons button {
     padding: 0;
-
+    background: #0000004f;
+    border-radius: 30px;
+        display: flex;
+        align-items: center;
+        justify-content:center;
+        width:35px;
+        height:35px;
 }
 
 
