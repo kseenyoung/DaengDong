@@ -159,6 +159,14 @@
         <button type="submit" id="addCompanionBtn">추가</button>
       </form>
 
+        <!-- 팔로잉 및 팔로워 목록 -->
+        <div id="followerSection">
+            <h4>팔로잉</h4>
+            <ul id="followingList"></ul>
+            <h4>팔로워</h4>
+            <ul id="followerList"></ul>
+        </div>
+
       <!-- 동행자 제출 버튼 -->
       <button id="submitCompanionsBtn">동행자 제출</button>
     </div>

@@ -37,9 +37,6 @@ public class PlanController {
     @Autowired
     private PlanServiceInterface planService;
 
-    @Autowired
-    private PlaceServiceInterface placeService;
-
     // 플랜 생성 페이지
     @GetMapping("/create")
     public String createPlanForm(HttpServletRequest request, Model model) {
@@ -192,9 +189,6 @@ public class PlanController {
                 log.info("로그인한 사용자가 자동으로 추가되었습니다: {}", currentMemberEmail);
             }
         }
-
-        /*List<PlanPlaceDTO> planPlaces = placeService.getPlacesByPlanId(planId);
-        model.addAttribute("planPlaces", planPlaces);*/
 
         return "place/searchPlace"; // searchPlace.jsp
     }

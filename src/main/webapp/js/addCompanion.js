@@ -4,6 +4,15 @@
 let companions = [];
 
 document.addEventListener("DOMContentLoaded", function () {
+    const followingList = document.getElementById("followingList");
+    const followerList = document.getElementById("followerList");
+    const companionEmailInput = document.getElementById("companionEmail");
+
+    // API 호출하여 팔로잉 및 팔로워 데이터 가져오기
+    fetch("/api/following").then(response => response.json()).then(data => {
+        renderList(followingList, data, "following");
+    });
+
     // 페이지 로드 시 동행자 리스트 가져오기
     fetchCompanions();
 });
