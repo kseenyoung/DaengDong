@@ -3,6 +3,7 @@ package com.shinhan.daengdong.plan.model.repository;
 import com.shinhan.daengdong.plan.dto.MemberPlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDetailsDTO;
+import com.shinhan.daengdong.plan.dto.PlanRelationshipsDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,5 +91,15 @@ public class PlanRepositoryImpl implements PlanRepositoryInterface {
         }
 
         return planDetails;
+    }
+
+    @Override
+    public List<PlanRelationshipsDTO> getFollowingList(String memberEmail) {
+        return sqlSessionTemplate.selectList("com.shinhan.plan.getFollowingList", memberEmail);
+    }
+
+    @Override
+    public List<PlanRelationshipsDTO> getFollowerList(String memberEmail) {
+        return sqlSessionTemplate.selectList("com.shinhan.plan.getFollowerList", memberEmail);
     }
 }

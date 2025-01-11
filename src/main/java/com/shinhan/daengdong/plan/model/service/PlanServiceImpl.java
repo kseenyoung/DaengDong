@@ -3,14 +3,12 @@ package com.shinhan.daengdong.plan.model.service;
 import com.shinhan.daengdong.plan.dto.MemberPlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDetailsDTO;
+import com.shinhan.daengdong.plan.dto.PlanRelationshipsDTO;
 import com.shinhan.daengdong.plan.model.repository.PlanRepositoryImpl;
-import com.shinhan.daengdong.plan.model.repository.PlanRepositoryInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -83,4 +81,15 @@ public class PlanServiceImpl implements PlanServiceInterface {
     public List<PlanDetailsDTO> getPlanDetailsByEmail(String memberEmail) {
         return planRepository.getPlanDetails(memberEmail);
     }
+
+    @Override
+    public List<PlanRelationshipsDTO> getFollowingList(String memberEmail) {
+        return planRepository.getFollowingList(memberEmail);
+    }
+
+    @Override
+    public List<PlanRelationshipsDTO> getFollowerList(String memberEmail) {
+        return planRepository.getFollowerList(memberEmail);
+    }
+
 }

@@ -74,7 +74,7 @@
         where plan_id = #{planId} and member_email = #{memberEmail}
     </delete>
 
-    <!--여행 플랜 상세 정보 조회-->
+    <!--최종 여행 플랜 상세 정보 조회-->
     <select id="getPlanDetails" resultType="planDetailsDTO">
         SELECT
             p.plan_id AS planId,
@@ -96,6 +96,26 @@
             p.member_email = #{memberEmail}
         ORDER BY
             p.plan_id, pp.day;
+    </select>
+
+    <!-- 팔로잉 목록 가져오기 -->
+    <select id="getFollowingList" parameterType="string" resultType="planRelationshipsDTO">
+        SELECT
+            r.to_email AS memberEmail,
+            m.member_nickname AS memberNickname
+        FROM relationships r
+                 JOIN members m ON r.to_email = m.member_email
+        WHERE r.from_email = #{fromEmail}
+    </select>
+
+    <!-- 팔로워 목록 가져오기 -->
+    <select id="getFollowerList" parameterType="string" resultType="planRelationshipsDTO">
+        SELECT
+            r.from_email AS memberEmail,
+            m.member_nickname AS memberNickname
+        FROM relationships r
+                 JOIN members m ON r.from_email = m.member_email
+        WHERE r.to_email = #{toEmail}
     </select>
 
 </mapper>

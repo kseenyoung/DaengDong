@@ -4,14 +4,36 @@
 let companions = [];
 
 document.addEventListener("DOMContentLoaded", function () {
-    const followingList = document.getElementById("followingList");
-    const followerList = document.getElementById("followerList");
     const companionEmailInput = document.getElementById("companionEmail");
 
-    // API 호출하여 팔로잉 및 팔로워 데이터 가져오기
-    fetch("/api/following").then(response => response.json()).then(data => {
-        renderList(followingList, data, "following");
-    });
+    // 팔로잉 목록 가져오기
+    fetch('/daengdong/plan/followingList')
+        .then(response => response.json())
+        .then(data => renderList(data, "followingList"));
+
+    // 팔로워 목록 가져오기
+    fetch('/daengdong/plan/followerList')
+        .then(response => response.json())
+        .then(data => renderList(data, "followerList"));
+
+    // 리스트 렌더링 함수
+    function renderList(data, elementId) {
+        const listElement = document.getElementById(elementId);
+        listElement.innerHTML = "";
+
+        data.forEach(item => {
+            const listItem = document.createElement("li");
+            const nickname = item.memberNickname || "닉네임 없음"; // 닉네임이 없을 경우 기본값 사용
+            listItem.textContent = `${nickname} (${item.memberEmail})`;
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.value = item.memberEmail;
+
+            listItem.prepend(checkbox);
+            listElement.appendChild(listItem);
+        });
+    }
 
     // 페이지 로드 시 동행자 리스트 가져오기
     fetchCompanions();
@@ -30,7 +52,7 @@ document.getElementById("closeCompanionModalBtn").addEventListener("click", func
 });
 
 // 모달 외부 클릭 시 모달 닫기
-window.addEventListener("click", function(event) {
+window.addEventListener("click", function (event) {
     const modal = document.getElementById("companionModal");
     if (event.target == modal) {
         modal.style.display = "none";
@@ -130,7 +152,6 @@ function deleteCompanion(email) {
 
     fetch(`companionsDelete?memberEmail=${email}`,
         {method: 'GET'}
-
     )
         .then(response => response.text())
         .then(() => {
@@ -166,16 +187,16 @@ document.getElementById("addPlaceBtn").addEventListener("click", function () {
     //     const listItem = document.createElement("li");
     //     listItem.textContent = placeName.trim();
 
-        // 삭제 버튼 생성
-        const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "삭제";
-        deleteBtn.classList.add("deleteBtn"); // 스타일링을 위해 클래스 추가
-        deleteBtn.addEventListener("click", function () {
-            placeList.removeChild(listItem);
-        });
+    // 삭제 버튼 생성
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "삭제";
+    deleteBtn.classList.add("deleteBtn"); // 스타일링을 위해 클래스 추가
+    deleteBtn.addEventListener("click", function () {
+        placeList.removeChild(listItem);
+    });
 
-        listItem.appendChild(deleteBtn);
-        placeList.appendChild(listItem);
+    listItem.appendChild(deleteBtn);
+    placeList.appendChild(listItem);
     // } else {
     //     alert("유효한 장소 이름을 입력해주세요.");
     // }
