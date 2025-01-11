@@ -161,11 +161,16 @@
 
       <h3>동행자 추가</h3>
 
+        <h4>팔로잉 목록</h4>
+        <ul id="followingList"></ul>
+        <h4>팔로워 목록</h4>
+        <ul id="followerList"></ul>
+
       <!-- 동행자 추가 폼 -->
       <form id="companionForm">
         <label for="companionEmail">동행자 이메일:</label>
         <input type="email" id="companionEmail" name="companionEmail" placeholder="example@domain.com" required>
-        <button type="submit" id="addCompanionBtn">추가</button>
+        <%-- <button type="submit" id="addCompanionBtn">추가</button> --%>
       </form>
 
       <!-- 동행자 제출 버튼 -->
