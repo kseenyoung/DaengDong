@@ -1,16 +1,16 @@
-$(function () {
-    const forms = document.getElementsByClassName('validation-form');
-
-    Array.prototype.filter.call(forms, (form) => {
-        form.addEventListener('submit', function (event) {
-            if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-
-            form.classList.add('was-validated');
-        }, false);
-    });
+$(document).ready(function () {
+    // const forms = document.getElementsByClassName('validation-form');
+    //
+    // Array.prototype.filter.call(forms, (form) => {
+    //     form.addEventListener('submit', function (event) {
+    //         if (form.checkValidity() === false) {
+    //             event.preventDefault();
+    //             event.stopPropagation();
+    //         }
+    //
+    //         form.classList.add('was-validated');
+    //     }, false);
+    // });
 
     // 회원가입 버튼 클릭 시
     $("#btn-signup").click(function (){
@@ -55,7 +55,7 @@ $(function () {
                 else{
                     // 회원가입 성공 -> home.jsp
                     alert('회원가입 성공!')
-                    location.href=`/daengdong/views/home`;
+                    location.href=`/daengdong`;
                 }
             },
             error: function (e){
@@ -67,88 +67,130 @@ $(function () {
 
 }, false);
 
-
-
-let petCount = 0;
-
 function f_remove_pet(pet_id){
     $(`#${pet_id}`).remove();
 }
 
 function f_add_pet() {
-    petCount++; // 고유 ID 증가
-    let html = `<div class="col-md-6 mb-3 pet" id="pet_${petCount}">
-                    <button class="d-block" onclick="f_remove_pet('pet_${petCount}')">X</button>
-                    <label for="nickname_${petCount}">이름</label>
-                    <input type="text" class="form-control" id="name_${petCount}" placeholder="" value="" required>
-                    <div class="form-check d-inline">
-                      <input class="form-check-input" type="radio" value="Male"  name="pet_gender_${petCount}" id="pet_gender_${petCount}_male">
-                      <label class="form-check-label" for="pet_gender_${petCount}_male">
-                        Male
-                      </label>
-                    </div>
-                    <div class="form-check d-inline">
-                      <input class="form-check-input" type="radio" value="Female" name="pet_gender_${petCount}" id="pet_gender_${petCount}_female" checked>
-                      <label class="form-check-label" for="pet_gender_${petCount}_female">
-                        Female
-                      </label>
-                    </div>
-                    <div class="mb-4">
-                      <label for="root">혈액형</label>
-                      <select class="custom-select d-block w-100" id="root">
-                        <option value=""></option>
-                        <option value="DEA-1">DEA-1</option>
-                        <option value="DEA1.1">DEA1.1</option>
-                        <option value="DEA1.2">DEA1.2</option>
-                        <option value="DEA3">DEA3</option>
-                        <option value="DEA4">DEA4</option>
-                        <option value="DEA5">DEA5</option>
-                        <option value="DEA6">DEA6</option>
-                      </select>
-                    </div>
-                    <div class="mb-4">
-                      <label for="root2">종</label>
-                      <select class="custom-select d-block w-100" id="root2">
-                        <option value=""></option>
-                        <option value="말티즈">말티즈</option>
-                        <option value="포메라니안">포메라니안</option>
-                        <option value="시츄">시츄</option>
-                        <option value="믹스">믹스</option>
-                        <option value="시바">시바</option>
-                        <option value="푸들">푸들</option>
-                      </select>
-                    </div>
-                     <!-- Date Picker Input -->
-                    <label class="birthday d-block me-3">생일</label>
-                    <div class="form-group mb-4">
-                        <div class="datepicker date input-group p-0 shadow-sm">
-                          <input
-                            type="text"
-                            placeholder="생일 입력"
-                            class="form-control py-3 px-4 datepicker"
-                          />
-                          <div class="input-group-append">
-                            <span class="input-group-text px-3">
-                              <i class="fa fa-clock-o"></i>
-                            </span>
-                          </div>
-                        </div>
-                    </div>
-                </div>`;
+    $('#editPetModal').modal('show');
+}
 
-    $("#pets").prepend(html);
+function petProfilePreviewImage(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (ev) {
+            $("#currentPetPhoto").attr("src", ev.target.result); // 이미지를 미리보기로 설정
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 
-    // 동적으로 추가된 Datepicker 다시 초기화
-    // INITIALIZE DATEPICKER PLUGIN
-    $('.datepicker').datepicker({
-        clearBtn: true,
-        format: "yy/mm/dd"
-    });
+function petCreateUploadFile(apiPath) {
+    const formData = new FormData();
+    const fileInput = document.getElementById("petFile");
 
+    const uploadButton = document.getElementById("uploadButton");
+    const clickButton = document.getElementById("confirm-insert-petDetail");
 
-    // FOR DEMO PURPOSE
-    $('#reservationDate').on('change', function () {
-        var pickedDate = $('input').val();
-        $('#pickedDate').html(pickedDate);
-    });
+    if (uploadButton) {
+        uploadButton.disabled = false;
+        uploadButton.style.display = "inline-flex";
+        clickButton.style.display = "none";
+    }
+
+    let uploadPromise;
+
+    if (fileInput.files.length === 0) {
+        // 사진이 없는 경우에도 로직을 실행하기 위해 기본 Promise 생성
+        uploadPromise = Promise.resolve(null); // null 값을 전달
+    } else {
+        const selectedFile = fileInput.files[0];
+        formData.append("file", selectedFile);
+
+        // 사진 업로드 Promise
+        uploadPromise = fetch(`${apiPath}/api/s3/upload`, {
+            method: "POST",
+            body: formData,
+        })
+          .then((response) => {
+              if (response.ok) {
+                  return response.text(); // 서버에서 반환된 URL 가져오기
+              } else {
+                  throw new Error("업로드 실패!");
+              }
+          });
+    }
+
+    uploadPromise
+      .then((uploadedUrl) => {
+          const petName = $("#petName").val();
+          const petBirthday = $("#petBirthday").val();
+          const petSpecies = $("#petSpecies").val();
+          const petBloodType = $("#petBloodType").val();
+          const petGender = $("#petGender").val();
+
+          // Step 2: 업로드된 URL이 있으면 DB에 저장
+          if (uploadedUrl) {
+              return fetch(`${apiPath}/auth/createPetProfile.do`, {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                      pet_profile_photo: uploadedUrl,
+                      pet_name: petName,
+                      pet_birthday: petBirthday,
+                      pet_species: petSpecies,
+                      pet_blood_type: petBloodType,
+                      pet_gender: petGender,
+                  }),
+              }).then(() => uploadedUrl); // URL을 다음 then으로 전달
+          } else {
+              return Promise.resolve(null); // 업로드가 없는 경우에도 다음으로 진행
+          }
+      })
+      .then((uploadedUrl) => {
+          // Step 3: 화면 갱신
+          const petName = $("#petName").val();
+          const petSpecies = $("#petSpecies").val();
+
+          const petDetailContainer = document.getElementById("pets-detail");
+          if (petDetailContainer) {
+              const imageUrl = uploadedUrl || ""; // URL이 없을 경우 빈 문자열 사용
+              const cardHtml = `
+          <div class="announcement">
+            <img id="my-pet-image" src="${imageUrl}" alt="my-pet-image">
+            <div class="text-container">
+              <h2 class="my-pet-name">
+                <a>${petName}</a>
+              </h2>
+              <div class="my-pet-species">${petSpecies}</div>
+            </div>
+            <div class="button-container">
+              <button class="delete-plan">삭제</button>
+            </div>
+          </div>
+        `;
+              petDetailContainer.insertAdjacentHTML("beforeend", cardHtml);
+          }
+
+          // 모달 닫기
+          const modal = document.getElementById("editPetModal");
+          if (modal) {
+              const bootstrapModal = bootstrap.Modal.getInstance(modal);
+              bootstrapModal.hide();
+              document
+                .querySelectorAll(".modal-backdrop")
+                .forEach((backdrop) => backdrop.remove());
+          }
+      })
+      .catch((error) => {
+          console.error("Error:", error);
+          alert("업로드 실패: " + error.message);
+      })
+      .finally(() => {
+          uploadButton.disabled = true;
+          uploadButton.style.display = "none";
+          clickButton.style.display = "inline-block";
+      });
 }
