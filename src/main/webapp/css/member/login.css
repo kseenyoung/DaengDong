@@ -8,7 +8,7 @@ body {
   background-color: #f9f9f9;
 }
 
-.login-container {
+.sign-up-container {
   display: flex;
   max-width: 900px;
   width: 100%;
@@ -18,31 +18,31 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.login-form {
+.sign-up-form {
   flex: 1;
   background-color: #ffffff;
   padding: 40px;
   align-content: center;
 }
 
-.login-form h1 {
+.sign-up-form h1 {
   font-weight: bold;
   margin-bottom: 20px;
 }
 
-.login-form .form-control {
+.sign-up-form .form-control {
   border-radius: 10px;
   height: 45px;
   margin-bottom: 15px;
 }
 
-.login-form .social-login img {
+.sign-up-form .social-login img {
   width: 30px;
   margin: 0 10px;
   cursor: pointer;
 }
 
-.login-form .btn-start {
+.sign-up-form .btn-start {
   width: 100%;
   background-color: #2d6a4f;
   color: #fff;
@@ -51,7 +51,7 @@ body {
   height: 45px;
 }
 
-.login-image {
+.sign-up-image {
   position: relative;
   width: 100%;
   height: 100%;

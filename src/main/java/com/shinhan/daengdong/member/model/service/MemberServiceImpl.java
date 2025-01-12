@@ -177,4 +177,9 @@ public class MemberServiceImpl implements MemberServiceInterface{
     public void modifyPetDetail(PetDTO petDTO) {
         memberRepository.modifyPetDetail(petDTO);
     }
+
+    @Override
+    public void createPetProfile(PetDTO petDTO) {
+        memberRepository.createPetProfile(petDTO);
+    }
 }

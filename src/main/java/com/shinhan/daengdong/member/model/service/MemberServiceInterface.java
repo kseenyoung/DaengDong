@@ -52,4 +52,6 @@ public interface MemberServiceInterface {
     void modifyPetProfilePhoto(PetDTO petDTO);
 
     void modifyPetDetail(PetDTO petDTO);
+
+    void createPetProfile(PetDTO petDTO);
 }
