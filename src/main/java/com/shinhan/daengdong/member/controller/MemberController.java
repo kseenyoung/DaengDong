@@ -90,6 +90,15 @@ public class MemberController {
         return signUpDTO;
     }
 
+    //회원가입 > 펫 추가
+    @PostMapping("createPetProfile.do")
+    public void createPetProfile(@RequestBody PetDTO petDTO, HttpSession session) {
+        MemberDTO member = (MemberDTO) session.getAttribute("member");
+        petDTO.setMember_email(member.getMember_email());
+        log.info("petDTO: " + petDTO);
+        memberService.createPetProfile(petDTO);
+    }
+
     //마이페이지 보기
     @GetMapping("viewMypage.do")
     public String viewMypage(HttpSession session) {

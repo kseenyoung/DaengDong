@@ -144,4 +144,9 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     public void modifyPetDetail(PetDTO petDTO) {
         sqlSession.update(namespace + "modifyPetDetailProfile", petDTO);
     }
+
+    @Override
+    public void createPetProfile(PetDTO petDTO) {
+        sqlSession.insert(namespace + "createPetProfile", petDTO);
+    }
 }
