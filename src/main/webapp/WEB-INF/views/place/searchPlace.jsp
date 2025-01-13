@@ -1,24 +1,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="path" value="${pageContext.servletContext.contextPath}"/>
-
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>장소검색</title>
+  <meta charset="utf-8">
+  <title>장소검색</title>
 
-    <!-- JavaScript 라이브러리 -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <!-- JavaScript 라이브러리 -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-    <!-- CSS파일 -->
-    <link rel="stylesheet" href="${path}/css/header.css">
-    <%-- <link rel="stylesheet" href="${path}/css/plan/addCompanion.css"> --%>
-    <%-- <link rel="stylesheet" href="${path}/css/plan/searchPlace.css"> --%>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- CSS파일 -->
+  <link rel="stylesheet" href="${path}/css/header.css">
+  <link rel="stylesheet" href="${path}/css/plan/addCompanion.css">
+  <link rel="stylesheet" href="${path}/css/plan/searchPlace.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- 외부 JSP 파일 -->
-    <%@ include file="/WEB-INF/views/member/header.jsp" %>
+  <!-- 외부 JSP 파일 -->
+  <%@ include file="/WEB-INF/views/member/header.jsp" %>
 
     <!-- 채팅 기능 -->
     <script src="${path}/js/chat/chat.js"></script>
@@ -39,21 +38,55 @@
 </head>
 <body>
 
-<!-- 모달/사이드바 등 HTML 구조는 그대로 -->
 <div id="myModal" class="modal">
-    <!-- ... -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <iframe id="modalIframe" style="width: 100%; height: 80vh; border: none;"></iframe>
+  </div>
 </div>
 
 <div id="planModal">
-    <!-- ... -->
+  <div class="modal-content">
+    <h3>Plan 선택</h3>
+    <div id="planList">
+    </div>
+    <button id="selectPlanBtn">확인</button>
+    <button id="closeModalBtn">닫기</button>
+  </div>
 </div>
 
 <div id="sidebar"></div>
-<div id="sidebar-template" style="display: none;">
-    <!-- ... -->
-</div>
 
+<div id="sidebar-template" style="display: none;">
+  <button id="closeSidebar" class="close-btn">✖</button>
+  <h4 id="place-title" class="sidebar-title"></h4>
+  <button id = "favoriteBtn" class="favoriteBtn">⭐</button>
+  <div class="content-container">
+  <p class="sidebar-info"><strong>카테고리</strong> <br> <span id="place-category_name"></span></p>
+  <p class="sidebar-info"><strong>도로명주소</strong> <br> <span id="place-road_address_name"></span></p>
+  <p class="sidebar-info"><strong>주소</strong> <br> <span id="place-address_name"></span></p>
+  <p class="sidebar-info"><strong>전화번호</strong> <br> <span id="place-phone"></span></p>
+  <button id = "addPlanBtn" class="add-btn button">+ 내 일정에 추가</button>
+  <a id="map-link" href="#" target="_blank" class="map-link button">자세히 보기</a>
+  </div>
+</div>
 <div class="map_wrap">
+  <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
+  <!-- 채팅방 접속하기 버튼 -->
+  <button id="btnChat" class="btn btn-primary position-relative">
+    <i id="chat-icon" class="bi bi-chat-fill"></i> <!-- 채워진 대화 아이콘 -->
+    <span id="unreadBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+    ●
+  </span>
+  </button>
+  <!-- 채팅 모달 -->
+  <div id="chatModal" class="chat-modal">
+    <div id="chatContent"></div>
+    <button id="closeChatModal" class="close-btn">✖</button>
+  </div>
+  <button id = "pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
+  <div id="menu_wrap" class="bg_white">
+    <button id="closeMenu" class="close-btn">✖</button>
     <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
     <!-- 채팅방 접속하기 버튼 -->
     <button id="btnChat" class="btn btn-primary position-relative">
@@ -71,7 +104,7 @@
         <div class="option">
             <div>
                 <form onsubmit="searchPlaces(); return false;">
-                    <input type="text" value="홍대 맛집" id="keyword" size="80" class="search-input">
+                    <input type="text" value="홍대 맛집" id="keyword" size="80" class="search-input" >
                     <button type="submit">검색하기</button>
                 </form>
             </div>
@@ -95,12 +128,13 @@
     </div>
 </div>
 
+
 <div id="list_wrap">
-    <div id="planTitle"></div>
-    <div id="mainControls">
-        <button id="showDays">일정</button>
-        <button id="showCompanion">동행자</button>
-    </div>
+  <div id="planTitle"></div>
+  <div id="mainControls">
+    <button id="showDays">일정</button>
+    <button id="showCompanion">동행자</button>
+  </div>
 
     <!-- 동행자 섹션 -->
     <div id="companionSection">
@@ -143,14 +177,14 @@
 <div>
     <button id="finalizePlanBtn">최종 완료</button>
 </div>
-
 <!-- 카카오맵 SDK -->
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62bd6cc1e013b8a659ae61760dc9fd7f&libraries=services"></script>
 
+
 <!-- 아래 스크립트: 실제 동작 코드 -->
-<script src="/daengdong/js/searchPlace_app.js"></script>
-<script src="/daengdong/js/addCompanion.js"></script>
-<%-- <script src="/daengdong/js/finalSend.js"></script> --%>
+<script src="${path}/js/searchPlace_app.js"></script>
+<script src="${path}/js/addCompanion.js"></script>
+<%-- <script src="${path}/js/finalSend.js"></script> --%>
 
 <script>
     // planId를 서버에서도 받을 수 있지만, 세션이 없다면 URL path에서 추출
@@ -164,6 +198,5 @@
     // JS 전역변수에 할당해서 searchPlace_app.js에서 사용
     window.G_planId = planId;
 </script>
-
 </body>
 </html>

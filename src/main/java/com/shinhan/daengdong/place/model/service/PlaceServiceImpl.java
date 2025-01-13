@@ -3,7 +3,6 @@ package com.shinhan.daengdong.place.model.service;
 import com.shinhan.daengdong.place.dto.PlaceDTO;
 import com.shinhan.daengdong.place.dto.PlanPlaceDTO;
 import com.shinhan.daengdong.place.model.repository.PlaceRepositoryImpl;
-import com.shinhan.daengdong.place.model.repository.PlaceRepositoryInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

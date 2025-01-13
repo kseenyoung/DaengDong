@@ -87,6 +87,11 @@ public class MemberServiceImpl implements MemberServiceInterface{
     }
 
     @Override
+    public void addFavoritePlace(FavoritePlaceDTO favoritePlaceDTO) {
+        memberRepository.addFavoritePlace(favoritePlaceDTO);
+    }
+
+    @Override
     public void deleteFavoritePlace(int starId) {
         memberRepository.deleteFavoritePlace(starId);
     }
