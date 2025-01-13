@@ -79,6 +79,11 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     }
 
     @Override
+    public void addFavoritePlace(FavoritePlaceDTO favoritePlaceDTO) {
+        sqlSession.insert(namespace + "addFavoritePlace", favoritePlaceDTO);
+    }
+
+    @Override
     public void deleteFavoritePlace(int starId) {
         sqlSession.delete(namespace + "deleteFavoritePlace", starId);
     }
@@ -159,5 +164,30 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     @Override
     public void deletePetByPetId(int petId) {
         sqlSession.delete(namespace + "deletePetByPetId", petId);
+    }
+
+    @Override
+    public List<NotificationDTO> selectNotification(String receiver_email) {
+        return sqlSession.selectList(namespace + "selectNotification", receiver_email);
+    }
+
+    @Override
+    public NotificationDTO selectNotificationById(int notificationId) {
+        return sqlSession.selectOne(namespace + "selectNotificationById" , notificationId);
+    }
+
+    @Override
+    public void insertNotification(NotificationDTO notificationDTO) {
+        sqlSession.insert(namespace + "insertNotification", notificationDTO);
+    }
+
+    @Override
+    public void isChecked(int notificationId) {
+        sqlSession.update(namespace + "isChecked", notificationId);
+    }
+
+    @Override
+    public void deleteNotification(int notificationId) {
+        sqlSession.delete(namespace + "deleteNotification", notificationId);
     }
 }

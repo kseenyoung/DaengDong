@@ -26,6 +26,8 @@ public interface MemberRepositoryInterface {
 
     List<LikePostsDTO> getLikePosts(String memberEmail);
 
+    void addFavoritePlace(FavoritePlaceDTO favoritePlaceDTO);
+    
     void deleteFavoritePlace(int starId);
 
     void deleteReview(int reviewId);
@@ -54,6 +56,17 @@ public interface MemberRepositoryInterface {
 
     void modifyPetDetail(PetDTO petDTO);
 
+
+    //알림 관련
+    List<NotificationDTO> selectNotification(String receiver_email);
+
+    NotificationDTO selectNotificationById(int notificationId);
+
+    void insertNotification(NotificationDTO notificationDTO);
+
+    void isChecked(int notificationId);
+
+    void deleteNotification(int notificationId);
     int createPetProfile(PetDTO petDTO);
 
     PetDTO selectOnetMyPet(PetDTO petDTO);
