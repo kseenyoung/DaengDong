@@ -163,10 +163,6 @@
 
     // JS 전역변수에 할당해서 searchPlace_app.js에서 사용
     window.G_planId = planId;
-
-    const userEmail = "${memberEmail}";
-    console.log("Logged-in user email:", userEmail);
-    window.G_userEmail = userEmail;
 </script>
 
 </body>
