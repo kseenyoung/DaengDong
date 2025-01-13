@@ -39,7 +39,7 @@ public interface MemberServiceInterface {
 
     void deleteFollowing(FollowDTO followDTO);
 
-    void addFollowing(FollowDTO followDTO);
+    void addFollowing(FollowDTO followDTO , NotificationDTO notificationDTO);
 
     List<PostDTO> getMyPosts(String memberEmail);
 
@@ -54,4 +54,14 @@ public interface MemberServiceInterface {
     void modifyPetDetail(PetDTO petDTO);
 
     void createPetProfile(PetDTO petDTO);
+
+    void insertNotification(NotificationDTO notificationDTO);
+
+    List<NotificationDTO> selectNotification(String receiver_email);
+
+    NotificationDTO selectNotificationById(int notificationId);
+
+    void isChecked(int notificationId);
+
+    void deleteNotification(int notificationId);
 }

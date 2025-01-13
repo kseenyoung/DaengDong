@@ -148,3 +148,15 @@ ol {
 #header_right a:hover .alt-text {
   opacity: 1;
 }
+.popover {
+  z-index: 1060; /* Bootstrap의 기본 팝오버 z-index는 1060 */
+}
+
+.list-group-item.checked {
+  background-color: #f8f9fa; /* 읽음 상태일 때 배경색 변경 */
+  color: #6c757d; /* 텍스트 색상 변경 */
+}
+
+.popover-body .btn {
+  margin-right: 5px
+}

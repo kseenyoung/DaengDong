@@ -1,6 +1,10 @@
 package com.shinhan.daengdong.plan.controller;
 
 import com.shinhan.daengdong.member.dto.MemberDTO;
+import com.shinhan.daengdong.member.dto.NotificationDTO;
+import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
+import com.shinhan.daengdong.place.dto.PlaceDTO;
+import com.shinhan.daengdong.place.model.service.PlaceServiceInterface;
 import com.shinhan.daengdong.plan.dto.MemberPlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDetailsDTO;
@@ -30,6 +34,13 @@ public class PlanController {
 
     @Autowired
     private PlanServiceInterface planService;
+
+    @Autowired
+    private MemberServiceInterface memberService;
+
+    @Autowired
+    PlaceServiceInterface placeService;
+
 
     // 플랜 생성 페이지
     @GetMapping("/create")
@@ -221,6 +232,18 @@ public class PlanController {
                         companionPlan.setMemberEmail(trimmedEmail);
                         planService.addCompanionToPlan(companionPlan);
                         log.info("추가된 동행자 이메일: {}", trimmedEmail);
+
+                        // 동행 요청 알림 생성
+                        NotificationDTO notificationDTO = NotificationDTO.builder()
+                                .sender_email(currentMemberEmail)
+                                .receiver_email(trimmedEmail)
+                                .notification_type(4) // 동행 요청
+                                .is_checked(0)
+                                .plan_id(currentPlanId)
+                                .post_id(null)
+                                .build();
+
+                        memberService.insertNotification(notificationDTO);
                     }
                 }
             }
@@ -335,6 +358,25 @@ public class PlanController {
             log.error("플랜 상세 조회 중 오류 발생: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("플랜 상세 조회 실패");
         }
+    }
+    @PostMapping("/placeDetail.do")
+    @ResponseBody // 응답 본문으로 직접 전송
+    public ResponseEntity<Map<String, String>> placeDetail(@RequestParam("kakao_id") Integer kakaoId, HttpServletRequest request) {
+        log.info("kakaoid : {}", kakaoId);
+
+        if (kakaoId == null) {
+            log.error("kakao_id 파라미터가 누락되었습니다.");
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "kakao_id 파라미터가 필요합니다.");
+            return ResponseEntity.badRequest().body(errorResponse);
+        }
+
+        String imageUrl = placeService.fetchPlaceImage(kakaoId);
+        log.info("kakako : {}", imageUrl);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("imageUrl", imageUrl);
+        return ResponseEntity.ok(response);
     }
 
 }

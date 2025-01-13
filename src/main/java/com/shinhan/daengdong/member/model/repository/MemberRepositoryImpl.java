@@ -149,4 +149,29 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     public void createPetProfile(PetDTO petDTO) {
         sqlSession.insert(namespace + "createPetProfile", petDTO);
     }
+
+    @Override
+    public List<NotificationDTO> selectNotification(String receiver_email) {
+        return sqlSession.selectList(namespace + "selectNotification", receiver_email);
+    }
+
+    @Override
+    public NotificationDTO selectNotificationById(int notificationId) {
+        return sqlSession.selectOne(namespace + "selectNotificationById" , notificationId);
+    }
+
+    @Override
+    public void insertNotification(NotificationDTO notificationDTO) {
+        sqlSession.insert(namespace + "insertNotification", notificationDTO);
+    }
+
+    @Override
+    public void isChecked(int notificationId) {
+        sqlSession.update(namespace + "isChecked", notificationId);
+    }
+
+    @Override
+    public void deleteNotification(int notificationId) {
+        sqlSession.delete(namespace + "deleteNotification", notificationId);
+    }
 }

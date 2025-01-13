@@ -122,8 +122,9 @@ public class MemberServiceImpl implements MemberServiceInterface{
     }
 
     @Override
-    public void addFollowing(FollowDTO followDTO) {
+    public void addFollowing(FollowDTO followDTO , NotificationDTO notificationDTO) {
         memberRepository.addFollowing(followDTO);
+        memberRepository.insertNotification(notificationDTO);
     }
 
     @Override
@@ -181,5 +182,34 @@ public class MemberServiceImpl implements MemberServiceInterface{
     @Override
     public void createPetProfile(PetDTO petDTO) {
         memberRepository.createPetProfile(petDTO);
+    }
+
+    //알림 전체 조회
+    @Override
+    public List<NotificationDTO> selectNotification(String receiver_email) {
+        return memberRepository.selectNotification(receiver_email);
+    }
+
+    // 특정 알림 조회
+    @Override
+    public NotificationDTO selectNotificationById(int notificationId) {
+        return memberRepository.selectNotificationById(notificationId);
+    }
+
+    @Override
+    @Transactional
+    public void insertNotification(NotificationDTO notificationDTO) {
+        memberRepository.insertNotification(notificationDTO);
+    }
+
+    @Override
+    @Transactional
+    public void isChecked(int notificationId){
+        memberRepository.isChecked(notificationId);
+    }
+
+    @Override
+    public void deleteNotification(int notificationId) {
+        memberRepository.deleteNotification(notificationId);
     }
 }

@@ -26,7 +26,8 @@
     <script src="${path}/js/member/mypage.js"></script>
 </head>
 <body>
-<%@ include file="header.jsp" %>
+<%@include file="../member/header.jsp" %>
+<%--<%@ include file="header.jsp" %>--%>
 <div id="share-placeholder"></div>
 <div class="grid-container">
     <!-- Left Section -->
