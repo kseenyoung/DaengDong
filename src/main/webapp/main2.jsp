@@ -30,16 +30,20 @@
         <div id="header_box">
             <h1 id="logo">댕동</h1>
             <div id="header_right">
+                <a href="">
+                    <img src="${path}/images/header_arlam.png" alt="알림" width="30" height="30"/>
+                    <span class="alt-text"></span>
+                </a>
                 <a href="${path}/post/posts">
-                    <img src="./images/community.png" alt="커뮤니티" width="30" height="30" />
+                    <img src="${path}/images/header_community.png" alt="커뮤니티" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
                 <a href="${path}/plan/create">
-                    <img src="./images/plan.png" alt="플랜" width="30" height="30" />
+                    <img src="${path}/images/header_plan.png" alt="플랜" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
                 <a href="${path}/auth/viewMypage.do">
-                    <img src="./images/user.png" alt="사용자" width="30" height="30" />
+                    <img src="${path}/images/header_user.png" alt="사용자" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
             </div>
