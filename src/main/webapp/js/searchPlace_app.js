@@ -716,6 +716,10 @@ function showSidebar(place){
 
     sidebar.innerHTML = template.innerHTML;
 
+    const favoriteBtn = sidebar.querySelector("#favoriteBtn")
+
+    favoriteBtn.setAttribute("data-id", place.id);
+
     sidebar.querySelector("#place-title").textContent = place.place_name || "정보 없음";
     sidebar.querySelector("#place-category_name").textContent = place.category_name || "정보 없음";
     sidebar.querySelector("#place-road_address_name").textContent = place.road_address_name || "도로명주소 없음";
