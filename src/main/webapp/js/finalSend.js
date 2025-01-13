@@ -11,27 +11,20 @@ document.getElementById("finalizePlanBtn").addEventListener("click", function ()
     console.log("requestData : ", requestData);
 
     // 서버로 POST 요청
-    fetch('/daengdong/place/finalPlanPlaces', {
+    fetch("/daengdong/place/finalPlanPlaces", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(requestData)
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(planPlaces)
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Failed to submit plan places");
-            }
-            return response.text();
+        .then(res => {
+            if (!res.ok) throw new Error("일정 저장 실패");
+            return res.text();
         })
-        /*.then(data => {
-            alert("일정 저장이 완료되었습니다!");
-            console.log("Response:", data);
-            // 저장 후 페이지 이동 (필요에 따라 변경 가능)
-            window.location.href = `/daengdong/plan/place?planId=${planId}`; // 예시: 전체 일정 목록으로 이동
-        })*/
-        .catch(error => {
-            console.error("Error:", error);
-            alert("일정 저장 중 오류가 발생했습니다.");
+        .then(msg => {
+            alert("최종 일정이 저장되었습니다!");
+            console.log("서버 응답:", msg);
+        })
+        .catch(err => {
+            console.error("일정 저장 오류:", err);
         });
 });

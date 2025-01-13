@@ -25,6 +25,13 @@ public class PlaceController {
     @PostMapping("/savePlace")
     @ResponseBody
     public ResponseEntity<String> savePlace(@RequestBody PlaceDTO placeDTO, HttpSession session) {
+        // 1) 먼저 DB에 placeDTO.getKakaoPlaceId() 가 존재하는지 조회
+        // boolean exists = placeRepository.existsByKakaoPlaceId(placeDTO.getKakaoPlaceId());
+        // if(exists) {
+        //     // 이미 존재하면 업데이트 or 그냥 무시
+        //     // placeRepository.updatePlace(...) or do nothing
+        //     return;
+        // }
             Long planId = (Long) session.getAttribute("currentPlanId");
             log.info("savePlace에서 planId={}", planId);
         try {
@@ -58,5 +65,6 @@ public class PlaceController {
                 .body("Failed to save plan places: " + e.getMessage());
         }
     }
+
 
 }
