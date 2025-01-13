@@ -1,6 +1,6 @@
 :root {
   --bg-color: #a4ff5e;
-  --max-width: 1200px;
+  --max-width: 1500px;
   --max-halfwidth: 600px;
   --side-padding: 0 30px;
 
@@ -84,20 +84,22 @@ ol {
   margin-top: 100vh;
 }
 #header {
-  width: 100%;
+
+
+    width: 100%;
   position: fixed;
   height: 8vh;
   display: flex;
   justify-content: center;
   z-index: 1;
-  top: 0;
-  left: 0;
+ /* top: 0;
+  left: 0;*/
 }
 
 #header_box {
   width: 100%;
   height: 8vh;
-  position: fixed!important;
+/*  position: fixed!important;*/
   z-index: 3;
   max-width: var(--max-width);
   padding: var(--side-padding);
@@ -107,8 +109,8 @@ ol {
   margin: 0 auto;
   font-family: "Dongle", "Rubik Gemstones";
   font-weight: 700;
-  top: 0;
-  left: 0;
+/*  top: 0;
+  left: 0;*/
 }
 #logo {
   font-size: var(--font-size5);

@@ -105,7 +105,7 @@
               </div>
               <div class="comment_list" style="display:none;">
                  <div class="post_content" style="white-space: pre-line;">🤓🩶🩵🩶🤎
-                  ${post.postContent}#라스트챌린지 #스타일컬렉터모집 #2025코디 #요즘코디 #신년선물 #선물추천 #KREAM #OVERDUEFLAIR #크림 #오버듀플레어 #가디건코디
+                  ${post.postContent}
                  </div>
                  <div class="comment_list2">
                      <c:forEach var="comment" items="${comments}">
