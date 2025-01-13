@@ -14,7 +14,7 @@ public class PetDTO {
 
     private static final String datePattern = "yy/mm/dd";
 
-    private Integer pet_id;
+    private int pet_id;
     private String member_email;
     private String pet_name;
     private String pet_gender;

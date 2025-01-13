@@ -182,4 +182,19 @@ public class MemberServiceImpl implements MemberServiceInterface{
     public void modifyPetDetail(PetDTO petDTO) {
         memberRepository.modifyPetDetail(petDTO);
     }
+
+    @Override
+    public int createPetProfile(PetDTO petDTO) {
+        return memberRepository.createPetProfile(petDTO);
+    }
+
+    @Override
+    public PetDTO selectOnetMyPet(PetDTO petDTO) {
+        return memberRepository.selectOnetMyPet(petDTO);
+    }
+
+    @Override
+    public void deletePetByPetId(int petId) {
+        memberRepository.deletePetByPetId(petId);
+    }
 }

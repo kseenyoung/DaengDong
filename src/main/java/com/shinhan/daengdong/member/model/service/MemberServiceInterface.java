@@ -54,4 +54,10 @@ public interface MemberServiceInterface {
     void modifyPetProfilePhoto(PetDTO petDTO);
 
     void modifyPetDetail(PetDTO petDTO);
+
+    int createPetProfile(PetDTO petDTO);
+
+    PetDTO selectOnetMyPet(PetDTO petDTO);
+
+    void deletePetByPetId(int petId);
 }

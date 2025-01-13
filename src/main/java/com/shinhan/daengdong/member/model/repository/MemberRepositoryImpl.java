@@ -149,4 +149,20 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     public void modifyPetDetail(PetDTO petDTO) {
         sqlSession.update(namespace + "modifyPetDetailProfile", petDTO);
     }
+
+    @Override
+    public int createPetProfile(PetDTO petDTO) {
+        sqlSession.insert(namespace + "createPetProfile", petDTO);
+        return petDTO.getPet_id();
+    }
+
+    @Override
+    public PetDTO selectOnetMyPet(PetDTO petDTO) {
+        return sqlSession.selectOne(namespace + "selectOnetMyPet", petDTO);
+    }
+
+    @Override
+    public void deletePetByPetId(int petId) {
+        sqlSession.delete(namespace + "deletePetByPetId", petId);
+    }
 }
