@@ -53,7 +53,6 @@ public interface MemberServiceInterface {
 
     void modifyPetDetail(PetDTO petDTO);
 
-    void createPetProfile(PetDTO petDTO);
 
     void insertNotification(NotificationDTO notificationDTO);
 
@@ -64,4 +63,9 @@ public interface MemberServiceInterface {
     void isChecked(int notificationId);
 
     void deleteNotification(int notificationId);
+    int createPetProfile(PetDTO petDTO);
+
+    PetDTO selectOnetMyPet(PetDTO petDTO);
+
+    void deletePetByPetId(int petId);
 }

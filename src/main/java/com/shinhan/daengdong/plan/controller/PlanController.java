@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.Date;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -78,6 +79,7 @@ public class PlanController {
         session.setAttribute("currentPlanId", planId);
         log.info("create에서 currentPlanId: {}", session.getAttribute("currentPlanId"));
         session.setAttribute("currentMemberEmail", member.getMember_email());
+        log.info("create에서 currentMemberEmail: {}", member.getMember_email());
         session.setAttribute("travelDays", days);
         session.setAttribute("currentPlan", planDTO);
 
@@ -166,10 +168,14 @@ public class PlanController {
     ) {
         HttpSession session = request.getSession(false);
 
+        MemberDTO member = (MemberDTO) session.getAttribute("member");
+        //session.setAttribute("currentMemberEmail", member.getMember_email());
+        //log.info("ccc currentMemberEmail: {}", member.getMember_email());
+        model.addAttribute("memberEmail", member.getMember_email());
+
         if (planId != null) {
             session.setAttribute("currentPlanId", planId);
             log.info("URL 파라미터로 전달된 planId={} 을 세션에 저장했습니다.", planId);
-            log.info("###Plan ID가 세션에 저장되었습니다: {}", session.getAttribute("planId"));
         } else {
             log.info("이게 나오면 안됨");
             planId = (Long) session.getAttribute("currentPlanId");
@@ -183,6 +189,8 @@ public class PlanController {
 
         Long currentPlanId = (Long) session.getAttribute("currentPlanId");
         String currentMemberEmail = (String) session.getAttribute("currentMemberEmail");
+
+        log.info("pp에서의 currentMemberEmail: {}", currentMemberEmail);
 
         // 로그인한 사용자의 이메일을 자동으로 추가
         if (currentPlanId != null && currentMemberEmail != null) {
@@ -377,6 +385,55 @@ public class PlanController {
         Map<String, String> response = new HashMap<>();
         response.put("imageUrl", imageUrl);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/detailsByPlanId")
+    public ResponseEntity<?> getPlanInfo(@RequestParam("planId") Long planId) {
+
+        // (1) 플랜 기본정보 조회
+        PlanDTO planDTO = planService.findPlanById(planId);
+        if (planDTO == null) {
+            return ResponseEntity.badRequest().body("유효하지 않은 planId");
+        }
+
+        // (2) 일수 계산 (startDate, endDate가 존재한다고 가정)
+        Date start = planDTO.getStartDate();
+        Date end = planDTO.getEndDate();
+        long days = ChronoUnit.DAYS.between(start.toLocalDate(), end.toLocalDate()) + 1;
+        int travelDays = (int) days;
+
+        // (3) dayPlans: plan_places 테이블에 저장된 (day, kakaoPlaceId, etc.)를 조회
+        //    -> 아래처럼 PlanService에 "findPlanPlaces(planId)" 메서드를 만든다고 가정
+        List<PlanDetailsDTO> placeList = planService.findPlanPlacesByPlanId(planId);
+        // placeList 안에 { day=1, kakaoPlaceName=..., ... } 정보가 담겼다고 가정.
+
+        // 이 데이터를 {1: [...], 2: [...]} 이런 식으로 변환
+        Map<Integer, Object[]> dayPlans = new HashMap<>();
+        for (PlanDetailsDTO pd : placeList) {
+            int dayIndex = pd.getDay(); // 예: 1,2,3
+            // dayPlans.computeIfAbsent(dayIndex, k-> new ArrayList<Map<String,Object>>());
+            // 변환 로직... (아래는 간단히 예시)
+        }
+
+        // (4) 동행자 목록 (companions)
+        planService.getCompanionsByPlanId(planId);
+        // 예: List<MemberPlanDTO>
+        // 변환해서  [{email:..., nickname:...}, ...] 식으로 리턴
+        // (nickname이 없으면 email만)
+
+        // 예시 (간단화):
+        List<MemberPlanDTO> companions = planService.getCompanionsByPlanId(planId);
+        System.out.println("placeList: " + placeList);
+
+        // (5) 최종 JSON 응답
+        Map<String, Object> result = new HashMap<>();
+        result.put("travelDays", travelDays);
+        result.put("dayPlans", dayPlans);
+        result.put("companions", companions);
+        result.put("planTitle", planDTO.getPlanName());
+        result.put("placeList", placeList);
+
+        return ResponseEntity.ok(result);
     }
 
 }

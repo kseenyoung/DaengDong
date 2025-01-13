@@ -92,4 +92,14 @@ public class PlanServiceImpl implements PlanServiceInterface {
         return planRepository.getFollowerList(memberEmail);
     }
 
+    @Override
+    public PlanDTO findPlanById(Long planId) {
+        return planRepository.findPlanById(planId);
+    }
+
+    @Override
+    public List<PlanDetailsDTO> findPlanPlacesByPlanId(Long planId) {
+        return planRepository.findPlanPlacesByPlanId(planId);
+    }
+
 }

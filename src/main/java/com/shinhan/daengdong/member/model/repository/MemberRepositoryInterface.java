@@ -54,7 +54,6 @@ public interface MemberRepositoryInterface {
 
     void modifyPetDetail(PetDTO petDTO);
 
-    void createPetProfile(PetDTO petDTO);
 
     //알림 관련
     List<NotificationDTO> selectNotification(String receiver_email);
@@ -66,4 +65,9 @@ public interface MemberRepositoryInterface {
     void isChecked(int notificationId);
 
     void deleteNotification(int notificationId);
+    int createPetProfile(PetDTO petDTO);
+
+    PetDTO selectOnetMyPet(PetDTO petDTO);
+
+    void deletePetByPetId(int petId);
 }
