@@ -763,18 +763,27 @@ body, h4, p, button, a {
 
 /* 채팅방 접속하기 버튼 CSS */
 #btnChat {
-    position: absolute;
+    position: fixed!important;
     bottom: 20px; /* 맵 하단에서 20px 위 */
     right: 20px; /* 맵 오른쪽에서 20px 왼쪽 */
     z-index: 10; /* 맵 위에 표시되도록 z-index 설정 */
     background-color: #007bff;
-    color: white;
-    border: none;
     padding: 10px 20px;
-    font-size: 14px;
-    border-radius: 5px;
-    cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    width: 50px; /* 버튼의 너비 */
+    height: 50px; /* 버튼의 높이 */
+    border-radius: 50%; /* 버튼을 원형으로 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px!important; /* 아이콘 크기 */
+    color: #fff; /* 아이콘 색상 */
+    border: none;
+    cursor: pointer;
+}
+
+#chat-icon {
+    font-size: 18px;
 }
 
 #btnChat:hover {

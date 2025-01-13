@@ -193,9 +193,12 @@ ol {
 #banner_box_top h2 {
   font-size: var(--font-size10);
   padding-bottom: 30px;
+  white-space: nowrap!important;
 }
 #banner_box_bottom {
   display: flex;
+  position: absolute;
+  top: 550px;
   flex-direction: column;
   align-items: center;
 }

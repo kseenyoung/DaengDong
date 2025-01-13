@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-    <title>Document</title>
+    <script src="${path}/js/main.js"></script>
+    <title>댕동</title>
     <link
             href="
     https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css
@@ -59,7 +60,7 @@
             <div id="banner_box">
                 <div id="banner_box_top">
                     <h2>여행 가자</h2>
-                    <h2>코코야!</h2>
+                    <h2 id="dynamicText">코코야!</h2>
                 </div>
                 <div id="banner_box_bottom">
                     <p>지금 바로 계획을 만들어보세요.</p>

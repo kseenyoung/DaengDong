@@ -3,22 +3,19 @@ package com.shinhan.daengdong.plan.controller;
 import com.shinhan.daengdong.member.dto.MemberDTO;
 import com.shinhan.daengdong.plan.dto.MemberPlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
+import com.shinhan.daengdong.plan.dto.PlanDetailsDTO;
+import com.shinhan.daengdong.plan.dto.PlanRelationshipsDTO;
 import com.shinhan.daengdong.plan.model.service.PlanServiceInterface;
-import com.shinhan.daengdong.plan.websoket.PlanWebSocketHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.beans.PropertyEditorSupport;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -235,6 +232,38 @@ public class PlanController {
         return ResponseEntity.ok("동행자가 성공적으로 추가되었습니다.");
     }
 
+    @GetMapping("/followingList")
+    @ResponseBody
+    public ResponseEntity<?> getFollowingList(HttpSession session) {
+        MemberDTO member = (MemberDTO) session.getAttribute("member");
+        if (member == null) {
+            log.warn("로그인이 되어 있지 않습니다. 세션이 null입니다.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+        log.info("현재 로그인된 사용자: {}", member.getMember_email());
+
+        List<PlanRelationshipsDTO> followingList = planService.getFollowingList(member.getMember_email());
+        log.debug("조회된 팔로잉 목록: {}", followingList);
+
+        log.info("팔로잉 목록 조회 성공: {}명", followingList.size());
+        return ResponseEntity.ok(followingList);
+    }
+
+    @GetMapping("/followerList")
+    @ResponseBody
+    public ResponseEntity<?> getFollowerList(HttpSession session) {
+        MemberDTO member = (MemberDTO) session.getAttribute("member");
+        if (member == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+
+        List<PlanRelationshipsDTO> followerList = planService.getFollowerList(member.getMember_email());
+        log.debug("조회된 팔로워 목록: {}", followerList);
+
+        log.info("팔로워 목록 조회 성공: {}명", followerList.size());
+        return ResponseEntity.ok(followerList);
+    }
+
     // 동행자 리스트 조회
     @GetMapping("/companions")
     @ResponseBody
@@ -277,4 +306,35 @@ public class PlanController {
     public String viewChatRoom() {
         return "chat/chatFragment";
     }
+
+    // 플랜 상세 조회 (플랜 및 장소 정보)
+    @GetMapping("/details")
+    @ResponseBody
+    public ResponseEntity<?> getPlanDetails(HttpServletRequest request) {
+        try {
+            HttpSession session = request.getSession(false);
+
+            MemberDTO member = (MemberDTO) session.getAttribute("member");
+            if (member == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+            }
+            String memberEmail = member.getMember_email();
+
+            List<PlanDetailsDTO> planDetails = planService.getPlanDetailsByEmail(memberEmail);
+            if (planDetails.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("조회된 플랜 정보가 없습니다.");
+            }
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", 200);
+            response.put("message", "Success");
+            response.put("data", planDetails);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.error("플랜 상세 조회 중 오류 발생: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("플랜 상세 조회 실패");
+        }
+    }
+
 }

@@ -318,5 +318,54 @@
         });
     });
 </script>
+
+<%-- 최종 계획 가져오는 script 코드 콘솔 보면 값 출력 확인 가능 HTML코드는 작성 해야함--%>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '/daengdong/plan/details',
+            type: 'GET',
+            success: function (response) {
+                console.log(response); // 응답 데이터 구조 확인
+
+                // 응답 데이터가 유효한지 확인
+                if (response.data && response.data.length > 0) {
+                    let tableBody = '';
+
+                    // 데이터 배열 반복
+                    response.data.forEach(plan => {
+                        // 타임스탬프를 사람이 읽을 수 있는 날짜로 변환
+                        const startDate = new Date(plan.startDate).toISOString().split('T')[0];
+                        const endDate = new Date(plan.endDate).toISOString().split('T')[0];
+
+                        tableBody += `
+                        <tr>
+                            <td>${plan.planId}</td>
+                            <td>${plan.planName}</td>
+                            <td>${startDate}</td>
+                            <td>${endDate}</td>
+                            <td>${plan.planState == 1 ? '공개' : '비공개'}</td>
+                            <td>${plan.day}</td>
+                            <td>${plan.kakaoPlaceName}</td>
+                            <td>${plan.kakaoRoadAddressName}</td>
+                        </tr>
+                    `;
+                    });
+
+                    // 테이블의 tbody에 데이터 추가
+                    $('#planTable tbody').html(tableBody);
+                } else {
+                    // 데이터가 없을 경우 메시지 출력
+                    $('#planTable tbody').html('<tr><td colspan="8">조회된 플랜 정보가 없습니다.</td></tr>');
+                }
+            },
+            error: function (error) {
+                console.error('AJAX 요청 중 오류 발생:', error);
+                alert('데이터를 불러오는 데 실패했습니다.');
+            }
+        });
+    });
+</script>
+
 </body>
 </html>

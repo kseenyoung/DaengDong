@@ -53,4 +53,6 @@ public interface MemberRepositoryInterface {
     void modifyPetProfilePhoto(PetDTO petDTO);
 
     void modifyPetDetail(PetDTO petDTO);
+
+    void createPetProfile(PetDTO petDTO);
 }

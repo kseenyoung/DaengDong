@@ -24,11 +24,11 @@
        where member_email = #{member_email}
     </select>
 
-    <!--반려동물 회원가입-->
-<!--    <insert id="insertPet" parameterType="petDTO">-->
-<!--        insert into pets(member_email, pet_name, pet_gender, pet_birthday, pet_blood_type, pet_profile_photo, pet_species)-->
-<!--        values (#{member_email},#{pet_name},#{pet_gender},#{pet_birthday},#{pet_blood_type},#{pet_profile_photo},#{pet_species})-->
-<!--    </insert>-->
+    <!--반려동물 회원가입(사진)-->
+    <insert id="createPetProfilePhoto" parameterType="petDTO">
+        insert into pets(member_email, pet_profile_photo)
+        values (${member_email}, #{pet_profile_photo})
+    </insert>
 
     <!--반려동물 조회-->
     <select id="selectMyPet" parameterType="String" resultType="petDTO">
@@ -45,10 +45,26 @@
     </select>
 
     <!--member18 반려동물 프로필 사진 변경!!-->
-    <update id="modifyPetProfile" parameterType="petDTO">
-        update pets
-        set pet_profile_photo = #{pet_profile_photo}
-        where pet_id = #{pet_id}
+    <!--todo: 프로필 사진 들어가는지 확인하고, 들어가면 바로 upload.js에서 create된 pet정보에 대해서 다른 정보 수정 작업도 이루어지는지 확인-->
+    <!--todo: 위 내용이 확인 되면 signUp 화면에서 입력한 정보가 들어가는지 확인-->
+    <!--todo: 위 내용이 확인 되면 signUp 화면에서 회원가입이 되는지 확인-->
+    <update id="createPetProfile" parameterType="petDTO">
+        insert into pets
+            (member_email,
+            pet_name,
+            pet_gender,
+            pet_birthday,
+            pet_blood_type,
+            pet_profile_photo,
+            pet_species)
+        values
+            (#{member_email},
+            #{pet_name},
+            #{pet_gender},
+            #{pet_birthday},
+            #{pet_blood_type},
+            #{pet_profile_photo},
+            #{pet_species})
     </update>
 
     <!--member18 반려동물 프로필 세부사항 변경!!-->

@@ -1,10 +1,10 @@
 // 이미지 미리보기 함수
 function myProfilePreviewImage(file) {
-    const reader = new FileReader();
-    reader.onload = function (ev) {
-      $("#currentPhoto").attr("src", ev.target.result); // 이미지를 미리보기로 설정
-    };
-    reader.readAsDataURL(file);
+  const reader = new FileReader();
+  reader.onload = function (ev) {
+    $("#currentPhoto").attr("src", ev.target.result); // 이미지를 미리보기로 설정
+  };
+  reader.readAsDataURL(file);
 }
 
 function petProfilePreviewImage(input) {
@@ -82,10 +82,10 @@ function uploadFile(apiPath) {
       alert("업로드 실패: " + error.message);
     })
     .finally(() => {
-    uploadButton.disabled = true;
-    uploadButton.style.display = "none";
-    clickButton.style.display = "inline-block";
-  });
+      uploadButton.disabled = true;
+      uploadButton.style.display = "none";
+      clickButton.style.display = "inline-block";
+    });
 }
 
 function petUploadFile(apiPath, petId, petName, petBloodType) {
