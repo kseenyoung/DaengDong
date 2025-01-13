@@ -30,7 +30,7 @@
         values (${member_email}, #{pet_profile_photo})
     </insert>
 
-    <!--반려동물 조회-->
+    <!--반려동물 전체조회-->
     <select id="selectMyPet" parameterType="String" resultType="petDTO">
         select pet_id,
                 member_email,
@@ -44,11 +44,32 @@
         where member_email = #{member_email}
     </select>
 
+    <!--반려동물 단건조회-->
+    <select id="selectOnetMyPet" parameterType="petDTO" resultType="petDTO">
+        select pet_id,
+               member_email,
+               pet_name,
+               pet_gender,
+               pet_birthday,
+               pet_blood_type,
+               pet_profile_photo,
+               pet_species
+        from pets
+        where member_email = #{member_email} and pet_name = #{pet_name}
+    </select>
+
+    <!--반려동물 단건삭제-->
+    <select id="deletePetByPetId" parameterType="petDTO" resultType="petDTO">
+        delete
+        from pets
+        where pet_id = #{pet_id}
+    </select>
+
     <!--member18 반려동물 프로필 사진 변경!!-->
     <!--todo: 프로필 사진 들어가는지 확인하고, 들어가면 바로 upload.js에서 create된 pet정보에 대해서 다른 정보 수정 작업도 이루어지는지 확인-->
     <!--todo: 위 내용이 확인 되면 signUp 화면에서 입력한 정보가 들어가는지 확인-->
     <!--todo: 위 내용이 확인 되면 signUp 화면에서 회원가입이 되는지 확인-->
-    <update id="createPetProfile" parameterType="petDTO">
+    <insert id="createPetProfile" parameterType="petDTO">
         insert into pets
             (member_email,
             pet_name,
@@ -65,7 +86,7 @@
             #{pet_blood_type},
             #{pet_profile_photo},
             #{pet_species})
-    </update>
+    </insert>
 
     <!--member18 반려동물 프로필 세부사항 변경!!-->
     <update id="modifyPetDetailProfile" parameterType="petDTO">
