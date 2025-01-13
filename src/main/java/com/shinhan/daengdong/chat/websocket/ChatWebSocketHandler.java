@@ -10,6 +10,7 @@ import com.shinhan.daengdong.member.model.repository.MemberRepositoryImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -74,5 +75,30 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         log.info("WebSocket connected. Session ID: " + session.getId());
     }
 
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        log.info("WebSocket connection closed. Session ID: {}", session.getId());
+        // sessionId를 기반으로 SessionInfo를 가져오기
+        SessionInfo info = sessionManager.getSessionInfo(session.getId());
+        if (info != null) {
+            int planId = info.getPlanId();
+            ChatParticipant participant = info.getParticipant();
+
+            log.info("Removing participant from chat room. planId={}, participant={}", planId, participant);
+
+            // 1) ChatRoom에서 participant 제거
+            ChatRoom chatRoom = chatService.getChatRoom(planId);
+            if (chatRoom != null) {
+                chatRoom.leave(participant);
+            }
+
+            // 2) sessionManager에서도 제거
+            sessionManager.removeSession(session.getId());
+
+            log.info("Session ID: {} removed from planId: {}", session.getId(), planId);
+        } else {
+            log.warn("No SessionInfo found for closed session: {}", session.getId());
+        }
+    }
 
 }
