@@ -12,7 +12,7 @@
 
   <!-- CSS파일 -->
   <link rel="stylesheet" href="${path}/css/header.css">
-  <link rel="stylesheet" href="${path}/css/plan/addCompanion.css">
+  <!--<link rel="stylesheet" href="${path}/css/plan/addCompanion.css">-->
   <link rel="stylesheet" href="${path}/css/plan/searchPlace.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -53,6 +53,7 @@
 <div id="sidebar-template" style="display: none;">
   <button id="closeSidebar" class="close-btn">✖</button>
   <h4 id="place-title" class="sidebar-title"></h4>
+  <button id = "favoriteBtn" class="favoriteBtn">⭐</button>
   <div class="content-container">
   <p class="sidebar-info"><strong>카테고리</strong> <br> <span id="place-category_name"></span></p>
   <p class="sidebar-info"><strong>도로명주소</strong> <br> <span id="place-road_address_name"></span></p>
@@ -77,7 +78,6 @@
     <button id="closeChatModal" class="close-btn">✖</button>
   </div>
   <button id = "pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
-  <!--<button id = "pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>-->
   <div id="menu_wrap" class="bg_white">
     <button id="closeMenu" class="close-btn">✖</button>
         <div class="option">
@@ -320,6 +320,7 @@ function displayPlaces(places, startIndex = 0) {
         button.setAttribute("data-place-y", place.y);
         button.setAttribute("data-place-url", place.place_url);
         button.setAttribute("data-id", place.id);
+        button.setAttribute("data-starid", place.star_id || "");
 
 
         var detailLink = document.createElement("a");
@@ -424,7 +425,7 @@ function addPlaceAndSave(eventTarget) {
     addPlaceToPlan(placeName, placeAddress);
 
     // 서버에 장소 데이터 저장
-    fetch('/daengdong/place/savePlace', {
+    fetch('${path}/place/savePlace', {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -628,6 +629,10 @@ function showSidebar(place) {
 
     // 템플릿 내용을 복사하여 삽입
     sidebar.innerHTML = template.innerHTML;
+
+    const favoriteBtn = sidebar.querySelector("#favoriteBtn")
+
+    favoriteBtn.setAttribute("data-id", place.id);
 
     // 템플릿 내부 요소에 데이터 삽입
     sidebar.querySelector("#place-title").textContent = place.place_name || "정보 없음";
@@ -1466,7 +1471,6 @@ document.addEventListener("DOMContentLoaded", () => {
     companionSection.style.display = "none";
     daysSection.style.display = "block";
 
-    // 1일차를 강조 표시
     const firstDayBtn = document.querySelector(".day-btn[data-day='1']");
     if (firstDayBtn) {
         firstDayBtn.classList.add("selected");
@@ -1495,12 +1499,83 @@ const planTitleFromDB = "내 인생 첫 여행";
 
 document.getElementById("planTitle").textContent = planTitleFromDB;
 
+document.addEventListener("DOMContentLoaded", () => {
+    document.body.addEventListener("click", (event) => {
+        if (event.target.classList.contains("favoriteBtn") && !event.target.classList.contains("favorited")) {
+            addFavorite(event.target); // 즐겨찾기 추가 처리
+        }
+    });
+
+    // 이벤트 위임: 즐겨찾기 삭제
+    document.body.addEventListener("click", (event) => {
+        if (event.target.classList.contains("favoriteBtn") && event.target.classList.contains("favorited")) {
+            deleteFavorite(event.target); // 즐겨찾기 삭제 처리
+        }
+    });
+});
+const stars = {};
+// 즐겨찾기 추가 처리 함수
+function addFavorite(button) {
+    const placeId = button.dataset.id;
+    console.log("placeId:" + placeId);
+    fetch("${path}/auth/favorite/add", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ "kakao_place_id": placeId })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("HTTP error " + response.status);
+        return response.text();
+    })
+    .then(data => {
+        alert("즐겨찾기에 추가되었습니다!"); // 성공 메시지 출력
+        stars[placeId] = data.star_id;
+        button.setAttribute("data-starid", data.star_id);
+        button.classList.add("favorited");
+        console.log("star_id 저장 완료:", data.star_id);
+    })
+    .catch(err => {
+        console.error("Add favorite error:", err);
+        alert("즐겨찾기 추가 중 오류가 발생했습니다.");
+    });
+}
+
+// 즐겨찾기 삭제 처리 함수
+function deleteFavorite(button) {
+    const placeId = button.dataset.id;
+    const starId = stars[placeId];
+
+    console.log("삭제할 starId:" + starId);
+    fetch("${path}/auth/favorite/delete", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ star_id: starId })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("HTTP error " + response.status);
+        return response.text();
+    })
+    .then(message => {
+        delete stars[placeId];
+        button.classList.remove("favorited"); // 즐겨찾기 상태 제거
+        button.removeAttribute("data-starid");
+        alert("즐겨찾기가 해제되었습니다!"); // 성공 메시지 출력
+   })
+    .catch(err => {
+        console.error("Delete favorite error:", err);
+        alert("즐겨찾기 삭제 중 오류가 발생했습니다.");
+    });
+}
 </script>
 
 <%-- <script src="<%= request.getContextPath() %>/js/addPlan.js"></script> --%>
-<script src="/daengdong/js/addCompanion.js"></script>
-<script src="/daengdong/js/websocket.js"></script>
-<script src="/daengdong/js/finalSend.js"></script>
+<script src="${path}/js/addCompanion.js"></script>
+<script src="${path}/js/websocket.js"></script>
+<script src="${path}/js/finalSend.js"></script>
 <script>
   // 서버에서 전달받은 planId를 전역 변수로 설정
   planId = '<%= session.getAttribute("currentPlanId") %>';

@@ -6,5 +6,4 @@ import com.shinhan.daengdong.place.dto.PlanPlaceDTO;
 public interface PlaceRepositoryInterface {
     void savePlace(PlaceDTO placeDTO);
     void savePlanPlace(PlanPlaceDTO planPlaceDTO);
-
 }

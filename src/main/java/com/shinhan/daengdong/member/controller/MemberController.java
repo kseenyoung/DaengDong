@@ -10,12 +10,10 @@ import com.shinhan.daengdong.review.dto.ReviewDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -248,6 +246,39 @@ public class MemberController {
         return "member/semiCategory/save/favoritePlaceFragment";
     }
 
+    @PostMapping("favorite/add")
+    @ResponseBody
+    public String addFavoritePlace(@RequestBody FavoritePlaceDTO favoritePlaceDTO, HttpSession session) {
+
+        log.info("addFavoritePlace called:" + favoritePlaceDTO.toString());
+          //확인
+        try {
+            MemberDTO member = (MemberDTO) session.getAttribute("member");
+            if (member == null) {
+                log.warn("Unauthorized access attempt");
+                return "로그인이 필요합니다.";
+            }
+            favoritePlaceDTO.setMember_email(member.getMember_email());
+            memberService.addFavoritePlace(favoritePlaceDTO);
+            log.info("Favorite place added: {}", favoritePlaceDTO);
+
+            return "즐겨찾기에 추가되었습니다.";
+        } catch (Exception e) {
+            log.error("Error adding favorite place:", e); // 예외 상세 로그
+            return "즐겨찾기 추가 중 오류가 발생했습니다.";
+        }
+    }
+
+    @PostMapping("favorite/delete")
+    @ResponseBody
+    public String deleteFavoritePlace(@RequestBody FavoritePlaceDTO favoritePlaceDTO, HttpSession session) {
+        MemberDTO member = (MemberDTO) session.getAttribute("member");
+        int starId = favoritePlaceDTO.getStar_id();
+        memberService.deleteFavoritePlace(starId);
+        return "즐겨찾기에서 제거되었습니다.";
+    }
+
+
     //'내 저장' > 내가 쓴 리뷰(장소) 컨텐츠
     @GetMapping("getReviewFragment.do")
     public String getReviewList(HttpSession session, Model model) {
@@ -309,4 +340,14 @@ public class MemberController {
         model.addAttribute("followerList", followerList);
         return "member/followerModal";
     }
+
+    // 즐겨찾기 id
+//    @GetMapping("favorite/starid")
+//    @ResponseBody
+//    public Integer getStarId(@RequestParam("kakao_place_id") int kakaoPlaceId, HttpSession session){
+//        MemberDTO member = (MemberDTO) session.getAttribute("member");
+//        Integer starId = memberService.findStarId(kakaoPlaceId, member.getMember_email());
+//
+//        return starId;
+//    }
 }

@@ -17,7 +17,7 @@
     padding: 15px;
     overflow: visible;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
-    z-index: 1000;
+    z-index: 800;
     font-size: 13px;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -38,7 +38,7 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+    z-index: 500;
     display: none;
 }
 
@@ -94,24 +94,28 @@
 
 #pinbutton {
     position: absolute;
-    padding: 0.8vw 1.8vw;
-    font-size: 1.5vw;
-    top: 10px;
-    left: 450px;
+    top: 10px; /* 화면 위에서 10px 떨어짐 */
+    left: 50%; /* 화면 가로 정중앙 */
+    transform: translateX(-50%); /* 정확히 중앙으로 이동 */
     z-index: 100;
-    margin-left: 5px;
+    padding: 0.5vw 1vw; /* 크기를 작게 조정 */
+    font-size: 1vw; /* 글자 크기 축소 */
     font-weight: bold;
     color: #fff;
-    background-color: #4CAF50;
+    background-color: #4CAF50; /* 예쁜 그린색 */
     border: 2px solid #000;
-    border-radius: 5px;
+    border-radius: 5px; /* 모서리 둥글게 */
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* 부드러운 전환 효과 */
 }
+
+/* 호버 효과 */
 #pinbutton:hover {
-    background-color: #45A049;
+    background-color: #388E3C; /* 호버 시 진한 그린색 */
+    transform: translate(-50%, -2px); /* 살짝 위로 이동 */
 }
+
 
 #menu_wrap .option button {
     margin: 5px;
@@ -132,30 +136,7 @@
     transform: translateY(-2px);
 }
 
-#placesList li {list-style: none;}
-#placesList .item {position:relative;border-bottom:1px solid #888;overflow: hidden;cursor: pointer;min-height: 65px;}
-#placesList .item span {display: block;margin-top:4px;}
-#placesList .item h5, #placesList .item .info {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-#placesList .item .info{padding:10px 0 10px 55px;}
-#placesList .info .gray {color:#8a8a8a;}
-#placesList .info .jibun {padding-left:26px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;}
-#placesList .info .tel {color:#009900;}
-#placesList .item .markerbg {float:left;position:absolute;width:36px; height:37px;margin:10px 0 0 10px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;}
-#placesList .item .marker_1 {background-position: 0 -10px;}
-#placesList .item .marker_2 {background-position: 0 -56px;}
-#placesList .item .marker_3 {background-position: 0 -102px}
-#placesList .item .marker_4 {background-position: 0 -148px;}
-#placesList .item .marker_5 {background-position: 0 -194px;}
-#placesList .item .marker_6 {background-position: 0 -240px;}
-#placesList .item .marker_7 {background-position: 0 -286px;}
-#placesList .item .marker_8 {background-position: 0 -332px;}
-#placesList .item .marker_9 {background-position: 0 -378px;}
-#placesList .item .marker_10 {background-position: 0 -423px;}
-#placesList .item .marker_11 {background-position: 0 -470px;}
-#placesList .item .marker_12 {background-position: 0 -516px;}
-#placesList .item .marker_13 {background-position: 0 -562px;}
-#placesList .item .marker_14 {background-position: 0 -608px;}
-#placesList .item .marker_15 {background-position: 0 -654px;}
+
 #pagination {margin:10px auto;text-align: center;}
 #pagination a {display:inline-block;margin-right:10px;}
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
@@ -227,13 +208,14 @@
     list-style: none;
 }
 
+/* 리스트 항목 스타일 */
 #placesList li {
-    display: flex;
-    align-items: center;
-    height: 50px;
-    padding: 10px;
-    margin-bottom: 10px;
-    background: #ffffff;
+    display: flex; /* 가로 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: space-between; /* 좌우 요소 간 간격 자동 조정 */
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -242,11 +224,19 @@
 }
 
 #placesList li:hover {
-    background: #e3f2fd;
+    background-color: #e3f2fd;
     transform: translateY(-3px);
 }
 
-#placesList li h5 {
+#placesList li .info {
+    flex: 1; /* 버튼 영역과 간격 조정 */
+    display: flex;
+    flex-direction: column; /* 텍스트를 세로로 정렬 */
+    justify-content: center;
+    gap: 5px; /* 텍스트 요소 간 간격 */
+}
+
+#placesList li h4 {
     font-size: 16px;
     font-weight: bold;
     margin: 0;
@@ -255,8 +245,56 @@
 
 #placesList li p {
     font-size: 14px;
-    color: #555;
-    margin: 5px 0 0;
+    color: #666;
+    margin: 0;
+}
+
+/* 버튼 컨테이너 */
+#placesList li .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* 내 일정에 추가 버튼 */
+#placesList li .add-btn {
+    background-color: #4caf50;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-right: 5px;
+}
+
+#placesList li .add-btn:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+/* 자세히 보기 링크 */
+#placesList li .map-link {
+    background-color: #2196f3;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#placesList li .map-link:hover {
+    background-color: #1976d2;
+    transform: translateY(-2px);
 }
 /* 사이드바 */
 body, h4, p, button, a {
@@ -267,24 +305,23 @@ body, h4, p, button, a {
 }
 #sidebar {
     width: 65%;
-    max-width: 1200px; /* 최대 너비 제한 */
-    height: 20%; /* 높이를 콘텐츠에 맞게 조정 */
-    padding: 20px; /* 콘텐츠 내부 여백 */
-    border: 1px solid #ccc; /* 테두리 */
-    display: none; /* 기본적으로 숨김 */
-    position: fixed; /* 고정 위치 */
-    bottom: 20px; /* 화면 아래에서 약간 위로 띄움 */
-    left: 65%; /* 가로 중심 정렬 */
-    transform: translateX(-50%); /* 중심 이동 */
-    background-color: #ffffff; /* 배경색 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
-    z-index: 1000; /* 다른 요소 위에 표시 */
-    border-radius: 12px; /* 전체 모서리를 둥글게 */
-    overflow-y: auto; /* 세로 스크롤 */
-    overflow-x: hidden; /* 가로 스크롤 숨김 */
-    display: none; /* 기본적으로 숨김 */
-    flex-direction: column; /* 세로 정렬 */
-    gap: 5px; /* 요소 간 간격 */
+    max-width: 1200px;
+    height: 20%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 65%;
+    transform: translateX(-50%);
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 8000;
+    border-radius: 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-direction: column;
+    gap: 5px;
 }
 
 #sidebar .close-btn {
@@ -632,7 +669,6 @@ body, h4, p, button, a {
     background-color: #f9f9f9;
     color: black;
     font-size: 16px;
-    font-family: Arial, sans-serif;
     z-index: 1050;
     position: relative
 }
@@ -664,22 +700,33 @@ body, h4, p, button, a {
     padding: 10px; /* 내부 여백 */
 }
 
+/* 공통 버튼 스타일 */
 .day-btn {
     display: inline-block;
-    background-color: #4CAF50;
-    color: white;
-    border: 1px solid gray;
+    background-color: #f5f5f5;
+    color: #333;
+    border: 1px solid #ddd;
     padding: 10px 15px;
     font-size: 16px;
     text-align: center;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease; /* 호버 효과 */
 }
+
+/* 기본 버튼 호버 효과 */
+.day-btn:hover {
+    background-color: #e0e0e0; /* 호버 시 약간 어두운 회색 */
+}
+
+/* 선택된 버튼 스타일 */
 .day-btn.selected {
-    background-color: #28A745; /* 선택된 버튼의 배경색 */
-    color: white;
-    font-weight: bold;
+    background-color: #000000; /* 선택된 버튼 검은색 */
+    color: #ffffff; /* 선택된 버튼 텍스트 흰색 */
+    font-weight: bold; /* 텍스트 굵게 */
+    border-color: #000000; /* 테두리도 검은색 */
 }
+
 
 #together {
     display: flex;
@@ -688,20 +735,30 @@ body, h4, p, button, a {
     margin: 20px 0;
 }
 
+/* 공통 버튼 스타일 */
 #addCompanionBtn {
-    background-color: #007BFF; /* 버튼 색상 */
-    color: white; /* 텍스트 색상 */
-    border: none; /* 테두리 제거 */
-    border-radius: 5px; /* 버튼 모서리 둥글게 */
-    padding: 10px 15px; /* 버튼 크기 조정 */
-    cursor: pointer; /* 커서 모양 변경 */
-    font-size: 14px; /* 텍스트 크기 */
-    transition: background-color 0.3s; /* 호버 애니메이션 */
+    background-color: #f5f5f5; /* 기본 회색 배경 */
+    color: #333; /* 기본 텍스트 색상 */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s ease; /* 전환 효과 */
 }
 
+/* 버튼 호버 효과 */
 #addCompanionBtn:hover {
-    background-color: #0056b3; /* 호버 시 버튼 색상 */
+    background-color: #e0e0e0; /* 호버 시 약간 어두운 회색 */
 }
+
+/* 선택된 버튼 스타일 */
+#addCompanionBtn.selected {
+    background-color: #000000; /* 선택된 상태의 검은색 배경 */
+    color: #ffffff; /* 선택된 상태의 흰색 텍스트 */
+    font-weight: bold; /* 텍스트 굵게 */
+}
+
 
 #companionEmailInput {
     flex-grow: 1; /* 입력 필드가 가능한 공간을 채우도록 설정 */
@@ -746,21 +803,21 @@ body, h4, p, button, a {
     gap: 20px; /* 버튼 간 간격 */
 }
 
-/* 버튼 스타일 */
+/* 공통 버튼 스타일 */
 #mainControls button {
-    background-color: #007BFF; /* 버튼 배경색 */
-    color: white; /* 버튼 텍스트 색상 */
+    background-color: #4CAF50;
+    color: #ffffff; /* 기본 텍스트 색상 */
     border: none; /* 테두리 제거 */
     border-radius: 5px; /* 모서리 둥글게 */
     padding: 5px 50px; /* 버튼 크기 */
     font-size: 12px; /* 글자 크기 */
     cursor: pointer; /* 마우스 커서 */
-    transition: background-color 0.3s; /* 호버 애니메이션 */
+    transition: background-color 0.3s, color 0.3s ease; /* 전환 효과 */
 }
 
 /* 버튼 호버 효과 */
 #mainControls button:hover {
-    background-color: #0056b3; /* 호버 시 색상 */
+    background-color: #388E3C;
 }
 
 /* 채팅방 접속하기 버튼 CSS */

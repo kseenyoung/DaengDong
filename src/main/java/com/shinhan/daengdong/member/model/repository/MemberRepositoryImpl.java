@@ -79,6 +79,11 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     }
 
     @Override
+    public void addFavoritePlace(FavoritePlaceDTO favoritePlaceDTO) {
+        sqlSession.insert(namespace + "addFavoritePlace", favoritePlaceDTO);
+    }
+
+    @Override
     public void deleteFavoritePlace(int starId) {
         sqlSession.delete(namespace + "deleteFavoritePlace", starId);
     }
