@@ -26,6 +26,7 @@ let currCategory = "";
 let categoryMarkers = [];
 let placeOverlay;
 let contentNode;
+
 /***************************************************
  * 페이지 로드 시 최초 실행
  ***************************************************/
@@ -93,20 +94,21 @@ async function loadPlanDataFromServer(planId) {
         // console.log("dayPlans:", dayPlans);
         companions = data.companions || [];
         console.log("companions:", companions);
-        placeList = data.placeList || [];
-        console.log("placeList:", placeList);
-
-        // placeList를 dayPlans로 변환
-        placeList.forEach(place => {
-            const { day, kakaoPlaceName, kakaoRoadAddressName, kakaoPlaceId } = place;
-            if (!dayPlans[day]) dayPlans[day] = [];
-            dayPlans[day].push({
-                title: kakaoPlaceName,
-                address: kakaoRoadAddressName,
-                id: kakaoPlaceId
-            });
-        });
-        console.log("변환된 dayPlans:", dayPlans);
+        // placeList = data.placeList || [];
+        // console.log("placeList:", placeList);
+        //
+        // // placeList를 dayPlans로 변환
+        // placeList.forEach(place => {
+        //     const { day, kakaoPlaceName, kakaoRoadAddressName, kakaoPlaceId } = place;
+        //     if (!dayPlans[day]) dayPlans[day] = [];
+        //     dayPlans[day].push({
+        //         title: kakaoPlaceName,
+        //         address: kakaoRoadAddressName,
+        //         id: kakaoPlaceId,
+        //         x, y
+        //     });
+        // });
+        // console.log("변환된 dayPlans:", dayPlans);
 
         // 제목 표시
         const planTitleEl = document.getElementById("planTitle");
@@ -197,7 +199,6 @@ function initPlanUI() {
 /***************************************************
  * (D) WebSocket 초기화
  ***************************************************/
-const socketId = `client-${Math.random().toString(36).substring(7)}`;
 let webSocket = null;
 function initWebSocket(planId) {
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
@@ -221,34 +222,6 @@ function initWebSocket(planId) {
 
     webSocket.onmessage = (evt) => {
         const msg = JSON.parse(evt.data);
-
-        // 본인이 보낸 메시지인지 확인 (고유 sender ID 사용)
-        if (msg.sender === "host") {
-            console.log("본인이 보낸 메시지입니다. 이미 처리했으므로 동작하지 않습니다.");
-            return;
-        }
-
-        if (msg.type === "deletePlace") {
-            const { kakaoPlaceId, day } = msg.data;
-            console.log("받은 삭제 데이터:", msg.data);
-
-            // 해당 일차의 dayPlans에서 장소 제거
-            if (dayPlans[day]) {
-                dayPlans[day] = dayPlans[day].filter(place => place.id !== kakaoPlaceId);
-            }
-
-            // 지도에서 마커 제거
-            const markerIndex = customMarkers.findIndex(m => m.title === kakaoPlaceId);
-            if (markerIndex !== -1) {
-                customMarkers[markerIndex].customMarker.setMap(null);
-                customMarkers.splice(markerIndex, 1);
-            }
-
-            // UI 업데이트
-            displayDayPlan(day);
-            alert("다른 사용자가 장소를 삭제했습니다!");
-        }
-
         if(msg.type === "shareMap") {
             const place = msg.data;
             console.log("받은 장소 데이터:", place);
@@ -339,19 +312,6 @@ function displayDayPlan(day) {
             dayPlans[day] = dayPlans[day].filter((p,idx)=> idx !== index);
             removeCustomMarker(title);
             displayDayPlan(day);
-
-            // WebSocket으로 삭제 정보 전송
-            if (webSocket && webSocket.readyState === WebSocket.OPEN) {
-                webSocket.send(JSON.stringify({
-                    type: "deletePlace",
-                    sender: "host",
-                    planId: window.G_planId,
-                    data: {
-                        kakaoPlaceId: id, // 삭제할 장소의 kakaoPlaceId
-                        day: day          // 삭제할 장소의 n일차
-                    }
-                }));
-            }
         };
 
         // 목록 클릭 -> 지도이동
@@ -469,9 +429,8 @@ function renderCompanionList(){
 
     companions.forEach(comp => {
         const li = document.createElement("li");
+        li.textContent = +comp.memberEmail;
 
-        //li.textContent = comp.nickname+"("+comp.memberEmail+")";
-        li.textContent = comp.memberEmail;
         companionListUl.appendChild(li);
     });
 }
@@ -643,12 +602,17 @@ document.addEventListener("click", function(evt){
         const x = parseFloat(btn.dataset.placeX);
         const y = parseFloat(btn.dataset.placeY);
         const placeId = btn.dataset.placeId;
+        console.log("placeAddress:", placeAddress);
+
+        if (!placeAddress) {
+            return; // 추가 실행 방지
+        }
 
         // 1) 로컬에 일정 추가
         addPlaceToPlan(placeName, placeAddress, placeId, x, y);
 
         // 2) DB 저장 (카카오 장소 관련 값들을 JSON으로 전송)
-        const regionId = placeAddress.split(" ")[0]; // '서울', '경기' 등 지역 추출
+        let regionId = placeAddress.split(" ")[0];
         const placeDTO = {
             kakaoPlaceId: placeId,
             kakaoPlaceName: placeName,
@@ -682,8 +646,6 @@ document.addEventListener("click", function(evt){
         if(webSocket && webSocket.readyState===WebSocket.OPEN){
             webSocket.send(JSON.stringify({
                 type: "shareMap",
-                sender: "host",
-                planId: window.G_planId,
                 data: {
                     kakaoPlaceName: placeName,
                     kakaoRoadAddressName: placeAddress,
@@ -1065,7 +1027,6 @@ function renderCompanionList(){
     companionList.innerHTML="";
     companions.forEach((c)=>{
         const li = document.createElement("li");
-        // li.textContent=`${c.nickname}(${c.memberEmail})`;
         li.textContent=`${c.memberEmail}`;
         companionList.appendChild(li);
     });
