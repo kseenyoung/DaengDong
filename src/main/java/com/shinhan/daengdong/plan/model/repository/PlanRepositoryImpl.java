@@ -102,4 +102,14 @@ public class PlanRepositoryImpl implements PlanRepositoryInterface {
     public List<PlanRelationshipsDTO> getFollowerList(String memberEmail) {
         return sqlSessionTemplate.selectList("com.shinhan.plan.getFollowerList", memberEmail);
     }
+
+    @Override
+    public PlanDTO findPlanById(Long planId) {
+        return sqlSessionTemplate.selectOne("com.shinhan.plan.findPlanById", planId);
+    }
+
+    @Override
+    public List<PlanDetailsDTO> findPlanPlacesByPlanId(Long planId) {
+        return sqlSessionTemplate.selectList("com.shinhan.plan.findPlanPlacesByPlanId", planId);
+    }
 }
