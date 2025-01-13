@@ -88,15 +88,15 @@
   <div id="menu_wrap" class="bg_white">
     <button id="closeMenu" class="close-btn">✖</button>
     <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
-    <!-- 채팅방 접속하기 버튼 -->
-    <button id="btnChat" class="btn btn-primary position-relative">
-        <i id="chat-icon" class="bi bi-chat-fill"></i>
-        <span id="unreadBadge" style="display: none;">●</span>
-    </button>
-    <div id="chatModal" class="chat-modal">
-        <div id="chatContent"></div>
-        <button id="closeChatModal" class="close-btn">✖</button>
-    </div>
+<%--    <!-- 채팅방 접속하기 버튼 -->--%>
+<%--    <button id="btnChat" class="btn btn-primary position-relative">--%>
+<%--        <i id="chat-icon" class="bi bi-chat-fill"></i>--%>
+<%--        <span id="unreadBadge" style="display: none;">●</span>--%>
+<%--    </button>--%>
+<%--    <div id="chatModal" class="chat-modal">--%>
+<%--        <div id="chatContent"></div>--%>
+<%--        <button id="closeChatModal" class="close-btn">✖</button>--%>
+<%--    </div>--%>
     <button id="pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
 
     <div id="menu_wrap" class="bg_white">

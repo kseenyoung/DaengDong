@@ -7,6 +7,20 @@ $(document).ready(function () {
   $(document).on("keypress", "#messageInput", pressEnter);
   $(document).on("click", "#closeChatModal", closeChatModal);
 
+  function loadChatHistory() {
+    const chatMessages = $("#chatMessages");
+    chatMessages.empty(); // 기존 DOM 초기화
+
+    // 이전 메시지 렌더링
+    chatHistory.forEach((message) => {
+      if (message.sender === (memberNickname || memberName || "Anonymous")) {
+        displaySentMessage(message.content);
+      } else {
+        displayReceivedMessage(message.content, message.sender, message.profilePhoto);
+      }
+    });
+  }
+
   const chatHistory = [];
   const planId = currentPlanId;
   console.log(planId);
@@ -43,6 +57,7 @@ $(document).ready(function () {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const host = window.location.host;
     const wsUrl = `${protocol}//${host}/daengdong/chat-ws?planId=${planId}`
+    console.log(wsUrl)
 
     ws = new WebSocket(wsUrl);
 
@@ -56,13 +71,17 @@ $(document).ready(function () {
 
       if (message.sender === currentUser) return;
 
+      // ***받은 메시지도 chatHistory에 push***
+      chatHistory.push(message);
+
+      // 모달이 닫혀 있으면 뱃지 표시
       const chatModal = document.getElementById("chatModal");
-      if (chatModal.style.display === "none" || chatModal.style.display === "") {
+      if ($("#chatModal").is(":hidden")) {
         showUnreadBadge();
       }
 
       // 채팅방이 열려 있으면 메시지 표시
-      if (chatModal.style.display === "block") {
+      if ($("#chatModal").is(":visible")) {
         displayReceivedMessage(message.content, message.sender, message.profilePhoto);
       }
     };
@@ -76,7 +95,7 @@ $(document).ready(function () {
       // 재연결 로직 추가
       setTimeout(() => {
         console.log("WebSocket 재연결 시도...");
-        connectWebSocket(planID);
+        connectWebSocket(planId);
       }, 3000);
     };
   }
