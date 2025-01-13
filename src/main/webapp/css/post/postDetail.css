@@ -221,7 +221,7 @@ background-color: rgb(255, 255, 255);
         .more_box {
                 background: #fff;
                 width: 350px;
-
+                padding:0;
                 border-radius: 15px;
                   border-left: 1px solid #e0dddd;
                   border-right: 1px solid #e0dddd;
