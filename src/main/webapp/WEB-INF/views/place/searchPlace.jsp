@@ -71,7 +71,7 @@
   </div>
 </div>
 <div class="map_wrap">
-  <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
+  <div id="map"></div>
   <!-- 채팅방 접속하기 버튼 -->
   <button id="btnChat" class="btn btn-primary position-relative">
     <i id="chat-icon" class="bi bi-chat-fill"></i> <!-- 채워진 대화 아이콘 -->
@@ -84,46 +84,52 @@
     <div id="chatContent"></div>
     <button id="closeChatModal" class="close-btn">✖</button>
   </div>
-  <button id = "pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
+  <div id = "mainBtn">
+      <button id = "pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
+      <button id="finalizePlanBtn">여정 저장하기</button>
+  </div>
   <div id="menu_wrap" class="bg_white">
     <button id="closeMenu" class="close-btn">✖</button>
-    <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
-    <!-- 채팅방 접속하기 버튼 -->
-    <button id="btnChat" class="btn btn-primary position-relative">
-        <i id="chat-icon" class="bi bi-chat-fill"></i>
-        <span id="unreadBadge" style="display: none;">●</span>
-    </button>
-    <div id="chatModal" class="chat-modal">
-        <div id="chatContent"></div>
-        <button id="closeChatModal" class="close-btn">✖</button>
-    </div>
-    <button id="pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
-
-    <div id="menu_wrap" class="bg_white">
-        <button id="closeMenu" class="close-btn">✖</button>
-        <div class="option">
-            <div>
-                <form onsubmit="searchPlaces(); return false;">
-                    <input type="text" value="홍대 맛집" id="keyword" size="80" class="search-input" >
-                    <button type="submit">검색하기</button>
-                </form>
-            </div>
+    <div class="option">
+        <div>
+            <form onsubmit="searchPlaces(); return false;">
+                <input type="text" value="" id="keyword" size="80" class="search-input" >
+                <button type="submit">검색하기</button>
+            </form>
         </div>
-        <hr>
+    </div>
+    <hr>
         <div class="container">
-            <div id="category-container">
-                <ul id="category">
-                    <!-- 카테고리들 -->
-                    <li id="BK9" data-order="0">은행</li>
-                    <li id="MT1" data-order="1">마트</li>
-                    <li id="PM9" data-order="2">약국</li>
-                    <li id="OL7" data-order="3">주유소</li>
-                    <li id="CE7" data-order="4">카페</li>
-                    <li id="CS2" data-order="5">편의점</li>
-                </ul>
-            </div>
-            <ul id="placesList"></ul>
-            <div id="pagination"></div>
+           <div id="category-container">
+               <ul id="category">
+                   <li id="BK9" data-order="0">
+                       <span class="category_bg bank"></span>
+                       은행
+                   </li>
+                   <li id="MT1" data-order="1">
+                       <span class="category_bg mart"></span>
+                       마트
+                   </li>
+                   <li id="PM9" data-order="2">
+                       <span class="category_bg pharmacy"></span>
+                       약국
+                   </li>
+                   <li id="OL7" data-order="3">
+                       <span class="category_bg oil"></span>
+                       주유소
+                   </li>
+                   <li id="CE7" data-order="4">
+                       <span class="category_bg cafe"></span>
+                       카페
+                   </li>
+                   <li id="CS2" data-order="5">
+                       <span class="category_bg store"></span>
+                       편의점
+                   </li>
+               </ul>
+           </div>
+           <ul id="placesList"></ul>
+           <div id="pagination"></div>
         </div>
     </div>
 </div>
@@ -135,6 +141,7 @@
     <button id="showDays">일정</button>
     <button id="showCompanion">동행자</button>
   </div>
+  <div class="divider"></div>
 
     <!-- 동행자 섹션 -->
     <div id="companionSection">
@@ -174,9 +181,7 @@
     </div>
 </div>
 
-<div>
-    <button id="finalizePlanBtn">최종 완료</button>
-</div>
+
 <!-- 카카오맵 SDK -->
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62bd6cc1e013b8a659ae61760dc9fd7f&libraries=services"></script>
 
@@ -198,7 +203,6 @@
     // JS 전역변수에 할당해서 searchPlace_app.js에서 사용
     window.G_planId = planId;
 
-    document.getElementById("planTitle").textContent = planTitleFromDB;
 
     document.addEventListener("DOMContentLoaded", () => {
         document.body.addEventListener("click", (event) => {
@@ -217,6 +221,7 @@
     const stars = {};
     // 즐겨찾기 추가 처리 함수
     function addFavorite(button) {
+        console.log("즐겨찾기버튼눌림");
         const placeId = button.dataset.id;
         console.log("placeId:" + placeId);
         fetch("${path}/auth/favorite/add", {
