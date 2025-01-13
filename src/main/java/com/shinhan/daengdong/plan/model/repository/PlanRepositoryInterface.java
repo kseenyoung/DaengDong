@@ -21,4 +21,6 @@ public interface PlanRepositoryInterface {
     List<PlanDetailsDTO> getPlanDetails(String memberEmail);
     List<PlanRelationshipsDTO> getFollowingList(String memberEmail);
     List<PlanRelationshipsDTO> getFollowerList(String memberEmail);
+    PlanDTO findPlanById(Long planId);
+    List<PlanDetailsDTO> findPlanPlacesByPlanId(Long planId);
 }

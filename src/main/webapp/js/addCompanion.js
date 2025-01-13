@@ -1,7 +1,3 @@
-// searchPlace.jsp 동행자 추가 부분
-
-let companions = [];
-
 document.addEventListener("DOMContentLoaded", function () {
     const companionEmailInput = document.getElementById("companionEmail");
 
@@ -89,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // 동행자 추가 함수
 function addCompanion(email) {
-    return fetch(`addCompanion`, {
+    return fetch('/daengdong/plan/addCompanion', {
         method: 'POST',
         headers: {'Content-Type': 'text/plain'},
         body: email
@@ -114,7 +110,7 @@ function fetchCompanions() {
         .then(data => {
             const companionList = document.getElementById("companionList");
             companionList.innerHTML = ""; // 기존 리스트 초기화
-            companions = []; // 동행자 이메일 리스트 초기화
+            let companions = []; // 동행자 이메일 리스트 초기화
 
             data.forEach(companion => {
                 const listItem = document.createElement("li");
