@@ -1,5 +1,9 @@
 package com.shinhan.daengdong.post.model.service;
 
+import com.shinhan.daengdong.member.dto.MemberDTO;
+import com.shinhan.daengdong.member.model.repository.MemberRepositoryInterface;
+import com.shinhan.daengdong.post.dto.CommentDTO;
+import com.shinhan.daengdong.post.dto.CommentVO;
 import com.shinhan.daengdong.post.dto.PostDTO;
 import com.shinhan.daengdong.post.vo.LikeVO;
 import com.shinhan.daengdong.post.vo.PostVO;
@@ -14,6 +18,9 @@ public class PostServiceImpl implements PostServiceInterface {
 
     @Autowired
     private PostRepositoryInterface postRepository;
+
+    @Autowired
+    private MemberRepositoryInterface memberRepository;
 
     @Override
     public List<PostVO> getTopPosts() {
@@ -58,6 +65,20 @@ public class PostServiceImpl implements PostServiceInterface {
     public PostVO getPostDetail(Long postId) {
         return postRepository.findPostById(postId);
     }
+
+    // 댓글 추가
+    public CommentDTO addComment(CommentDTO commentDTO) {
+        postRepository.saveComment(commentDTO);
+
+
+        return commentDTO; // 저장된 댓글 반환
+    }
+
+    public List<CommentVO> getCommentList(Long postId) {
+        return postRepository.findCommentById(postId);
+    }
+
+    // 댓글 추가
 }
 
 

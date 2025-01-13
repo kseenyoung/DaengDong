@@ -1,8 +1,11 @@
 package com.shinhan.daengdong.post.controller;
 
 import com.shinhan.daengdong.member.dto.MemberDTO;
+import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
 import com.shinhan.daengdong.plan.model.service.PlanServiceInterface;
+import com.shinhan.daengdong.post.dto.CommentDTO;
+import com.shinhan.daengdong.post.dto.CommentVO;
 import com.shinhan.daengdong.post.vo.LikeVO;
 import com.shinhan.daengdong.post.dto.PostDTO;
 import com.shinhan.daengdong.post.vo.PostVO;
@@ -35,6 +38,8 @@ public class PostController {
     private PostServiceInterface postService;
     @Autowired
     private PlanServiceInterface planService;
+@Autowired
+    private MemberServiceInterface memberService;
 
     @GetMapping("/{postId}")
     public String viewPostDetail(@PathVariable("postId") Long postId, Model model, HttpServletRequest request) {
@@ -45,13 +50,20 @@ public class PostController {
             return "redirect:/login"; // 로그인 페이지로 리다이렉트
         }
 
+        MemberDTO member = (MemberDTO) session.getAttribute("member");
+
         // 게시글 상세 정보 조회
         PostVO post = postService.getPostDetail(postId);
         if (post == null) {
             return "error/404"; // 게시글이 없는 경우 에러 페이지
         }
+        List<CommentVO> comments = postService.getCommentList(postId);
+
+        MemberDTO selectMember = memberService.selectMember(member.getMember_email());
 
         model.addAttribute("post", post);
+        model.addAttribute("my", selectMember);
+        model.addAttribute("comments", comments);
         return "post/postDetail"; // postDetail.html 또는 postDetail.jsp
     }
 
@@ -193,6 +205,29 @@ public class PostController {
         String memberEmail = member.getMember_email();
         postService.addLike(postId, memberEmail);
         return ResponseEntity.ok().build();
+    }
+
+    // 댓글 추가
+    @PostMapping("/comment")
+    public ResponseEntity<CommentDTO> addComment(@RequestBody CommentDTO commentDTO, HttpServletRequest request) {
+        //CommentDTO savedComment = commentService.addComment(commentDTO);
+        log.info(commentDTO.toString());
+
+        HttpSession session = request.getSession(false);
+        if (session == null){
+            // session 없음 = 로그인 시도한 적 없음
+            log.info("세션이 존재하지 않음");
+            return null;
+        }
+
+        MemberDTO member = (MemberDTO) session.getAttribute("member");
+        commentDTO.setMemberEmail(member.getMember_email());
+
+        CommentDTO savedComment = postService.addComment(commentDTO);
+
+
+
+        return new ResponseEntity<>(savedComment, HttpStatus.CREATED);
     }
 
 }

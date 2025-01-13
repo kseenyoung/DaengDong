@@ -2,6 +2,8 @@ package com.shinhan.daengdong.plan.model.repository;
 
 import com.shinhan.daengdong.plan.dto.MemberPlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
+import com.shinhan.daengdong.plan.dto.PlanDetailsDTO;
+import com.shinhan.daengdong.plan.dto.PlanRelationshipsDTO;
 
 import java.util.List;
 
@@ -16,5 +18,9 @@ public interface PlanRepositoryInterface {
     boolean isCompanionExists(Long planId, String memberEmail);
     public boolean isMemberExists(String email);
     void deleteCompanion(MemberPlanDTO memberPlanDTO);
-
+    List<PlanDetailsDTO> getPlanDetails(String memberEmail);
+    List<PlanRelationshipsDTO> getFollowingList(String memberEmail);
+    List<PlanRelationshipsDTO> getFollowerList(String memberEmail);
+    PlanDTO findPlanById(Long planId);
+    List<PlanDetailsDTO> findPlanPlacesByPlanId(Long planId);
 }

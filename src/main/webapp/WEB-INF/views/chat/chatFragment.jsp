@@ -22,12 +22,16 @@
   const profilePhoto = "${sessionScope.member.member_profile_photo}";
 </script>
 <link rel="stylesheet" href="${path}/css/chat/chat.css"/>
-<script src="${path}/js/chat.js"></script>
-<div class="chat-container">
-    <!-- 메시지 표시 영역 -->
-    <div class="chat-messages" id="chatMessages">
 
+<div class="chat-container">
+    <!-- 제목 영역 -->
+    <div class="chat-header">
+        <span class="chat-title">채팅방</span>
+        <button id="closeChatModal" class="close-btn">✖</button>
     </div>
+
+    <!-- 메시지 표시 영역 -->
+    <div class="chat-messages" id="chatMessages"></div>
 
     <!-- 입력란 -->
     <div class="chat-input">

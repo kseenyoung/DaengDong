@@ -22,6 +22,7 @@ public class ChatWebSocketConfig implements WebSocketConfigurer {
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         //ws://localhost:5555/chat-ws로 접속
         registry.addHandler(chatWebSocketHandler, "/chat-ws")
+                .addInterceptors(new HttpSessionInterceptor())
                 .setAllowedOrigins("*");
     }
 }

@@ -161,6 +161,35 @@ public class MemberServiceImpl implements MemberServiceInterface{
             age--;
         }
         return age;
+    }
 
+    @Override
+    public void modifyProfilePhoto(MemberDTO member) {
+        memberRepository.modifyProfilePhoto(member);
+    }
+
+    @Override
+    public void modifyPetProfilePhoto(PetDTO petDTO) {
+        memberRepository.modifyPetProfilePhoto(petDTO);
+    }
+
+    @Override
+    public void modifyPetDetail(PetDTO petDTO) {
+        memberRepository.modifyPetDetail(petDTO);
+    }
+
+    @Override
+    public int createPetProfile(PetDTO petDTO) {
+        return memberRepository.createPetProfile(petDTO);
+    }
+
+    @Override
+    public PetDTO selectOnetMyPet(PetDTO petDTO) {
+        return memberRepository.selectOnetMyPet(petDTO);
+    }
+
+    @Override
+    public void deletePetByPetId(int petId) {
+        memberRepository.deletePetByPetId(petId);
     }
 }

@@ -40,6 +40,11 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     }
 
     @Override
+    public void modifyProfilePhoto(MemberDTO member) {
+        sqlSession.update(namespace + "modifyProfilePhoto", member);
+    }
+
+    @Override
     public MemberDTO selectMember(String memberEmail){
         MemberDTO selectMember = sqlSession.selectOne(namespace+ "selectMember", memberEmail);
         return selectMember;
@@ -127,8 +132,32 @@ public class MemberRepositoryImpl implements MemberRepositoryInterface{
     @Override
     public List<PetDTO> selectPet(String memberEmail) {
         List<PetDTO> petList = sqlSession.selectList(namespace + "selectMyPet", memberEmail);
-        log.info("memberEmail: " + memberEmail);
-        log.info("petList123: " + petList);
         return petList;
+    }
+
+    @Override
+    public void modifyPetProfilePhoto(PetDTO petDTO) {
+        sqlSession.update(namespace + "modifyPetProfile", petDTO);
+    }
+
+    @Override
+    public void modifyPetDetail(PetDTO petDTO) {
+        sqlSession.update(namespace + "modifyPetDetailProfile", petDTO);
+    }
+
+    @Override
+    public int createPetProfile(PetDTO petDTO) {
+        sqlSession.insert(namespace + "createPetProfile", petDTO);
+        return petDTO.getPet_id();
+    }
+
+    @Override
+    public PetDTO selectOnetMyPet(PetDTO petDTO) {
+        return sqlSession.selectOne(namespace + "selectOnetMyPet", petDTO);
+    }
+
+    @Override
+    public void deletePetByPetId(int petId) {
+        sqlSession.delete(namespace + "deletePetByPetId", petId);
     }
 }

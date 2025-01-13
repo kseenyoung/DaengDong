@@ -68,9 +68,82 @@
         where member_email = #{memberEmail}
     </select>
 
+    <!--동행자 삭제-->
     <delete id="deleteCompanion" parameterType="memberPlanDTO">
         delete from member_plans
         where plan_id = #{planId} and member_email = #{memberEmail}
     </delete>
+
+    <!--최종 여행 플랜 상세 정보 조회-->
+    <select id="getPlanDetails" resultType="planDetailsDTO">
+        SELECT
+            p.plan_id AS planId,
+            p.plan_name AS planName,
+            p.start_date AS startDate,
+            p.end_date AS endDate,
+            p.plan_state AS planState,
+            pp.day AS day,
+            pp.kakao_place_id AS kakaoPlaceId,
+            pl.kakao_place_name AS kakaoPlaceName,
+            pl.kakao_road_address_name AS kakaoRoadAddressName
+        FROM
+            plans p
+            LEFT JOIN
+            plan_places pp ON p.plan_id = pp.plan_id
+            LEFT JOIN
+            places pl ON pp.kakao_place_id = pl.kakao_place_id
+        WHERE
+            p.member_email = #{memberEmail}
+        ORDER BY
+            p.plan_id, pp.day;
+    </select>
+
+    <!-- 팔로잉 목록 가져오기 -->
+    <select id="getFollowingList" parameterType="string" resultType="planRelationshipsDTO">
+        SELECT
+            r.to_email AS memberEmail,
+            m.member_nickname AS memberNickname
+        FROM relationships r
+                 JOIN members m ON r.to_email = m.member_email
+        WHERE r.from_email = #{fromEmail}
+    </select>
+
+    <!-- 팔로워 목록 가져오기 -->
+    <select id="getFollowerList" parameterType="string" resultType="planRelationshipsDTO">
+        SELECT
+            r.from_email AS memberEmail,
+            m.member_nickname AS memberNickname
+        FROM relationships r
+                 JOIN members m ON r.from_email = m.member_email
+        WHERE r.to_email = #{toEmail}
+    </select>
+
+    <select id="findPlanById" parameterType="long" resultType="planDTO">
+        SELECT
+            plan_id AS planId,
+            plan_name AS planName,
+            start_date AS startDate,
+            end_date AS endDate,
+            plan_state AS planState,
+            member_email AS memberEmail
+        FROM plans
+        WHERE plan_id = #{planId}
+    </select>
+
+    <select id="findPlanPlacesByPlanId" parameterType="long" resultType="planDetailsDTO">
+        SELECT
+            pp.plan_id            AS planId,
+            pp.day                AS day,
+            pp.kakao_place_id     AS kakaoPlaceId,
+            pl.kakao_place_name   AS kakaoPlaceName,
+            pl.kakao_road_address_name AS kakaoRoadAddressName,
+            pl.kakao_phone        AS kakaoPhone,
+            pl.kakao_x            AS kakaoX,
+            pl.kakao_y            AS kakaoY
+        FROM plan_places pp
+            LEFT JOIN places pl ON pp.kakao_place_id = pl.kakao_place_id
+        WHERE pp.plan_id = #{planId}
+        ORDER BY pp.day, pp.kakao_place_id
+    </select>
 
 </mapper>

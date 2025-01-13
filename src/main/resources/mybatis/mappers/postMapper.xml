@@ -160,4 +160,25 @@
         FROM likes
         WHERE post_id = #{postId} AND member_email = #{memberEmail}
     </select>
+
+    <insert id="insertComment" parameterType="CommentDTO">
+        INSERT INTO comments (post_id, member_email, comment)
+        VALUES (#{postId}, #{memberEmail}, #{comment})
+    </insert>
+
+    <select id="getComment" parameterType="Long" resultType="CommentVO">
+        SELECT
+            c.comment_id AS commentId,
+            c.comment,
+            c.create_at AS createAt,
+            m.member_nickname AS memberNickName,
+            m.member_profile_photo AS memberProfilePhoto
+        FROM
+            comments c
+        JOIN
+            members m ON c.member_email = m.member_email
+        WHERE
+            c.post_id = #{postId}
+
+    </select>
 </mapper>

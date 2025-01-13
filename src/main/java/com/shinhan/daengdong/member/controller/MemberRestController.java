@@ -1,16 +1,16 @@
 package com.shinhan.daengdong.member.controller;
 
 import com.shinhan.daengdong.member.dto.FollowDTO;
+import com.shinhan.daengdong.member.dto.MemberDTO;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
+import com.shinhan.daengdong.pet.dto.PetDTO;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 @Slf4j
 @RestController
@@ -21,21 +21,16 @@ public class MemberRestController {
     MemberServiceInterface memberService;
 
 
+    @PostMapping("petProfile")
+    public void modifyPetDetail(@RequestBody PetDTO petDTO) {
+        memberService.modifyPetDetail(petDTO);
+    }
 
-    //todo: 업로드 시 null값이 들어오는 문제 해결할 것.
-    @PostMapping("/myProfile")
-    public void updateProfile(@RequestParam(value = "newPhoto", required = false) MultipartFile newPhoto) {
-        log.info("newPhoto: " + newPhoto);
-//        log.info("new nickname: " + newNickname);
-        try {
-            if (!newPhoto.isEmpty()) {
-                String originalFileName = newPhoto.getOriginalFilename();
-                long fileSize = newPhoto.getSize();
-                log.info("fileName: " + originalFileName + " // fileSize: " + fileSize);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @PostMapping("nickname/{new_nickname}")
+    public void modifyNickname(@PathVariable("new_nickname") String newNickname, HttpSession session) {
+        MemberDTO member = (MemberDTO) session.getAttribute("member");
+        member.setMember_nickname(newNickname);
+        memberService.modifyNickname(member);
     }
 
     @GetMapping("/favoritePlace/{star_id}")
@@ -60,9 +55,8 @@ public class MemberRestController {
 
     @GetMapping("/following/{to_email}")
     public void deleteFollowing(@PathVariable("to_email") String toEmail, HttpSession session) {
-//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-//        String fromEmail = memberDTO.getMemberEmail();
-        String fromEmail = "user1@example.com";
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
+        String fromEmail = memberDTO.getMember_email();
         FollowDTO followDTO = FollowDTO.builder()
                 .from_email(fromEmail)
                 .to_email(toEmail)
@@ -72,9 +66,8 @@ public class MemberRestController {
 
     @PostMapping("/following/{to_email}")
     public void addFollowing(@PathVariable("to_email") String toEmail, HttpSession session) {
-//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
-//        String fromEmail = memberDTO.getMemberEmail();
-        String fromEmail = "user1@example.com";
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
+        String fromEmail = memberDTO.getMember_email();
         FollowDTO followDTO = FollowDTO.builder()
                 .from_email(fromEmail)
                 .to_email(toEmail)
