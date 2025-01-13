@@ -177,6 +177,43 @@
     <!--    where member_profile_photo = #{memberprofilephoto}-->
     <!--</update>-->
 
+    <!--알림관련-->
+    <!--알림 등록-->
+    <insert id="insertNotification" parameterType="notificationDTO">
+        insert into notifications(sender_email, receiver_email,notification_type,is_checked , post_id , plan_id)
+        values (#{sender_email}, #{receiver_email}, #{notification_type}, #{is_checked} , #{post_id} , #{plan_id})
+    </insert>
+
+    <!--모든 알림 조회!!!!@@@@@-->
+    <select id="selectNotification" parameterType="String" resultType="notificationDTO">
+        select *
+        from notifications
+        where receiver_email = #{receiver_email}
+        order by notification_id desc
+    </select>
+
+    <!--알림 단일 조회-->
+    <select id="selectNotificationById" parameterType="int" resultType="notificationDTO">
+        SELECT *
+        FROM notifications
+        WHERE notification_id = #{notification_id}
+    </select>
+
+    <!--알림 읽음 처리-->
+    <update id="isChecked" parameterType="int">
+        update notifications
+        set is_checked = 1
+        where notification_id = #{notification_id}
+    </update>
+
+    <!--모든 알림 삭제-->
+    <delete id="deleteNotification" parameterType="int">
+        delete
+        from notifications
+        where notification_id = #{notification_id}
+    </delete>
+
+
 
     <!--member18-1 반려동물 삭제!!!!-->
     <delete id="deletepetProfile" parameterType="int">

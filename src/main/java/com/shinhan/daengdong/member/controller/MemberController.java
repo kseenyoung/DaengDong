@@ -3,6 +3,7 @@ package com.shinhan.daengdong.member.controller;
 import com.shinhan.daengdong.member.dto.*;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
 import com.shinhan.daengdong.pet.dto.PetDTO;
+import com.shinhan.daengdong.plan.dto.MemberPlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
 import com.shinhan.daengdong.plan.model.service.PlanServiceInterface;
 import com.shinhan.daengdong.post.dto.PostDTO;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -122,11 +126,13 @@ public class MemberController {
 
     //마이페이지 보기
     @GetMapping("viewMypage.do")
-    public String viewMypage(HttpSession session) {
+    public String viewMypage(HttpSession session ,Model model) {
         MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
         if (memberDTO == null) {
             return "redirect:/auth/login.do";
         }
+        List<NotificationDTO> notificationDTOList = memberService.selectNotification(memberDTO.getMember_email());
+        model.addAttribute("notificationDTOList", notificationDTOList);
         return "member/mypage";
     }
 
@@ -371,6 +377,106 @@ public class MemberController {
         List<RelationshipsDTO> followerList = memberService.getFollowerList(memberDTO.getMember_email());
         model.addAttribute("followerList", followerList);
         return "member/followerModal";
+    }
+
+    //알림 목록 가져오기
+    @GetMapping("getSelectNotification.do")
+    @ResponseBody
+    public List<NotificationDTO> selectNotification(HttpSession session){
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
+        if (memberDTO == null) {
+            throw new RuntimeException("세션에 member 정보가 없습니다.");
+        }
+        String email = memberDTO.getMember_email();
+        if (email == null || email.isEmpty()) {
+            throw new RuntimeException("member_email 정보가 유효하지 않습니다.");
+        }
+        List<NotificationDTO> notifications = memberService.selectNotification(email);
+        System.out.println("Fetched notifications for email: " + email + " -> " + notifications.size());
+        return notifications;
+    }
+
+    //알림 읽음 처리
+    @PostMapping("isChecked.do")
+    @ResponseBody
+    public ResponseEntity<?> isChecked(@RequestBody  NotificationDTO notificationDTO) {
+        try {
+            int notificationId = notificationDTO.getNotification_id();
+            memberService.isChecked(notificationDTO.getNotification_id());
+            return ResponseEntity.ok().body("{\"status\":\"success\"}");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("{\"status\":\"error\",\"message\":\"읽음 처리 실패\"}");
+        }
+    }
+
+    @PostMapping("deleteNotification.do")
+    @ResponseBody
+    public void deleteNotification(int notificationId){
+        memberService.deleteNotification(notificationId);
+    }
+
+    // 동행 요청 수락
+    @PostMapping("acceptCompanion.do")
+    @ResponseBody
+    public ResponseEntity<?> acceptCompanion(@RequestBody int notification_id, HttpSession session) {
+        try {
+            // 알림 조회
+            NotificationDTO notification = memberService.selectNotificationById(notification_id);
+            if (notification == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("status", "error", "message", "알림을 찾을 수 없습니다."));
+            }
+
+            if (notification.getNotification_type() != 4) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("status", "error", "message", "유효하지 않은 알림 타입입니다."));
+            }
+
+            // 알림 읽음 처리
+            memberService.isChecked(notification_id);
+
+            // 플랜에 동행자 추가
+            Long planId = notification.getPlan_id();
+            String senderEmail = notification.getSender_email();
+            String receiverEmail = notification.getReceiver_email();
+
+            if (!planService.isCompanionExists(planId, receiverEmail)) {
+                MemberPlanDTO companionPlan = MemberPlanDTO.builder()
+                        .planId(planId)
+                        .memberEmail(receiverEmail)
+                        .build();
+                planService.addCompanionToPlan(companionPlan);
+            }
+
+            return ResponseEntity.ok(Map.of("status", "success", "message", "동행 요청이 수락되었습니다."));
+        } catch (Exception e) {
+            log.error("동행 요청 수락 중 오류 발생: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("status", "error", "message", "동행 요청 수락 실패"));
+        }
+    }
+
+    // 동행 요청 거절
+    @PostMapping("declineCompanion.do")
+    @ResponseBody
+    public ResponseEntity<?> declineCompanion(@RequestBody int notification_id, HttpSession session) {
+        try {
+            // 알림 조회
+            NotificationDTO notification = memberService.selectNotificationById(notification_id);
+            if (notification == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("status", "error", "message", "알림을 찾을 수 없습니다."));
+            }
+
+            if (notification.getNotification_type() != 4) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("status", "error", "message", "유효하지 않은 알림 타입입니다."));
+            }
+
+            // 알림 읽음 처리
+            memberService.isChecked(notification_id);
+
+            return ResponseEntity.ok(Map.of("status", "success", "message", "동행 요청이 거절되었습니다."));
+        } catch (Exception e) {
+            log.error("동행 요청 거절 중 오류 발생: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("status", "error", "message", "동행 요청 거절 실패"));
+        }
     }
 
     @GetMapping("viewPhotoCard")
