@@ -361,6 +361,13 @@
         where member_email = #{memberEmail}
     </select>
 
+    <!--즐겨찾기 추가-->
+    <insert id="addFavoritePlace" parameterType="com.shinhan.daengdong.member.dto.FavoritePlaceDTO" useGeneratedKeys="true" keyProperty="star_id">
+        INSERT INTO favorites (member_email, kakao_place_id)
+        VALUES (#{member_email}, #{kakao_place_id});
+    </insert>
+
+
     <!--즐겨찾기 삭제!-->
     <delete id="deleteFavoritePlace" parameterType="int">
         delete
@@ -437,5 +444,12 @@
         where p.member_email = #{member_email}
         GROUP BY p.post_id
     </select>
+
+<!--    <select id = "findStarId" parameterType="map" resultType="int">-->
+<!--        select star_id-->
+<!--        from favorites-->
+<!--        where kakao_place_id = #{kakao_place_id} and member_email = #{member_email}-->
+
+<!--    </select>-->
 
 </mapper>

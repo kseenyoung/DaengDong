@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<c:set var="path" value="${pageContext.servletContext.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +12,7 @@
 <script>
 $(function () {
     $("#btnCreatePlan").on("click", function () {
-        window.location.href = "/daengdong/plan/create";
+        window.location.href = "${path}/plan/create";
     });
 });
 </script

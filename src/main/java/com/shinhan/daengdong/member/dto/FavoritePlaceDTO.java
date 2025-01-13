@@ -17,4 +17,4 @@ public class FavoritePlaceDTO {
     private String kakao_place_url;
     private String region_name;
     private String imageUrl;
-    }
+}

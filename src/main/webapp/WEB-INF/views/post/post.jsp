@@ -40,8 +40,8 @@
 
                     <form id="dropZone">
                         <div id="buttons">
-                            <button id="prevButton" type="button"><img src="${path}/img/left-arrow.png" width="30"/></button>
-                            <button id="nextButton" type="button"><img src="${path}/img/right-arrow.png" width="30"/></button>
+                            <button id="prevButton" type="button"><img src="${path}/img/left-arrow.png" width="25"/></button>
+                            <button id="nextButton" type="button"><img src="${path}/img/right-arrow.png" width="25"/></button>
                         </div>
                         <img id="dropzoneImg" src="${path}/img/modal.png" alt="" width="250" height="250">
                         <span>여기에 파일을 드래그하세요</span>
@@ -493,17 +493,7 @@
 
 
 
-    const links = document.querySelectorAll("#header_right a");
 
-    links.forEach(link => {
-    const img = link.querySelector("img");
-    const altText = link.querySelector(".alt-text");
-
-    // img 태그의 alt 속성값을 span의 텍스트로 설정
-    if (img && altText) {
-        altText.textContent = img.alt;
-    }
-    });
 
        const urlParams = new URLSearchParams(window.location.search);
               const category = urlParams.get('category'); // ?category=여행중 부분에서 '여행중' 값을 가져옴

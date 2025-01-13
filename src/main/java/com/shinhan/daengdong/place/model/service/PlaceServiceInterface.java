@@ -7,5 +7,4 @@ public interface PlaceServiceInterface {
     String fetchPlaceImage(int kakaoPlaceUrl);
     void savePlace(PlaceDTO placeDTO);
     void savePlanPlace(PlanPlaceDTO planPlaceDTO);
-
 }
