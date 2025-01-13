@@ -179,7 +179,7 @@
 </div>
 <!-- 카카오맵 SDK -->
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62bd6cc1e013b8a659ae61760dc9fd7f&libraries=services"></script>
-    customMarkers.push({ customMarker, title });
+
 
 <!-- 아래 스크립트: 실제 동작 코드 -->
 <script src="${path}/js/searchPlace_app.js"></script>
