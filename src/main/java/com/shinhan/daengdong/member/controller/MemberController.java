@@ -98,7 +98,7 @@ public class MemberController {
     //회원가입 > 펫 추가
     @PostMapping("createPetProfile.do")
     @ResponseBody
-    public int createPetProfile(@RequestBody PetDTO petDTO, HttpSession session) {
+    public ResponseEntity<Void> createPetProfile(@RequestBody PetDTO petDTO, HttpSession session) {
         MemberDTO member = (MemberDTO) session.getAttribute("member");
         petDTO.setMember_email(member.getMember_email());
         log.info("petDTO: " + petDTO);
@@ -106,8 +106,7 @@ public class MemberController {
         PetDTO petVO = selectOnetMyPet(petDTO);
         session.setAttribute("pet_id", petVO.getPet_id());
         log.info("pet_id: " + petVO.getPet_id());
-        return petVO.getPet_id();
-    }
+        return ResponseEntity.ok().build();    }
 
     //회원가입 > 펫 찾기
     public PetDTO selectOnetMyPet(PetDTO petDTO) {
@@ -155,12 +154,14 @@ public class MemberController {
 
     //마이페이지 > 유저 사진 변경
     @PostMapping("modifyProfile.do")
-    public void modifyProfile(@RequestBody ImageDTO image, HttpSession session) {
+    @ResponseBody
+    public ResponseEntity<Void> modifyProfile(@RequestBody ImageDTO image, HttpSession session) {
         log.info("imageUrl: " + image);
         MemberDTO member = (MemberDTO) session.getAttribute("member");
         member.setMember_profile_photo(image.getImageUrl());
         log.info("member: " + member);
         memberService.modifyProfilePhoto(member);
+        return ResponseEntity.ok().build();
     }
 
     //todo: logic 수정
