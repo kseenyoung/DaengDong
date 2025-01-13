@@ -10,12 +10,11 @@ import com.shinhan.daengdong.review.dto.ReviewDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -92,12 +91,32 @@ public class MemberController {
 
     //회원가입 > 펫 추가
     @PostMapping("createPetProfile.do")
-    public void createPetProfile(@RequestBody PetDTO petDTO, HttpSession session) {
+    @ResponseBody
+    public int createPetProfile(@RequestBody PetDTO petDTO, HttpSession session) {
         MemberDTO member = (MemberDTO) session.getAttribute("member");
         petDTO.setMember_email(member.getMember_email());
         log.info("petDTO: " + petDTO);
         memberService.createPetProfile(petDTO);
+        PetDTO petVO = selectOnetMyPet(petDTO);
+        session.setAttribute("pet_id", petVO.getPet_id());
+        log.info("pet_id: " + petVO.getPet_id());
+        return petVO.getPet_id();
     }
+
+    //회원가입 > 펫 찾기
+    public PetDTO selectOnetMyPet(PetDTO petDTO) {
+        return memberService.selectOnetMyPet(petDTO);
+    }
+
+    //회원가입 > 펫 삭제
+    @DeleteMapping("petProfile/{petId}")
+    @ResponseBody
+    public ResponseEntity<Void> deleteOneMyPet(@PathVariable int petId) {
+        log.info("Deleting pet with ID: {}", petId);
+        memberService.deletePetByPetId(petId);
+        return ResponseEntity.ok().build();
+    }
+
 
     //마이페이지 보기
     @GetMapping("viewMypage.do")
@@ -136,7 +155,6 @@ public class MemberController {
         memberService.modifyProfilePhoto(member);
     }
 
-    //todo: logic 수정
     //마이페이지 > 펫 사진 변경
     @PostMapping("modifyPetProfile.do")
     public void modifyPetProfile(@RequestBody PetImageDTO image) {
@@ -317,5 +335,10 @@ public class MemberController {
         List<RelationshipsDTO> followerList = memberService.getFollowerList(memberDTO.getMember_email());
         model.addAttribute("followerList", followerList);
         return "member/followerModal";
+    }
+
+    @GetMapping("viewPhotoCard")
+    public String viewPhotoCard() {
+        return "photocard/seoul";
     }
 }

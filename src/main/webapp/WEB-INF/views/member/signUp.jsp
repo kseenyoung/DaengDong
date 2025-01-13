@@ -34,6 +34,9 @@
     <!-- 커스텀 CSS -->
     <link rel="stylesheet" href="${path}/css/signUp.css">
     <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
+    <script>
+        const path = `${pageContext.servletContext.contextPath}`
+    </script>
 </head>
 <body>
 <%@ include file="header.jsp" %>
