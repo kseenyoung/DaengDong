@@ -48,9 +48,14 @@
 
 <%--저장될 반려동물 이미지 정보등--%>
 <%--todo: 반려동물 정보 수정--%>
-<span id="my-pet">나의 반려동물</span>
+<div id="my-pet-title">
+    <span id="my-pet">나의 반려동물</span>
+<%--    <img id="add-my-pet" src="https://daengdong-bucket.s3.amazonaws.com/1b1f5570-9901-40e4-8e48-4641b9668163_add-button.png"--%>
+<%--         alt="addPet">--%>
+    <%@ include file="petCreateProfileModal.jsp" %>
+</div>
+    <div id="profile-pet" class="profile-pet">
 <c:forEach items="${petList}" var="pet">
-    <div class="profile-pet">
         <div class="pet-detail">
             <img
                     id="pet-image-${pet.pet_id}" class="pet-image"
@@ -69,7 +74,7 @@
                 견종: ${pet.pet_species}
             </div>
         </div>
-    </div>
 </c:forEach>
+    </div>
 
 <script src="${path}/js/uploadFile.js"></script>

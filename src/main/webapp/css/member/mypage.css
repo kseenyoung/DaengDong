@@ -172,6 +172,25 @@ body {
   margin-bottom: 10px;
 }
 
+#my-pet-title {
+  display: flex;
+  align-items: center;
+}
+
+#add-my-pet {
+  width: 20px;
+  margin-left: 6px;
+  cursor: pointer;
+}
+
+#currentPetPhoto{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover; /* 비율을 유지하며 컨테이너를 채우기 */
+  object-position: center; /* 중앙을 기준으로 정렬 */
+}
+
 #my-pet {
   font-size: 18px;
   font-weight: bold;
