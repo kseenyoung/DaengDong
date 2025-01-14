@@ -13,7 +13,7 @@
   <!-- CSS파일 -->
   <link rel="stylesheet" href="${path}/css/header.css">
   <link rel="stylesheet" href="${path}/css/plan/addCompanion.css">
-  <link rel="stylesheet" href="${path}/css/plan/searchPlace.css">
+  <%-- <link rel="stylesheet" href="${path}/css/plan/searchPlace.css"> --%>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
   <!-- 외부 JSP 파일 -->
@@ -103,7 +103,7 @@
         <div class="option">
             <div>
                 <form onsubmit="searchPlaces(); return false;">
-                    <input type="text" value="홍대 맛집" id="keyword" size="80" class="search-input" >
+                    <input type="text" id="keyword" size="80" class="search-input" >
                     <button type="submit">검색하기</button>
                 </form>
             </div>

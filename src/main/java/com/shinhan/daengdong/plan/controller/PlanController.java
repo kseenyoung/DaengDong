@@ -431,7 +431,7 @@ public class PlanController {
         result.put("dayPlans", dayPlans);
         result.put("companions", companions);
         result.put("planTitle", planDTO.getPlanName());
-        //result.put("placeList", placeList);
+        result.put("placeList", placeList);
 
         return ResponseEntity.ok(result);
     }
