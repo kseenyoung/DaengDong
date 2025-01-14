@@ -113,13 +113,21 @@ ol {
   left: 0;*/
 }
 #logo {
-  font-size: var(--font-size5);
+  font-size: var(--font-size4);
   font-weight: 700;
+  pointer:cursor;
 }
+#logo a {
+   text-decoration: none;
+    cursor: pointer;
+    color: #000;
+}
+
 
 #header_right a {
   padding: 10px;
   position: relative;
+  text-decoration: none;
 }
 #header_right img {
   transition: opacity 0.1s ease;
@@ -131,14 +139,14 @@ ol {
 /* alt 텍스트 스타일 */
 #header_right a .alt-text {
   position: absolute;
-  top: 25%;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: var(--font-size2);
+  font-size: 12px;
   color: #000;
   background-color: rgba(255, 255, 255, 0.8);
-  width: 50px;
-  padding: 5px 4px;
+  width: 60px;
+  padding: 3px 4px;
   text-align: center;
   border-radius: 4px;
   opacity: 0;

@@ -23,31 +23,27 @@
     <title>myPage</title>
 </head>
 <header id="header">
-    <div id="header_box">
-        <h1 id="logo">댕동</h1>
-        <div id="header_right">
-            <a
-               tabindex="0"
-               class="btn"
-               data-bs-toggle="popover"
-               data-bs-placement="bottom"
-               data-bs-trigger="manual">
-                <img id="notification-icon" src="https://daengdong-bucket.s3.amazonaws.com/2ff2135a-b82b-4c3a-a483-b6f765d23aa0_bell.png" alt="알림" width="30" height="30"/>
-                <span class="alt-text"></span>
-            </a>
-             <a href="${path}/post/posts">
-                <img src="${path}/images/community.png" alt="커뮤니티" width="30" height="30" />
-                <span class="alt-text"></span>
-            </a>
-            <a href="${path}/plan/create">
-                <img src="${path}/images/plan.png" alt="플랜" width="30" height="30" />
-                <span class="alt-text"></span>
-            </a>
-            <a href="${path}/auth/viewMypage.do">
-                <img src="${path}/images/user.png" alt="사용자" width="30" height="30" />
-                <span class="alt-text"></span>
-            </a>
-        </div>
+        <div id="header_box">
+                    <h1 id="logo"><a href="${path}">댕동</a></h1>
+                    <div id="header_right">
+                        <a href="">
+                            <img src="${path}/images/header_arlam.png" alt="알림" width="30" height="30"/>
+                            <span class="alt-text"></span>
+                        </a>
+                        <a href="${path}/post/posts">
+                            <img src="${path}/images/header_community.png" alt="커뮤니티" width="30" height="30" />
+                            <span class="alt-text"></span>
+                        </a>
+                        <a href="${path}/plan/create">
+                            <img src="${path}/images/header_plan.png" alt="플랜" width="30" height="30" />
+                            <span class="alt-text"></span>
+                        </a>
+                        <a href="${path}/auth/viewMypage.do">
+                            <img src="${path}/images/header_user.png" alt="사용자" width="30" height="30" />
+                            <span class="alt-text"></span>
+                        </a>
+                    </div>
+
     </div>
 </header>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
