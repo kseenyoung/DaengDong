@@ -141,7 +141,6 @@
     <button id="showDays">일정</button>
     <button id="showCompanion">동행자</button>
   </div>
-  <div class="divider"></div>
 
     <!-- 동행자 섹션 -->
     <div id="companionSection">
@@ -172,11 +171,12 @@
     </div>
 
     <div id="daysSection">
+      <div class="divider"></div>
         <div id="day"></div>
         <div class="button">
             <button id="addPlaceBtn">장소 추가</button>
-            <div class="line"></div>
         </div>
+          <div class="divider"></div>
         <ul id="placeList"></ul>
     </div>
 </div>
