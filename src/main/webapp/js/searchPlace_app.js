@@ -22,9 +22,6 @@ let drawingFlag = false;
 let moveLine, clickLine;
 let dots = [];
 
-let currCategory = "";
-let categoryMarkers = [];
-let placeOverlay;
 let contentNode;
 
 const placeListCoontainer = document.getElementById("placeListContainer");
@@ -150,13 +147,8 @@ function initKakaoMap() {
     ps = new kakao.maps.services.Places();
     infowindow = new kakao.maps.InfoWindow({zIndex:1});
 
-    // 카테고리 검색용
-var placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}),
-    contentNode = document.createElement('div'), // 커스텀 오버레이의 컨텐츠 엘리먼트 입니다
-    categoryMarkers = [], // 마커를 담을 배열입니다
-    currCategory = ''; // 현재 선택된 카테고리를 가지고 있을 변수입니다
-
-    kakao.maps.event.addListener(map, "idle", searchCategoryMarkers);
+    contentNode = document.createElement('div');
+    contentNode.className = 'placeinfo_wrap'; // 클래스 추가
 
      //지도에 클릭하면 핀 추가
     kakao.maps.event.addListener(map, "click", (mouseEvent) => {
@@ -278,15 +270,15 @@ function createDayButtons(travelDays){
 function displayDayPlan(day) {
     console.log("displayDayPlan for day:", day);
     const placeList = document.getElementById("placeList");
-    if(!placeList) return;
-    placeList.innerHTML="";
+    if (!placeList) return;
+    placeList.innerHTML = "";
 
-    if(!dayPlans[day]) {
+    if (!dayPlans[day]) {
         console.warn("dayPlans에 해당 day가 없음:", day);
         dayPlans[day] = [];
     }
 
-    dayPlans[day].forEach((item, index)=>{
+    dayPlans[day].forEach((item, index) => {
         const { title, address, x, y, id } = item;
 
         const li = document.createElement("li");
@@ -294,7 +286,7 @@ function displayDayPlan(day) {
 
         const numSpan = document.createElement("span");
         numSpan.classList.add("placeNumber");
-        numSpan.textContent = (index+1)+". ";
+        numSpan.textContent = (index + 1) + ". ";
 
         const h4 = document.createElement("h4");
         h4.classList.add("placeTitle");
@@ -306,19 +298,19 @@ function displayDayPlan(day) {
 
         const delBtn = document.createElement("button");
         delBtn.classList.add("delete-btn");
-        delBtn.textContent="삭제";
+        delBtn.textContent = "삭제";
         delBtn.onclick = () => {
             // 삭제 로직
-            dayPlans[day] = dayPlans[day].filter((p,idx)=> idx !== index);
+            dayPlans[day] = dayPlans[day].filter((p, idx) => idx !== index);
             removeCustomMarker(title);
             displayDayPlan(day);
         };
 
-        // 목록 클릭 -> 지도이동
-        li.onclick = () =>{
-            // 마커 위치로 이동
+        // 목록 클릭 -> 지도 이동
+        li.onclick = null; // 기존 이벤트 제거
+        li.onclick = () => {
             const found = customMarkers.find(cm => cm.title === title);
-            if(found && found.customMarker){
+            if (found && found.customMarker) {
                 map.setCenter(found.customMarker.getPosition());
                 map.setLevel(2);
             }
@@ -330,9 +322,20 @@ function displayDayPlan(day) {
         li.appendChild(delBtn);
         placeList.appendChild(li);
     });
+
     // 번호 재정렬
     updatePlaceNumbers();
 }
+
+// 번호 재정렬 함수
+function updatePlaceNumbers() {
+    const items = document.querySelectorAll(".place-item");
+    items.forEach((item, idx) => {
+        const num = item.querySelector(".placeNumber");
+        if (num) num.textContent = (idx + 1) + ". ";
+    });
+}
+
 
 // (E-3) 번호 재정렬
 function updatePlaceNumbers(){
@@ -785,11 +788,30 @@ function showSidebar(place){
 
     // + 내 일정에 추가 버튼
     let addPlanBtn = sidebar.querySelector("#addPlanBtn");
-    if(addPlanBtn){
-        addPlanBtn.onclick = ()=>{
-            addPlaceToPlan(place.place_name, place.address_name, place.id, place.x, place.y);
+    if (addPlanBtn) {
+        addPlaceBtn.onclick=null;
+        // 필요한 데이터 속성 추가
+        addPlanBtn.dataset.placeName = place.place_name;
+        addPlanBtn.dataset.placeAddress = place.address_name;
+        addPlanBtn.dataset.placeId = place.id;
+        addPlanBtn.dataset.placeX = place.x;
+        addPlanBtn.dataset.placeY = place.y;
+
+        // 클릭 이벤트 핸들러 설정
+        addPlanBtn.onclick = () => {
+            const placeName = addPlanBtn.dataset.placeName;
+            const placeAddress = addPlanBtn.dataset.placeAddress;
+            const placeId = addPlanBtn.dataset.placeId;
+            const x = parseFloat(addPlanBtn.dataset.placeX);
+            const y = parseFloat(addPlanBtn.dataset.placeY);
+
+            console.log("Place added to plan:", { placeName, placeAddress, placeId, x, y });
+
+            // 추가 동작 실행
+            addPlaceToPlan(placeName, placeAddress, placeId, x, y);
         };
     }
+
 
     // 닫기
     let closeSidebarBtn = sidebar.querySelector("#closeSidebar");
@@ -1188,12 +1210,17 @@ modalOverlay.addEventListener("click", function () {
 /***************************************************
  * (Q) 카테고리 마커 표시
  ***************************************************/
+document.addEventListener('DOMContentLoaded', function () {
+    initKakaoMap();
 
-// 지도에 idle 이벤트를 등록합니다
-kakao.maps.event.addListener(map, 'idle', searchPlaces);
+    // 지도 초기화 후에 idle 이벤트 등록
+    if (map) {
+        kakao.maps.event.addListener(map, 'idle', searchPlaces);
+    } else {
+        console.error('Map is not initialized');
+    }
+});
 
-// 커스텀 오버레이의 컨텐츠 노드에 css class를 추가합니다
-contentNode.className = 'placeinfo_wrap';
 
 // 커스텀 오버레이의 컨텐츠 노드에 mousedown, touchstart 이벤트가 발생했을때
 // 지도 객체에 이벤트가 전달되지 않도록 이벤트 핸들러로 kakao.maps.event.preventMap 메소드를 등록합니다
@@ -1205,6 +1232,8 @@ placeOverlay.setContent(contentNode);
 
 // 각 카테고리에 클릭 이벤트를 등록합니다
 addCategoryClickEvent();
+
+    kakao.maps.event.addListener(map, "idle", searchCategoryMarkers);
 
 // 엘리먼트에 이벤트 핸들러를 등록하는 함수입니다
 function addEventHandle(target, type, callback) {
@@ -1321,11 +1350,14 @@ function displayCategoryMarkerInfo (place) {
 
 // 각 카테고리에 클릭 이벤트를 등록합니다
 function addCategoryClickEvent() {
-    var category = document.getElementById('category'),
-        children = category.children;
-
-    for (var i=0; i<children.length; i++) {
-        children[i].onclick = onClickCategory;
+    const categoryContainer = document.getElementById("category");
+    const categoryItems = categoryContainer.children;
+    for (let i = 0; i < categoryItems.length; i++) {
+        categoryItems[i].onclick = function () {
+            const id = this.id;
+            currCategory = id; // 현재 선택된 카테고리 업데이트
+            searchCategoryMarkers(); // 선택된 카테고리에 따라 마커 검색
+        };
     }
 }
 
