@@ -5,6 +5,9 @@
     padding: 0;
 }
 /* 지도 스타일 */
+:root {
+  --plan-color: #2196F3;
+ }
 #map {
     position: relative;
     top: 10%;
@@ -946,7 +949,25 @@ body, h4, p, button, a {
     gap: 10px;
     overflow-x: auto;
     white-space: nowrap;
-    padding: 10px;
+     padding: 10px 0;
+         overflow-x: auto; /* X축 스크롤 활성화 */
+          scrollbar-width: thin; /* 스크롤바 두께 조정 (Firefox) */
+          scrollbar-color: #888 transparent; /* 스크롤바 색상 (Firefox) */
+}
+
+
+/* 스크롤바 스타일링 (크롬, 엣지, 사파리) */
+#day::-webkit-scrollbar {
+  height: 8px; /* 스크롤바 높이 */
+}
+
+#day::-webkit-scrollbar-thumb {
+  background: #000; /* 스크롤바 색상 */
+  border-radius: 4px; /* 스크롤바 모서리 둥글게 */
+}
+
+#day::-webkit-scrollbar-thumb:hover {
+  background: #555; /* 스크롤바 호버 색상 */
 }
 
 /* 공통 버튼 스타일 */
@@ -955,7 +976,7 @@ body, h4, p, button, a {
     background-color: #f5f5f5;
     color: #333;
     border: 1px solid #ddd;
-    padding: 10px 15px;
+    padding: 5px 10px;
     font-size: 16px;
     text-align: center;
     border-radius: 10px;
@@ -1027,7 +1048,7 @@ body, h4, p, button, a {
 #daysSection {
     height: 90%;
     margin-top: 10px;
-    padding: 10px;
+    padding: 10px 0;
 }
 /* 동행자 관리 제목 */
 #companionSection h2 {
@@ -1087,9 +1108,9 @@ body, h4, p, button, a {
 /* 제목과 버튼을 감싸는 컨테이너 */
 #mainControls {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0px;
+    justify-content: left; /* 가운데 정렬 */
+    flex-direction: row; /* 가로 방향으로 정렬 */
+    gap: 10px; /* 버튼 간 간격 */
 }
 
 /* 플랜 제목 스타일 */
@@ -1102,21 +1123,22 @@ body, h4, p, button, a {
 /* 버튼 그룹 */
 #mainControls {
     flex-direction: row; /* 가로 방향으로 정렬 */
-    justify-content: center; /* 가운데 정렬 */
+    justify-content: left; /* 가운데 정렬 */
     display: flex;
-    gap: 20px; /* 버튼 간 간격 */
+    gap: 19px; /* 버튼 간 간격 */
 }
 
 /* 공통 버튼 스타일 */
 #mainControls button {
-    background-color: #4CAF50;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    padding: 1% 10%;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s ease;
+   background-color: #fff;
+  color: var(--plan-color);
+  border: 2px solid var(--plan-color);
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s ease;효과 */
 }
 
 /* 버튼 호버 효과 */
