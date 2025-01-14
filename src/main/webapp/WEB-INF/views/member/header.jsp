@@ -23,8 +23,6 @@
     <title>myPage</title>
 </head>
 <header id="header">
-    <div id="header_box">
-
         <div id="header_box">
                     <h1 id="logo"><a href="${path}">댕동</a></h1>
                     <div id="header_right">
@@ -45,7 +43,7 @@
                             <span class="alt-text"></span>
                         </a>
                     </div>
-                </div>
+
     </div>
 </header>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

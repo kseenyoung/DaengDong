@@ -137,6 +137,7 @@
 
 
 <div id="list_wrap">
+  <p>펫과 함께 하는</p>
   <div id="planTitle"></div>
   <div id="mainControls">
     <button id="showDays">일정</button>
