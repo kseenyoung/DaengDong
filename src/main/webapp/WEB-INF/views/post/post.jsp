@@ -23,7 +23,9 @@
     <title>Document</title>
 
     <link rel="stylesheet" href="${path}/css/post/post.css" />
-
+<script>
+    const path = `${pageContext.servletContext.contextPath}`
+</script>
   </head>
 
   <body>
@@ -70,7 +72,11 @@
                         <textarea name="content" id="content" placeholder="내용 : "></textarea>
 
                         <input type="file" id="fileInput" style="display: none;" name="files[]"   multiple />
-                        <button type="submit">만들기</button>
+                        <button type="button" id="submitPost"> 만들기</button>
+                        <button id="uploadButton" class="btn btn-primary" type="button" disabled style="display: none;">
+                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                            <span role="status">만들기</span>
+                        </button>
                     </form>
                 </div>
 
@@ -103,7 +109,8 @@
                    <div class="post">
                      <a href="${path}/post/${post.postId}">
                        <div class="post_relative">
-                           <img class="post_img" src="${path}/upload/${post.imageUrl}" alt="">
+                           <img class="post_img" src="${post.imageUrl}" alt="" style="object-fit: cover;
+                     object-position: center;">
                             <c:if test="${post.category == '꿀팁'}">
                                 <div class="honeytip">
                                    💡Tip
@@ -120,7 +127,8 @@
                        </div>
                      </a>
                        <div class="post_info">
-                           <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                           <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile" style="object-fit: cover;
+                     object-position: center;"><span>${post.memberNickName}</span></div>
                            <div class="post_info_right">
 
                                 <c:set var="found" value="false" />
@@ -158,7 +166,8 @@
                      <div class="post">
                                       <a href="${path}/post/${post.postId}">
                                         <div class="post_relative">
-                                            <img class="post_img" src="${path}/upload/${post.imageUrl}" alt="">
+                                            <img class="post_img" src="${post.imageUrl}" alt="" style="object-fit: cover;
+                     object-position: center;">
                                              <c:if test="${post.category == '꿀팁'}">
                                                  <div class="honeytip">
                                                     💡Tip
@@ -175,7 +184,8 @@
                                         </div>
                                       </a>
                                         <div class="post_info">
-                                            <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                                            <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile" style="object-fit: cover;
+                     object-position: center;"><span>${post.memberNickName}</span></div>
                                             <div class="post_info_right">
 
                                                  <c:set var="found" value="false" />
@@ -213,7 +223,8 @@
                    <div class="post">
                                                          <a href="${path}/post/${post.postId}">
                                                            <div class="post_relative">
-                                                               <img class="post_img" src="${path}/upload/${post.imageUrl}" alt="">
+                                                               <img class="post_img" src="${post.imageUrl}" alt="" style="object-fit: cover;
+                     object-position: center;">
                                                                 <c:if test="${post.category == '꿀팁'}">
                                                                     <div class="honeytip">
                                                                        💡Tip
@@ -230,7 +241,8 @@
                                                            </div>
                                                          </a>
                                                            <div class="post_info">
-                                                               <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                                                               <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile" style="object-fit: cover;
+                     object-position: center;"><span>${post.memberNickName}</span></div>
                                                                <div class="post_info_right">
 
                                                                     <c:set var="found" value="false" />
@@ -268,7 +280,8 @@
                   <div class="post">
                                                         <a href="${path}/post/${post.postId}">
                                                           <div class="post_relative">
-                                                              <img class="post_img" src="${path}/upload/${post.imageUrl}" alt="">
+                                                              <img class="post_img" src="${post.imageUrl}" alt="" style="object-fit: cover;
+                     object-position: center;">
                                                                <c:if test="${post.category == '꿀팁'}">
                                                                    <div class="honeytip">
                                                                       💡Tip
@@ -285,7 +298,8 @@
                                                           </div>
                                                         </a>
                                                           <div class="post_info">
-                                                              <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                                                              <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile" style="object-fit: cover;
+                     object-position: center;"><span>${post.memberNickName}</span></div>
                                                               <div class="post_info_right">
 
                                                                    <c:set var="found" value="false" />
@@ -519,4 +533,5 @@
                   });
               }
   </script>
+<script src="${path}/js/post/postImageUpload.js"></script>
 </html>
