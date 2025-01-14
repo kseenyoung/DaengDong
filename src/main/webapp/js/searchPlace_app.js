@@ -199,45 +199,45 @@ function initPlanUI() {
 /***************************************************
  * (D) WebSocket 초기화
  ***************************************************/
-let webSocket = null;
-function initWebSocket(planId) {
-    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const host = window.location.host;
-    const webSocketUrl = `${protocol}//${host}/daengdong/shareMap-ws?planId=${planId}`;
-    console.log("WebSocket 연결 시도:", webSocketUrl);
-
-    webSocket = new WebSocket(webSocketUrl);
-
-    webSocket.onopen = () => {
-        console.log("WebSocket 연결 성공");
-    };
-
-    webSocket.onerror = (err) => {
-        console.error("WebSocket 오류:", err);
-    };
-
-    webSocket.onclose = () => {
-        console.log("WebSocket 종료");
-    };
-
-    webSocket.onmessage = (evt) => {
-        const msg = JSON.parse(evt.data);
-        if(msg.type === "shareMap") {
-            const place = msg.data;
-            console.log("받은 장소 데이터:", place);
-
-            const {
-                kakaoPlaceName, kakaoRoadAddressName,
-                kakaoX, kakaoY,
-                kakaoPlaceId, selectedDay
-            } = place;
-
-            // 이미 dayPlans 구조가 있으므로, 받은 데이터를 로컬 일정에 추가
-            addPlaceToPlan(kakaoPlaceName, kakaoRoadAddressName, kakaoPlaceId, kakaoX, kakaoY, selectedDay);
-            alert("다른 사람이 장소를 추가했습니다!");
-        }
-    };
-}
+// let webSocket = null;
+// function initWebSocket(planId) {
+//     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+//     const host = window.location.host;
+//     const webSocketUrl = `${protocol}//${host}/daengdong/shareMap-ws?planId=${planId}`;
+//     console.log("WebSocket 연결 시도:", webSocketUrl);
+//
+//     webSocket = new WebSocket(webSocketUrl);
+//
+//     webSocket.onopen = () => {
+//         console.log("WebSocket 연결 성공");
+//     };
+//
+//     webSocket.onerror = (err) => {
+//         console.error("WebSocket 오류:", err);
+//     };
+//
+//     webSocket.onclose = () => {
+//         console.log("WebSocket 종료");
+//     };
+//
+//     webSocket.onmessage = (evt) => {
+//         const msg = JSON.parse(evt.data);
+//         if(msg.type === "shareMap") {
+//             const place = msg.data;
+//             console.log("받은 장소 데이터:", place);
+//
+//             const {
+//                 kakaoPlaceName, kakaoRoadAddressName,
+//                 kakaoX, kakaoY,
+//                 kakaoPlaceId, selectedDay
+//             } = place;
+//
+//             // 이미 dayPlans 구조가 있으므로, 받은 데이터를 로컬 일정에 추가
+//             addPlaceToPlan(kakaoPlaceName, kakaoRoadAddressName, kakaoPlaceId, kakaoX, kakaoY, selectedDay);
+//             alert("다른 사람이 장소를 추가했습니다!");
+//         }
+//     };
+// }
 
 /***************************************************
  * (E) 일정 관련 함수
@@ -643,22 +643,22 @@ document.addEventListener("click", function(evt){
             });
 
         // 웹소켓 전송
-        if(webSocket && webSocket.readyState===WebSocket.OPEN){
-            webSocket.send(JSON.stringify({
-                type: "shareMap",
-                data: {
-                    kakaoPlaceName: placeName,
-                    kakaoRoadAddressName: placeAddress,
-                    kakaoPhone: placePhone,
-                    kakaoX: x,
-                    kakaoY: y,
-                    kakaoPlaceUrl: placeUrl,
-                    kakaoPlaceId: placeId,
-                    selectedDay: getSelectedDay()
-                }
-            }));
-        }
-        alert("장소가 공유되었습니다!");
+        // if(webSocket && webSocket.readyState===WebSocket.OPEN){
+        //     webSocket.send(JSON.stringify({
+        //         type: "shareMap",
+        //         data: {
+        //             kakaoPlaceName: placeName,
+        //             kakaoRoadAddressName: placeAddress,
+        //             kakaoPhone: placePhone,
+        //             kakaoX: x,
+        //             kakaoY: y,
+        //             kakaoPlaceUrl: placeUrl,
+        //             kakaoPlaceId: placeId,
+        //             selectedDay: getSelectedDay()
+        //         }
+        //     }));
+        // }
+        // alert("장소가 공유되었습니다!");
     }
 });
 
