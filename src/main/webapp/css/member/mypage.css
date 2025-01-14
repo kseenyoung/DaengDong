@@ -361,7 +361,7 @@ body {
   background-color: white; /* 배경색 상단과 맞춤 */
 }
 
-.announcement {
+.announcement, .announcement-plan {
   display: flex;
   justify-content: space-between; /* 텍스트와 버튼을 양쪽 끝으로 */
   align-items: center;
@@ -370,6 +370,7 @@ body {
   border-radius: 10px;
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
+  cursor: pointer;
 }
 
 .announcement p {
