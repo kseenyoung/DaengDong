@@ -21,7 +21,7 @@
 <div class="post">
     <a href="${path}/post/${post.postId}">
         <div class="post_relative">
-            <img class="post_img" src="${path}/upload/${post.imageUrl}" alt="">
+            <img class="post_img" src="${post.imageUrl}" alt="">
             <c:if test="${post.category == '꿀팁'}">
                 <div class="honeytip">💡Tip</div>
             </c:if>
