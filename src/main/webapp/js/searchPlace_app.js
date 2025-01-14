@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     initPlanUI();
 
     // 4) WebSocket 연결
-    initWebSocket(planId);
+    //initWebSocket(planId);
 
     // 5) 기본 검색 실행 (키워드)
     searchPlaces();

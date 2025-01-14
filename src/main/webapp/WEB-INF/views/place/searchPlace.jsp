@@ -34,7 +34,6 @@
         console.log("세션에서 가져온 currentPlanId:", currentPlanId);
         // 필요한 경우: 호스트인지 동행자인지 구분도 세션에서 가져와서 isHost = true/false 로 쓸 수 있음.
     </script>
-
 </head>
 <body>
 
@@ -73,14 +72,7 @@
 </div>
 <div class="map_wrap">
     <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
-    <button id="btnChat" class="btn btn-primary position-relative">
-        <i id="chat-icon" class="bi bi-chat-fill"></i>
-        <span id="unreadBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">●</span>
-    </button>
-    <div id="chatModal" class="chat-modal">
-        <div id="chatContent"></div>
-        <button id="closeChatModal" class="close-btn">✖</button>
-    </div>
+
     <button id="pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
     <div id="menu_wrap" class="bg_white">
         <button id="closeMenu" class="close-btn">✖</button>
@@ -125,7 +117,7 @@
 
     <div id="companionModal" class="modal">
         <div class="modal-content">
-            <button id="closeCompanionModalBtn">닫기</button>
+            <button id="closeCompanionModalBtn">×</button>
             <h3>동행자 추가</h3>
             <input type="email" id="companionEmail" placeholder="동행자 이메일 직접 입력">
             <h4>팔로잉 목록</h4>
