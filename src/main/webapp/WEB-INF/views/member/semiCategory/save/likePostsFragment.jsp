@@ -12,7 +12,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <div class="post-container">
     <c:forEach var="likePostsList" items="${likePostsList}">
-        <div class="post-card">
+        <div class="post-card" data-post-id="${likePostsList.post_id}">
             <span class="badge ${likePostsList.category_id}">
                 <!-- 조건에 따라 아이콘 클래스 변경 -->
                 <i class="<c:choose>
@@ -24,7 +24,7 @@
                          </c:choose>"></i>
                 ${likePostsList.category_id}
             </span>
-            <img class="post-image" src="${path}/img/${likePostsList.image_url}" alt="Post Image">
+            <img class="post-image" src="${likePostsList.image_url}" alt="Post Image">
             <div class="post-info">
                 <h3 class="post-title">${likePostsList.post_title}</h3>
                 <p class="post-user">@${likePostsList.member_nickname}</p>
