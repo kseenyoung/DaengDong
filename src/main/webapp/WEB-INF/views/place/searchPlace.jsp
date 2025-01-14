@@ -34,7 +34,10 @@
         console.log("세션에서 가져온 currentPlanId:", currentPlanId);
         // 필요한 경우: 호스트인지 동행자인지 구분도 세션에서 가져와서 isHost = true/false 로 쓸 수 있음.
     </script>
+<style>
 
+
+</style>
 </head>
 <body>
 
@@ -146,10 +149,8 @@
 
     <!-- 동행자 섹션 -->
     <div id="companionSection">
-        <h2>동행자 관리</h2>
-        <div id="together">
-            <button id="openCompanionModalBtn">+</button>
-        </div>
+        <h2>동행자 관리 <button id="openCompanionModalBtn">+</button></h2>
+
         <ul id="companionList"></ul>
     </div>
 
@@ -161,12 +162,19 @@
 
             <h3>동행자 추가</h3>
             <input type="email" id="companionEmail" placeholder="동행자 이메일 직접 입력" />
+            <div class="plan_together_modal">
+                <div>
+                    <h4>팔로잉 목록</h4>
+                    <ul id="followingList"></ul>
+                </div>
+                <div>
+                    <h4>팔로워 목록</h4>
+                    <ul id="followerList"></ul>
+                </div>
+            </div>
 
-            <h4>팔로잉 목록</h4>
-            <ul id="followingList"></ul>
 
-            <h4>팔로워 목록</h4>
-            <ul id="followerList"></ul>
+
 
             <button id="submitCompanionsBtn">동행자 등록</button>
         </div>
