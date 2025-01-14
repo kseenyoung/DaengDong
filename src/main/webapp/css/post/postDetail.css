@@ -186,12 +186,13 @@ background-color: rgb(255, 255, 255);
           display: flex;
           font-size: 14px;
           margin: 12px 0;
-
+           align-items: center;
         }
         .comment_box img {
           width: 30px;
           height: 30px;
           margin-right: 10px;
+          border-radius: 15px;
         }
         .comment_box2 {
 
@@ -206,13 +207,13 @@ background-color: rgb(255, 255, 255);
         }
         .comment p{
           width: 400px;
+          margin: 0;
           word-wrap: break-word; /* 긴 단어가 넘을 때 줄 바꿈 */
           overflow-wrap: break-word; /* 긴 단어가 넘을 때 줄 바꿈 (새로운 표준) */
         }
         .comment_date {
           font-size: 12px;
           color: rgba(34, 34, 34, .5);
-          margin-top: 7px;
         }
         div, form, p {
           transition: all 0.3s ease;

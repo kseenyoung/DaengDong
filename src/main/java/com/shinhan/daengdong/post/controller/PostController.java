@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -83,10 +84,9 @@ public class PostController {
     public String viewMainPage(@RequestParam(value="category", required = false) String category, Model model,HttpServletRequest request) {
         // 게시글 목록 조회
         HttpSession session = request.getSession(false);
-        if (session == null){
-            // session 없음 = 로그인 시도한 적 없음
-            log.info("세션이 존재하지 않음");
-            return null;
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
+        if (memberDTO == null) {
+            return "redirect:/auth/login.do";
         }
 
         // TODO oauth 로그인 할 때 session 안에 MemberDTO 타입의 'member' 등록 되어 있어야 함
@@ -162,8 +162,10 @@ public class PostController {
     }
 
     private String saveImageFile(MultipartFile file) throws IOException {
-        String uploadDir = "C:\\Users\\User\\Desktop\\shinhan\\daeng\\DaengDong\\src\\main\\webapp\\upload\\";
 
+        String currentDir = Paths.get("").toAbsolutePath().toString();
+        System.out.println("Current Directory: " + currentDir);
+        String uploadDir = currentDir + "\\src\\main\\webapp\\upload\\";
         // 디렉토리 존재 여부 확인, 없다면 생성
         File dir = new File(uploadDir);
         if (!dir.exists()) {
