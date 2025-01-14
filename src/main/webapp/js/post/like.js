@@ -22,7 +22,12 @@ $(document).on("click", ".like-img", function() {
                          currentLikeCount--;
                     } else {  // 그렇지 않으면 'Likefull.png'로 변경
                         imgElement.attr("src", `${path}/img/Likefull.png`);
-                        currentLikeCount++;
+                        console.log('currentLikeCount : ' + currentLikeCount)
+                        if (isNaN(currentLikeCount)) {
+                            currentLikeCount = 1; // NaN이면 1로 설정
+                        } else {
+                            currentLikeCount++; // 기존 값에 1 증가
+                        }
                     }
                  likeCountElement.text(currentLikeCount);
             },
