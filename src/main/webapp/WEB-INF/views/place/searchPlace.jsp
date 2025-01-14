@@ -84,45 +84,52 @@
     <div id="chatContent"></div>
     <button id="closeChatModal" class="close-btn">✖</button>
   </div>
-  <button id = "pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
+  <div id = "mainBtn">
+      <button id = "pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
+      <button id="finalizePlanBtn">여정 저장하기</button>
+  </div>
   <div id="menu_wrap" class="bg_white">
-    <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
-<%--    <!-- 채팅방 접속하기 버튼 -->--%>
-<%--    <button id="btnChat" class="btn btn-primary position-relative">--%>
-<%--        <i id="chat-icon" class="bi bi-chat-fill"></i>--%>
-<%--        <span id="unreadBadge" style="display: none;">●</span>--%>
-<%--    </button>--%>
-<%--    <div id="chatModal" class="chat-modal">--%>
-<%--        <div id="chatContent"></div>--%>
-<%--        <button id="closeChatModal" class="close-btn">✖</button>--%>
-<%--    </div>--%>
-    <button id="pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
-
-    <div id="menu_wrap" class="bg_white">
-        <button id="closeMenu" class="close-btn">✖</button>
-        <div class="option">
-            <div>
-                <form onsubmit="searchPlaces(); return false;">
-                    <input type="text" id="keyword" size="80" class="search-input" >
-                    <button type="submit">검색하기</button>
-                </form>
-            </div>
+    <button id="closeMenu" class="close-btn">✖</button>
+    <div class="option">
+        <div>
+            <form onsubmit="searchPlaces(); return false;">
+                <input type="text" value="" id="keyword" size="80" class="search-input" >
+                <button type="submit">검색하기</button>
+            </form>
         </div>
-        <hr>
+    </div>
+    <hr>
         <div class="container">
-            <div id="category-container">
-                <ul id="category">
-                    <!-- 카테고리들 -->
-                    <li id="BK9" data-order="0">은행</li>
-                    <li id="MT1" data-order="1">마트</li>
-                    <li id="PM9" data-order="2">약국</li>
-                    <li id="OL7" data-order="3">주유소</li>
-                    <li id="CE7" data-order="4">카페</li>
-                    <li id="CS2" data-order="5">편의점</li>
-                </ul>
-            </div>
-            <ul id="placesList"></ul>
-            <div id="pagination"></div>
+           <div id="category-container">
+               <ul id="category">
+                   <li id="BK9" data-order="0">
+                       <span class="category_bg bank"></span>
+                       은행
+                   </li>
+                   <li id="MT1" data-order="1">
+                       <span class="category_bg mart"></span>
+                       마트
+                   </li>
+                   <li id="PM9" data-order="2">
+                       <span class="category_bg pharmacy"></span>
+                       약국
+                   </li>
+                   <li id="OL7" data-order="3">
+                       <span class="category_bg oil"></span>
+                       주유소
+                   </li>
+                   <li id="CE7" data-order="4">
+                       <span class="category_bg cafe"></span>
+                       카페
+                   </li>
+                   <li id="CS2" data-order="5">
+                       <span class="category_bg store"></span>
+                       편의점
+                   </li>
+               </ul>
+           </div>
+           <ul id="placesList"></ul>
+           <div id="pagination"></div>
         </div>
     </div>
 </div>
@@ -172,10 +179,6 @@
         <ul id="placeList"></ul>
     </div>
 </div>
-
-<div>
-    <button id="finalizePlanBtn">최종 완료</button>
-</div>
 <!-- 카카오맵 SDK -->
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62bd6cc1e013b8a659ae61760dc9fd7f&libraries=services"></script>
 
@@ -196,6 +199,80 @@
 
     // JS 전역변수에 할당해서 searchPlace_app.js에서 사용
     window.G_planId = planId;
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.body.addEventListener("click", (event) => {
+            if (event.target.classList.contains("favoriteBtn") && !event.target.classList.contains("favorited")) {
+                addFavorite(event.target); // 즐겨찾기 추가 처리
+            }
+        });
+
+        // 이벤트 위임: 즐겨찾기 삭제
+        document.body.addEventListener("click", (event) => {
+            if (event.target.classList.contains("favoriteBtn") && event.target.classList.contains("favorited")) {
+                deleteFavorite(event.target); // 즐겨찾기 삭제 처리
+            }
+        });
+    });
+    const stars = {};
+    // 즐겨찾기 추가 처리 함수
+    function addFavorite(button) {
+        console.log("즐겨찾기버튼눌림");
+        const placeId = button.dataset.id;
+        console.log("placeId:" + placeId);
+        fetch("${path}/auth/favorite/add", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ "kakao_place_id": placeId })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("HTTP error " + response.status);
+            return response.text();
+        })
+        .then(data => {
+            alert("즐겨찾기에 추가되었습니다!"); // 성공 메시지 출력
+            stars[placeId] = data.star_id;
+            button.setAttribute("data-starid", data.star_id);
+            button.classList.add("favorited");
+            console.log("star_id 저장 완료:", data.star_id);
+        })
+        .catch(err => {
+            console.error("Add favorite error:", err);
+            alert("즐겨찾기 추가 중 오류가 발생했습니다.");
+        });
+    }
+
+    // 즐겨찾기 삭제 처리 함수
+    function deleteFavorite(button) {
+        const placeId = button.dataset.id;
+        const starId = stars[placeId];
+
+        console.log("삭제할 starId:" + starId);
+        fetch("${path}/auth/favorite/delete", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ star_id: starId })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("HTTP error " + response.status);
+            return response.text();
+        })
+        .then(message => {
+            delete stars[placeId];
+            button.classList.remove("favorited"); // 즐겨찾기 상태 제거
+            button.removeAttribute("data-starid");
+            alert("즐겨찾기가 해제되었습니다!"); // 성공 메시지 출력
+       })
+        .catch(err => {
+            console.error("Delete favorite error:", err);
+            alert("즐겨찾기 삭제 중 오류가 발생했습니다.");
+        });
+    }
 </script>
 </body>
 </html>
