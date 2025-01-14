@@ -34,10 +34,10 @@
         console.log("세션에서 가져온 currentPlanId:", currentPlanId);
         // 필요한 경우: 호스트인지 동행자인지 구분도 세션에서 가져와서 isHost = true/false 로 쓸 수 있음.
     </script>
+
 </head>
 <body>
 
-<!-- 모달/사이드바 등 HTML 구조는 그대로 -->
 <div id="myModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
@@ -71,21 +71,48 @@
   </div>
 </div>
 <div class="map_wrap">
+  <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
+  <!-- 채팅방 접속하기 버튼 -->
+  <button id="btnChat" class="btn btn-primary position-relative">
+    <i id="chat-icon" class="bi bi-chat-fill"></i> <!-- 채워진 대화 아이콘 -->
+    <span id="unreadBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+    ●
+  </span>
+  </button>
+  <!-- 채팅 모달 -->
+  <div id="chatModal" class="chat-modal">
+    <div id="chatContent"></div>
+    <button id="closeChatModal" class="close-btn">✖</button>
+  </div>
+  <button id = "pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
+  <div id="menu_wrap" class="bg_white">
     <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
-
+<%--    <!-- 채팅방 접속하기 버튼 -->--%>
+<%--    <button id="btnChat" class="btn btn-primary position-relative">--%>
+<%--        <i id="chat-icon" class="bi bi-chat-fill"></i>--%>
+<%--        <span id="unreadBadge" style="display: none;">●</span>--%>
+<%--    </button>--%>
+<%--    <div id="chatModal" class="chat-modal">--%>
+<%--        <div id="chatContent"></div>--%>
+<%--        <button id="closeChatModal" class="close-btn">✖</button>--%>
+<%--    </div>--%>
     <button id="pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
+
     <div id="menu_wrap" class="bg_white">
         <button id="closeMenu" class="close-btn">✖</button>
         <div class="option">
-            <form onsubmit="searchPlaces(); return false;">
-                <input type="text" value="홍대 맛집" id="keyword" size="80" class="search-input">
-                <button type="submit">검색하기</button>
-            </form>
+            <div>
+                <form onsubmit="searchPlaces(); return false;">
+                    <input type="text" value="홍대 맛집" id="keyword" size="80" class="search-input" >
+                    <button type="submit">검색하기</button>
+                </form>
+            </div>
         </div>
         <hr>
         <div class="container">
             <div id="category-container">
                 <ul id="category">
+                    <!-- 카테고리들 -->
                     <li id="BK9" data-order="0">은행</li>
                     <li id="MT1" data-order="1">마트</li>
                     <li id="PM9" data-order="2">약국</li>
@@ -100,13 +127,15 @@
     </div>
 </div>
 
-<div id="list_wrap">
-    <div id="planTitle"></div>
-    <div id="mainControls">
-        <button id="showDays">일정</button>
-        <button id="showCompanion">동행자</button>
-    </div>
 
+<div id="list_wrap">
+  <div id="planTitle"></div>
+  <div id="mainControls">
+    <button id="showDays">일정</button>
+    <button id="showCompanion">동행자</button>
+  </div>
+
+    <!-- 동행자 섹션 -->
     <div id="companionSection">
         <h2>동행자 관리</h2>
         <div id="together">
@@ -115,15 +144,21 @@
         <ul id="companionList"></ul>
     </div>
 
+    <!-- 동행자 추가 모달 -->
     <div id="companionModal" class="modal">
         <div class="modal-content">
-            <button id="closeCompanionModalBtn">×</button>
+            <!-- 닫기버튼 -->
+            <button id="closeCompanionModalBtn">닫기</button>
+
             <h3>동행자 추가</h3>
-            <input type="email" id="companionEmail" placeholder="동행자 이메일 직접 입력">
+            <input type="email" id="companionEmail" placeholder="동행자 이메일 직접 입력" />
+
             <h4>팔로잉 목록</h4>
             <ul id="followingList"></ul>
+
             <h4>팔로워 목록</h4>
             <ul id="followerList"></ul>
+
             <button id="submitCompanionsBtn">동행자 등록</button>
         </div>
     </div>
@@ -132,6 +167,7 @@
         <div id="day"></div>
         <div class="button">
             <button id="addPlaceBtn">장소 추가</button>
+            <div class="line"></div>
         </div>
         <ul id="placeList"></ul>
     </div>
@@ -140,7 +176,6 @@
 <div>
     <button id="finalizePlanBtn">최종 완료</button>
 </div>
-
 <!-- 카카오맵 SDK -->
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62bd6cc1e013b8a659ae61760dc9fd7f&libraries=services"></script>
 

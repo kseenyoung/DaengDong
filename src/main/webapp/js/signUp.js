@@ -85,7 +85,6 @@ function f_remove_pet(event) {
       if (petElement) {
         petElement.remove();
       }
-      alert("펫 정보가 성공적으로 삭제되었습니다.");
     },
     error: function (xhr, status, error) {
       console.error("Error:", error);
@@ -192,7 +191,7 @@ function petCreateUploadFile(apiPath) {
               <div class="my-pet-spec\ies">${petSpecies}</div>
             </div>
             <div class="button-container">
-              <button class="delete-pet" data-pet-id="${petId}"">삭제</button>
+              <button class="delete-pet btn-danger" data-pet-id="${petId}"">삭제</button>
             </div>
           </div>
         `;
