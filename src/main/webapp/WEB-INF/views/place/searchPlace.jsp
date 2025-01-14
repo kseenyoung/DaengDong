@@ -13,7 +13,7 @@
   <!-- CSS파일 -->
   <link rel="stylesheet" href="${path}/css/header.css">
   <link rel="stylesheet" href="${path}/css/plan/addCompanion.css">
-  <link rel="stylesheet" href="${path}/css/plan/searchPlace.css">
+  <%-- <link rel="stylesheet" href="${path}/css/plan/searchPlace.css"> --%>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
   <!-- 외부 JSP 파일 -->
@@ -86,7 +86,6 @@
   </div>
   <button id = "pinbutton" onclick="deleteAllPins()">핀 일괄 삭제하기</button>
   <div id="menu_wrap" class="bg_white">
-    <button id="closeMenu" class="close-btn">✖</button>
     <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
 <%--    <!-- 채팅방 접속하기 버튼 -->--%>
 <%--    <button id="btnChat" class="btn btn-primary position-relative">--%>
@@ -104,7 +103,7 @@
         <div class="option">
             <div>
                 <form onsubmit="searchPlaces(); return false;">
-                    <input type="text" value="홍대 맛집" id="keyword" size="80" class="search-input" >
+                    <input type="text" id="keyword" size="80" class="search-input" >
                     <button type="submit">검색하기</button>
                 </form>
             </div>
