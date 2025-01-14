@@ -131,7 +131,10 @@ ol {
   font-size: var(--font-size5);
   font-weight: 700;
 }
-
+#logo a {
+  text-decoration: none;
+  color: #000;
+}
 #header_right a {
   padding: 10px;
   position: relative;
@@ -191,9 +194,10 @@ ol {
   justify-content: space-between;
 }
 #banner_box_top h2 {
-  font-size: var(--font-size10);
+  font-size: var(--font-size8);
   padding-bottom: 30px;
   white-space: nowrap!important;
+  color: #fff;
 }
 #banner_box_bottom {
   display: flex;
@@ -204,7 +208,7 @@ ol {
 }
 #banner_box_bottom p {
   margin-bottom: 20px;
-  color: #fff;
+  color: #000;
   font-size: var(--font-size4);
 }
 #banner_box_bottom button {
@@ -240,11 +244,11 @@ ol {
 }
 .sec_top p {
   color: var(--color-blue);
-  font-size: var(--font-size4);
+  font-size: var(--font-size1);
 }
 .sec_top h1 {
   margin-top: 20px;
-  font-size: var(--font-size6);
+  font-size: var(--font-size4);
 }
 .sec_top p:nth-of-type(2) {
   line-height: 180%;
@@ -261,7 +265,7 @@ ol {
 #sec1_bottom_left {
 }
 #sec1_bottom_left h1 {
-  font-size: var(--font-size4);
+  font-size: var(--font-size2);
   font-weight: 700;
   margin-top: 50px;
 }
@@ -269,7 +273,7 @@ ol {
   color: var(--color-gray700);
   margin: 10px 0 20px 0;
   line-height: 2;
-  font-size: var(--font-size3);
+  font-size: var(--font-size1);
 }
 #sec1_bottom_left div {
   display: flex;
@@ -310,11 +314,11 @@ ol {
 #sec1_bottom_left a button {
   background-color: var(--color-blue);
   color: white;
-  width: 200px;
+  padding: 0 10px;
   height: 48px;
-  font-size: var(--font-size4);
+  font-size: var(--font-size1);
   border: 1px solid var(--color-blue);
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 #sec1_bottom_right img {
@@ -347,20 +351,20 @@ ol {
 }
 #sec2_left_box h2 {
   color: rgba(255, 255, 255, 0.7);
-  font-size: var(--font-size4);
+  font-size: var(--font-size2);
   font-weight: 700;
 }
 #sec2_left_box p {
   color: var(--color-white);
-  font-size: var(--font-size6);
+  font-size: var(--font-size4);
   line-height: 140%;
   font-weight: 700;
   margin: 20px 0px 32px;
 }
 #sec2_left_box button {
-  font-size: var(--font-size3);
+  font-size: var(--font-size1);
   background: var(--color-white);
-  padding: 8px 45px;
+  padding: 8px 25px;
   border-radius: 40px;
   color: var(--color-blue);
   font-weight: 700;

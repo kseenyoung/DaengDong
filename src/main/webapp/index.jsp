@@ -34,22 +34,22 @@
 <div id="container">
     <header id="header">
         <div id="header_box">
-            <h1 id="logo">댕동</h1>
+            <h1 id="logo"><a href="${path}">댕동</a></h1>
             <div id="header_right">
                 <a href="">
-                    <img src="https://daengdong-bucket.s3.amazonaws.com/2ff2135a-b82b-4c3a-a483-b6f765d23aa0_bell.png" alt="알림" width="30" height="30"/>
+                    <img src="${path}/images/header_arlam.png" alt="알림" width="30" height="30"/>
                     <span class="alt-text"></span>
                 </a>
                 <a href="${path}/post/posts">
-                    <img src="https://daengdong-bucket.s3.amazonaws.com/27910ecc-028d-457c-af07-0529c13d5d5b_heart.png" alt="커뮤니티" width="30" height="30" />
+                    <img src="${path}/images/header_community.png" alt="커뮤니티" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
                 <a href="${path}/plan/create">
-                    <img src="https://daengdong-bucket.s3.amazonaws.com/2578b82d-fe9d-4304-8bbb-e365a4666a70_add.png" alt="플랜" width="30" height="30" />
+                    <img src="${path}/images/header_plan.png" alt="플랜" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
                 <a href="${path}/auth/viewMypage.do">
-                    <img src="https://daengdong-bucket.s3.amazonaws.com/b3eb7fe8-cbd7-4dc8-a4e2-fd88cd1ca577_single.png" alt="사용자" width="30" height="30" />
+                    <img src="${path}/images/header_user.png" alt="사용자" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
             </div>
@@ -87,12 +87,12 @@
                         꺼내보세요.
                     </p>
                     <div>
-                        <button>
+                        <%--<button>
                             <span id="select_num">1</span><span id="select_menu">현지인 맛집 탐방</span>
                         </button>
                         <button><span>2</span><span>현지인 맛집 탐방</span></button>
                         <button><span>3</span><span>현지인 맛집 탐방</span></button>
-                        <button><span>4</span><span>현지인 맛집 탐방</span></button>
+                        <button><span>4</span><span>현지인 맛집 탐방</span></button>--%>
                     </div>
                     <a href=""><button>일정 살펴보기</button></a>
                 </div>
