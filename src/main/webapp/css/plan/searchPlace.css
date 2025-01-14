@@ -1125,7 +1125,7 @@ body, h4, p, button, a {
     flex-direction: row; /* 가로 방향으로 정렬 */
     justify-content: left; /* 가운데 정렬 */
     display: flex;
-    gap: 20px; /* 버튼 간 간격 */
+    gap: 19px; /* 버튼 간 간격 */
 }
 
 /* 공통 버튼 스타일 */
