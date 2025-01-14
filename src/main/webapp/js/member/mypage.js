@@ -55,6 +55,8 @@ $(document).ready(function () {
       .off("click", ".pet-image")
       .off("click", "#currentPetPhoto")
       .off("click", "#confirm-update-petDetail")
+      .off("click", "#add-my-pet")
+      .off("click", "#confirm-update-petDetail")
 
       //trip
       .off("click", ".delete-plan")
@@ -65,6 +67,7 @@ $(document).ready(function () {
       .off("click", "#confirm-update")
       //save_likePost
       .off("click", ".delete-likePosts")
+      .off("click", ".post-card")
       //save_post
       .off("click", ".delete-post-btn")
       //save_favorite_place
@@ -94,6 +97,7 @@ $(document).ready(function () {
 
     //trip
     $(document).on("click", ".delete-plan", deletePlan);
+    $(document).on("click", ".announcement-plan", viewPlan)
 
     //save_review
     $(document).on("click", ".delete-review", deleteReview);
@@ -103,6 +107,7 @@ $(document).ready(function () {
     $(document).on("click", ".delete-likePosts", deleteLikePosts)
     //save_post
     $(document).on("click", ".delete-post-btn", deletePost)
+    $(document).on("click", ".post-card", viewLikePost)
     //save_favorite_place
     $(document).on("click", ".delete-favoritePlace", deleteFavoritePlace)
   }
@@ -327,9 +332,10 @@ $(document).ready(function () {
     });
   }
 
-  function deletePlan() {
+  function deletePlan(e) {
+    e.stopPropagation();
     let plan_id = $(this).data("plan-id");
-    let element = $(this).closest('.announcement'); // 삭제할 요소를 미리 저장
+    let element = $(this).closest('.announcement-plan'); // 삭제할 요소를 미리 저장
 
     $.ajax({
       url: `${path}/MyPlan/${plan_id}`,
@@ -343,6 +349,11 @@ $(document).ready(function () {
         console.log(err);
       }
     });
+  }
+
+  function viewPlan() {
+    let planId = $(this).data("plan-id")
+    location.href = `${path}/plan/place?planId=${planId}`;
   }
 
   function viewEditNickname() {
@@ -672,7 +683,9 @@ $(document).ready(function () {
     });
   }
 
-  function deleteLikePosts() {
+  function deleteLikePosts(e) {
+    e.stopPropagation();
+
     let postId = $(this).data("post-id");
     let element = $(this).closest('.post-card'); // 삭제할 요소를 미리 저장
 
@@ -845,7 +858,9 @@ $(document).ready(function () {
     }, 400); // 애니메이션 시간과 일치시킴
   }
 
-  function deletePost() {
+  function deletePost(e) {
+    e.stopPropagation();
+
     let postId = $(this).data("post-id");
     let element = $(this).closest('.post-card');
 
@@ -861,5 +876,10 @@ $(document).ready(function () {
         console.log(err);
       }
     });
+  }
+
+  function viewLikePost() {
+    let post_id = $(this).data("post-id");
+    location.href = `${path}/post/${post_id}`;
   }
 });

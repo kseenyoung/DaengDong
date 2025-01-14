@@ -98,7 +98,7 @@ public class MemberController {
     //회원가입 > 펫 추가
     @PostMapping("createPetProfile.do")
     @ResponseBody
-    public ResponseEntity<Void> createPetProfile(@RequestBody PetDTO petDTO, HttpSession session) {
+    public ResponseEntity<Integer> createPetProfile(@RequestBody PetDTO petDTO, HttpSession session) {
         MemberDTO member = (MemberDTO) session.getAttribute("member");
         petDTO.setMember_email(member.getMember_email());
         log.info("petDTO: " + petDTO);
@@ -106,7 +106,8 @@ public class MemberController {
         PetDTO petVO = selectOnetMyPet(petDTO);
         session.setAttribute("pet_id", petVO.getPet_id());
         log.info("pet_id: " + petVO.getPet_id());
-        return ResponseEntity.ok().build();    }
+        return ResponseEntity.ok(petVO.getPet_id());
+    }
 
     //회원가입 > 펫 찾기
     public PetDTO selectOnetMyPet(PetDTO petDTO) {
