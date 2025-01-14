@@ -23,7 +23,6 @@
 		<typeAlias type="com.shinhan.daengdong.post.dto.PostDTO" alias="postsVO" />
 		<typeAlias type="com.shinhan.daengdong.member.vo.MemberPostsVO" alias="memberPostsVO" />
 		<typeAlias type="com.shinhan.daengdong.member.dto.NotificationDTO" alias="notificationDTO" />
-
 		<!-- Plan 부분 -->
 		<typeAlias type="com.shinhan.daengdong.plan.dto.PlanDTO" alias="planDTO" />
 		<typeAlias type="com.shinhan.daengdong.plan.dto.MemberPlanDTO" alias="memberPlanDTO" />

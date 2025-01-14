@@ -13,7 +13,7 @@
   <!-- CSS파일 -->
   <link rel="stylesheet" href="${path}/css/header.css">
   <link rel="stylesheet" href="${path}/css/plan/addCompanion.css">
-   <link rel="stylesheet" href="${path}/css/plan/searchPlace.css">
+  <link rel="stylesheet" href="${path}/css/plan/searchPlace.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
   <!-- 외부 JSP 파일 -->
@@ -39,7 +39,7 @@
 <body>
 
 <div id="myModal" class="modal">
-  <div class="modal-content">
+  <div class="info-modal-content">
     <span class="close">&times;</span>
     <iframe id="modalIframe" style="width: 100%; height: 80vh; border: none;"></iframe>
   </div>
@@ -61,6 +61,7 @@
   <button id="closeSidebar" class="close-btn">✖</button>
   <h4 id="place-title" class="sidebar-title"></h4>
   <button id = "favoriteBtn" class="favoriteBtn">⭐</button>
+  <div class="divider"></div>
   <div class="content-container">
   <p class="sidebar-info"><strong>카테고리</strong> <br> <span id="place-category_name"></span></p>
   <p class="sidebar-info"><strong>도로명주소</strong> <br> <span id="place-road_address_name"></span></p>
@@ -71,7 +72,7 @@
   </div>
 </div>
 <div class="map_wrap">
-  <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
+  <div id="map"></div>
   <!-- 채팅방 접속하기 버튼 -->
   <button id="btnChat" class="btn btn-primary position-relative">
     <i id="chat-icon" class="bi bi-chat-fill"></i> <!-- 채워진 대화 아이콘 -->
@@ -136,6 +137,7 @@
 
 
 <div id="list_wrap">
+  <p>펫과 함께 하는</p>
   <div id="planTitle"></div>
   <div id="mainControls">
     <button id="showDays">일정</button>

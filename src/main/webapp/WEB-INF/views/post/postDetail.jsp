@@ -46,7 +46,8 @@
           <section id="post_detail">
             <div class="post_top">
               <div class="post_top_left">
-                <img src="${post.memberProfilePhoto}" alt="" />
+                <img src="${post.memberProfilePhoto}" alt="" style="object-fit: cover;
+                     object-position: center;" />
                 <div>
                   <p>${post.memberNickName}</p>
                   <p>${post.postTitle}</p>
@@ -78,7 +79,8 @@
             </div>
             <div class="single-item">
                <c:forEach var="postURL" items="${post.imageUrls}">
-                  <img src="${path}/upload/${postURL}" data-post-id="${post.postId}" alt="like">
+                  <img src="${postURL}" data-post-id="${post.postId}" alt="like" style="object-fit: cover;
+  object-position: center;">
                </c:forEach>
             </div>
             <div class="post_bottom">

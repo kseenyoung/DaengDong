@@ -5,6 +5,9 @@
     padding: 0;
 }
 /* 지도 스타일 */
+:root {
+  --plan-color: #2196F3;
+ }
 #map {
     position: relative;
     top: 10%;
@@ -19,7 +22,7 @@
 .map_wrap {position:relative;width:100%;height: 100vh;}
 #menu_wrap {
     position: fixed;
-    max-height: 90%;
+    height: 85vh;
     overflow-y: auto;
     top: 5%;
     left: 10%;
@@ -27,7 +30,7 @@
     margin: 0 auto;
     padding: 20px;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(240, 240, 240, 0.95));
-    z-index: 800;
+    z-index: 1500;
     font-size: 13px;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -257,7 +260,7 @@
 /* 리스트 스타일 */
 #placesList {
     width: 100%;
-    height: 400px;
+    height: 58vh;
     max-height: 70vh;
     overflow-y: auto;
     padding: 20px;
@@ -373,12 +376,11 @@ body, h4, p, button, a {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
 }
 #sidebar {
     width: 65%;
     max-width: 1200px;
-    height: 20%;
+    height: 17%;
     padding: 20px;
     border: 1px solid #ccc;
     display: none;
@@ -388,12 +390,20 @@ body, h4, p, button, a {
     transform: translateX(-50%);
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 8000;
+    z-index: 1000;
     border-radius: 12px;
     overflow-y: auto;
     overflow-x: hidden;
     flex-direction: column;
     gap: 5px;
+}
+#sidebar .divider {
+    width: 80vw;
+    height: 2px;
+    background-color: #ddd;
+    margin: 0px 0;
+    border-radius: 1px;
+    margin-bottom:15px;
 }
 
 #sidebar .close-btn {
@@ -401,9 +411,9 @@ body, h4, p, button, a {
     background: #ff6b6b;
     color: white;
     border: none;
-    font-size: 8px; /* 기존 16px → 8px */
+    font-size: 10px;
     font-weight: bold;
-    padding: 5px 8px; /* 기존 10px 15px → 5px 8px */
+    padding: 7px 10px;
     border-radius: 50%;
     cursor: pointer;
     position: absolute;
@@ -419,49 +429,134 @@ body, h4, p, button, a {
 }
 
 #sidebar .sidebar-title {
-    font-size: 12px; /* 글씨 크기 조정 */
+    font-size: clamp(10px, 1vw, 16px);
     font-weight: bold;
     color: #333;
     margin-bottom: 10px;
     text-align: center;
     align-self: center;
 }
+#favoriteBtn {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+#favoriteBtn:hover {
+    color: gold;
+}
 
 #sidebar .content-container {
-    display: flex; /* 가로 정렬 */
-    flex-direction: row; /* 행 방향 */
-    justify-content: space-between; /* 좌우로 분리 */
-    gap: 20px
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+}
+/* 모달 배경 스타일 */
+#myModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1500;
+    display: none;
 }
 
-#sidebar .sidebar-info {
-    flex: 3; /* 정보 영역이 더 넓게 */
-    font-size: 10px; /* 글씨 크기 */
-    color: #666;
-    margin: 0; /* 여백 제거 */
-    line-height: 1.6; /* 줄 간격 */
+/* 모달 컨텐츠 스타일 */
+.info-modal-content {
+    max-width: 1200px;
+    width: 80%;
+    height: 85vh;
+    position: relative;
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
+    transform: translateY(-30px);
+    margin: 4% auto;
 }
+
+/* 닫기 버튼 스타일 */
+.info-modal-content .close {
+    position: absolute;
+    top: 0px;
+    right: 3px;
+    font-size: 40px;
+    color: #black;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.info-modal-content .close:hover {
+    color: #000;
+    transform: scale(1.2);
+}
+
+/* fadeIn 애니메이션 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* iframe 스타일 */
+#modalIframe {
+    width: 100%;
+    height: 80vh; /* 모달 높이에 맞게 설정 */
+    border: none; /* 테두리 제거 */
+    border-radius: 10px; /* iframe의 모서리 둥글게 */
+}
+
+
+#sidebar .sidebar-info {
+    flex: 3;
+    font-size: clamp(8px, 0.8vw, 13px);
+    color: #666;
+    margin: 0;
+    line-height: 1.6;
+}
+
 
 #sidebar .button-container {
     display: flex; /* Flexbox 활성화 */
-    flex-direction: column; /* 버튼을 세로로 정렬 */
-    gap: 8px; /* 버튼 간 간격 추가 */
-    justify-content: flex-start; /* 버튼을 위쪽 정렬 */
-    align-items: stretch; /* 버튼 너비를 컨테이너 너비에 맞춤 */
+    flex-direction: column;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: stretch;
 }
 
 #sidebar .add-btn,
 #sidebar .map-link {
-    display: block; /* 블록 요소로 설정 */
-    width: 10%; /* 버튼이 컨테이너 너비를 가득 채우도록 설정 */
-    padding: 8px; /* 버튼 내부 여백 */
-    font-size: 9px; /* 버튼 글씨 크기 */
-    text-align: center; /* 텍스트 중앙 정렬 */
+    display: inline-block;
+    width: 10%;
+    padding: 8px;
+    font-size: clamp(8px, 0.8vw, 12px);
+    text-align: center;
     color: white;
-    border-radius: 6px; /* 둥근 모서리 */
+    border-radius: 6px;
     text-decoration: none;
     font-weight: bold;
     cursor: pointer;
+    vertical-align: center;
+    line-height: normal;
 }
 
 /* 각 버튼의 배경색 */
@@ -470,6 +565,7 @@ body, h4, p, button, a {
 }
 
 #sidebar .map-link {
+    vertical-align: center;
     background-color: #2196f3;
 }
 
@@ -513,17 +609,20 @@ body, h4, p, button, a {
 
 /* 모달 컨텐츠 스타일 */
 .modal-content {
+    max-width: 1200px;
+    z-index: 1500;
     position: relative;
     top: 0px;
     background-color: #f7f7f7;
-    padding: 30px;
-    width: 400px;
+    padding: 20px;
+    width: 80%;
     height: 85vh;
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     text-align: center;
     animation: fadeIn 0.3s ease-in-out;
-    transform: translateY(-130px);
+    transform: translateY(-30px);
+    margin: 15% auto;
 }
 
 /* 닫기 버튼 스타일 */
@@ -725,53 +824,16 @@ body, h4, p, button, a {
     margin: 0px 0;
 }
 
-/* 모달 */
 
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-content {
-    top : 20%;
-    background-color: #fff;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 1200px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-}
 
 
 
 #list_wrap {
     position: absolute;
-    top: 50px;
+    top: 10%;
     left: 3%;
     bottom: 0;
-    width: 400px;
+    width: 25%;
     margin: 10px 0 30px 10px;
     padding: 15px;
     overflow-y: auto;
@@ -783,14 +845,6 @@ body, h4, p, button, a {
     border: 1px solid #ddd;
     overflow: visible;
     flex-direction: column;
-}
-/* 가로 구분선 스타일 */
-#list_wrap .divider {
-    width: 100%;
-    height: 2px;
-    background-color: #ddd;
-    margin: 0px 0;
-    border-radius: 1px;
 }
 
 #addPlaceBtn {
@@ -838,35 +892,55 @@ body, h4, p, button, a {
     margin-top: 50px;
 }
 
-
 .place-item {
     margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    color: black;
-    font-size: 16px;
-    z-index: 1050;
-    position: relative
+    padding: 5px 12px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #333;
+    font-size: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
+
+.place-item:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.place-item .title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #2c3e50;
+}
+
+.place-item .address {
+    font-size: 12px;
+    color: #7f8c8d;
+}
+
 .delete-btn {
-    background-color: #4CAF50;
+    background-color: #e74c3c;
     color: white;
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 8px 15px;
+    font-size: 12px;
     font-weight: bold;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    z-index : 1050;
     position: absolute;
     right: 10px;
-    top: 40%;
+    top: 50%;
     transform: translateY(-50%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
 }
 
 
@@ -875,7 +949,25 @@ body, h4, p, button, a {
     gap: 10px;
     overflow-x: auto;
     white-space: nowrap;
-    padding: 10px;
+     padding: 10px 0;
+         overflow-x: auto; /* X축 스크롤 활성화 */
+          scrollbar-width: thin; /* 스크롤바 두께 조정 (Firefox) */
+          scrollbar-color: #888 transparent; /* 스크롤바 색상 (Firefox) */
+}
+
+
+/* 스크롤바 스타일링 (크롬, 엣지, 사파리) */
+#day::-webkit-scrollbar {
+  height: 8px; /* 스크롤바 높이 */
+}
+
+#day::-webkit-scrollbar-thumb {
+  background: #000; /* 스크롤바 색상 */
+  border-radius: 4px; /* 스크롤바 모서리 둥글게 */
+}
+
+#day::-webkit-scrollbar-thumb:hover {
+  background: #555; /* 스크롤바 호버 색상 */
 }
 
 /* 공통 버튼 스타일 */
@@ -884,7 +976,7 @@ body, h4, p, button, a {
     background-color: #f5f5f5;
     color: #333;
     border: 1px solid #ddd;
-    padding: 10px 15px;
+    padding: 5px 10px;
     font-size: 16px;
     text-align: center;
     border-radius: 10px;
@@ -956,7 +1048,7 @@ body, h4, p, button, a {
 #daysSection {
     height: 90%;
     margin-top: 10px;
-    padding: 10px;
+    padding: 10px 0;
 }
 /* 동행자 관리 제목 */
 #companionSection h2 {
@@ -1016,9 +1108,9 @@ body, h4, p, button, a {
 /* 제목과 버튼을 감싸는 컨테이너 */
 #mainControls {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0px;
+    justify-content: left; /* 가운데 정렬 */
+    flex-direction: row; /* 가로 방향으로 정렬 */
+    gap: 10px; /* 버튼 간 간격 */
 }
 
 /* 플랜 제목 스타일 */
@@ -1031,21 +1123,22 @@ body, h4, p, button, a {
 /* 버튼 그룹 */
 #mainControls {
     flex-direction: row; /* 가로 방향으로 정렬 */
-    justify-content: center; /* 가운데 정렬 */
+    justify-content: left; /* 가운데 정렬 */
     display: flex;
-    gap: 20px; /* 버튼 간 간격 */
+    gap: 19px; /* 버튼 간 간격 */
 }
 
 /* 공통 버튼 스타일 */
 #mainControls button {
-    background-color: #4CAF50;
-    color: #ffffff; /* 기본 텍스트 색상 */
-    border: none; /* 테두리 제거 */
-    border-radius: 5px; /* 모서리 둥글게 */
-    padding: 5px 50px; /* 버튼 크기 */
-    font-size: 12px; /* 글자 크기 */
-    cursor: pointer; /* 마우스 커서 */
-    transition: background-color 0.3s, color 0.3s ease; /* 전환 효과 */
+   background-color: #fff;
+  color: var(--plan-color);
+  border: 2px solid var(--plan-color);
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s ease;효과 */
 }
 
 /* 버튼 호버 효과 */

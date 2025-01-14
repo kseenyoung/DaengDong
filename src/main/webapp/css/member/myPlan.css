@@ -53,6 +53,7 @@
   font-size: 14px; /* 글씨 크기 */
   transition: background-color 0.3s; /* 호버 효과 */
   margin: 0 7px;
+  z-index: 10;
 }
 
 .delete-plan:hover {

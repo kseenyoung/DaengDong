@@ -191,7 +191,7 @@ function petCreateUploadFile(apiPath) {
               <div class="my-pet-spec\ies">${petSpecies}</div>
             </div>
             <div class="button-container">
-              <button class="delete-pet btn-danger" data-pet-id="${petId}"">삭제</button>
+              <button class="delete-pet btn btn-danger" data-pet-id="${petId}"">삭제</button>
             </div>
           </div>
         `;

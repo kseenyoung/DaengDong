@@ -131,10 +131,14 @@ ol {
   font-size: var(--font-size5);
   font-weight: 700;
 }
-
+#logo a {
+  text-decoration: none;
+  color: #000;
+}
 #header_right a {
   padding: 10px;
   position: relative;
+    text-decoration: none;
 }
 #header_right img {
   transition: opacity 0.1s ease;
@@ -191,9 +195,10 @@ ol {
   justify-content: space-between;
 }
 #banner_box_top h2 {
-  font-size: var(--font-size10);
+  font-size: var(--font-size8);
   padding-bottom: 30px;
   white-space: nowrap!important;
+  color: #fff;
 }
 #banner_box_bottom {
   display: flex;
@@ -204,7 +209,7 @@ ol {
 }
 #banner_box_bottom p {
   margin-bottom: 20px;
-  color: #fff;
+  color: #000;
   font-size: var(--font-size4);
 }
 #banner_box_bottom button {
@@ -218,6 +223,11 @@ ol {
   padding: 10px 50px;
   font-size: var(--font-size3);
 }
+#banner_box_bottom button a {
+  text-decoration:none;
+  color:#fff;
+}
+
 #main {
   background: #fff;
   /* height: 4200px; */
@@ -240,11 +250,11 @@ ol {
 }
 .sec_top p {
   color: var(--color-blue);
-  font-size: var(--font-size4);
+  font-size: var(--font-size1);
 }
 .sec_top h1 {
   margin-top: 20px;
-  font-size: var(--font-size6);
+  font-size: var(--font-size4);
 }
 .sec_top p:nth-of-type(2) {
   line-height: 180%;
@@ -256,26 +266,30 @@ ol {
 #sec1_bottom {
   display: flex;
   margin-top: 100px;
-  margin-bottom: 300px;
+  margin-bottom: 150px;
+  justify-content: space-between;
 }
 #sec1_bottom_left {
 }
 #sec1_bottom_left h1 {
-  font-size: var(--font-size4);
+  font-size: var(--font-size2);
   font-weight: 700;
   margin-top: 50px;
 }
 #sec1_bottom_left p {
   color: var(--color-gray700);
+  width: 500px;
   margin: 10px 0 20px 0;
-  line-height: 2;
-  font-size: var(--font-size3);
+  line-height: 2.5;
+  font-size: var(--font-size1);
 }
 #sec1_bottom_left div {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin: 50px 0 20px 0;
+  justify-content: center;
+
 }
 #sec1_bottom_left div span {
   color: var(--color-gray700);
@@ -284,8 +298,12 @@ ol {
 #sec1_bottom_left div button {
   background: #fff;
   border: 1px solid #fff;
-
+  margin-right: 200px;
   flex: 40% 0 0;
+  font-weight: 700;
+}
+#sec1_bottom_left div {
+  margin: 0 auto;
 }
 #sec1_bottom_left div button span:first-child {
   display: inline-flex;
@@ -310,11 +328,11 @@ ol {
 #sec1_bottom_left a button {
   background-color: var(--color-blue);
   color: white;
-  width: 200px;
+  padding: 0 10px;
   height: 48px;
-  font-size: var(--font-size4);
+  font-size: var(--font-size1);
   border: 1px solid var(--color-blue);
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 #sec1_bottom_right img {
@@ -347,20 +365,20 @@ ol {
 }
 #sec2_left_box h2 {
   color: rgba(255, 255, 255, 0.7);
-  font-size: var(--font-size4);
+  font-size: var(--font-size2);
   font-weight: 700;
 }
 #sec2_left_box p {
   color: var(--color-white);
-  font-size: var(--font-size6);
+  font-size: var(--font-size4);
   line-height: 140%;
   font-weight: 700;
-  margin: 20px 0px 32px;
+  margin: 5px 0px 22px;
 }
 #sec2_left_box button {
-  font-size: var(--font-size3);
+  font-size: var(--font-size1);
   background: var(--color-white);
-  padding: 8px 45px;
+  padding: 8px 25px;
   border-radius: 40px;
   color: var(--color-blue);
   font-weight: 700;
@@ -372,13 +390,29 @@ ol {
 }
 #div1 {
   width: 100%;
-  height: calc(100% / 3);
-
-  background: #e99595;
+  height: calc(100% / 2);
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgb(249, 251, 253);
+}
+#div1 h2 {
+    width:300px
+}
+#div1 p {
+color: var(--color-gray700);
+font-size: var(--font-size0-7);
+width:400px;
+margin: 20px 0;
+    line-height: 180%;
+}
+#div1 img {
+  width: 400px;
 }
 #div2 {
   width: 100%;
-  height: calc(100% / 3);
+  height: calc(100% / 2);
   background: #466cb3;
 }
 #div3 {
