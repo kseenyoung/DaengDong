@@ -282,6 +282,7 @@ public class MemberController {
         MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
         List<FavoritePlaceDTO> favoritePlaceList = memberService.getFavoritePlaceList(memberDTO.getMember_email());
         model.addAttribute("favoritePlaceList", favoritePlaceList);
+        log.info("favoritePlaceList: " + favoritePlaceList);
         return "member/semiCategory/save/favoritePlaceFragment";
     }
 
@@ -349,6 +350,7 @@ public class MemberController {
         MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
         List<LikePostsDTO> likePostsList = memberService.getLikePosts(memberDTO.getMember_email());
         model.addAttribute("likePostsList", likePostsList);
+        log.info("likePostsList: " + likePostsList);
         return "member/semiCategory/save/likePostsFragment";
     }
 

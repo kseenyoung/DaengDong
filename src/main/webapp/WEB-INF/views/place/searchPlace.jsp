@@ -71,7 +71,7 @@
   </div>
 </div>
 <div class="map_wrap">
-  <div id="map"></div>
+  <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
   <!-- 채팅방 접속하기 버튼 -->
   <button id="btnChat" class="btn btn-primary position-relative">
     <i id="chat-icon" class="bi bi-chat-fill"></i> <!-- 채워진 대화 아이콘 -->
@@ -171,17 +171,14 @@
     </div>
 
     <div id="daysSection">
-      <div class="divider"></div>
         <div id="day"></div>
         <div class="button">
             <button id="addPlaceBtn">장소 추가</button>
+            <div class="line"></div>
         </div>
-          <div class="divider"></div>
         <ul id="placeList"></ul>
     </div>
 </div>
-
-
 <!-- 카카오맵 SDK -->
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62bd6cc1e013b8a659ae61760dc9fd7f&libraries=services"></script>
 
