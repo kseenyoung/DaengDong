@@ -768,10 +768,10 @@ body, h4, p, button, a {
 
 #list_wrap {
     position: absolute;
-    top: 50px;
+    top: 10%;
     left: 3%;
     bottom: 0;
-    width: 400px;
+    width: 25%;
     margin: 10px 0 30px 10px;
     padding: 15px;
     overflow-y: auto;

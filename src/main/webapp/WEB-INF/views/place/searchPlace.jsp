@@ -71,7 +71,7 @@
   </div>
 </div>
 <div class="map_wrap">
-  <div id="map" style="top:60px;left:450px;width:70%;height:65%;position:relative;overflow:hidden;"></div>
+  <div id="map"></div>
   <!-- 채팅방 접속하기 버튼 -->
   <button id="btnChat" class="btn btn-primary position-relative">
     <i id="chat-icon" class="bi bi-chat-fill"></i> <!-- 채워진 대화 아이콘 -->
