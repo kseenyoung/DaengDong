@@ -27,7 +27,6 @@ let categoryMarkers = [];
 let placeOverlay;
 let contentNode;
 
-
 const placeListCoontainer = document.getElementById("placeListContainer");
 /***************************************************
  * 페이지 로드 시 최초 실행
@@ -52,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     initPlanUI();
 
     // 4) WebSocket 연결
-    initWebSocket(planId);
+    //initWebSocket(planId);
 
     // 5) 기본 검색 실행 (키워드)
     searchPlaces();
@@ -106,7 +105,7 @@ async function loadPlanDataFromServer(planId) {
             dayPlans[day].push({
                 title: kakaoPlaceName,
                 address: kakaoRoadAddressName,
-                id: kakaoPlaceId
+                id: kakaoPlaceId,
             });
         });
         console.log("변환된 dayPlans:", dayPlans);
@@ -200,74 +199,45 @@ function initPlanUI() {
 /***************************************************
  * (D) WebSocket 초기화
  ***************************************************/
-const socketId = `client-${Math.random().toString(36).substring(7)}`;
-let webSocket = null;
-function initWebSocket(planId) {
-    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const host = window.location.host;
-    const webSocketUrl = `${protocol}//${host}/daengdong/shareMap-ws?planId=${planId}`;
-    console.log("WebSocket 연결 시도:", webSocketUrl);
-
-    webSocket = new WebSocket(webSocketUrl);
-
-    webSocket.onopen = () => {
-        console.log("WebSocket 연결 성공");
-    };
-
-    webSocket.onerror = (err) => {
-        console.error("WebSocket 오류:", err);
-    };
-
-    webSocket.onclose = () => {
-        console.log("WebSocket 종료");
-    };
-
-    webSocket.onmessage = (evt) => {
-        const msg = JSON.parse(evt.data);
-
-        // 본인이 보낸 메시지인지 확인 (고유 sender ID 사용)
-        if (msg.sender === "host") {
-            console.log("본인이 보낸 메시지입니다. 이미 처리했으므로 동작하지 않습니다.");
-            return;
-        }
-
-        if (msg.type === "deletePlace") {
-            const { kakaoPlaceId, day } = msg.data;
-            console.log("받은 삭제 데이터:", msg.data);
-
-            // 해당 일차의 dayPlans에서 장소 제거
-            if (dayPlans[day]) {
-                dayPlans[day] = dayPlans[day].filter(place => place.id !== kakaoPlaceId);
-            }
-
-            // 지도에서 마커 제거
-            const markerIndex = customMarkers.findIndex(m => m.title === kakaoPlaceId);
-            if (markerIndex !== -1) {
-                customMarkers[markerIndex].customMarker.setMap(null);
-                customMarkers.splice(markerIndex, 1);
-            }
-
-            // UI 업데이트
-            displayDayPlan(day);
-            alert("다른 사용자가 장소를 삭제했습니다!");
-        }
-
-        if(msg.type === "shareMap") {
-            const place = msg.data;
-            console.log("받은 장소 데이터:", place);
-
-            const {
-                kakaoPlaceName, kakaoRoadAddressName,
-                kakaoX, kakaoY,
-                kakaoPlaceId, selectedDay
-            } = place;
-
-            // 이미 dayPlans 구조가 있으므로, 받은 데이터를 로컬 일정에 추가
-            addPlaceToPlan(kakaoPlaceName, kakaoRoadAddressName, kakaoPlaceId, kakaoX, kakaoY, selectedDay);
-            alert("다른 사람이 장소를 추가했습니다!");
-        }
-    };
-}
+// let webSocket = null;
+// function initWebSocket(planId) {
+//     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+//     const host = window.location.host;
+//     const webSocketUrl = `${protocol}//${host}/daengdong/shareMap-ws?planId=${planId}`;
+//     console.log("WebSocket 연결 시도:", webSocketUrl);
+//
+//     webSocket = new WebSocket(webSocketUrl);
+//
+//     webSocket.onopen = () => {
+//         console.log("WebSocket 연결 성공");
+//     };
+//
+//     webSocket.onerror = (err) => {
+//         console.error("WebSocket 오류:", err);
+//     };
+//
+//     webSocket.onclose = () => {
+//         console.log("WebSocket 종료");
+//     };
+//
+//     webSocket.onmessage = (evt) => {
+//         const msg = JSON.parse(evt.data);
+//         if(msg.type === "shareMap") {
+//             const place = msg.data;
+//             console.log("받은 장소 데이터:", place);
+//
+//             const {
+//                 kakaoPlaceName, kakaoRoadAddressName,
+//                 kakaoX, kakaoY,
+//                 kakaoPlaceId, selectedDay
+//             } = place;
+//
+//             // 이미 dayPlans 구조가 있으므로, 받은 데이터를 로컬 일정에 추가
+//             addPlaceToPlan(kakaoPlaceName, kakaoRoadAddressName, kakaoPlaceId, kakaoX, kakaoY, selectedDay);
+//             alert("다른 사람이 장소를 추가했습니다!");
+//         }
+//     };
+// }
 
 /***************************************************
  * (E) 일정 관련 함수
@@ -342,19 +312,6 @@ function displayDayPlan(day) {
             dayPlans[day] = dayPlans[day].filter((p,idx)=> idx !== index);
             removeCustomMarker(title);
             displayDayPlan(day);
-
-            // WebSocket으로 삭제 정보 전송
-            if (webSocket && webSocket.readyState === WebSocket.OPEN) {
-                webSocket.send(JSON.stringify({
-                    type: "deletePlace",
-                    sender: "host",
-                    planId: window.G_planId,
-                    data: {
-                        kakaoPlaceId: id, // 삭제할 장소의 kakaoPlaceId
-                        day: day          // 삭제할 장소의 n일차
-                    }
-                }));
-            }
         };
 
         // 목록 클릭 -> 지도이동
@@ -420,11 +377,11 @@ function addPlaceToPlan(placeTitle, placeAddress, kakaoPlaceId, x, y, forcedDay)
     console.log("[addPlaceToPlan] day=", day, " / dayPlans:", dayPlans);
 
     // 장소를 서버 DB에 저장
-    // const placeData = {
-    //     planId: window.G_planId,
-    //     kakaoPlaceId,
-    //     day
-    // }
+    const placeData = {
+        planId: window.G_planId,
+        kakaoPlaceId,
+        day
+    }
 }
 
 // (E-5) "최종 완료" 버튼 이벤트
@@ -472,9 +429,8 @@ function renderCompanionList(){
 
     companions.forEach(comp => {
         const li = document.createElement("li");
+        li.textContent = +comp.memberEmail;
 
-        //li.textContent = comp.nickname+"("+comp.memberEmail+")";
-        li.textContent = comp.memberEmail;
         companionListUl.appendChild(li);
     });
 }
@@ -487,7 +443,9 @@ function searchPlaces(){
     const kwInput = document.getElementById("keyword");
     if(!kwInput) return;
     let keyword = kwInput.value.trim();
-    if(!keyword) keyword="홍대 맛집";
+    keyword += " 애견"
+    if(!keyword) keyword="카페";
+
 
     ps.keywordSearch(keyword, placesSearchCB);
 }
@@ -728,12 +686,17 @@ document.addEventListener("click", function(evt){
         const x = parseFloat(btn.dataset.placeX);
         const y = parseFloat(btn.dataset.placeY);
         const placeId = btn.dataset.placeId;
+        console.log("placeAddress:", placeAddress);
+
+        if (!placeAddress) {
+            return; // 추가 실행 방지
+        }
 
         // 1) 로컬에 일정 추가
         addPlaceToPlan(placeName, placeAddress, placeId, x, y);
 
         // 2) DB 저장 (카카오 장소 관련 값들을 JSON으로 전송)
-        const regionId = placeAddress.split(" ")[0]; // '서울', '경기' 등 지역 추출
+        let regionId = placeAddress.split(" ")[0];
         const placeDTO = {
             kakaoPlaceId: placeId,
             kakaoPlaceName: placeName,
@@ -764,24 +727,22 @@ document.addEventListener("click", function(evt){
             });
 
         // 웹소켓 전송
-        if(webSocket && webSocket.readyState===WebSocket.OPEN){
-            webSocket.send(JSON.stringify({
-                type: "shareMap",
-                sender: "host",
-                planId: window.G_planId,
-                data: {
-                    kakaoPlaceName: placeName,
-                    kakaoRoadAddressName: placeAddress,
-                    kakaoPhone: placePhone,
-                    kakaoX: x,
-                    kakaoY: y,
-                    kakaoPlaceUrl: placeUrl,
-                    kakaoPlaceId: placeId,
-                    selectedDay: getSelectedDay()
-                }
-            }));
-        }
-        alert("장소가 공유되었습니다!");
+        // if(webSocket && webSocket.readyState===WebSocket.OPEN){
+        //     webSocket.send(JSON.stringify({
+        //         type: "shareMap",
+        //         data: {
+        //             kakaoPlaceName: placeName,
+        //             kakaoRoadAddressName: placeAddress,
+        //             kakaoPhone: placePhone,
+        //             kakaoX: x,
+        //             kakaoY: y,
+        //             kakaoPlaceUrl: placeUrl,
+        //             kakaoPlaceId: placeId,
+        //             selectedDay: getSelectedDay()
+        //         }
+        //     }));
+        // }
+        // alert("장소가 공유되었습니다!");
     }
 });
 
@@ -997,15 +958,17 @@ function handleMapRightClick(){
     drawingFlag=false;
 }
 
-// 폴리라인
-function deleteClickLine(){
-    if(clickLine){
+// 폴리라인 삭제
+function deleteClickLine() {
+    if (clickLine) {
         clickLine.setMap(null);
-        clickLine=null;
+        clickLine = null;
     }
 }
-function showDistance(content, position){
-    if(distanceOverlay){
+
+// 거리 정보 오버레이 표시
+function showDistance(content, position) {
+    if (distanceOverlay) {
         distanceOverlay.setPosition(position);
         distanceOverlay.setContent(content);
     } else {
@@ -1013,109 +976,128 @@ function showDistance(content, position){
             map,
             content,
             position,
-            xAnchor:0,
-            yAnchor:0,
-            zIndex:3
+            xAnchor: 0,
+            yAnchor: 0,
+            zIndex: 3
         });
     }
 }
-function deleteDistnce(){
-    if(distanceOverlay){
+
+// 거리 정보 오버레이 삭제
+function deleteDistnce() {
+    if (distanceOverlay) {
         distanceOverlay.setMap(null);
-        distanceOverlay=null;
+        distanceOverlay = null;
     }
 }
-function displayCircleDot(position, distance){
+
+// 지도에 원형 마커 표시
+function displayCircleDot(position, distance) {
     let circleOverlay = new kakao.maps.CustomOverlay({
-        content:'<span class="dot"></span>',
+        content: '<span class="dot"></span>',
         position,
-        zIndex:1
+        zIndex: 1
     });
     circleOverlay.setMap(map);
 
-    let distanceOverlay_=null;
-    if(distance>0){
-        distanceOverlay_= new kakao.maps.CustomOverlay({
-            content:`<div class="dotOverlay">거리 <span class="number">${distance}</span>m</div>`,
+    let distanceOverlay_ = null;
+    if (distance > 0) {
+        let distanceText = distance >= 1000
+            ? `${(distance / 1000).toFixed(1)}km`
+            : `${distance}m`;
+
+        distanceOverlay_ = new kakao.maps.CustomOverlay({
+            content: `<div class="dotOverlay">거리 <span class="number">${distanceText}</span></div>`,
             position,
-            yAnchor:1,
-            zIndex:2
+            yAnchor: 1,
+            zIndex: 2
         });
         distanceOverlay_.setMap(map);
     }
-    dots.push({circle: circleOverlay, distance: distanceOverlay_});
+    dots.push({ circle: circleOverlay, distance: distanceOverlay_ });
 }
-function deleteCircleDot(){
-    for(let i=0;i<dots.length;i++){
-        if(dots[i].circle) dots[i].circle.setMap(null);
-        if(dots[i].distance) dots[i].distance.setMap(null);
+
+// 지도에서 원형 마커 삭제
+function deleteCircleDot() {
+    for (let i = 0; i < dots.length; i++) {
+        if (dots[i].circle) dots[i].circle.setMap(null);
+        if (dots[i].distance) dots[i].distance.setMap(null);
     }
-    dots=[];
+    dots = [];
 }
-function getTimeHTML(distance){
-    let walkTime = Math.floor(distance/67);
-    let bikeTime = Math.floor(distance/227);
 
-    let walkHour="", walkMin = (walkTime%60)+"분";
-    if(walkTime>60) walkHour=(Math.floor(walkTime/60)+"시간 ");
-    let bikeHour="", bikeMin=(bikeTime%60)+"분";
-    if(bikeTime>60) bikeHour=(Math.floor(bikeTime/60)+"시간 ");
+// 거리 및 시간 HTML 생성
+function getTimeHTML(distance) {
+    let distanceText = distance >= 1000
+        ? `${(distance / 1000).toFixed(1)}km`
+        : `${distance}m`;
 
-    let content = `
+    // 도보 시간 계산
+    let walkTime = Math.floor(distance / 67);
+    let walkHour = Math.floor(walkTime / 60);
+    let walkMin = walkTime % 60;
+    let walkTimeText = walkHour > 0
+        ? `${walkHour}시간 ${walkMin}분`
+        : `${walkMin}분`;
+
+    // 자전거 시간 계산
+    let bikeTime = Math.floor(distance / 227);
+    let bikeHour = Math.floor(bikeTime / 60);
+    let bikeMin = bikeTime % 60;
+    let bikeTimeText = bikeHour > 0
+        ? `${bikeHour}시간 ${bikeMin}분`
+        : `${bikeMin}분`;
+
+    return `
     <ul class="dotOverlay distanceInfo">
-      <li><span class="label">총거리</span><span class="number">${distance}</span>m</li>
-      <li><span class="label">도보</span>${walkHour}${walkMin}</li>
-      <li><span class="label">자전거</span>${bikeHour}${bikeMin}</li>
+      <li><span class="label">총거리</span><span class="number">${distanceText}</span></li>
+      <li><span class="label">도보</span>${walkTimeText}</li>
+      <li><span class="label">자전거</span>${bikeTimeText}</li>
     </ul>`;
-    return content;
 }
 
 // 폴리라인 업데이트
-function updatePolyline(){
-    if(line){
+function updatePolyline() {
+    if (line) {
         line.setMap(null);
     }
-    if(markerPositions.length<2) return;
+    if (markerPositions.length < 2) return;
+
     line = new kakao.maps.Polyline({
         map,
         path: markerPositions,
-        strokeWeight:3,
-        strokeColor:'#db4040',
-        strokeOpacity:1,
-        strokeStyle:'solid'
+        strokeWeight: 3,
+        strokeColor: '#db4040',
+        strokeOpacity: 1,
+        strokeStyle: 'solid'
     });
 }
-function updateDistanceAndTime(){
-    if(!line || markerPositions.length<2){
-        if(distanceOverlay){
+
+// 거리 및 시간 업데이트
+function updateDistanceAndTime() {
+    if (!line || markerPositions.length < 2) {
+        if (distanceOverlay) {
             distanceOverlay.setMap(null);
-            distanceOverlay=null;
+            distanceOverlay = null;
         }
         return;
     }
+
     let totalDistance = Math.round(line.getLength());
-    let walkTime = Math.floor(totalDistance/67);
-    let bikeTime = Math.floor(totalDistance/227);
+    let content = getTimeHTML(totalDistance);
 
-    let content=`
-    <ul class="dotOverlay distanceInfo">
-      <li><span class="label">총거리</span><span class="number">${totalDistance}</span>m</li>
-      <li><span class="label">도보</span>${Math.floor(walkTime/60)}시간 ${walkTime%60}분</li>
-      <li><span class="label">자전거</span>${Math.floor(bikeTime/60)}시간 ${bikeTime%60}분</li>
-    </ul>`;
-
-    if(!distanceOverlay){
-        distanceOverlay=new kakao.maps.CustomOverlay({
+    if (!distanceOverlay) {
+        distanceOverlay = new kakao.maps.CustomOverlay({
             map,
-            position: markerPositions[markerPositions.length-1],
+            position: markerPositions[markerPositions.length - 1],
             content,
-            xAnchor:0,
-            yAnchor:0,
-            zIndex:3
+            xAnchor: 0,
+            yAnchor: 0,
+            zIndex: 3
         });
     } else {
         distanceOverlay.setContent(content);
-        distanceOverlay.setPosition(markerPositions[markerPositions.length-1]);
+        distanceOverlay.setPosition(markerPositions[markerPositions.length - 1]);
         distanceOverlay.setMap(map);
     }
 }
@@ -1156,7 +1138,6 @@ function renderCompanionList(){
     companionList.innerHTML="";
     companions.forEach((c)=>{
         const li = document.createElement("li");
-        // li.textContent=`${c.nickname}(${c.memberEmail})`;
         li.textContent=`${c.memberEmail}`;
         companionList.appendChild(li);
     });
