@@ -21,7 +21,7 @@
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
     <title>Document</title>
-    <link rel="stylesheet" href="${path}/style2.css" />
+
     <link rel="stylesheet" href="${path}/css/post/post.css" />
 <script>
     const path = `${pageContext.servletContext.contextPath}`
@@ -29,9 +29,9 @@
   </head>
 
   <body>
-
+   <%@include file="../member/header.jsp" %>
     <div id="container" data-path="${path}">
-    <%@include file="../member/header.jsp" %>
+
       <div id="post_write_modal">
         <div id="post_write_block">
             <h2>새 게시물 만들기</h2>
