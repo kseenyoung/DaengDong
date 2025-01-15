@@ -413,6 +413,9 @@ function finalizePlan() {
         .then(msg => {
             alert("최종 일정이 저장되었습니다!");
             console.log("서버 응답:", msg);
+
+            // 저장이 정상 완료된 후 /daengdong/ 로 이동
+            location.href = "/daengdong";
         })
         .catch(err => {
             console.error("일정 저장 오류:", err);
@@ -685,8 +688,8 @@ document.addEventListener("click", function(evt){
         const placeUrl = btn.dataset.placeUrl;
         const x = parseFloat(btn.dataset.placeX);
         const y = parseFloat(btn.dataset.placeY);
-        const placeId = btn.dataset.placeId;
-        console.log("placeAddress:", placeAddress);
+        const placeId = btn.dataset.id;
+        console.log("placeAddress:", btn.dataset.placeAddress);
 
         if (!placeAddress) {
             return; // 추가 실행 방지
@@ -695,30 +698,8 @@ document.addEventListener("click", function(evt){
         // 1) 로컬에 일정 추가
         addPlaceToPlan(placeName, placeAddress, placeId, x, y);
 
-        // 2) DB 저장 (카카오 장소 관련 값들을 JSON으로 전송)
-        let regionId = placeAddress.split(" ")[0];
-        const placeDTO = {
-            kakaoPlaceId: placeId,
-            kakaoPlaceName: placeName,
-            kakaoRoadAddressName: placeAddress,
-            kakaoPhone: placePhone,
-            kakaoX: x,
-            kakaoY: y,
-            kakaoPlaceUrl: placeUrl,
-            regionId: regionId
-        };
-
-        fetch('/daengdong/place/savePlace', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(placeDTO)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("실패 save place");
-                }
-                return response.text();
-            })
+        // 2) 공통 함수 호출 -> DB 저장 (카카오 장소 관련 값들을 JSON으로 전송)
+        savePlaceToDB(placeName, placeAddress, placeId, x, y, placePhone, placeUrl)
             .then(data => {
                 console.log("DB 저장 성공:", data);
             })
@@ -756,6 +737,8 @@ function getSelectedDay(){
  * (J) 사이드바 표시
  ***************************************************/
 function showSidebar(place){
+    console.log("showSidebar -> place =", place);
+    console.log("showSidebar -> place.id =", place.id); // 확인
     const sidebar = document.getElementById("sidebar");
     const template = document.getElementById("sidebar-template");
     if(!sidebar || !template) return;
@@ -787,7 +770,18 @@ function showSidebar(place){
     let addPlanBtn = sidebar.querySelector("#addPlanBtn");
     if(addPlanBtn){
         addPlanBtn.onclick = ()=>{
+
+            // 1) 일정 추가
             addPlaceToPlan(place.place_name, place.address_name, place.id, place.x, place.y);
+
+            // 2) DB 저장 (공통함수)
+            savePlaceToDB(place.place_name, place.address_name, place.id, place.x, place.y, place.phone, place.place_url)
+                .then(data => {
+                    console.log("DB 저장 성공 (sidebar):", data);
+                })
+                .catch(err => {
+                    console.error("DB 저장 오류 (sidebar):", err);
+                });
         };
     }
 
@@ -1360,4 +1354,33 @@ function changeCategoryClass(el) {
     if (el) {
         el.className = 'on';
     }
+}
+
+/***************************************************
+ * (R) 장소 추가 공통 함수
+ ***************************************************/
+function savePlaceToDB(placeName, placeAddress, placeId, x, y, placePhone, placeUrl) {
+    let regionId = placeAddress.split(" ")[0];
+    const placeDTO = {
+        kakaoPlaceId: placeId,
+        kakaoPlaceName: placeName,
+        kakaoRoadAddressName: placeAddress,
+        kakaoPhone: placePhone,
+        kakaoX: x,
+        kakaoY: y,
+        kakaoPlaceUrl: placeUrl,
+        regionId: regionId
+    };
+
+    return fetch('/daengdong/place/savePlace', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(placeDTO)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("실패 save place");
+            }
+            return response.text();
+        });
 }
