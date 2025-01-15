@@ -287,14 +287,18 @@ function displayDayPlan(day) {
     }
 
     dayPlans[day].forEach((item, index)=>{
+        if (!item) return;
         const { title, address, x, y, id } = item;
 
         const li = document.createElement("li");
         li.classList.add("place-item");
+        li.draggable = true;
+        li.dataset.index = index;
 
         const numSpan = document.createElement("span");
         numSpan.classList.add("placeNumber");
         numSpan.textContent = (index+1)+". ";
+        numSpan.style.display = "none";
 
         const h4 = document.createElement("h4");
         h4.classList.add("placeTitle");
@@ -323,6 +327,31 @@ function displayDayPlan(day) {
                 map.setLevel(2);
             }
         };
+
+        li.addEventListener("dragstart", (e) => {
+            e.dataTransfer.setData("text/plain", index);
+            li.classList.add("dragging");
+        });
+
+        li.addEventListener("dragend", () => {
+            li.classList.remove("dragging");
+        });
+        li.addEventListener("dragover", (e) => {
+            e.preventDefault();
+        });
+        li.addEventListener("drop", (e) => {
+            e.preventDefault();
+            const draggedIndex = parseInt(e.dataTransfer.getData("text/plain"),10);
+            const targetIndex = parseInt(li.dataset.index, 10);
+
+            // 리스트 순서 변경
+            if (draggedIndex !== targetIndex) {
+                const draggedItem = dayPlans[day][draggedIndex];
+                dayPlans[day].splice(draggedIndex, 1); // 드래그된 항목 제거
+                dayPlans[day].splice(targetIndex, 0, draggedItem); // 드롭된 위치에 삽입
+                displayDayPlan(day); // UI 업데이트
+            }
+        });
 
         li.appendChild(numSpan);
         li.appendChild(h4);
@@ -817,8 +846,8 @@ function showSidebar(place){
  * (K) 빨간 마커 (일정에 추가된 마커)
  ***************************************************/
 function addCustomMarker(position, title){
-    const imageSrc = "/img/red_marker.png"; // 실제 경로
-    const imageSize = new kakao.maps.Size(24,35);
+    const imageSrc = "https://maps.gstatic.com/mapfiles/ms2/micons/red-dot.png"; // 실제 경로
+    const imageSize = new kakao.maps.Size(50, 45); // 마커 이미지 크기 (가로 50px, 세로 50px)
     const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
     const customMarker = new kakao.maps.Marker({

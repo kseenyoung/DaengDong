@@ -104,7 +104,7 @@
     </div>
     <hr>
         <div class="container">
-           <div id="category-container">
+           <!--<div id="category-container">
                <ul id="category">
                    <li id="BK9" data-order="0">
                        <span class="category_bg bank"></span>
@@ -131,7 +131,7 @@
                        편의점
                    </li>
                </ul>
-           </div>
+           </div>-->
            <ul id="placesList"></ul>
            <div id="pagination"></div>
         </div>
