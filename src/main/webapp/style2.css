@@ -64,13 +64,13 @@
   --font-size11: 120px;
 }
 
-@font-face {
+/* @font-face {
   font-family: 'Pretendard Variable';
   font-weight: 45 920;
   font-style: normal;
   font-display: swap;
   src: url('./PretendardVariable.woff2') format('woff2-variations');
-}
+} */
 
 /* reset */
 
@@ -397,10 +397,10 @@ ol {
   align-items: center;
   background: rgb(249, 251, 253);
 }
-#div1 h2 {
+#div1 h2,#div2 h2  {
     width:300px
 }
-#div1 p {
+#div1 p,#div2 p {
 color: var(--color-gray700);
 font-size: var(--font-size0-7);
 width:400px;
@@ -410,11 +410,18 @@ margin: 20px 0;
 #div1 img {
   width: 400px;
 }
+#div2 img {
+  width: 500px;
+}
 #div2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: calc(100% / 2);
-  background: #466cb3;
+  background: #fff;
 }
+
 #div3 {
   width: 100%;
   height: calc(100% / 3);

@@ -25,8 +25,8 @@
     height: 85vh;
     overflow-y: auto;
     top: 5%;
-    left: 10%;
-    width: 80%;
+    left: 15%;
+    width: 70%;
     margin: 0 auto;
     padding: 20px;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(240, 240, 240, 0.95));
@@ -135,21 +135,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
     margin: 10px 0;
+    position: absolute;
+    top: 40px;
+    left: 36%;
+}
+#mainBtn button {
+    padding: 5px;
+    border: none;
+    top: 48px;
+    font-size: 14px;
 }
 #pinbutton {
-    position: absolute;
-    top: 10px;
-    left: 45%;
+
     transform: translateX(-50%);
     z-index: 100;
-    padding: 0.5vw 1vw;
-    font-size: 1vw;
     font-weight: bold;
     color: #fff;
     background-color: #4CAF50;
-    border: 2px solid #000;
     border-radius: 5px;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -161,17 +164,12 @@
 }
 /* 최종 완료 버튼 */
 #finalizePlanBtn {
-    position: absolute;
-    top: 10px;
-    left: 60%;
+
     transform: translateX(-50%);
     z-index: 100;
-    padding: 0.5vw 1vw;
-    font-size: 1vw;
     font-weight: bold;
     color: #fff;
     background-color: #2196F3;
-    border: 2px solid #000;
     border-radius: 5px;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -295,7 +293,7 @@
 }
 
 #placesList li h4 {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     margin: 0;
     color: #333;
@@ -320,7 +318,7 @@
     border: none;
     border-radius: 5px;
     padding: 8px 12px;
-    font-size: 14px;
+    font-size: 11px;
     font-weight: bold;
     cursor: pointer;
     text-align: center;
@@ -340,7 +338,7 @@
     text-decoration: none;
     border-radius: 5px;
     padding: 8px 12px;
-    font-size: 14px;
+    font-size: 11px;
     font-weight: bold;
     cursor: pointer;
     text-align: center;
@@ -354,25 +352,8 @@
 }
 
 
-/* 자세히 보기 링크 */
-#placesList li .map-link {
-    background-color: #2196f3;
-    color: #ffffff;
-    text-decoration: none;
-    border-radius: 5px;
-    padding: 8px 12px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    text-align: center;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
 
-#placesList li .map-link:hover {
-    background-color: #1976d2;
-    transform: translateY(-2px);
-}
+
 /* 사이드바 */
 body, h4, p, button, a {
     margin: 0;
@@ -387,7 +368,7 @@ body, h4, p, button, a {
     border: 1px solid #ccc;
     display: none;
     position: fixed;
-    bottom: 20px;
+    bottom: 30px;
     left: 65%;
     transform: translateX(-50%);
     background-color: #ffffff;
@@ -400,7 +381,7 @@ body, h4, p, button, a {
     gap: 5px;
 }
 #sidebar .divider {
-    width: 80vw;
+    width: 100%;
     height: 2px;
     background-color: #ddd;
     margin: 0px 0;
@@ -430,7 +411,7 @@ body, h4, p, button, a {
 }
 
 #sidebar .sidebar-title {
-    font-size: clamp(10px, 1vw, 16px);
+    font-size: 13px;
     font-weight: bold;
     color: #333;
     margin-bottom: 10px;
@@ -494,7 +475,6 @@ body, h4, p, button, a {
     top: 0px;
     right: 3px;
     font-size: 40px;
-    color: #black;
     cursor: pointer;
     background: none;
     border: none;
@@ -568,6 +548,7 @@ body, h4, p, button, a {
 #sidebar .map-link {
     vertical-align: center;
     background-color: #2196f3;
+    line-height: 3;
 }
 
 /* 버튼 호버 효과 */
@@ -610,14 +591,14 @@ body, h4, p, button, a {
 
 /* 모달 컨텐츠 스타일 */
 .modal-content {
-    max-width: 1200px;
+/*    max-width: 1200px;*/
     z-index: 1500;
     position: relative;
     top: 0px;
     background-color: #f7f7f7;
     padding: 20px;
-    width: 80%;
-    height: 85vh;
+    width: 450px !important;
+    height: 500px;
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     text-align: center;
@@ -649,7 +630,7 @@ body, h4, p, button, a {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 20px;
-    color: #0d47a1;
+    color: #4caf50;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
@@ -673,15 +654,35 @@ body, h4, p, button, a {
 
 /* 목록 스타일 */
 #followingList, #followerList {
-    overflow-y: auto;
+    height: 200px;
+    overflow-y: scroll;
     list-style: none;
     padding: 0;
-    margin: 0 0 15px;
+    margin: 0 0 30px;
+}
+
+#followerList::-webkit-scrollbar, #followingList::-webkit-scrollbar {
+    width: 0;
+}
+#followerList::-webkit-scrollbar-track, #followingList::-webkit-scrollbar-track {
+    background: #fff;  /*스크롤바 뒷 배경 색상*/
+    border-radius: 10px;
+}
+#followerList::-webkit-scrollbar-thumb, #followingList::-webkit-scrollbar-thumb {
+    height: 100%; /* 스크롤바의 길이 */
+    background: #ddd; /* 스크롤바의 색상 */
+
+    border-radius: 10px;
+}
+#followerList::-webkit-scrollbar-button, #followingList::-webkit-scrollbar-button {
+    display: none;
+    margin: 5px 0;
 }
 
 #followingList li, #followerList li {
     padding: 10px;
-    margin: 5px 0;
+    margin-bottom: 5px;
+    margin-right: 3px;
     background: #ffffff;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -814,6 +815,7 @@ body, h4, p, button, a {
 .button{
     display: flex;
     flex-direction: column;
+    align-items: end;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -831,7 +833,7 @@ body, h4, p, button, a {
 
 #list_wrap {
     position: absolute;
-    top: 10%;
+    top: 9%;
     left: 3%;
     bottom: 0;
     width: 25%;
@@ -847,26 +849,28 @@ body, h4, p, button, a {
     overflow: visible;
     flex-direction: column;
 }
-
+#list_wrap p {
+  font-weight: 700;
+    color: #6c757d;
+}
 #addPlaceBtn {
-    background-color: #4CAF50;
+    width: 70px;
+    background-color: var(--plan-color);
     color: white;
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 5px 0;
+    font-size: 12px;
     font-weight: bold;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 5px 0;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    z-index : 1050;
-    position: absolute;
-    right: 15px;
 }
 
 #addPlaceBtn:hover, .delete-btn:hover {
-    background-color: #45a049;
+    background-color: #fff;
+    border:  var(--plan-color);
+    color: var(--plan-color);
 }
 
 .search-input {
@@ -890,7 +894,7 @@ body, h4, p, button, a {
     list-style:none;
     padding:0;
     margin:0;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .place-item {
@@ -904,6 +908,23 @@ body, h4, p, button, a {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     position: relative;
     transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+.place-item h4 {
+    width: 240px;
+}
+.place-item span {
+    font-size: 14px;
+}
+.placeTitle {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+.place-item p {
+    width: 300px;
+    margin: 0;
+    margin-bottom: 5px;
 }
 
 .place-item:hover {
@@ -948,40 +969,42 @@ body, h4, p, button, a {
 #day {
     display: flex;
     gap: 10px;
-    overflow-x: auto;
+    overflow-x: scroll;
     white-space: nowrap;
-     padding: 10px 0;
-         overflow-x: auto; /* X축 스크롤 활성화 */
-          scrollbar-width: thin; /* 스크롤바 두께 조정 (Firefox) */
-          scrollbar-color: #888 transparent; /* 스크롤바 색상 (Firefox) */
+    padding: 10px 0;
+    width: 100%;
 }
-
-
-/* 스크롤바 스타일링 (크롬, 엣지, 사파리) */
 #day::-webkit-scrollbar {
-  height: 8px; /* 스크롤바 높이 */
+    width: 10px;
+    height: 7px;
 }
-
+#day::-webkit-scrollbar-track {
+    background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
+    border-radius: 10px;
+}
 #day::-webkit-scrollbar-thumb {
-  background: #000; /* 스크롤바 색상 */
-  border-radius: 4px; /* 스크롤바 모서리 둥글게 */
+    height: 30%; /* 스크롤바의 길이 */
+    background: #91ddff; /* 스크롤바의 색상 */
+
+    border-radius: 10px;
+}
+#day::-webkit-scrollbar-button {
+    display: none;
 }
 
-#day::-webkit-scrollbar-thumb:hover {
-  background: #555; /* 스크롤바 호버 색상 */
-}
 
 /* 공통 버튼 스타일 */
 .day-btn {
     display: inline-block;
-    background-color: #f5f5f5;
-    color: #333;
-    border: 1px solid #ddd;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+    color: #6c757d;
     padding: 5px 10px;
-    font-size: 16px;
+    font-size: 14px;
     text-align: center;
     border-radius: 10px;
     cursor: pointer;
+    font-weight: 700;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -992,10 +1015,11 @@ body, h4, p, button, a {
 
 /* 선택된 버튼 스타일 */
 .day-btn.selected {
-    background-color: #000000; /* 선택된 버튼 검은색 */
+    background-color: #91ddff; /* 선택된 버튼 검은색 */
     color: #ffffff; /* 선택된 버튼 텍스트 흰색 */
     font-weight: bold; /* 텍스트 굵게 */
     border-color: #000000; /* 테두리도 검은색 */
+    box-shadow: none;
 }
 
 
@@ -1053,10 +1077,13 @@ body, h4, p, button, a {
 }
 /* 동행자 관리 제목 */
 #companionSection h2 {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     margin-bottom: 20px;
     color: #333;
+    border-top: 1px solid #aaa3a3;
+    padding-top: 30px;
+    text-align: center;
 }
 
 /* + 버튼 스타일 */
@@ -1065,15 +1092,15 @@ body, h4, p, button, a {
     text-align: center;
 }
 
-#together #openCompanionModalBtn {
-    background-color: #4caf50;
-    color: white;
-    font-size: 20px;
-    font-weight: bold;
-    border: none;
-    border-radius: 50%; /* 원형 버튼 */
-    width: 50px;
-    height: 50px;
+ #openCompanionModalBtn {
+     background-color: var(--plan-color);
+     color: white;
+     font-size: 18px;
+     font-weight: bold;
+     border: none;
+     border-radius: 5px;
+     width: 25px;
+     height: 25px;
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease, transform 0.2s ease;
@@ -1121,13 +1148,7 @@ body, h4, p, button, a {
     margin-bottom: 20px; /* 제목과 버튼 사이 여백 */
 }
 
-/* 버튼 그룹 */
-#mainControls {
-    flex-direction: row; /* 가로 방향으로 정렬 */
-    justify-content: left; /* 가운데 정렬 */
-    display: flex;
-    gap: 19px; /* 버튼 간 간격 */
-}
+
 
 /* 공통 버튼 스타일 */
 #mainControls button {
@@ -1139,12 +1160,13 @@ body, h4, p, button, a {
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s ease;효과 */
+  transition: background-color 0.3s, color 0.3s ease;
 }
 
 /* 버튼 호버 효과 */
 #mainControls button:hover {
-    background-color: #388E3C;
+    background-color: var(--plan-color);
+    color: #fff;
 }
 
 /* 채팅방 접속하기 버튼 CSS */
@@ -1174,4 +1196,26 @@ body, h4, p, button, a {
 
 #btnChat:hover {
     background-color: #0056b3;
+}
+.plan_together_modal {
+    display: flex;
+}
+.plan_together_modal div {
+    width: 50%;
+}
+.plan_together_modal input {
+    margin-right: 5px;
+}
+#companionList li {
+    position: relative;
+}
+#companionList .deleteBtn {
+    margin-left: 10px;
+    background: #e74c3c;
+    color: #fff;
+    padding: 3px 7px;
+    font-size: 12px;
+    border-radius: 5px;
+    position: absolute;
+    right: 10px;
 }

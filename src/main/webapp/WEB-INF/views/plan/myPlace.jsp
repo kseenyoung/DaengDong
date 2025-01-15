@@ -351,6 +351,7 @@
                             <td>${plan.kakaoRoadAddressName}</td>
                         </tr>
                     `;
+
                     });
 
                     // 테이블의 tbody에 데이터 추가

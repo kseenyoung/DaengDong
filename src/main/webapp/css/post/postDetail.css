@@ -114,7 +114,7 @@
         height: 200px;
         border-top: 2px solid #f0efef;
         overflow: scroll;
-        scrollbar-width: 0px;
+        /* scrollbar-width: 0px; */
          padding: 10px;
          background-color: rgb(255, 255, 255);
       }

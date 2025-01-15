@@ -61,32 +61,41 @@ public class PlanController {
     @PostMapping("/create")
     @ResponseBody
     public ResponseEntity<Map<String, String>> createPlan(@RequestBody PlanDTO planDTO, HttpServletRequest request) {
+
         HttpSession session = request.getSession(false);
 
         MemberDTO member = (MemberDTO) session.getAttribute("member");
-        planDTO.setMemberEmail(member.getMember_email()); // 세션 이메일 할당
 
-        long days = ChronoUnit.DAYS.between(
+        if (member == null) {
+            Map<String, String> response = new HashMap<>();
+            response.put("redirectUrl", "redirect:/auth/login.do");
+            return ResponseEntity.ok(response);
+        } else {
+
+            planDTO.setMemberEmail(member.getMember_email()); // 세션 이메일 할당
+
+            long days = ChronoUnit.DAYS.between(
                 planDTO.getStartDate().toLocalDate(),
                 planDTO.getEndDate().toLocalDate()
-        ) + 1;
+            ) + 1;
 
-        log.info("총 여행 일수: {}", days);
+            log.info("총 여행 일수: {}", days);
 
-        Long planId = planService.savePlan(planDTO); // DB INSERT
-        log.info("!생성된 plan_id: {}", planId);
+            Long planId = planService.savePlan(planDTO); // DB INSERT
+            log.info("!생성된 plan_id: {}", planId);
 
-        session.setAttribute("currentPlanId", planId);
-        log.info("create에서 currentPlanId: {}", session.getAttribute("currentPlanId"));
-        session.setAttribute("currentMemberEmail", member.getMember_email());
-        log.info("create에서 currentMemberEmail: {}", member.getMember_email());
-        session.setAttribute("travelDays", days);
-        session.setAttribute("currentPlan", planDTO);
+            session.setAttribute("currentPlanId", planId);
+            log.info("create에서 currentPlanId: {}", session.getAttribute("currentPlanId"));
+            session.setAttribute("currentMemberEmail", member.getMember_email());
+            log.info("create에서 currentMemberEmail: {}", member.getMember_email());
+            session.setAttribute("travelDays", days);
+            session.setAttribute("currentPlan", planDTO);
 
-        // 리디렉션 URL을 JSON으로 반환
-        Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "/daengdong/plan/place?planId=" + planId);
-        return ResponseEntity.ok(response);
+            // 리디렉션 URL을 JSON으로 반환
+            Map<String, String> response = new HashMap<>();
+            response.put("redirectUrl", "/daengdong/plan/place?planId=" + planId);
+            return ResponseEntity.ok(response);
+        }
     }
 
 
