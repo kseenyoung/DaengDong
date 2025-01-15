@@ -493,7 +493,7 @@ body, h4, p, button, a {
     top: 0px;
     right: 3px;
     font-size: 40px;
-    color: #black;
+    color: #000000;
     cursor: pointer;
     background: none;
     border: none;
@@ -1138,7 +1138,7 @@ body, h4, p, button, a {
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s ease;효과 */
+  transition: background-color 0.3s, color 0.3s ease;/* 효과 */
 }
 
 /* 버튼 호버 효과 */

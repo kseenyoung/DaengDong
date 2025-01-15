@@ -725,6 +725,22 @@ document.addEventListener("click", function(evt){
         // }
         // alert("장소가 공유되었습니다!");
     }
+
+    if (evt.target.classList.contains("favoriteBtn")) {
+        console.log("Favorite button clicked");
+        const button = evt.target;
+        const placeId = button.dataset.id;
+        console.log("placeId: ", placeId);
+
+        if (!button.classList.contains("favorited")) {
+            // 즐겨찾기 추가
+            addFavorite(placeId, button);
+        } else {
+            // 즐겨찾기 해제
+            const starId = button.dataset.starId; // dataset 사용
+            removeFavorite(starId, button);
+        }
+    }
 });
 
 function getSelectedDay(){
@@ -1383,4 +1399,47 @@ function savePlaceToDB(placeName, placeAddress, placeId, x, y, placePhone, place
             }
             return response.text();
         });
+}
+
+/***************************************************
+ * (S) 즐겨 찾기 이벤트 및 기능
+ ***************************************************/
+function addFavorite(placeId, button) {
+    fetch("/daengdong/place/addFavorite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            kakaoPlaceId: placeId,
+            memberEmail: memberEmail }),
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.success) {
+                button.classList.add("favorited");
+                button.dataset.starId = data.starId; // dataset으로 starId 설정
+                alert("즐겨찾기에 추가되었습니다!");
+            } else {
+                alert("즐겨찾기 추가 실패");
+            }
+        })
+        .catch((error) => console.error("즐겨찾기 추가 오류:", error));
+}
+
+function removeFavorite(starId, button) {
+    fetch("/daengdong/place/deleteFavorite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ starId }),
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.success) {
+                button.classList.remove("favorited");
+                delete button.dataset.starId; // dataset에서 starId 제거
+                alert("즐겨찾기가 해제되었습니다!");
+            } else {
+                alert("즐겨찾기 해제 실패");
+            }
+        })
+        .catch((error) => console.error("즐겨찾기 해제 오류:", error));
 }
