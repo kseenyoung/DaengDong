@@ -1,14 +1,16 @@
 use daengdong;
 
-CREATE TABLE `members` (
+CREATE TABLE `posts` (
+   `post_id` bigint NOT NULL AUTO_INCREMENT,
    `member_email` varchar(255) NOT NULL,
-   `member_name` varchar(255) NOT NULL,
-   `member_nickname` varchar(255) NOT NULL,
-   `member_profile_photo` varchar(255) NOT NULL,
+   `plan_id` bigint NOT NULL,
+   `category_id` enum('여행중','여행완료','사진자랑','꿀팁') NOT NULL,
+   `post_title` varchar(255) NOT NULL,
+   `post_content` text NOT NULL,
    `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
    `update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-   PRIMARY KEY (`member_email`)
- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+   PRIMARY KEY (`post_id`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `comments` (
    `comment_id` int NOT NULL AUTO_INCREMENT,
@@ -21,6 +23,16 @@ CREATE TABLE `comments` (
    KEY `fk_comments_post_id` (`post_id`),
    CONSTRAINT `fk_comments_post_id` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE
  ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `members` (
+   `member_email` varchar(255) NOT NULL,
+   `member_name` varchar(255) NOT NULL,
+   `member_nickname` varchar(255) NOT NULL,
+   `member_profile_photo` varchar(255) NOT NULL,
+   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   `update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   PRIMARY KEY (`member_email`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `favorites` (
    `star_id` bigint NOT NULL AUTO_INCREMENT,
@@ -148,18 +160,6 @@ CREATE TABLE `post_images` (
    KEY `fk_post_images_post_id` (`post_id`),
    CONSTRAINT `fk_post_images_post_id` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE
  ) ENGINE=InnoDB AUTO_INCREMENT=148 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `posts` (
-   `post_id` bigint NOT NULL AUTO_INCREMENT,
-   `member_email` varchar(255) NOT NULL,
-   `plan_id` bigint NOT NULL,
-   `category_id` enum('여행중','여행완료','사진자랑','꿀팁') NOT NULL,
-   `post_title` varchar(255) NOT NULL,
-   `post_content` text NOT NULL,
-   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-   `update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-   PRIMARY KEY (`post_id`)
- ) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `regions` (
    `region_id` tinyint NOT NULL,
