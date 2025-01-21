@@ -91,8 +91,7 @@ CREATE TABLE `regions` (
     `region_id` TINYINT NOT NULL AUTO_INCREMENT,
     `region_name` ENUM('경기도', '강원도', '충청남도', '충청북도', '제주도', '전라북도', '전라남도', '경상북도', '경상남도') NOT NULL,
     `create_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `update_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`region_id`)
+    `update_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `relationships` (
