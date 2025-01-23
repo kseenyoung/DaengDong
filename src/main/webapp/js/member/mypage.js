@@ -55,6 +55,8 @@ $(document).ready(function () {
       .off("click", ".pet-image")
       .off("click", "#currentPetPhoto")
       .off("click", "#confirm-update-petDetail")
+      .off("click", "#add-my-pet")
+      .off("click", "#confirm-update-petDetail")
 
       //trip
       .off("click", ".delete-plan")
@@ -65,6 +67,7 @@ $(document).ready(function () {
       .off("click", "#confirm-update")
       //save_likePost
       .off("click", ".delete-likePosts")
+      .off("click", ".post-card")
       //save_post
       .off("click", ".delete-post-btn")
       //save_favorite_place
@@ -89,9 +92,12 @@ $(document).ready(function () {
     $(document).on("click", ".pet-image", openPetProfile);
     $(document).on("click", "#currentPetPhoto", fileSelectClick);
     $(document).on("click", "#confirm-update-petDetail", modifyPetDetail);
+    $(document).on("click", "#add-my-pet", viewAddPetModal)
+    $(document).on("click", "#confirm-update-petDetail", confirmAddPetModal)
 
     //trip
     $(document).on("click", ".delete-plan", deletePlan);
+    $(document).on("click", ".announcement-plan", viewPlan)
 
     //save_review
     $(document).on("click", ".delete-review", deleteReview);
@@ -101,6 +107,7 @@ $(document).ready(function () {
     $(document).on("click", ".delete-likePosts", deleteLikePosts)
     //save_post
     $(document).on("click", ".delete-post-btn", deletePost)
+    $(document).on("click", ".post-card", viewLikePost)
     //save_favorite_place
     $(document).on("click", ".delete-favoritePlace", deleteFavoritePlace)
   }
@@ -325,9 +332,10 @@ $(document).ready(function () {
     });
   }
 
-  function deletePlan() {
+  function deletePlan(e) {
+    e.stopPropagation();
     let plan_id = $(this).data("plan-id");
-    let element = $(this).closest('.announcement'); // 삭제할 요소를 미리 저장
+    let element = $(this).closest('.announcement-plan'); // 삭제할 요소를 미리 저장
 
     $.ajax({
       url: `${path}/MyPlan/${plan_id}`,
@@ -341,6 +349,11 @@ $(document).ready(function () {
         console.log(err);
       }
     });
+  }
+
+  function viewPlan() {
+    let planId = $(this).data("plan-id")
+    location.href = `${path}/plan/place?planId=${planId}`;
   }
 
   function viewEditNickname() {
@@ -411,6 +424,130 @@ $(document).ready(function () {
     let petBloodType = $("#petBloodType").val()
 
     petUploadFile(`${path}`, petId, petName, petBloodType);
+  }
+
+  function viewAddPetModal() {
+    const myModal = new bootstrap.Modal(document.getElementById('createPetModal'));
+    $("#currentPetPhoto").attr("src", "https://daengdong-bucket.s3.amazonaws.com/1f017efc-8d4c-46f1-9540-6548ae08690e_image.png")
+    myModal.show();
+  }
+
+  function confirmAddPetModal() {
+    const formData = new FormData();
+    const fileInput = document.getElementById("petFile");
+
+    const uploadButton = document.getElementById("uploadButton");
+    const clickButton = document.getElementById("confirm-insert-petDetail");
+
+    if (uploadButton) {
+      uploadButton.disabled = false;
+      uploadButton.style.display = "inline-flex";
+      clickButton.style.display = "none";
+    }
+
+    let uploadPromise;
+
+    if (fileInput.files.length === 0) {
+      // 사진이 없는 경우에도 로직을 실행하기 위해 기본 Promise 생성
+      uploadPromise = Promise.resolve(null); // null 값을 전달
+    } else {
+      const selectedFile = fileInput.files[0];
+      formData.append("file", selectedFile);
+
+      // 사진 업로드 Promise
+      uploadPromise = fetch(`${apiPath}/api/s3/upload`, {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.text(); // 서버에서 반환된 URL 가져오기
+          } else {
+            throw new Error("업로드 실패!");
+          }
+        });
+    }
+
+    uploadPromise
+      .then((uploadedUrl) => {
+        const petName = $("#petName").val();
+        const petBirthday = $("#petBirthday").val();
+        const petSpecies = $("#petSpecies").val();
+        const petBloodType = $("#petBloodType").val();
+        const petGender = $("#petGender").val();
+
+        // Step 2: 업로드된 URL이 있으면 DB에 저장
+        return fetch(`${apiPath}/auth/createPetProfile.do`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pet_profile_photo: uploadedUrl || "",
+            pet_name: petName,
+            pet_birthday: petBirthday,
+            pet_species: petSpecies,
+            pet_blood_type: petBloodType,
+            pet_gender: petGender,
+          }),
+        }).then((response) => {
+          if (!response.ok) {
+            throw new Error("펫 정보 저장 실패");
+          }
+          return response.text(); // 서버에서 반환된 petId 포함된 데이터
+        });
+      })
+      .then((petId) => {
+        console.log("pet Id: " + petId)
+        const petName = $("#petName").val();
+        const petSpecies = $("#petSpecies").val();
+        const uploadUrl = $("#currentPetPhoto").attr("src") || "";
+
+        // Step 3: 화면 갱신
+        const petDetailContainer = document.getElementById("profile-pet");
+        if (petDetailContainer) {
+          const detailedHtml = `
+          <div class="pet-detail">
+            <img
+              id="pet-image-${pet.pet_id}" class="pet-image"
+              src="${pet.pet_profile_photo}"
+              alt="Pet Picture"
+              data-pet-id="${pet.pet_id}"
+              data-name="${pet.pet_name}"
+              data-age="${pet.pet_age || 'N/A'}"
+              data-species="${pet.pet_species}"
+              data-photo="${pet.pet_profile_photo}"
+              data-blood-type="${pet.pet_blood_type}"/>
+            <span id="pet-name-${pet.pet_id}">${pet.pet_name}</span>
+            <div class="popover">
+              이름: ${pet.pet_name}<br>
+              나이: ${pet.pet_age || '알 수 없음'}살<br>
+              견종: ${pet.pet_species}
+            </div>
+          </div>
+        `;
+          petDetailContainer.insertAdjacentHTML("beforeend", detailedHtml);
+        }
+
+        // 모달 닫기
+        const modal = document.getElementById("createPetModal");
+        if (modal) {
+          const bootstrapModal = bootstrap.Modal.getInstance(modal);
+          bootstrapModal.hide();
+          document
+            .querySelectorAll(".modal-backdrop")
+            .forEach((backdrop) => backdrop.remove());
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("업로드 실패: " + error.message);
+      })
+      .finally(() => {
+        uploadButton.disabled = true;
+        uploadButton.style.display = "none";
+        clickButton.style.display = "inline-block";
+      });
   }
 
   function deleteFavoritePlace() {
@@ -546,7 +683,9 @@ $(document).ready(function () {
     });
   }
 
-  function deleteLikePosts() {
+  function deleteLikePosts(e) {
+    e.stopPropagation();
+
     let postId = $(this).data("post-id");
     let element = $(this).closest('.post-card'); // 삭제할 요소를 미리 저장
 
@@ -719,7 +858,9 @@ $(document).ready(function () {
     }, 400); // 애니메이션 시간과 일치시킴
   }
 
-  function deletePost() {
+  function deletePost(e) {
+    e.stopPropagation();
+
     let postId = $(this).data("post-id");
     let element = $(this).closest('.post-card');
 
@@ -735,5 +876,10 @@ $(document).ready(function () {
         console.log(err);
       }
     });
+  }
+
+  function viewLikePost() {
+    let post_id = $(this).data("post-id");
+    location.href = `${path}/post/${post_id}`;
   }
 });

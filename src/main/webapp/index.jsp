@@ -24,32 +24,32 @@
 </head>
 
 <body>
-<form id="uploadForm" method="post" enctype="multipart/form-data">
-    <input type="file" id="file" name="file" />
-    <button type="button" onclick="uploadFile()">이미지 업로드</button>
-</form>
 
+<!--  <form id="uploadForm" method="post" enctype="multipart/form-data">
+          <input type="file" id="file" name="file" />
+          <button type="button" onclick="uploadFile()">이미지 업로드</button>
+      </form> -->
 <!--  div는 위치나 형태?를 나타낸다. 선택자는 최대 2개, 태그만 있는 경우는
 무조건 앞에 선택자 써주기  -->
 <div id="container">
     <header id="header">
         <div id="header_box">
-            <h1 id="logo">댕동</h1>
+            <h1 id="logo"><a href="${path}">댕동</a></h1>
             <div id="header_right">
                 <a href="">
-                    <img src="https://daengdong-bucket.s3.amazonaws.com/2ff2135a-b82b-4c3a-a483-b6f765d23aa0_bell.png" alt="알림" width="30" height="30"/>
+                    <img src="${path}/images/header_arlam.png" alt="알림" width="30" height="30"/>
                     <span class="alt-text"></span>
                 </a>
                 <a href="${path}/post/posts">
-                    <img src="https://daengdong-bucket.s3.amazonaws.com/27910ecc-028d-457c-af07-0529c13d5d5b_heart.png" alt="커뮤니티" width="30" height="30" />
+                    <img src="${path}/images/header_community.png" alt="커뮤니티" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
                 <a href="${path}/plan/create">
-                    <img src="https://daengdong-bucket.s3.amazonaws.com/2578b82d-fe9d-4304-8bbb-e365a4666a70_add.png" alt="플랜" width="30" height="30" />
+                    <img src="${path}/images/header_plan.png" alt="플랜" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
                 <a href="${path}/auth/viewMypage.do">
-                    <img src="https://daengdong-bucket.s3.amazonaws.com/b3eb7fe8-cbd7-4dc8-a4e2-fd88cd1ca577_single.png" alt="사용자" width="30" height="30" />
+                    <img src="${path}/images/header_user.png" alt="사용자" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
             </div>
@@ -64,7 +64,7 @@
                 </div>
                 <div id="banner_box_bottom">
                     <p>지금 바로 계획을 만들어보세요.</p>
-                    <button>Let's plan</button>
+                    <button><a href="${path}/plan/create">Let's plan</a></button>
                 </div>
             </div>
         </div>
@@ -82,23 +82,23 @@
                 <div id="sec1_bottom_left">
                     <h1>여행을 한눈에, 그리고 한 번에!</h1>
                     <p>
-                        다른 곳에서는 할 수 없었던 일이 트리플에서는 가능해요. 여행
+                        다른 곳에서는 할 수 없었던 일이 댕동에서는 가능해요. 여행
                         전이든 여행 중이든 내가 계획한 일정을 간편하게 수정하고
                         꺼내보세요.
                     </p>
                     <div>
-                        <button>
+                        <%--<button>
                             <span id="select_num">1</span><span id="select_menu">현지인 맛집 탐방</span>
                         </button>
                         <button><span>2</span><span>현지인 맛집 탐방</span></button>
                         <button><span>3</span><span>현지인 맛집 탐방</span></button>
-                        <button><span>4</span><span>현지인 맛집 탐방</span></button>
+                        <button><span>4</span><span>현지인 맛집 탐방</span></button>--%>
                     </div>
-                    <a href=""><button>일정 살펴보기</button></a>
+                    <div><a href=""><button>일정 살펴보기</button></a></div>
                 </div>
                 <div id="sec1_bottom_right">
                     <img
-                            src="https://triple.guide/intro/static/images/itineraries/itinerary_01@2x.png"
+                            src="${path}/img/main2.png"
                             alt=""
                             width="460px"
                             height="520px"
@@ -115,7 +115,7 @@
                 </p>
             </div>
             <img
-                    src="https://triple.guide/intro/static/images/community_01@2x.png"
+                    src="${path}/img/main4.png"
                     width="100%"
                     alt=""
             />
@@ -123,10 +123,10 @@
         <section id="section2">
             <div id="sec2_left">
                 <div id="sec2_left_box">
-                    <h2>여행지 정보</h2>
-                    <p>지금은 어디가 핫플?</p>
-                    <p>같이 알아보아요</p>
-                    <a href=""><button>핫플 속으로 Go</button></a>
+                    <h2>함께 즐기는 웹</h2>
+                    <p>우리가 함께 만드는</p>
+                    <p>여행이 가능할까요?</p>
+                    <a href="${path}/post/posts"><button>커뮤니티 Go</button></a>
                 </div>
             </div>
             <div id="sec2_right">
@@ -135,9 +135,19 @@
                   해외 항공권의 실시간 가격 추이 예측으로 적절한 금액을
                   알려드립니다. 지금 사는 가격이 괜찮을지 더 이상 고민하지 마세요!
                 </p> -->
-                <div id="div1"></div>
-                <div id="div2"></div>
-                <div id="div3"></div>
+                <div id="div1">
+                  <h2>함께 할수록, 더 풍성해지는 여행</h2>
+                  <p>혼자서 하는 여행도 좋지만, 함께 할 때 여행의 즐거움은 배가 됩니다. 마음이 맞는 사람과 같이 여행을 떠나봐요.</p>
+                  <img src="${path}/img/main3.png">
+                </div>
+                <div id="div2">
+                    <div>
+                        <h2>여행 지금 바로 계획하자</h2>
+                        <p>언제 어디서든 쉽고 간편하게 일정을 같이 계획하고 수정해 보세요. 동행자도 초대해 같이 대화하며 완성해봐요.</p>
+                        <img src="${path}/img/main5.png">
+                    </div>
+                </div>
+
             </div>
         </section>
     </main>

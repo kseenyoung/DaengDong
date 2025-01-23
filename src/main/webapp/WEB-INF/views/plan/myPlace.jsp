@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="path" value="${pageContext.servletContext.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -124,7 +125,7 @@
             const planId = this.dataset.planId;
 
             // Ajax 요청으로 컨트롤러 호츌
-            fetch(`/daengdong/plan/place?planId=${planId}`)
+            fetch(`${path}/plan/place?planId=${planId}`)
                 .then(response => response.text())
                 .then(data => {
                     // 모달에 컨텐츠 삽입
@@ -177,7 +178,7 @@
                 <h1 class="modal-title fs-5" id="editModalLabel">여행 제목 수정</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="editForm" method="post" action="/daengdong/plan/planName">
+            <form id="editForm" method="post" action="${path}/plan/planName">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="currentPlanName" class="form-label">현재 여행 제목</label>
@@ -241,7 +242,7 @@
                 <h1 class="modal-title fs-5" id="editDateModalLabel">여행 날짜 수정</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="editDateForm" method="post" action="/daengdong/plan/planDate">
+            <form id="editDateForm" method="post" action="${path}/plan/planDate">
                 <div cl  ass="modal-body">
                     <div class="mb-3">
                         <label for="startDate" class="form-label">시작 날짜</label>
@@ -323,7 +324,7 @@
 <script>
     $(document).ready(function () {
         $.ajax({
-            url: '/daengdong/plan/details',
+            url: '${path}/plan/details',
             type: 'GET',
             success: function (response) {
                 console.log(response); // 응답 데이터 구조 확인
@@ -350,6 +351,7 @@
                             <td>${plan.kakaoRoadAddressName}</td>
                         </tr>
                     `;
+
                     });
 
                     // 테이블의 tbody에 데이터 추가

@@ -22,7 +22,5 @@
         insert into plan_places (plan_id, kakao_place_id, day)
         values (#{planId}, #{kakaoPlaceId}, #{day});
     </insert>
-
-
     <!--특정 planId의 장소 목록 조회-->
 </mapper>

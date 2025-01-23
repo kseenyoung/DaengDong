@@ -19,7 +19,7 @@
             <div class="modal-body">
                 <div class="mb-3 text-center">
                     <!-- 이미지 클릭 시 파일 선택 트리거 -->
-                    <img id="currentPetPhoto" src="${path}/img/daengdong_dog.jpeg" alt="Pet Photo" class="img-thumbnail">
+                    <img id="currentPetPhoto" src="https://daengdong-bucket.s3.amazonaws.com/fda8f220-f715-4a07-bc89-7be3dcd7cce1_image.png" alt="Pet Photo" class="img-thumbnail">
                     <div class="custom-profile-container">
                         <label for="petFile" class="custom-profile-label">사진 선택하기</label>
                         <input type="file" id="petFile" name="file" class="custom-profile-input" onchange="petProfilePreviewImage(this)">

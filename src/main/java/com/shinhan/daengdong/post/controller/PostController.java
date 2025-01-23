@@ -1,6 +1,7 @@
 package com.shinhan.daengdong.post.controller;
 
 import com.shinhan.daengdong.member.dto.MemberDTO;
+import com.shinhan.daengdong.member.dto.RelationshipsDTO;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
 import com.shinhan.daengdong.plan.model.service.PlanServiceInterface;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,6 +55,15 @@ public class PostController {
 
         MemberDTO member = (MemberDTO) session.getAttribute("member");
 
+        List<LikeVO> myLike = postService.getMyLike(member.getMember_email());
+        String likePostIdsString = myLike.stream()
+                .map(like -> like.getPostId().toString())
+                .collect(Collectors.joining(","));
+        model.addAttribute("myLike", likePostIdsString);
+
+        List<RelationshipsDTO> followingList = memberService.getFollowingList(member.getMember_email());
+        model.addAttribute("followingList", followingList);
+
         // 게시글 상세 정보 조회
         PostVO post = postService.getPostDetail(postId);
         if (post == null) {
@@ -73,10 +85,9 @@ public class PostController {
     public String viewMainPage(@RequestParam(value="category", required = false) String category, Model model,HttpServletRequest request) {
         // 게시글 목록 조회
         HttpSession session = request.getSession(false);
-        if (session == null){
-            // session 없음 = 로그인 시도한 적 없음
-            log.info("세션이 존재하지 않음");
-            return null;
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
+        if (memberDTO == null) {
+            return "redirect:/auth/login.do";
         }
 
         // TODO oauth 로그인 할 때 session 안에 MemberDTO 타입의 'member' 등록 되어 있어야 함
@@ -93,10 +104,11 @@ public class PostController {
             postList = postService.getTopPosts(); // 카테고리가 없으면 최신 게시물 조회
         }
 
-        List<LikeVO> myLike = postService.getMyLike(member.getMember_email());
-        List<PlanDTO> userPlans = planService.getPlansByEmail(member.getMember_email());
 
+        List<PlanDTO> userPlans = planService.getPlansByEmail(member.getMember_email());
         model.addAttribute("plans", userPlans);
+
+        List<LikeVO> myLike = postService.getMyLike(member.getMember_email());
         String likePostIdsString = myLike.stream()
                 .map(like -> like.getPostId().toString())
                 .collect(Collectors.joining(","));
@@ -106,53 +118,49 @@ public class PostController {
         return "post/post"; // mainPage.jsp 또는 mainPage.html로 전달
     }
 
-    @PostMapping("/po")
+    @PostMapping(value = "/po", consumes = MediaType.APPLICATION_JSON_VALUE)
     public String createPost(
-            @RequestParam(value="title", required=true) String title,
-            @RequestParam(value="category", required=true) String category, // 'category' 필드 받기
-            @RequestParam(value="planId", required=true) long planId, // 'category' 필드 받기
-            @RequestParam("content") String content, // 'content' 필드 받기
-            @RequestParam(value="files[]", required=true) List<MultipartFile> files,
+            @RequestBody PostDTO requestDTO, // JSON 데이터 처리
             HttpServletRequest request) {
 
-
+        log.info("createPost running");
         HttpSession session = request.getSession(false);
-        if (session == null){
-            // session 없음 = 로그인 시도한 적 없음
+        if (session == null) {
             log.info("세션이 존재하지 않음");
             return null;
         }
 
-        // TODO oauth 로그인 할 때 session 안에 MemberDTO 타입의 'member' 등록 되어 있어야 함
         MemberDTO member = (MemberDTO) session.getAttribute("member");
-        System.out.println("member.getMember_email() : " +  member.getMember_email());
-
-        try {
-            // 이미지 저장 및 URL 생성
-            List<String> imageUrls = new ArrayList<>();
-            for (MultipartFile file : files) {
-                String imageUrl = saveImageFile(file); // 파일 저장 로직
-                imageUrls.add(imageUrl);
-            }
-
-            // 게시글 및 이미지 생성
-            PostDTO postDTO = new PostDTO(planId, title, content, category, member.getMember_email());
-            postService.createPost(postDTO, imageUrls);
-
-//            return ResponseEntity.ok("게시글 생성 성공");
-            return "redirect:/post/posts";
-        } catch (Exception e) {
-             log.error("예외 발생: ", e);
-
-             return "redirect:/post/posts";
+        if (member == null) {
+            log.info("회원 정보가 없습니다.");
+            return "redirect:/login"; // 로그인 페이지로 리다이렉트
         }
 
+        log.info("createPost running2");
+        try {
+            // 사용자 이메일 추가
+            requestDTO.setMemberEmail(member.getMember_email());
 
+            // 이미지 URL 추출
+            List<String> imageUrls = requestDTO.getImageUrls(); // 클라이언트에서 JSON으로 전송된 이미지 URL
+
+            log.info("requestDTO: " + requestDTO);
+            log.info("imageUrls: " + imageUrls);
+            // 게시글 및 이미지 생성
+            postService.createPost(requestDTO, imageUrls);
+
+            return "redirect:/post/posts";
+        } catch (Exception e) {
+            log.error("예외 발생: ", e);
+            return "redirect:/post/posts";
+        }
     }
 
     private String saveImageFile(MultipartFile file) throws IOException {
-        String uploadDir = "C:\\Users\\User\\Desktop\\shinhan\\daeng\\DaengDong\\src\\main\\webapp\\upload\\";
 
+        String currentDir = Paths.get("").toAbsolutePath().toString();
+        System.out.println("Current Directory: " + currentDir);
+        String uploadDir = currentDir + "\\src\\main\\webapp\\upload\\";
         // 디렉토리 존재 여부 확인, 없다면 생성
         File dir = new File(uploadDir);
         if (!dir.exists()) {

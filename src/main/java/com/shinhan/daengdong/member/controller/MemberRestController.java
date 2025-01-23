@@ -2,6 +2,7 @@ package com.shinhan.daengdong.member.controller;
 
 import com.shinhan.daengdong.member.dto.FollowDTO;
 import com.shinhan.daengdong.member.dto.MemberDTO;
+import com.shinhan.daengdong.member.dto.NotificationDTO;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
 import com.shinhan.daengdong.pet.dto.PetDTO;
 import com.shinhan.daengdong.review.dto.ReviewDTO;
@@ -72,7 +73,15 @@ public class MemberRestController {
                 .from_email(fromEmail)
                 .to_email(toEmail)
                 .build();
-        memberService.addFollowing(followDTO);
+        NotificationDTO notificationDTO = NotificationDTO.builder()
+                .sender_email(fromEmail)
+                .receiver_email(toEmail)
+                .notification_type(1)
+                .is_checked(0)
+                .plan_id(null)
+                .post_id(null)
+                .build();
+        memberService.addFollowing(followDTO , notificationDTO);
     }
 
     @GetMapping("/MyPlan/{plan_id}")

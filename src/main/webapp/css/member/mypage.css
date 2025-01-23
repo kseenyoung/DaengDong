@@ -22,7 +22,7 @@ body {
 /* Left Section - Profile Fragment */
 .profile-fragment {
   /*background-color: #2c2c2c;*/
-  background-color: #f5f8fa;
+  background-color: white;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
@@ -172,6 +172,25 @@ body {
   margin-bottom: 10px;
 }
 
+#my-pet-title {
+  display: flex;
+  align-items: center;
+}
+
+#add-my-pet {
+  width: 20px;
+  margin-left: 6px;
+  cursor: pointer;
+}
+
+#currentPetPhoto{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover; /* 비율을 유지하며 컨테이너를 채우기 */
+  object-position: center; /* 중앙을 기준으로 정렬 */
+}
+
 #my-pet {
   font-size: 18px;
   font-weight: bold;
@@ -247,7 +266,7 @@ body {
 /* Right Section - Main Content */
 .right-section {
   width: 100%;
-  background-color: #f5f8fa;
+  background-color: white;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -259,7 +278,7 @@ body {
 .categories {
   flex-shrink: 0;
   height: 65px!important;
-  background-color: #F5F4F9;
+  background-color: white;
   padding: 15px;
   border-bottom: 1px solid #e1e8ed;
   text-align: center;
@@ -304,7 +323,7 @@ body {
 }
 
 .semiCategories {
-  background: #f5f8fa;
+  background: white;
   padding: 10px 0;
   text-align: center;
   position: sticky; /* 고정 */
@@ -339,10 +358,10 @@ body {
   flex-grow: 1; /* 남은 공간을 모두 차지 */
   overflow-y: auto; /* 스크롤 허용 */
   padding: 0 10px 20px 20px;
-  background-color: #f5f8fa; /* 배경색 상단과 맞춤 */
+  background-color: white; /* 배경색 상단과 맞춤 */
 }
 
-.announcement {
+.announcement, .announcement-plan {
   display: flex;
   justify-content: space-between; /* 텍스트와 버튼을 양쪽 끝으로 */
   align-items: center;
@@ -351,6 +370,7 @@ body {
   border-radius: 10px;
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
+  cursor: pointer;
 }
 
 .announcement p {

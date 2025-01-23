@@ -30,16 +30,20 @@
         <div id="header_box">
             <h1 id="logo">댕동</h1>
             <div id="header_right">
+                <a href="">
+                    <img src="${path}/images/header_arlam.png" alt="알림" width="30" height="30"/>
+                    <span class="alt-text"></span>
+                </a>
                 <a href="${path}/post/posts">
-                    <img src="./images/community.png" alt="커뮤니티" width="30" height="30" />
+                    <img src="${path}/images/header_community.png" alt="커뮤니티" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
                 <a href="${path}/plan/create">
-                    <img src="./images/plan.png" alt="플랜" width="30" height="30" />
+                    <img src="${path}/images/header_plan.png" alt="플랜" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
                 <a href="${path}/auth/viewMypage.do">
-                    <img src="./images/user.png" alt="사용자" width="30" height="30" />
+                    <img src="${path}/images/header_user.png" alt="사용자" width="30" height="30" />
                     <span class="alt-text"></span>
                 </a>
             </div>
@@ -125,7 +129,9 @@
                   해외 항공권의 실시간 가격 추이 예측으로 적절한 금액을
                   알려드립니다. 지금 사는 가격이 괜찮을지 더 이상 고민하지 마세요!
                 </p> -->
-                <div id="div1"></div>
+                <div id="div1">
+
+                </div>
                 <div id="div2"></div>
                 <div id="div3"></div>
             </div>

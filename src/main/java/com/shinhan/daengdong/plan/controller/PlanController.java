@@ -1,6 +1,10 @@
 package com.shinhan.daengdong.plan.controller;
 
 import com.shinhan.daengdong.member.dto.MemberDTO;
+import com.shinhan.daengdong.member.dto.NotificationDTO;
+import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
+import com.shinhan.daengdong.place.dto.PlaceDTO;
+import com.shinhan.daengdong.place.model.service.PlaceServiceInterface;
 import com.shinhan.daengdong.plan.dto.MemberPlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDTO;
 import com.shinhan.daengdong.plan.dto.PlanDetailsDTO;
@@ -32,6 +36,13 @@ public class PlanController {
     @Autowired
     private PlanServiceInterface planService;
 
+    @Autowired
+    private MemberServiceInterface memberService;
+
+    @Autowired
+    PlaceServiceInterface placeService;
+
+
     // 플랜 생성 페이지
     @GetMapping("/create")
     public String createPlanForm(HttpServletRequest request, Model model) {
@@ -50,32 +61,41 @@ public class PlanController {
     @PostMapping("/create")
     @ResponseBody
     public ResponseEntity<Map<String, String>> createPlan(@RequestBody PlanDTO planDTO, HttpServletRequest request) {
+
         HttpSession session = request.getSession(false);
 
         MemberDTO member = (MemberDTO) session.getAttribute("member");
-        planDTO.setMemberEmail(member.getMember_email()); // 세션 이메일 할당
 
-        long days = ChronoUnit.DAYS.between(
+        if (member == null) {
+            Map<String, String> response = new HashMap<>();
+            response.put("redirectUrl", "redirect:/auth/login.do");
+            return ResponseEntity.ok(response);
+        } else {
+
+            planDTO.setMemberEmail(member.getMember_email()); // 세션 이메일 할당
+
+            long days = ChronoUnit.DAYS.between(
                 planDTO.getStartDate().toLocalDate(),
                 planDTO.getEndDate().toLocalDate()
-        ) + 1;
+            ) + 1;
 
-        log.info("총 여행 일수: {}", days);
+            log.info("총 여행 일수: {}", days);
 
-        Long planId = planService.savePlan(planDTO); // DB INSERT
-        log.info("!생성된 plan_id: {}", planId);
+            Long planId = planService.savePlan(planDTO); // DB INSERT
+            log.info("!생성된 plan_id: {}", planId);
 
-        session.setAttribute("currentPlanId", planId);
-        log.info("create에서 currentPlanId: {}", session.getAttribute("currentPlanId"));
-        session.setAttribute("currentMemberEmail", member.getMember_email());
-        log.info("create에서 currentMemberEmail: {}", member.getMember_email());
-        session.setAttribute("travelDays", days);
-        session.setAttribute("currentPlan", planDTO);
+            session.setAttribute("currentPlanId", planId);
+            log.info("create에서 currentPlanId: {}", session.getAttribute("currentPlanId"));
+            session.setAttribute("currentMemberEmail", member.getMember_email());
+            log.info("create에서 currentMemberEmail: {}", member.getMember_email());
+            session.setAttribute("travelDays", days);
+            session.setAttribute("currentPlan", planDTO);
 
-        // 리디렉션 URL을 JSON으로 반환
-        Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "/daengdong/plan/place?planId=" + planId);
-        return ResponseEntity.ok(response);
+            // 리디렉션 URL을 JSON으로 반환
+            Map<String, String> response = new HashMap<>();
+            response.put("redirectUrl", "/daengdong/plan/place?planId=" + planId);
+            return ResponseEntity.ok(response);
+        }
     }
 
 
@@ -229,6 +249,18 @@ public class PlanController {
                         companionPlan.setMemberEmail(trimmedEmail);
                         planService.addCompanionToPlan(companionPlan);
                         log.info("추가된 동행자 이메일: {}", trimmedEmail);
+
+                        // 동행 요청 알림 생성
+                        // NotificationDTO notificationDTO = NotificationDTO.builder()
+                        //         .sender_email(currentMemberEmail)
+                        //         .receiver_email(trimmedEmail)
+                        //         .notification_type(4) // 동행 요청
+                        //         .is_checked(0)
+                        //         .plan_id(currentPlanId)
+                        //         .post_id(null)
+                        //         .build();
+                        //
+                        // memberService.insertNotification(notificationDTO);
                     }
                 }
             }
@@ -344,6 +376,25 @@ public class PlanController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("플랜 상세 조회 실패");
         }
     }
+    // @PostMapping("/placeDetail.do")
+    // @ResponseBody // 응답 본문으로 직접 전송
+    // public ResponseEntity<Map<String, String>> placeDetail(@RequestParam("kakao_id") Integer kakaoId, HttpServletRequest request) {
+    //     log.info("kakaoid : {}", kakaoId);
+    //
+    //     if (kakaoId == null) {
+    //         log.error("kakao_id 파라미터가 누락되었습니다.");
+    //         Map<String, String> errorResponse = new HashMap<>();
+    //         errorResponse.put("error", "kakao_id 파라미터가 필요합니다.");
+    //         return ResponseEntity.badRequest().body(errorResponse);
+    //     }
+    //
+    //     String imageUrl = placeService.fetchPlaceImage(kakaoId);
+    //     log.info("kakako : {}", imageUrl);
+    //
+    //     Map<String, String> response = new HashMap<>();
+    //     response.put("imageUrl", imageUrl);
+    //     return ResponseEntity.ok(response);
+    // }
 
     @GetMapping("/detailsByPlanId")
     public ResponseEntity<?> getPlanInfo(@RequestParam("planId") Long planId) {
