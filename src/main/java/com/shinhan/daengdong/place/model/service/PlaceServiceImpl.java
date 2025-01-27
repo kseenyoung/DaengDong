@@ -1,5 +1,6 @@
 package com.shinhan.daengdong.place.model.service;
 
+import com.shinhan.daengdong.place.dto.FavoriteDTO;
 import com.shinhan.daengdong.place.dto.PlaceDTO;
 import com.shinhan.daengdong.place.dto.PlanPlaceDTO;
 import com.shinhan.daengdong.place.model.repository.PlaceRepositoryImpl;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -40,6 +42,26 @@ public class PlaceServiceImpl implements PlaceServiceInterface {
     @Override
     public void savePlanPlace(PlanPlaceDTO planPlaceDTO) {
         placeRepository.savePlanPlace(planPlaceDTO);
+    }
+
+    @Override
+    public void addFavorite(FavoriteDTO favoriteDTO) {
+        placeRepository.addFavorite(favoriteDTO);
+    }
+
+    @Override
+    public boolean isFavoriteExist(FavoriteDTO favoriteDTO) {
+        return placeRepository.existsByMemberAndPlace(favoriteDTO.getMemberEmail(), favoriteDTO.getKakaoPlaceId());
+    }
+
+    @Override
+    public void deleteFavoriteByMemberAndPlace(FavoriteDTO favoriteDTO) {
+        placeRepository.deleteByMemberAndPlace(favoriteDTO.getMemberEmail(), favoriteDTO.getKakaoPlaceId());
+    }
+
+    @Override
+    public List<FavoriteDTO> findAllFavorites(String memberEmail) {
+        return placeRepository.findAllFavorites(memberEmail);
     }
 
 }

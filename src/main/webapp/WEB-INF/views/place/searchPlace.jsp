@@ -12,7 +12,6 @@
 
   <!-- CSS파일 -->
   <link rel="stylesheet" href="${path}/css/header.css">
-  <link rel="stylesheet" href="${path}/css/plan/addCompanion.css">
   <link rel="stylesheet" href="${path}/css/plan/searchPlace.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -198,7 +197,7 @@
 <script src="${path}/js/addCompanion.js"></script>
 <%-- <script src="${path}/js/finalSend.js"></script> --%>
 
-<script>
+ <script>
     // planId를 서버에서도 받을 수 있지만, 세션이 없다면 URL path에서 추출
     let planId = '<%= session.getAttribute("currentPlanId") %>';
     if(!planId) {
@@ -209,80 +208,81 @@
 
     // JS 전역변수에 할당해서 searchPlace_app.js에서 사용
     window.G_planId = planId;
-
-
-    document.addEventListener("DOMContentLoaded", () => {
-        document.body.addEventListener("click", (event) => {
-            if (event.target.classList.contains("favoriteBtn") && !event.target.classList.contains("favorited")) {
-                addFavorite(event.target); // 즐겨찾기 추가 처리
-            }
-        });
-
-        // 이벤트 위임: 즐겨찾기 삭제
-        document.body.addEventListener("click", (event) => {
-            if (event.target.classList.contains("favoriteBtn") && event.target.classList.contains("favorited")) {
-                deleteFavorite(event.target); // 즐겨찾기 삭제 처리
-            }
-        });
-    });
-    const stars = {};
-    // 즐겨찾기 추가 처리 함수
-    function addFavorite(button) {
-        console.log("즐겨찾기버튼눌림");
-        const placeId = button.dataset.id;
-        console.log("placeId:" + placeId);
-        fetch("${path}/auth/favorite/add", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ "kakao_place_id": placeId })
-        })
-        .then(response => {
-            if (!response.ok) throw new Error("HTTP error " + response.status);
-            return response.text();
-        })
-        .then(data => {
-            alert("즐겨찾기에 추가되었습니다!"); // 성공 메시지 출력
-            stars[placeId] = data.star_id;
-            button.setAttribute("data-starid", data.star_id);
-            button.classList.add("favorited");
-            console.log("star_id 저장 완료:", data.star_id);
-        })
-        .catch(err => {
-            console.error("Add favorite error:", err);
-            alert("즐겨찾기 추가 중 오류가 발생했습니다.");
-        });
-    }
-
-    // 즐겨찾기 삭제 처리 함수
-    function deleteFavorite(button) {
-        const placeId = button.dataset.id;
-        const starId = stars[placeId];
-
-        console.log("삭제할 starId:" + starId);
-        fetch("${path}/auth/favorite/delete", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ star_id: starId })
-        })
-        .then(response => {
-            if (!response.ok) throw new Error("HTTP error " + response.status);
-            return response.text();
-        })
-        .then(message => {
-            delete stars[placeId];
-            button.classList.remove("favorited"); // 즐겨찾기 상태 제거
-            button.removeAttribute("data-starid");
-            alert("즐겨찾기가 해제되었습니다!"); // 성공 메시지 출력
-       })
-        .catch(err => {
-            console.error("Delete favorite error:", err);
-            alert("즐겨찾기 삭제 중 오류가 발생했습니다.");
-        });
-    }
 </script>
+
+<%--<script>--%>
+<%--    document.addEventListener("DOMContentLoaded", () => {--%>
+<%--        document.body.addEventListener("click", (event) => {--%>
+<%--            if (event.target.classList.contains("favoriteBtn") && !event.target.classList.contains("favorited")) {--%>
+<%--                addFavorite(event.target); // 즐겨찾기 추가 처리--%>
+<%--            }--%>
+<%--        });--%>
+
+<%--        // 이벤트 위임: 즐겨찾기 삭제--%>
+<%--        document.body.addEventListener("click", (event) => {--%>
+<%--            if (event.target.classList.contains("favoriteBtn") && event.target.classList.contains("favorited")) {--%>
+<%--                deleteFavorite(event.target); // 즐겨찾기 삭제 처리--%>
+<%--            }--%>
+<%--        });--%>
+<%--    });--%>
+<%--    const stars = {};--%>
+<%--    // 즐겨찾기 추가 처리 함수--%>
+<%--    function addFavorite(button) {--%>
+<%--        console.log("즐겨찾기버튼눌림");--%>
+<%--        const placeId = button.dataset.id;--%>
+<%--        console.log("placeId:" + placeId);--%>
+<%--        fetch("${path}/auth/favorite/add", {--%>
+<%--            method: "POST",--%>
+<%--            headers: {--%>
+<%--                "Content-Type": "application/json"--%>
+<%--            },--%>
+<%--            body: JSON.stringify({ "kakao_place_id": placeId })--%>
+<%--        })--%>
+<%--            .then(response => {--%>
+<%--                if (!response.ok) throw new Error("HTTP error " + response.status);--%>
+<%--                return response.text();--%>
+<%--            })--%>
+<%--            .then(data => {--%>
+<%--                alert("즐겨찾기에 추가되었습니다!"); // 성공 메시지 출력--%>
+<%--                stars[placeId] = data.star_id;--%>
+<%--                button.setAttribute("data-starid", data.star_id);--%>
+<%--                button.classList.add("favorited");--%>
+<%--                console.log("star_id 저장 완료:", data.star_id);--%>
+<%--            })--%>
+<%--            .catch(err => {--%>
+<%--                console.error("Add favorite error:", err);--%>
+<%--                alert("즐겨찾기 추가 중 오류가 발생했습니다.");--%>
+<%--            });--%>
+<%--    }--%>
+
+<%--    // 즐겨찾기 삭제 처리 함수--%>
+<%--    function deleteFavorite(button) {--%>
+<%--        const placeId = button.dataset.id;--%>
+<%--        const starId = stars[placeId];--%>
+
+<%--        console.log("삭제할 starId:" + starId);--%>
+<%--        fetch("${path}/auth/favorite/delete", {--%>
+<%--            method: "POST",--%>
+<%--            headers: {--%>
+<%--                "Content-Type": "application/json"--%>
+<%--            },--%>
+<%--            body: JSON.stringify({ star_id: starId })--%>
+<%--        })--%>
+<%--            .then(response => {--%>
+<%--                if (!response.ok) throw new Error("HTTP error " + response.status);--%>
+<%--                return response.text();--%>
+<%--            })--%>
+<%--            .then(message => {--%>
+<%--                delete stars[placeId];--%>
+<%--                button.classList.remove("favorited"); // 즐겨찾기 상태 제거--%>
+<%--                button.removeAttribute("data-starid");--%>
+<%--                alert("즐겨찾기가 해제되었습니다!"); // 성공 메시지 출력--%>
+<%--            })--%>
+<%--            .catch(err => {--%>
+<%--                console.error("Delete favorite error:", err);--%>
+<%--                alert("즐겨찾기 삭제 중 오류가 발생했습니다.");--%>
+<%--            });--%>
+<%--    }--%>
+<%-- </script> --%>
 </body>
 </html>
