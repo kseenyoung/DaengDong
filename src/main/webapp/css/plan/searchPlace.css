@@ -6,8 +6,8 @@
 }
 /* 지도 스타일 */
 :root {
-  --plan-color: #2196F3;
- }
+    --plan-color: #2196F3;
+}
 #map {
     position: relative;
     top: 10%;
@@ -591,7 +591,7 @@ body, h4, p, button, a {
 
 /* 모달 컨텐츠 스타일 */
 .modal-content {
-/*    max-width: 1200px;*/
+    /*    max-width: 1200px;*/
     z-index: 1500;
     position: relative;
     top: 0px;
@@ -850,7 +850,7 @@ body, h4, p, button, a {
     flex-direction: column;
 }
 #list_wrap p {
-  font-weight: 700;
+    font-weight: 700;
     color: #6c757d;
 }
 #addPlaceBtn {
@@ -1092,15 +1092,15 @@ body, h4, p, button, a {
     text-align: center;
 }
 
- #openCompanionModalBtn {
-     background-color: var(--plan-color);
-     color: white;
-     font-size: 18px;
-     font-weight: bold;
-     border: none;
-     border-radius: 5px;
-     width: 25px;
-     height: 25px;
+#openCompanionModalBtn {
+    background-color: var(--plan-color);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    width: 25px;
+    height: 25px;
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease, transform 0.2s ease;
@@ -1152,15 +1152,15 @@ body, h4, p, button, a {
 
 /* 공통 버튼 스타일 */
 #mainControls button {
-   background-color: #fff;
-  color: var(--plan-color);
-  border: 2px solid var(--plan-color);
-  border-radius: 5px;
-  padding: 5px 10px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s ease;
+    background-color: #fff;
+    color: var(--plan-color);
+    border: 2px solid var(--plan-color);
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s ease;
 }
 
 /* 버튼 호버 효과 */

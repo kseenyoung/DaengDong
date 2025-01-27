@@ -103,4 +103,3 @@ public class PlaceController {
         return ResponseEntity.ok(favorites);
     }
 }
-//

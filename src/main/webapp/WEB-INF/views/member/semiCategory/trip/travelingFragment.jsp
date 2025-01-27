@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="${path}/css/member/myPlan.css">
 <c:forEach var="travelingPlan" items="${travelingPlan}">
     <div class="announcement-plan" data-plan-id="${travelingPlan.planId}">
-        <img id="placeImg" src="" alt="placeImg">
+        <%-- <img id="placeImg" src="" alt="placeImg"> --%>
         <div class="text-container">
             <h2 class="place-title">
                 <a>${travelingPlan.planName}</a>
