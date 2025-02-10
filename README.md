@@ -60,6 +60,16 @@
 
 `OS` mac, window
 
+## 스크린샷
+
+### 여행기능
+
+### 채팅기능
+![chatting](https://github.com/user-attachments/assets/993836cb-478e-41ba-8c8c-e8076b1d39d9)
+
+### 커뮤니티기능
+
+### 마이페이지
 
 
 ## 디렉토리 구조
