@@ -12,7 +12,7 @@
 <%--todo: 전체를 버튼으로 반들어 누르면  해당 플랜으로 넘어가게 수정할 것--%>
 <c:forEach var="planningPlan" items="${planningPlan}">
     <div class="announcement-plan" data-plan-id="${planningPlan.planId}">
-        <img id="placeImg" src="" alt="placeImg">
+        <%-- <img id="placeImg" src="" alt="placeImg"> --%>
         <div class="text-container">
             <h2 class="place-title">
                 <a>${planningPlan.planName}</a>

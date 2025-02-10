@@ -3,6 +3,7 @@ package com.shinhan.daengdong.plan.controller;
 import com.shinhan.daengdong.member.dto.MemberDTO;
 import com.shinhan.daengdong.member.dto.NotificationDTO;
 import com.shinhan.daengdong.member.model.service.MemberServiceInterface;
+import com.shinhan.daengdong.place.dto.FavoriteDTO;
 import com.shinhan.daengdong.place.dto.PlaceDTO;
 import com.shinhan.daengdong.place.model.service.PlaceServiceInterface;
 import com.shinhan.daengdong.plan.dto.MemberPlanDTO;
@@ -68,7 +69,8 @@ public class PlanController {
 
         if (member == null) {
             Map<String, String> response = new HashMap<>();
-            response.put("redirectUrl", "redirect:/auth/login.do");
+            response.put("redirect", "true");
+            response.put("redirectUrl", "/daengdong/auth/login.do");
             return ResponseEntity.ok(response);
         } else {
 
