@@ -218,24 +218,215 @@
 
 ### webapp
 ``` text
-webapp
- ┣ WEB-INF
- ┃ ┣ views
- ┃ ┃ ┣ common
- ┃ ┃ ┣ member
- ┃ ┃ ┣ photocard
- ┃ ┃ ┣ place
- ┃ ┃ ┣ plan
- ┃ ┃ ┣ post
- ┃ ┃ ┗ home.jsp
- ┃ ┣ root-context.xml
- ┃ ┣ root-contextDB.xml
- ┃ ┣ servlet-context.xml
- ┃ ┗ web.xml
- ┣ img
- ┣ .DS_Store
- ┗ index.jsp
-
+├── WEB-INF
+│   ├── root-context.xml
+│   ├── root-contextDB.xml
+│   ├── servlet-context.xml
+│   ├── views
+│   │   ├── chat
+│   │   │   └── chatFragment.jsp
+│   │   ├── common
+│   │   │   └── header.jsp
+│   │   ├── home.jsp
+│   │   ├── member
+│   │   │   ├── editNickName.jsp
+│   │   │   ├── followerModal.jsp
+│   │   │   ├── followingModal.jsp
+│   │   │   ├── header.jsp
+│   │   │   ├── login.jsp
+│   │   │   ├── mypage.jsp
+│   │   │   ├── petCreateProfileModal.jsp
+│   │   │   ├── petProfileModal.jsp
+│   │   │   ├── post.html
+│   │   │   ├── profileFragment.jsp
+│   │   │   ├── semiCategory
+│   │   │   │   ├── photoCard.jsp
+│   │   │   │   ├── save
+│   │   │   │   │   ├── favoritePlaceFragment.jsp
+│   │   │   │   │   ├── likePostsFragment.jsp
+│   │   │   │   │   ├── myPostsFragment.jsp
+│   │   │   │   │   ├── reviewFragment.jsp
+│   │   │   │   │   └── reviewUpdateModal.jsp
+│   │   │   │   ├── save.jsp
+│   │   │   │   ├── trip
+│   │   │   │   │   ├── completeTravelFragment.jsp
+│   │   │   │   │   ├── planningFragment.jsp
+│   │   │   │   │   └── travelingFragment.jsp
+│   │   │   │   └── trip.jsp
+│   │   │   ├── signUp.jsp
+│   │   │   └── userProfileImageModal.jsp
+│   │   ├── photocard
+│   │   ├── place
+│   │   │   └── searchPlace.jsp
+│   │   ├── plan
+│   │   │   ├── createPlan.jsp
+│   │   │   ├── myPlace.jsp
+│   │   │   └── newPlan.jsp
+│   │   └── post
+│   │       ├── post.jsp
+│   │       ├── postCol.jsp
+│   │       └── postDetail.jsp
+│   └── web.xml
+├── css
+│   ├── chat
+│   │   └── chat.css
+│   ├── header.css
+│   ├── member
+│   │   ├── favoritePlace.css
+│   │   ├── followModal.css
+│   │   ├── likePosts.css
+│   │   ├── login.css
+│   │   ├── myPlan.css
+│   │   ├── myPost.css
+│   │   ├── mypage.css
+│   │   └── reviews.css
+│   ├── photoCard
+│   ├── plan
+│   │   ├── searchPlace.css
+│   │   └── searchPlceImpl.css
+│   ├── post
+│   │   ├── post.css
+│   │   └── postDetail.css
+│   └── signUp.css
+├── images
+│   ├── banner.jpg
+│   ├── community.png
+│   ├── header_arlam.png
+│   ├── header_community.png
+│   ├── header_plan.png
+│   ├── header_user.png
+│   ├── image 16.png
+│   ├── love.png
+│   ├── modal.png
+│   ├── one-svgrepo-com.svg
+│   ├── plan.png
+│   └── user.png
+├── img
+│   ├── Downloads
+│   │   ├── day08
+│   │   │   └── day08
+│   │   │       ├── AbstractTest.java
+│   │   │       ├── AppCDInfo.java
+│   │   │       ├── Audio.java
+│   │   │       ├── CDInfo.java
+│   │   │       ├── Changeable.java
+│   │   │       ├── Colorable.java
+│   │   │       ├── EMailSender.java
+│   │   │       ├── Inheritance.java
+│   │   │       ├── InterfaceTest.java
+│   │   │       ├── Lendable.java
+│   │   │       ├── MessageSender.java
+│   │   │       ├── Moveable.java
+│   │   │       ├── MyBox.java
+│   │   │       ├── MyInterface.java
+│   │   │       ├── MyInterfaceImpl1.java
+│   │   │       ├── MyInterfaceImpl2.java
+│   │   │       ├── Prob1.java
+│   │   │       ├── RemoteController.java
+│   │   │       ├── RemoteController2.java
+│   │   │       ├── Resizable.java
+│   │   │       ├── SMSSender.java
+│   │   │       ├── SeparateVolume.java
+│   │   │       ├── Television.java
+│   │   │       ├── TranformImpl.java
+│   │   │       └── Transformable.java
+│   │   ├── movie
+│   │   │   └── movie
+│   │   │       ├── movieController
+│   │   │       │   ├── MovieController.java
+│   │   │       │   ├── ReserveController.java
+│   │   │       │   └── UserController.java
+│   │   │       ├── movieDAO
+│   │   │       │   ├── MovieDAO.java
+│   │   │       │   ├── ReserveDAO.java
+│   │   │       │   └── UserDAO.java
+│   │   │       ├── movieDTO
+│   │   │       │   ├── MovieDTO.java
+│   │   │       │   ├── ReserveDTO.java
+│   │   │       │   └── UserDTO.java
+│   │   │       ├── movieService
+│   │   │       │   ├── MovieService.java
+│   │   │       │   ├── ReserveService.java
+│   │   │       │   └── UserService.java
+│   │   │       └── movieView
+│   │   │           ├── MovieView.java
+│   │   │           ├── ReserveView.java
+│   │   │           └── UserView.java
+│   │   ├── pet
+│   │   │   ├── PretendardVariable.woff2
+│   │   │   ├── images
+│   │   │   │   ├── banner.jpg
+│   │   │   │   ├── community.png
+│   │   │   │   ├── image 16.png
+│   │   │   │   ├── love.png
+│   │   │   │   ├── one-svgrepo-com.svg
+│   │   │   │   ├── plan.png
+│   │   │   │   └── user.png
+│   │   │   ├── main.css
+│   │   │   ├── main2.html
+│   │   │   ├── pet.code-workspace
+│   │   │   ├── post.css
+│   │   │   └── post.html
+│   │   └── pro15
+│   │       └── pro15
+│   │           └── src
+│   │               └── sec01
+│   │                   ├── ex01
+│   │                   │   └── FileUpload.java
+│   │                   └── ex02
+│   │                       └── FileDownload.java
+│   ├── Like.png
+│   ├── Likefull.png
+│   ├── comment.png
+│   ├── daengdong_dog.jpeg
+│   ├── empty_like_icon.png
+│   ├── empty_star.png
+│   ├── fullLike.png
+│   ├── kakao_login.png
+│   ├── kseenyoungProfile.jpeg
+│   ├── left-arrow.png
+│   ├── login.png
+│   ├── main2.png
+│   ├── main3.png
+│   ├── main4.png
+│   ├── main5.png
+│   ├── modal.png
+│   ├── more.png
+│   ├── plan_create.jpg
+│   ├── plan_create2.jpg
+│   ├── profile10.jpg
+│   ├── profile7.jpg
+│   ├── profile8.jpg
+│   ├── profile9.jpg
+│   ├── right-arrow.png
+│   ├── shorlock.jpeg
+│   └── star.png
+├── index.jsp
+├── js
+│   ├── addCompanion.js
+│   ├── chat
+│   │   ├── chat.js
+│   │   └── planChat.js
+│   ├── finalSend.js
+│   ├── main.js
+│   ├── member
+│   │   └── mypage.js
+│   ├── photoCard
+│   ├── planWebSocket.js
+│   ├── post
+│   │   ├── like.js
+│   │   └── postImageUpload.js
+│   ├── searchPlace_app.js
+│   ├── signUp.js
+│   ├── uploadFile.js
+│   └── websocket.js
+├── main2.jsp
+├── style2.css
+└── upload
+    ├── cat1_1736831296666.jpg
+    ├── cat2_1736831263308.jpg
+    ├── cat3_1736831263307.jpg
+    └── cat4_1736831263306.jpg
 ```
 ## API Reference
 
