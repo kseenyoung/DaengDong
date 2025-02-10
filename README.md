@@ -49,7 +49,7 @@
 **Database:** MySQL 
 ## Archetecture
 
-<img src="readme/Architecture.png" width="75%"/>
+<img width="612" alt="image" src="https://github.com/user-attachments/assets/5fd0cbb3-9885-4682-94b5-4c9878da0f0d" width="75%" />
 
 ## Development Environment
 
