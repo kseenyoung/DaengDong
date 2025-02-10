@@ -66,52 +66,154 @@
 
 ### java
 ``` text
-java
- ┗ com
- ┃ ┗ shinhan
- ┃ ┃ ┗ daengdong
- ┃ ┃ ┃ ┣ member
- ┃ ┃ ┃ ┃ ┣ controller
- ┃ ┃ ┃ ┃ ┣ dto
- ┃ ┃ ┃ ┃ ┣ model
- ┃ ┃ ┃ ┃ ┃ ┣ repository
- ┃ ┃ ┃ ┃ ┃ ┗ service
- ┃ ┃ ┃ ┃ ┗ vo
- ┃ ┃ ┃ ┣ notification
- ┃ ┃ ┃ ┃ ┣ controller
- ┃ ┃ ┃ ┃ ┣ dto
- ┃ ┃ ┃ ┃ ┣ model
- ┃ ┃ ┃ ┃ ┃ ┣ repository
- ┃ ┃ ┃ ┃ ┃ ┗ service
- ┃ ┃ ┃ ┃ ┗ vo
- ┃ ┃ ┃ ┣ photocard
- ┃ ┃ ┃ ┃ ┣ controller
- ┃ ┃ ┃ ┃ ┣ dto
- ┃ ┃ ┃ ┃ ┣ model
- ┃ ┃ ┃ ┃ ┃ ┣ repository
- ┃ ┃ ┃ ┃ ┃ ┗ service
- ┃ ┃ ┃ ┃ ┗ vo
- ┃ ┃ ┃ ┣ place
- ┃ ┃ ┃ ┃ ┣ controller
- ┃ ┃ ┃ ┃ ┣ dto
- ┃ ┃ ┃ ┃ ┣ model
- ┃ ┃ ┃ ┃ ┃ ┣ repository
- ┃ ┃ ┃ ┃ ┃ ┗ service
- ┃ ┃ ┃ ┃ ┗ vo
- ┃ ┃ ┃ ┣ plan
- ┃ ┃ ┃ ┃ ┣ controller
- ┃ ┃ ┃ ┃ ┣ dto
- ┃ ┃ ┃ ┃ ┣ model
- ┃ ┃ ┃ ┃ ┃ ┣ repository
- ┃ ┃ ┃ ┃ ┃ ┗ service
- ┃ ┃ ┃ ┃ ┗ vo
- ┃ ┃ ┃ ┗ post
- ┃ ┃ ┃ ┃ ┣ controller
- ┃ ┃ ┃ ┃ ┣ dto
- ┃ ┃ ┃ ┃ ┣ model
- ┃ ┃ ┃ ┃ ┃ ┣ repository
- ┃ ┃ ┃ ┃ ┃ ┗ service
- ┃ ┃ ┃ ┃ ┗ vo
+├── java
+│   └── com
+│       └── shinhan
+│           └── daengdong
+│               ├── chat
+│               │   ├── controller
+│               │   │   └── ChatController.java
+│               │   ├── dto
+│               │   │   └── ChatMessageDTO.java
+│               │   ├── model
+│               │   │   ├── ChatParticipant.java
+│               │   │   ├── ChatRoom.java
+│               │   │   ├── repository
+│               │   │   │   └── ChatRoomRepository.java
+│               │   │   └── service
+│               │   │       └── ChatService.java
+│               │   └── websocket
+│               │       ├── ChatWebSocketConfig.java
+│               │       ├── ChatWebSocketHandler.java
+│               │       ├── HttpSessionInterceptor.java
+│               │       ├── SessionInfo.java
+│               │       └── WebSocketSessionManager.java
+│               ├── home
+│               │   └── controller
+│               │       └── HomeController.java
+│               ├── member
+│               │   ├── controller
+│               │   │   ├── MemberController.java
+│               │   │   ├── MemberRestController.java
+│               │   │   └── OauthController.java
+│               │   ├── dto
+│               │   │   ├── FavoritePlaceDTO.java
+│               │   │   ├── FollowDTO.java
+│               │   │   ├── ImageDTO.java
+│               │   │   ├── LikePostsDTO.java
+│               │   │   ├── MemberDTO.java
+│               │   │   ├── NotificationDTO.java
+│               │   │   ├── PetImageDTO.java
+│               │   │   ├── RelationshipsDTO.java
+│               │   │   └── SignUpDTO.java
+│               │   ├── model
+│               │   │   ├── repository
+│               │   │   │   ├── MemberRepositoryImpl.java
+│               │   │   │   └── MemberRepositoryInterface.java
+│               │   │   └── service
+│               │   │       ├── GoogleOauthService.java
+│               │   │       ├── KakaoOauthService.java
+│               │   │       ├── MemberServiceImpl.java
+│               │   │       └── MemberServiceInterface.java
+│               │   └── vo
+│               │       ├── MemberPostsVO.java
+│               │       └── MemberVO.java
+│               ├── notification
+│               │   ├── controller
+│               │   ├── dto
+│               │   ├── model
+│               │   │   ├── repository
+│               │   │   └── service
+│               │   └── vo
+│               ├── pet
+│               │   └── dto
+│               │       └── PetDTO.java
+│               ├── photocard
+│               │   ├── controller
+│               │   ├── dto
+│               │   ├── model
+│               │   │   ├── repository
+│               │   │   └── service
+│               │   └── vo
+│               ├── place
+│               │   ├── controller
+│               │   │   └── PlaceController.java
+│               │   ├── dto
+│               │   │   ├── FavoriteDTO.java
+│               │   │   ├── PlaceDTO.java
+│               │   │   ├── PlanPlaceDTO.java
+│               │   │   └── RegionDTO.java
+│               │   ├── model
+│               │   │   ├── repository
+│               │   │   │   ├── PlaceRepositoryImpl.java
+│               │   │   │   └── PlaceRepositoryInterface.java
+│               │   │   └── service
+│               │   │       ├── PlaceServiceImpl.java
+│               │   │       └── PlaceServiceInterface.java
+│               │   └── vo
+│               ├── plan
+│               │   ├── controller
+│               │   │   └── PlanController.java
+│               │   ├── dto
+│               │   │   ├── MemberPlanDTO.java
+│               │   │   ├── PlanDTO.java
+│               │   │   ├── PlanDetailsDTO.java
+│               │   │   └── PlanRelationshipsDTO.java
+│               │   ├── model
+│               │   │   ├── repository
+│               │   │   │   ├── PlanRepositoryImpl.java
+│               │   │   │   └── PlanRepositoryInterface.java
+│               │   │   └── service
+│               │   │       ├── PlanServiceImpl.java
+│               │   │       └── PlanServiceInterface.java
+│               │   ├── vo
+│               │   │   └── PlanVO.java
+│               │   └── websoket
+│               │       ├── PlanHandshakeInterceptor.java
+│               │       └── PlanWebSocketHandler.java
+│               ├── post
+│               │   ├── controller
+│               │   │   ├── PostController.java
+│               │   │   └── PostRestController.java
+│               │   ├── dto
+│               │   │   ├── CommentDTO.java
+│               │   │   ├── LikeDTO.java
+│               │   │   ├── PostDTO.java
+│               │   │   └── PostIMGDTO.java
+│               │   ├── model
+│               │   │   ├── repository
+│               │   │   │   ├── PostRepositoryImpl.java
+│               │   │   │   └── PostRepositoryInterface.java
+│               │   │   └── service
+│               │   │       ├── PostServiceImpl.java
+│               │   │       └── PostServiceInterface.java
+│               │   └── vo
+│               │       ├── CommentVO.java
+│               │       ├── LikeVO.java
+│               │       └── PostVO.java
+│               ├── review
+│               │   └── dto
+│               │       └── ReviewDTO.java
+│               └── util
+│                   ├── JacksonConfig.java
+│                   ├── WebSocketConfig.java
+│                   └── awsS3
+│                       ├── S3Config.java
+│                       ├── S3Controller.java
+│                       └── S3Service.java
+├── resources
+│   ├── application.properties
+│   ├── daengdong.sql
+│   ├── dump.sql
+│   ├── keystore.p12
+│   ├── log4j.xml
+│   └── mybatis
+│       ├── mappers
+│       │   ├── memberMapper.xml
+│       │   ├── placeMapper.xml
+│       │   ├── planMapper.xml
+│       │   └── postMapper.xml
+│       └── sqlMapConfig.xml
 ```
 
 ### webapp
