@@ -49,7 +49,7 @@
 **Database:** MySQL 
 ## Archetecture
 
-<img width="612" alt="image" src="https://github.com/user-attachments/assets/5fd0cbb3-9885-4682-94b5-4c9878da0f0d" width="75%" />
+![archtecture](https://github.com/user-attachments/assets/5350d9b2-f6d0-498c-adf9-d7e6371bb83d)
 
 ## Development Environment
 
@@ -69,8 +69,12 @@
 
 ### 커뮤니티기능
 
-### 마이페이지
+### 회원가입
+![signUp](https://github.com/user-attachments/assets/f0accd6a-7575-49c3-8a1f-a4bdb1646ac5)
 
+### 마이페이지 프로필
+![My Movie 1 (1)](https://github.com/user-attachments/assets/d492fa13-e51b-4174-9847-45ac6efdf8bb)
+![My Movie 1 (2)](https://github.com/user-attachments/assets/49cc3bfa-9410-408a-9932-9b001ccf1511)
 
 ## 디렉토리 구조
 
