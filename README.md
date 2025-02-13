@@ -63,11 +63,13 @@
 ## 스크린샷
 
 ### 여행기능
+![My Movie 1 (1)](https://github.com/user-attachments/assets/51c494f4-baad-4f22-8796-57afd424b254)
 
 ### 채팅기능
 ![chatting](https://github.com/user-attachments/assets/993836cb-478e-41ba-8c8c-e8076b1d39d9)
 
 ### 커뮤니티기능
+![My Movie 1](https://github.com/user-attachments/assets/5f04e492-5388-4f40-b431-547c3416f31c)
 
 ### 회원가입
 ![signUp](https://github.com/user-attachments/assets/f0accd6a-7575-49c3-8a1f-a4bdb1646ac5)
@@ -442,7 +444,7 @@
     ├── cat3_1736831263307.jpg
     └── cat4_1736831263306.jpg
 ```
-## API Reference
+<!-- ## API Reference
 
 ### Auth
 
@@ -483,7 +485,7 @@
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `chatId` | `int` | **Required**. chatId for enter chat |
-
+-->
 
 ## Run Locally
 
@@ -493,19 +495,12 @@ project Clone
   git clone https://github.com/kseenyoung/DaengDong
 ```
 
-Move to project directory
+Tomcat start
+port:5555
+context:daengdong
 
-```bash
-  cd DaengDong
+main url
+```
+http://localhost:5555/daengdong/
 ```
 
-Start the server
-
-```bash
-  npm run start
-```
-
-
-## Screenshots
-
-<img src="readme/Architecture.png" width="75%"/>
