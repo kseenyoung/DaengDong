@@ -286,6 +286,18 @@
       <version>1.16.1</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webflux</artifactId>
+      <version>5.3.31</version> <!-- Spring 5.x 사용시 -->
+    </dependency>
+
+    <dependency>
+      <groupId>io.projectreactor.netty</groupId>
+      <artifactId>reactor-netty</artifactId>
+      <version>1.0.36</version>
+    </dependency>
+
   </dependencies>
   <build>
     <finalName>daengdong</finalName>

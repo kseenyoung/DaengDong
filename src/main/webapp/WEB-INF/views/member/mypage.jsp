@@ -41,7 +41,7 @@
         <div class="categories">
             <ul>
                 <li id="myTripFragment">내 여행</li>
-                <li id="myPhotoCardFragment">포토카드</li>
+<%--                <li id="myPhotoCardFragment">포토카드</li>--%>
                 <li id="mySaveFragment">내 저장</li>
             </ul>
         </div>

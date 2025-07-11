@@ -7,18 +7,30 @@ $(document).ready(function () {
   $(document).on("keypress", "#messageInput", pressEnter);
   $(document).on("click", "#closeChatModal", closeChatModal);
 
-  function loadChatHistory() {
+  async function loadChatHistory() {
     const chatMessages = $("#chatMessages");
     chatMessages.empty(); // 기존 DOM 초기화
 
-    // 이전 메시지 렌더링
-    chatHistory.forEach((message) => {
-      if (message.sender === (memberNickname || memberName || "Anonymous")) {
-        displaySentMessage(message.content);
-      } else {
-        displayReceivedMessage(message.content, message.sender, message.profilePhoto);
-      }
-    });
+    try {
+      // Supabase에서 과거 채팅 내역 가져오기
+      const response = await fetch(`${path}/chat/${planId}/messages`);
+      const history = await response.json();
+
+      // 기존 배열 초기화 후 Supabase 내역으로 채움
+      chatHistory.length = 0;
+      history.forEach(msg => chatHistory.push(msg));
+
+      // 가져온 메시지 렌더링
+      history.forEach((message) => {
+        if (message.sender === (memberNickname || memberName || "Anonymous")) {
+          displaySentMessage(message.content);
+        } else {
+          displayReceivedMessage(message.content, message.sender, message.profilePhoto);
+        }
+      });
+    } catch (error) {
+      console.error("Supabase 메시지 로딩 실패:", error);
+    }
   }
 
   const chatHistory = [];
@@ -180,19 +192,19 @@ $(document).ready(function () {
     }
   }
 
-  function loadChatHistory() {
-    const chatMessages = $("#chatMessages");
-    chatMessages.empty(); // 기존 DOM 초기화
-
-    // 이전 메시지 렌더링
-    chatHistory.forEach((message) => {
-      if (message.sender === (memberNickname || memberName || "Anonymous")) {
-        displaySentMessage(message.content);
-      } else {
-        displayReceivedMessage(message.content, message.sender, message.profilePhoto);
-      }
-    });
-  }
+  // function loadChatHistory() {
+  //   const chatMessages = $("#chatMessages");
+  //   chatMessages.empty(); // 기존 DOM 초기화
+  //
+  //   // 이전 메시지 렌더링
+  //   chatHistory.forEach((message) => {
+  //     if (message.sender === (memberNickname || memberName || "Anonymous")) {
+  //       displaySentMessage(message.content);
+  //     } else {
+  //       displayReceivedMessage(message.content, message.sender, message.profilePhoto);
+  //     }
+  //   });
+  // }
 
   // 모달 닫기
   $("#closeChatModal").on("click", function () {

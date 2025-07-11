@@ -5,6 +5,7 @@ import com.shinhan.daengdong.chat.dto.ChatMessageDTO;
 import com.shinhan.daengdong.chat.model.ChatParticipant;
 import com.shinhan.daengdong.chat.model.ChatRoom;
 import com.shinhan.daengdong.chat.model.service.ChatService;
+import com.shinhan.daengdong.chat.model.service.SupabaseChatService;
 import com.shinhan.daengdong.member.dto.MemberDTO;
 import com.shinhan.daengdong.member.model.repository.MemberRepositoryImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     private final ChatService chatService;
     private final WebSocketSessionManager sessionManager;
     private final MemberRepositoryImpl memberRepositoryImpl;
+
+    @Autowired
+    private SupabaseChatService supabaseChatService;
 
     @Autowired
     public ChatWebSocketHandler(ChatService chatService, WebSocketSessionManager sessionManager, MemberRepositoryImpl memberRepositoryImpl) {
@@ -47,6 +51,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         ObjectMapper mapper = new ObjectMapper();
         ChatMessageDTO chatMessage = mapper.readValue(message.getPayload(), ChatMessageDTO.class);
         chatMessage.setSender(senderName);
+
+        supabaseChatService.saveMessage(chatMessage, planId, sender.getNickName());
 
         ChatRoom chatRoom = chatService.getChatRoom(planId);
         chatRoom.broadcastMessage(mapper.writeValueAsString(chatMessage));
