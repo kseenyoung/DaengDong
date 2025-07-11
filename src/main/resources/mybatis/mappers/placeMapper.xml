@@ -23,6 +23,37 @@
         values (#{planId}, #{kakaoPlaceId}, #{day});
     </insert>
 
+    <!-- 즐겨찾기 추가 -->
+    <insert id="insertFavorite" parameterType="FavoriteDTO" useGeneratedKeys="true" keyProperty="starId">
+        INSERT INTO favorites (member_email, kakao_place_id)
+        VALUES (#{memberEmail}, #{kakaoPlaceId})
+    </insert>
 
-    <!--특정 planId의 장소 목록 조회-->
+    <!-- 즐겨찾기 해제 -->
+    <delete id="deleteFavorite" parameterType="long">
+        DELETE FROM favorites
+        WHERE star_id = #{starId}
+    </delete>
+
+    <!-- 즐겨찾기 존재 여부 확인 -->
+    <select id="findByMemberAndPlaceCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM favorites
+        WHERE member_email = #{memberEmail}
+          AND kakao_place_id = #{kakaoPlaceId}
+    </select>
+
+    <!-- 즐겨찾기 삭제 -->
+    <delete id="deleteByMemberAndPlace" parameterType="map">
+        DELETE FROM favorites
+        WHERE member_email = #{memberEmail}
+          AND kakao_place_id = #{kakaoPlaceId}
+    </delete>
+
+    <!-- 즐겨찾기 목록 불러오기 -->
+    <select id="findAllByMemberEmail" parameterType="FavoriteDTO" resultType="favoriteDTO">
+        SELECT *
+        FROM favorites
+        WHERE member_email = #{memberEmail}
+    </select>
 </mapper>

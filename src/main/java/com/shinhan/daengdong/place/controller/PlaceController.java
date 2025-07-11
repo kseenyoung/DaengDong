@@ -1,5 +1,6 @@
 package com.shinhan.daengdong.place.controller;
 
+import com.shinhan.daengdong.place.dto.FavoriteDTO;
 import com.shinhan.daengdong.place.dto.PlaceDTO;
 import com.shinhan.daengdong.place.dto.PlanPlaceDTO;
 import com.shinhan.daengdong.place.model.service.PlaceServiceInterface;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -66,4 +68,38 @@ public class PlaceController {
         }
     }
 
+    @PostMapping("/addFavorite")
+    public ResponseEntity<String> addFavorite(@RequestBody FavoriteDTO favoriteDTO, HttpSession session) {
+        String memberEmail = (String) session.getAttribute("currentMemberEmail");
+        if (memberEmail == null) {
+            log.error("세션에 memberEmail이 없습니다!");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+        favoriteDTO.setMemberEmail(memberEmail);
+
+        try {
+            // 중복 여부 확인
+            boolean isFavoriteExist = placeService.isFavoriteExist(favoriteDTO);
+            if (isFavoriteExist) {
+                // 중복 존재 -> 삭제
+                placeService.deleteFavoriteByMemberAndPlace(favoriteDTO);
+                return ResponseEntity.ok("즐겨찾기에서 제거되었습니다.");
+            } else {
+                // 중복 없음 -> 추가
+                placeService.addFavorite(favoriteDTO);
+                log.info("생성된 starId: {}", favoriteDTO.getStarId());
+                return ResponseEntity.ok("즐겨찾기에 추가되었습니다.");
+            }
+        } catch (Exception e) {
+            log.error("즐겨찾기 처리 중 오류 발생", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("즐겨찾기 처리 실패");
+        }
+    }
+
+    @GetMapping("/favorites")
+    public ResponseEntity<List<FavoriteDTO>> getFavorites(HttpSession session) {
+        String memberEmail = (String) session.getAttribute("memberEmail");
+        List<FavoriteDTO> favorites = placeService.findAllFavorites(memberEmail);
+        return ResponseEntity.ok(favorites);
+    }
 }

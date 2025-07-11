@@ -1,0 +1,121 @@
+/* Container for Search Page */
+.search-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #f5f8fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 100%;
+}
+
+/* Header Section */
+.search-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-header h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1c1c1c;
+}
+
+.search-header button {
+    padding: 10px 15px;
+    background-color: #0AB75B;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.search-header button:hover {
+    background-color: #32a86e;
+    transform: scale(1.05);
+}
+
+/* Search Bar */
+.search-bar {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    font-size: 16px;
+}
+
+.search-bar button {
+    padding: 10px 15px;
+    background-color: #0AB75B;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+    background-color: #32a86e;
+}
+
+/* Search Results */
+.search-results {
+    margin-top: 20px;
+}
+
+.search-results ul {
+    list-style: none;
+    padding: 0;
+}
+
+.search-results li {
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-results li h3 {
+    font-size: 18px;
+    color: #1c1c1c;
+}
+
+.search-results li p {
+    font-size: 14px;
+    color: #555555;
+}
+
+.search-results li button {
+    padding: 5px 10px;
+    background-color: #0AB75B;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-results li button:hover {
+    background-color: #32a86e;
+}
+
+/* Map Container */
+.map-container {
+    margin-top: 20px;
+    height: 400px;
+    background-color: #e1e8ed;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}

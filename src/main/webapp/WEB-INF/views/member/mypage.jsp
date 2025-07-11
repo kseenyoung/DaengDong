@@ -26,7 +26,8 @@
     <script src="${path}/js/member/mypage.js"></script>
 </head>
 <body>
-<%@ include file="header.jsp" %>
+<%@include file="../member/header.jsp" %>
+<%--<%@ include file="header.jsp" %>--%>
 <div id="share-placeholder"></div>
 <div class="grid-container">
     <!-- Left Section -->
@@ -40,7 +41,7 @@
         <div class="categories">
             <ul>
                 <li id="myTripFragment">내 여행</li>
-                <li id="myPhotoCardFragment">포토카드</li>
+<%--                <li id="myPhotoCardFragment">포토카드</li>--%>
                 <li id="mySaveFragment">내 저장</li>
             </ul>
         </div>

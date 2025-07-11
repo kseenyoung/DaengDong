@@ -25,6 +25,8 @@ public interface MemberServiceInterface {
 
     List<LikePostsDTO> getLikePosts(String memberEmail);
 
+    void addFavoritePlace(FavoritePlaceDTO favoritePlaceDTO);
+
     void deleteFavoritePlace(int starId);
 
     void deleteReview(int reviewId);
@@ -39,7 +41,7 @@ public interface MemberServiceInterface {
 
     void deleteFollowing(FollowDTO followDTO);
 
-    void addFollowing(FollowDTO followDTO);
+    void addFollowing(FollowDTO followDTO , NotificationDTO notificationDTO);
 
     List<PostDTO> getMyPosts(String memberEmail);
 
@@ -53,6 +55,16 @@ public interface MemberServiceInterface {
 
     void modifyPetDetail(PetDTO petDTO);
 
+
+    void insertNotification(NotificationDTO notificationDTO);
+
+    List<NotificationDTO> selectNotification(String receiver_email);
+
+    NotificationDTO selectNotificationById(int notificationId);
+
+    void isChecked(int notificationId);
+
+    void deleteNotification(int notificationId);
     int createPetProfile(PetDTO petDTO);
 
     PetDTO selectOnetMyPet(PetDTO petDTO);

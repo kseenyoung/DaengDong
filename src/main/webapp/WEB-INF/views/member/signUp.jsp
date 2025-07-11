@@ -39,7 +39,6 @@
     </script>
 </head>
 <body>
-<%@ include file="header.jsp" %>
 <div class="sign-up-container">
     <!-- Left: Image Section -->
     <div class="sign-up-image">

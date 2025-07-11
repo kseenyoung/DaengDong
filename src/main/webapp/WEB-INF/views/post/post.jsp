@@ -18,33 +18,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
-
     <title>Document</title>
-    <link
-      href="
-    https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css
-    "
-      rel="stylesheet"
-    />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Dongle:wght@400;700&family=Rubik+Bubbles&family=Rubik+Gemstones&family=Song+Myung&family=Sunflower:wght@300&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Dongle:wght@400;700&family=Rubik+Bubbles&family=Rubik+Gemstones&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="${path}/css/post/main.css" />
     <link rel="stylesheet" href="${path}/css/post/post.css" />
-
+<script>
+    const path = `${pageContext.servletContext.contextPath}`
+</script>
   </head>
 
   <body>
-    <!--  div는 위치나 형태?를 나타낸다. 선택자는 최대 2개, 태그만 있는 경우는
-    무조건 앞에 선택자 써주기  -->
-    <div id="container">
- <%@include file="../member/header.jsp" %>
+   <%@include file="../member/header.jsp" %>
+    <div id="container" data-path="${path}">
+
       <div id="post_write_modal">
         <div id="post_write_block">
             <h2>새 게시물 만들기</h2>
@@ -55,8 +42,8 @@
 
                     <form id="dropZone">
                         <div id="buttons">
-                            <button id="prevButton" type="button">이전</button>
-                            <button id="nextButton" type="button">다음</button>
+                            <button id="prevButton" type="button"><img src="${path}/img/left-arrow.png" width="25"/></button>
+                            <button id="nextButton" type="button"><img src="${path}/img/right-arrow.png" width="25"/></button>
                         </div>
                         <img id="dropzoneImg" src="${path}/img/modal.png" alt="" width="250" height="250">
                         <span>여기에 파일을 드래그하세요</span>
@@ -85,7 +72,11 @@
                         <textarea name="content" id="content" placeholder="내용 : "></textarea>
 
                         <input type="file" id="fileInput" style="display: none;" name="files[]"   multiple />
-                        <button type="submit">만들기</button>
+                        <button type="button" id="submitPost"> 만들기</button>
+                        <button id="uploadButton" class="btn btn-primary" type="button" disabled style="display: none;">
+                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                            <span role="status">만들기</span>
+                        </button>
                     </form>
                 </div>
 
@@ -118,7 +109,8 @@
                    <div class="post">
                      <a href="${path}/post/${post.postId}">
                        <div class="post_relative">
-                           <img class="post_img" src="${path}/upload/${post.imageUrl}" alt="">
+                           <img class="post_img" src="${post.imageUrl}" alt="" style="object-fit: cover;
+                     object-position: center;">
                             <c:if test="${post.category == '꿀팁'}">
                                 <div class="honeytip">
                                    💡Tip
@@ -135,7 +127,8 @@
                        </div>
                      </a>
                        <div class="post_info">
-                           <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                           <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile" style="object-fit: cover;
+                     object-position: center;"><span>${post.memberNickName}</span></div>
                            <div class="post_info_right">
 
                                 <c:set var="found" value="false" />
@@ -173,7 +166,8 @@
                      <div class="post">
                                       <a href="${path}/post/${post.postId}">
                                         <div class="post_relative">
-                                            <img class="post_img" src="${path}/upload/${post.imageUrl}" alt="">
+                                            <img class="post_img" src="${post.imageUrl}" alt="" style="object-fit: cover;
+                     object-position: center;">
                                              <c:if test="${post.category == '꿀팁'}">
                                                  <div class="honeytip">
                                                     💡Tip
@@ -190,7 +184,8 @@
                                         </div>
                                       </a>
                                         <div class="post_info">
-                                            <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                                            <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile" style="object-fit: cover;
+                     object-position: center;"><span>${post.memberNickName}</span></div>
                                             <div class="post_info_right">
 
                                                  <c:set var="found" value="false" />
@@ -228,7 +223,8 @@
                    <div class="post">
                                                          <a href="${path}/post/${post.postId}">
                                                            <div class="post_relative">
-                                                               <img class="post_img" src="${path}/upload/${post.imageUrl}" alt="">
+                                                               <img class="post_img" src="${post.imageUrl}" alt="" style="object-fit: cover;
+                     object-position: center;">
                                                                 <c:if test="${post.category == '꿀팁'}">
                                                                     <div class="honeytip">
                                                                        💡Tip
@@ -245,7 +241,8 @@
                                                            </div>
                                                          </a>
                                                            <div class="post_info">
-                                                               <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                                                               <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile" style="object-fit: cover;
+                     object-position: center;"><span>${post.memberNickName}</span></div>
                                                                <div class="post_info_right">
 
                                                                     <c:set var="found" value="false" />
@@ -283,7 +280,8 @@
                   <div class="post">
                                                         <a href="${path}/post/${post.postId}">
                                                           <div class="post_relative">
-                                                              <img class="post_img" src="${path}/upload/${post.imageUrl}" alt="">
+                                                              <img class="post_img" src="${post.imageUrl}" alt="" style="object-fit: cover;
+                     object-position: center;">
                                                                <c:if test="${post.category == '꿀팁'}">
                                                                    <div class="honeytip">
                                                                       💡Tip
@@ -300,7 +298,8 @@
                                                           </div>
                                                         </a>
                                                           <div class="post_info">
-                                                              <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile"><span>${post.memberNickName}</span></div>
+                                                              <div class="post_info_left"><img src="${post.memberProfilePhoto}" alt="userprofile" style="object-fit: cover;
+                     object-position: center;"><span>${post.memberNickName}</span></div>
                                                               <div class="post_info_right">
 
                                                                    <c:set var="found" value="false" />
@@ -335,21 +334,31 @@
 
     </div>
   </body>
-
+  <script src="${path}/js/post/like.js"></script>
   <script>
 
  document.addEventListener('DOMContentLoaded', () => {
+
+
  console.log("${myLike}")
+ console.log("${postList}")
  console.log("${plans}")
 
 
 
    const writeButton = document.querySelector(".post_write");
    const modal = document.getElementById("post_write_modal");
+   const post_write_block = document.getElementById("post_write_block");
    writeButton.addEventListener("click", function () {
      console.log(1)
       modal.style.display = "flex";
    });
+  modal.addEventListener("click", function () {
+      modal.style.display = "none"; // 모달을 숨김
+  });
+  modal.querySelector("#post_write_block").addEventListener("click", function (event) {
+      event.stopPropagation(); // 클릭 이벤트 전파를 막음
+  });
 
     const dropZone = document.getElementById('dropZone');
     const dropzoneImg = document.getElementById('dropzoneImg');
@@ -361,37 +370,7 @@
     const fileInput = document.getElementById('fileInput');
     let postFormData = new FormData(); // FormData 객체 생성
 
-    $(document).on("click", ".like-img", function() {
-        const postId = $(this).data("post-id");  // 클릭한 게시글의 postId 가져오기
-        const imgElement = $(this);
-        const likeCountElement = imgElement.siblings("span");  // 해당 게시글의 like count 표시 요소
-        let currentLikeCount = parseInt(likeCountElement.text());  // 현재 좋아요 수
 
-        $.ajax({
-            url: `${path}/post/like`,
-            type: "POST",
-            data: {
-                postId: postId,
-            },
-            success: function(response) {
-                // 좋아요 클릭 후 처리 (이미지 변경 등)
-                console.log("success : ", response)
-                console.log($(this))
-                 console.log(currentLikeCount)
-                if (imgElement.attr("src") === `${path}/img/Likefull.png`) {
-                        imgElement.attr("src", `${path}/img/Like.png`);
-                         currentLikeCount--;
-                    } else {  // 그렇지 않으면 'Likefull.png'로 변경
-                        imgElement.attr("src", `${path}/img/Likefull.png`);
-                        currentLikeCount++;
-                    }
-                 likeCountElement.text(currentLikeCount);
-            },
-            error: function(err) {
-                console.log(err);
-            }
-        });
-    });
 
     const otherInput = document.getElementById('otherInput'); // 다른 입력값을 위한 input 요소
 
@@ -528,17 +507,7 @@
 
 
 
-    const links = document.querySelectorAll("#header_right a");
 
-    links.forEach(link => {
-    const img = link.querySelector("img");
-    const altText = link.querySelector(".alt-text");
-
-    // img 태그의 alt 속성값을 span의 텍스트로 설정
-    if (img && altText) {
-        altText.textContent = img.alt;
-    }
-    });
 
        const urlParams = new URLSearchParams(window.location.search);
               const category = urlParams.get('category'); // ?category=여행중 부분에서 '여행중' 값을 가져옴
@@ -564,4 +533,5 @@
                   });
               }
   </script>
+<script src="${path}/js/post/postImageUpload.js"></script>
 </html>

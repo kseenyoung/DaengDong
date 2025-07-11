@@ -8,6 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @ToString
 public class PostDTO {
@@ -17,6 +18,7 @@ public class PostDTO {
     private String postContent;
     private String category;
     private String memberEmail;
+    private List<String> imageUrls;
     public PostDTO(long planId, String postTitle, String postContent, String category, String memberEmail) {
         this.planId = planId;
         this.postTitle = postTitle;

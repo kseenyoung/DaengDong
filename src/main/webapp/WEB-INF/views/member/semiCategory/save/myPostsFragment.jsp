@@ -5,7 +5,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <div class="post-container">
     <c:forEach var="postsList" items="${postsList}">
-        <div class="post-card">
+        <div class="post-card" data-post-id="${postsList.post_id}">
             <input type="button" class="delete-post-btn" data-post-id="${postsList.post_id}" value="&times">
             <span class="badge ${postsList.category_id}">
                 <!-- 조건에 따라 아이콘 클래스 변경 -->
@@ -18,7 +18,7 @@
                          </c:choose>"></i>
                 ${postsList.category_id}
             </span>
-            <img class="post-image" src="${path}/img/${postsList.image_url}" alt="Post Image">
+            <img class="post-image" src="${postsList.image_url}" alt="Post Image">
             <div class="post-info">
                 <h3 class="post-title">${postsList.post_title}</h3>
                 <p class="post-user">${postsList.post_content}</p>

@@ -8,41 +8,69 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<c:set var="path" value="${pageContext.servletContext.contextPath}"/>
 <!DOCTYPE html>
 <html lang="en">
   <head>
-
-
-
-  <c:set var="path" value="${pageContext.servletContext.contextPath}"/>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <!-- jQuery -->
-
-
-
-       <link rel="stylesheet" href="${path}/css/post/main.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
+    />
+     <link rel="stylesheet" href="${path}/css/post/main.css" />
     <link rel="stylesheet" href="${path}/css/post/post.css" />
     <link rel="stylesheet" href="${path}/css/post/postDetail.css" />
 
-	</head>
-	  <div id="container">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="${path}/js/post/like.js"></script>
+
+  </head>
+	<body>
+	 <div class="post_modal">
+            <ul class="more_box">
+                <li>링크복사</li>
+                <li>여행 참여 요청</li>
+                <li>사용자 정보</li>
+                </ul>
+            </div>
+
+
+	  <div id="container" data-path="${path}">
           <%@include file="../member/header.jsp" %>
           <section id="post_detail">
             <div class="post_top">
               <div class="post_top_left">
-                <img src="${post.memberProfilePhoto}" alt="" />
+                <img src="${post.memberProfilePhoto}" alt="" style="object-fit: cover;
+                     object-position: center;" />
                 <div>
                   <p>${post.memberNickName}</p>
                   <p>${post.postTitle}</p>
                 </div>
               </div>
               <div class="post_top_right">
-                <button>팔로우</button>
-                <img src="${path}/img/more.png" alt="" />
+              <c:choose>
+
+                  <c:when test="${my.member_email == post.memberEmail}">
+
+                  </c:when>
+                  <c:otherwise>
+                      <c:choose>
+
+                          <c:when test="${fn:contains(followingList, post.memberEmail)}">
+                              <button class="following-btn" data-to-email="${post.memberEmail}">팔로잉</button>
+                          </c:when>
+                          <c:otherwise>
+                              <button class="follow-btn" data-to-email="${post.memberEmail}">팔로우</button>
+                          </c:otherwise>
+                      </c:choose>
+                  </c:otherwise>
+              </c:choose>
+                <img class="more_button" src="${path}/img/more.png" alt="" />
               </div>
             </div>
              <div class="PostCategory">
@@ -50,20 +78,35 @@
             </div>
             <div class="single-item">
                <c:forEach var="postURL" items="${post.imageUrls}">
-                  <img class="like-img" src="${path}/upload/${postURL}" data-post-id="${post.postId}" alt="like">
+                  <img src="${postURL}" data-post-id="${post.postId}" alt="like" style="object-fit: cover;
+  object-position: center;">
                </c:forEach>
             </div>
             <div class="post_bottom">
               <div class="post_bottom_top">
                 <div>
-                  <img src="${path}/img/Like.png" alt="하트" width="25" />
-                  <span>${post.likeCount}</span>
+                   <c:set var="found" value="false" />
+
+                  <!-- likePostIdsArray에서 해당 post.postId가 있는지 확인 -->
+                  <c:forEach var="likePostId" items="${myLike}">
+                      <c:if test="${likePostId == post.postId}">
+                          <c:set var="found" value="true" />
+                          <!-- 좋아요를 누른 경우 -->
+                          <img width="25" class="like-img" src="${path}/img/Likefull.png" data-post-id="${post.postId}" alt="like"><span>${post.likeCount}</span>
+                      </c:if>
+                  </c:forEach>
+
+                  <!-- likePostIdsArray에 해당 post.postId가 없으면 기본 이미지 출력 -->
+                  <c:if test="${not found}">
+                      <img width="25" class="like-img" src="${path}/img/Like.png" data-post-id="${post.postId}" alt="like"><span>${post.likeCount}</span>
+                  </c:if>
+
                 </div>
                 <img id="commentToggle" src="${path}/img/comment.png" alt="댓글" width="30" />
               </div>
               <div class="comment_list" style="display:none;">
                  <div class="post_content" style="white-space: pre-line;">🤓🩶🩵🩶🤎
-                  ${post.postContent}#라스트챌린지 #스타일컬렉터모집 #2025코디 #요즘코디 #신년선물 #선물추천 #KREAM #OVERDUEFLAIR #크림 #오버듀플레어 #가디건코디
+                  ${post.postContent}
                  </div>
                  <div class="comment_list2">
                      <c:forEach var="comment" items="${comments}">
@@ -109,11 +152,12 @@
           </section>
         </div>
       </body>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
-    />
+
+
+
+
+
+
 
     <script
       type="text/javascript"
@@ -123,6 +167,76 @@
       console.log(`${post}`)
       console.log(`${my}`)
       console.log(`${comments}`)
+      console.log(`${followingList}`)
+
+
+ const more_button = document.querySelector(".more_button");
+ const modal = document.querySelector(".post_modal");
+   more_button.addEventListener("click", function () {
+     console.log(1)
+      modal.style.display = "flex";
+   });
+   modal.addEventListener("click", function () {
+       modal.style.display = "none"; // 모달을 숨김
+   });
+
+   modal.querySelector(".more_box").addEventListener("click", function (event) {
+       event.stopPropagation(); // 클릭 이벤트 전파를 막음
+   });
+
+
+     function followUser(toEmail, followBtn) {
+         $.ajax({
+             url: `${path}/following/` + toEmail,
+             type: "POST",
+             contentType: 'application/json',
+             success: function (res) {
+                 console.log("팔로우 성공:", res);
+                 followBtn
+                     .removeClass("follow-btn")
+                     .addClass("following-btn")
+                     .text("팔로잉") // 텍스트를 "팔로잉"으로 변경
+                     .show();
+             },
+             error: function (err) {
+                 console.log("에러 발생:", err);
+             },
+         });
+     }
+
+     function unfollowUser(toEmail, followBtn) {
+         $.ajax({
+             url: `${path}/following/` + toEmail,
+             type: "GET",
+             contentType: 'application/json',
+             success: function (res) {
+                 console.log("팔로우 취소 성공:", res);
+                 followBtn
+                     .removeClass("following-btn")
+                     .addClass("follow-btn")
+                     .text("팔로우") // 텍스트를 "팔로우"로 변경
+                     .show();
+             },
+             error: function (err) {
+                 console.log("에러 발생:", err);
+             },
+         });
+     }
+
+     // 팔로우 버튼 클릭 이벤트 리스너
+     $(document).on("click", ".follow-btn", function () {
+         const toEmail = $(this).data("to-email");
+         const followBtn = $(this); // 현재 클릭된 팔로우 버튼
+         followUser(toEmail, followBtn); // 팔로우 요청
+     });
+
+     // 팔로잉 버튼 클릭 이벤트 리스너
+     $(document).on("click", ".following-btn", function () {
+         const toEmail = $(this).data("to-email");
+         const followBtn = $(this); // 현재 클릭된 팔로잉 버튼
+         unfollowUser(toEmail, followBtn); // 팔로우 취소 요청
+     });
+
         $(".single-item").slick({
           infinite: false, // 무한 스크롤 비활성화
           prevArrow: '<button type="button" class="slick-prev"></button>',

@@ -5,11 +5,13 @@ import com.shinhan.daengdong.chat.dto.ChatMessageDTO;
 import com.shinhan.daengdong.chat.model.ChatParticipant;
 import com.shinhan.daengdong.chat.model.ChatRoom;
 import com.shinhan.daengdong.chat.model.service.ChatService;
+import com.shinhan.daengdong.chat.model.service.SupabaseChatService;
 import com.shinhan.daengdong.member.dto.MemberDTO;
 import com.shinhan.daengdong.member.model.repository.MemberRepositoryImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -21,6 +23,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     private final ChatService chatService;
     private final WebSocketSessionManager sessionManager;
     private final MemberRepositoryImpl memberRepositoryImpl;
+
+    @Autowired
+    private SupabaseChatService supabaseChatService;
 
     @Autowired
     public ChatWebSocketHandler(ChatService chatService, WebSocketSessionManager sessionManager, MemberRepositoryImpl memberRepositoryImpl) {
@@ -46,6 +51,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         ObjectMapper mapper = new ObjectMapper();
         ChatMessageDTO chatMessage = mapper.readValue(message.getPayload(), ChatMessageDTO.class);
         chatMessage.setSender(senderName);
+
+        supabaseChatService.saveMessage(chatMessage, planId, sender.getNickName());
 
         ChatRoom chatRoom = chatService.getChatRoom(planId);
         chatRoom.broadcastMessage(mapper.writeValueAsString(chatMessage));
@@ -74,5 +81,30 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         log.info("WebSocket connected. Session ID: " + session.getId());
     }
 
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        log.info("WebSocket connection closed. Session ID: {}", session.getId());
+        // sessionId를 기반으로 SessionInfo를 가져오기
+        SessionInfo info = sessionManager.getSessionInfo(session.getId());
+        if (info != null) {
+            int planId = info.getPlanId();
+            ChatParticipant participant = info.getParticipant();
+
+            log.info("Removing participant from chat room. planId={}, participant={}", planId, participant);
+
+            // 1) ChatRoom에서 participant 제거
+            ChatRoom chatRoom = chatService.getChatRoom(planId);
+            if (chatRoom != null) {
+                chatRoom.leave(participant);
+            }
+
+            // 2) sessionManager에서도 제거
+            sessionManager.removeSession(session.getId());
+
+            log.info("Session ID: {} removed from planId: {}", session.getId(), planId);
+        } else {
+            log.warn("No SessionInfo found for closed session: {}", session.getId());
+        }
+    }
 
 }
