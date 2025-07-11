@@ -49,7 +49,7 @@
 **Database:** MySQL 
 ## Archetecture
 
-![archtecture](https://github.com/user-attachments/assets/5350d9b2-f6d0-498c-adf9-d7e6371bb83d)
+<img width="1156" height="534" alt="image" src="https://github.com/user-attachments/assets/e27aff68-017d-4297-bec5-b8bd13ba9df7" />
 
 ## Development Environment
 
